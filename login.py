@@ -1,9 +1,9 @@
 import pickle
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options 
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from dotenv import load_dotenv
-import os 
+import os
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -42,7 +42,9 @@ class FacebookLogIn:
         button.click()
 
     def facebook_login(self) -> None:
-        user_name = self.wait.until(EC.presence_of_element_located((By.XPATH, self.input_text_css_selector)))
+        user_name = self.wait.until(
+            EC.presence_of_element_located((By.XPATH, self.input_text_css_selector))
+        )
         password = driver.find_element(By.XPATH, self.password_css_selector)
 
         user_name.send_keys(self.email)
@@ -51,10 +53,14 @@ class FacebookLogIn:
         log_in_button = driver.find_element(By.XPATH, self.submit_button_selector)
         log_in_button.click()
 
-        self.wait.until(EC.presence_of_element_located((By.XPATH, "//div[@aria-label='Facebook']")))
+        self.wait.until(
+            EC.presence_of_element_located((By.XPATH, "//div[@aria-label='Facebook']"))
+        )
 
     def security_code(self) -> None:
-        security_code_input = driver.find_elements(By.XPATH, self.input_text_css_selector)
+        security_code_input = driver.find_elements(
+            By.XPATH, self.input_text_css_selector
+        )
         if security_code_input:
             security_code = input("Enter your security code: ")
             security_code_input[0].send_keys(security_code)
@@ -63,7 +69,9 @@ class FacebookLogIn:
         save_button.click()
 
     def save_browser(self) -> None:
-        self.wait.until(EC.presence_of_element_located((By.XPATH, "//div[@aria-label='Facebook']")))
+        self.wait.until(
+            EC.presence_of_element_located((By.XPATH, "//div[@aria-label='Facebook']"))
+        )
         continue_button = driver.find_element(By.XPATH, self.submit_button_selector)
         continue_button.click()
 
@@ -74,5 +82,5 @@ class FacebookLogIn:
             pickle.dump(cookies, file)
 
     def login(self):
-        # TODO pipeline to run all methods to log in 
+        # TODO pipeline to run all methods to log in
         pass
