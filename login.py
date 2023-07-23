@@ -67,3 +67,8 @@ def save_browser() -> None:
     continue_button = driver.find_element(By.XPATH, SUBMIT_BUTTON_SELECTOR)
     continue_button.click()
 
+def save_cookies() -> None:
+    cookies = driver.get_cookies()
+    with open("cookies.json", "wb") as file:
+        pickle.dump(cookies, file)
+
