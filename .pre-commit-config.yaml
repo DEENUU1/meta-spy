@@ -1,0 +1,10 @@
+repos:
+  - repo: local
+    hooks:
+      - &black
+        id: black
+        name: black
+        entry: black
+        language: system
+        types: [ python ]
+        exclude: '^requirements\.txt$'
