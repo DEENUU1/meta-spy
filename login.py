@@ -52,3 +52,13 @@ def facebook_login(username_selector: str, password_selector: str) -> None:
     wait.until(EC.presence_of_element_located((By.XPATH, "//div[@aria-label='Facebook']")))
 
 
+def security_code(security_code_selector: str) -> None:
+    security_code_input = driver.find_elements(By.XPATH, security_code_selector)
+    if security_code_input:
+        security_code = input("Enter your security code: ")
+        security_code_input[0].send_keys(security_code)
+
+    save_button = driver.find_element(By.XPATH, SUBMIT_BUTTON_SELECTOR)
+    save_button.click()
+
+
