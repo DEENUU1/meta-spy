@@ -62,3 +62,8 @@ def security_code(security_code_selector: str) -> None:
     save_button.click()
 
 
+def save_browser() -> None:
+    wait.until(EC.presence_of_element_located((By.XPATH, "//div[@aria-label='Facebook']")))
+    continue_button = driver.find_element(By.XPATH, SUBMIT_BUTTON_SELECTOR)
+    continue_button.click()
+
