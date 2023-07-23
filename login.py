@@ -39,4 +39,16 @@ def close_cookie_term(cookie_css_selector: str) -> None:
     button.click()
 
 
+def facebook_login(username_selector: str, password_selector: str) -> None:
+    user_name = wait.until(EC.presence_of_element_located((By.XPATH, username_selector)))
+    password = driver.find_element(By.XPATH, password_selector)
+
+    user_name.send_keys(FACEBOOK_EMAIL)
+    password.send_keys(FACEBOOK_PASSWORD)
+
+    log_in_button = driver.find_element(By.XPATH, SUBMIT_BUTTON_SELECTOR)
+    log_in_button.click()
+
+    wait.until(EC.presence_of_element_located((By.XPATH, "//div[@aria-label='Facebook']")))
+
 
