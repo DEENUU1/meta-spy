@@ -6,17 +6,12 @@ import logging
 import pickle
 from time import sleep
 from typing import List, Dict
-import os
-from dotenv import load_dotenv
 from py2neo import Graph, Node, Relationship
-
-load_dotenv()
-
-GRAPHDATABASE_PASSWORD = os.getenv("GRAPHDATABASE_PASSWORD")
+from main import Config
 
 # Logging setup
 logging.basicConfig(
-    filename="logs.json",
+    filename=Config.LOG_FILE_PATH,
     level=logging.ERROR,
     format="%(asctime)s - %(levelname)s - %(message)s",
 )
@@ -34,9 +29,6 @@ chrome_options.add_argument("--disable-features=IsolateOrigins,site-per-process"
 chrome_options.add_argument("--enable-features=NetworkService,NetworkServiceInProcess")
 chrome_options.add_argument("--profile-directory=Default")
 
-SCROLL_PAUSE_TIME = 1
-MAX_CONSECUTIVE_SCROLLS = 3
-
 
 class FacebookScraper:
     """
@@ -44,6 +36,7 @@ class FacebookScraper:
     """
 
     def __init__(self, user_id) -> None:
+        self.config = Config()
         self.user_id = user_id
         self.base_url = f"https://www.facebook.com/{self.user_id}/friends"
         self.driver = webdriver.Chrome(options=chrome_options)
@@ -52,9 +45,6 @@ class FacebookScraper:
         self.cookie_term_css_selector = "._42ft._4jy0._al65._4jy3._4jy1.selected._51sy"
         self.wait = WebDriverWait(self.driver, 10)
         self.data = set()
-        self.database_url = os.getenv("DATABASE_URL")
-        self.username = os.getenv("GRAPHDATABASE_USERNAME")
-        self.password = os.getenv("GRAPHDATABASE_PASSWORD")
 
     def load_cookies(self) -> None:
         """
@@ -62,7 +52,7 @@ class FacebookScraper:
         """
         try:
             self.driver.delete_all_cookies()
-            with open("cookies.json", "rb") as file:
+            with open(self.config.COOKIES_FILE_PATH, "rb") as file:
                 cookies = pickle.load(file)
                 for cookie in cookies:
                     self.driver.add_cookie(cookie)
@@ -116,12 +106,12 @@ class FacebookScraper:
             )
             consecutive_scrolls = 0
 
-            while consecutive_scrolls < MAX_CONSECUTIVE_SCROLLS:
+            while consecutive_scrolls < self.config.MAX_CONSECUTIVE_SCROLLS:
                 self.driver.execute_script(
                     "window.scrollTo(0, document.body.scrollHeight);"
                 )
 
-                sleep(SCROLL_PAUSE_TIME)
+                sleep(self.config.SCROLL_PAUSE_TIME)
                 self.extract_friends_data()
                 new_height = self.driver.execute_script(
                     "return document.body.scrollHeight"
@@ -142,7 +132,9 @@ class FacebookScraper:
         """
         try:
             graph = Graph(
-                uri=self.database_url, user=self.username, password=self.password
+                uri=self.config.DATABASE_URL,
+                user=self.config.GRAPH_DATABASE_USERNAME,
+                password=self.config.GRAPH_DATABASE_PASSWORD,
             )
             user_node = Node(
                 "User", username=user_data["username"], url=user_data["url"]

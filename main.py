@@ -1,38 +1,33 @@
 import typer
-from login import FacebookLogIn
-from scraper import FacebookScraper
-from typing import Optional
+import os
+from dotenv import load_dotenv
 
+
+load_dotenv()
 app = typer.Typer()
 
 
-@app.command()
-def login_2_step():
+class Config:
     """
-    Log in to facebook account with 2-step authentication
+    Configuration class for the application.
     """
-    typer.echo("Logging in")
-    facebook = FacebookLogIn()
-    facebook.login_2_step()
 
+    # Scrolling
+    SCROLL_PAUSE_TIME = 1
+    MAX_CONSECUTIVE_SCROLLS = 3
 
-@app.command()
-def login():
-    """
-    Log in to facebook account without 2-step authentication
-    """
-    typer.echo("Logging in")
-    facebook = FacebookLogIn()
-    facebook.login_no_verification()
+    # Graph database
+    DATABASE_URL = os.getenv("DATABASE_URL")
+    GRAPH_DATABASE_USERNAME = os.getenv("GRAPHDATABASE_USERNAME")
+    GRAPH_DATABASE_PASSWORD = os.getenv("GRAPHDATABASE_PASSWORD")
 
+    # Facebook login
+    FACEBOOK_EMAIL = os.getenv("FACEBOOK_EMAIL")
+    FACEBOOK_PASSWORD = os.getenv("FACEBOOK_PASSWORD")
+    COOKIES_FILE_PATH = "cookies.json"
 
-@app.command()
-def scrape(name: Optional[str] = None):
-    if name:
-        typer.echo(f"Start scraping friend list for {name}")
-        facebook = FacebookScraper(name)
-        facebook.pipeline()
-    typer.echo("Invalid name")
+    # logs
+    LOG_FILE_PATH = "logs.json"
 
 
 if __name__ == "__main__":

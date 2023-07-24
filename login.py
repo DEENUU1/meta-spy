@@ -2,21 +2,18 @@ import pickle
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
-from dotenv import load_dotenv
-import os
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import logging
+from main import Config
 
 # Logging setup
 logging.basicConfig(
-    filename="logs.json",
+    filename=Config.LOG_FILE_PATH,
     level=logging.ERROR,
     format="%(asctime)s - %(levelname)s - %(message)s",
 )
 
-# Load dotenv data
-load_dotenv()
 
 # Chrome configuration
 chrome_options = Options()
@@ -37,8 +34,7 @@ class FacebookLogIn:
     """
 
     def __init__(self) -> None:
-        self.email = os.getenv("FACEBOOK_EMAIL")
-        self.password = os.getenv("FACEBOOK_PASSWORD")
+        self.config = Config()
         self.base_url = "https://www.facebook.com/"
         self.driver = webdriver.Chrome(options=chrome_options)
         self.driver = self.driver
@@ -71,8 +67,8 @@ class FacebookLogIn:
             )
             password = self.driver.find_element(By.XPATH, self.password_css_selector)
 
-            user_name.send_keys(self.email)
-            password.send_keys(self.password)
+            user_name.send_keys(self.config.FACEBOOK_EMAIL)
+            password.send_keys(self.config.FACEBOOK_PASSWORD)
 
             log_in_button = self.driver.find_element(
                 By.XPATH, self.submit_button_selector
@@ -129,7 +125,7 @@ class FacebookLogIn:
         """
         try:
             cookies = self.driver.get_cookies()
-            with open("cookies.json", "wb") as file:
+            with open(self.config.COOKIES_FILE_PATH, "wb") as file:
                 pickle.dump(cookies, file)
         except Exception as e:
             logging.error(f"Error occurred while saving cookies: {e}")
