@@ -1,8 +1,15 @@
 # Byte-compiled / optimized / DLL files
+
+# project
+logs.json
+data.json
+cookies.json
+.idea/
+~/
+
 __pycache__/
 *.py[cod]
 *$py.class
-cookies.json
 # C extensions
 *.so
 
