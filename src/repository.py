@@ -4,8 +4,15 @@ from sqlalchemy.orm import Session
 from models import Queue
 
 
+def get_queue_by_url(db: Session, url: str) -> Type[Queue]:
+    """Check if queue exists"""
+    return db.query(Queue).filter(Queue.url == url).first()
+
+
 def create_queue(db: Session, url: str) -> Queue:
     """Create queue object"""
+    if get_queue_by_url(db, url):
+        raise Exception("Queue already exists")
     db_item = Queue(url=url)
     db.add(db_item)
     db.commit()
