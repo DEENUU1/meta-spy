@@ -1,17 +1,20 @@
 from selenium import webdriver
-from selenium.common import TimeoutException
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
-from dotenv import load_dotenv
-import os
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 import logging
-import json
 import pickle
 from time import sleep
 from typing import List, Dict
+from neo4j import GraphDatabase
+import os
+from dotenv import load_dotenv
+from py2neo import Graph, Node
 
+
+load_dotenv()
+
+GRAPHDATABASE_PASSWORD = os.getenv("GRAPHDATABASE_PASSWORD")
 
 # Logging setup
 logging.basicConfig(
@@ -33,7 +36,7 @@ chrome_options.add_argument("--disable-features=IsolateOrigins,site-per-process"
 chrome_options.add_argument("--enable-features=NetworkService,NetworkServiceInProcess")
 chrome_options.add_argument("--profile-directory=Default")
 
-SCROLL_PAUSE_TIME = 2
+SCROLL_PAUSE_TIME = 1
 MAX_CONSECUTIVE_SCROLLS = 3
 
 
@@ -49,6 +52,13 @@ class FacebookScraper:
         self.driver.get(self.base_url)
         self.cookie_term_css_selector = "._42ft._4jy0._al65._4jy3._4jy1.selected._51sy"
         self.wait = WebDriverWait(self.driver, 10)
+        self.neo4j_driver = GraphDatabase.driver(
+            "bolt://localhost:7687", auth=("neo4j", GRAPHDATABASE_PASSWORD)
+        )
+        self.data = set()
+        self.database_url = os.getenv("DATABASE_URL")
+        self.username = os.getenv("GRAPHDATABASE_USERNAME")
+        self.password = os.getenv("GRAPHDATABASE_PASSWORD")
 
     def load_cookies(self) -> None:
         """
@@ -64,17 +74,19 @@ class FacebookScraper:
             logging.error(f"Error loading cookies: {e}")
 
     def extract_friends_data(self) -> List[Dict[str, str]]:
+        """
+        Return a list of dictionaries with the usernames and the urls to the profile for every person in friends list
+        """
         extracted_elements = []
 
         try:
-            elements = self.driver.find_elements(By.CSS_SELECTOR, "a.x1i10hfl")
-
+            elements = self.driver.find_elements(By.CSS_SELECTOR, "a.x1i10hfl span")
             for element in elements:
-                element_data = {
-                    "username": element.text,
-                    "url": element.get_attribute("href"),
-                }
-                print(element_data)
+                username = element.text.strip()
+                url = element.find_element(By.XPATH, "..").get_attribute("href")
+                if username == "":
+                    continue
+                element_data = {"username": username, "url": url}
                 extracted_elements.append(element_data)
 
         except Exception as e:
@@ -112,6 +124,20 @@ class FacebookScraper:
         except Exception as e:
             logging.error(f"Error occurred while scrolling: {e}")
 
+    def save_data_to_neo4j(self, user_data: List[Dict[str, str]]) -> None:
+        """
+        Save data to Neo4j graph database
+        """
+        try:
+            graph = Graph(
+                uri=self.database_url, user=self.username, password=self.password
+            )
+            for data in user_data:
+                user_node = Node("User", username=data["username"], url=data["url"])
+                graph.create(user_node)
+        except Exception as e:
+            logging.error(f"Error occurred while saving data to Neo4j: {e}")
+
     def pipeline(self) -> None:
         """
         Pipeline to run the scraper
@@ -120,6 +146,13 @@ class FacebookScraper:
             self.load_cookies()
             self.driver.refresh()
             self.scroll_page()
+            sleep(5)
+            extracted_data = self.extract_friends_data()
+            for data in extracted_data:
+                self.data.add((data["username"], data["url"]))
+
+            print(self.data)
+            self.save_data_to_neo4j(extracted_data)
         except Exception as e:
             logging.error(f"Error occurred while running the pipeline: {e}")
         finally:
