@@ -23,3 +23,14 @@ def update_queue_status_to_true(db: Session, queue_id: int) -> Type[Queue]:
     else:
         raise Exception("Queue not found")
     return db_item
+
+
+def delete_queue(db: Session, queue_id: int) -> Type[Queue]:
+    """Delete queue"""
+    db_item = db.query(Queue).filter(Queue.id == queue_id).first()
+    if db_item:
+        db.delete(db_item)
+        db.commit()
+    else:
+        raise Exception("Queue not found")
+    return db_item
