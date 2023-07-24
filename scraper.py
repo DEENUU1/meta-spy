@@ -6,6 +6,7 @@ import os
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import logging
+import json
 
 # Logging setup
 logging.basicConfig(
@@ -33,8 +34,17 @@ class FacebookScraper:
     Scrape user's friends and their data
     """
 
-    def __init__(self) -> None:
-        self.base_url = "https://www.facebook.com/"
+    def __init__(self, user_id) -> None:
+        self.base_url = f"https://www.facebook.com/{user_id}/friends"
         self.driver = webdriver.Chrome(options=chrome_options)
         self.driver = self.driver
         self.driver.get(self.base_url)
+
+    def load_cookies(self) -> None:
+        try:
+            with open("cookies.txt", "r") as file:
+                cookies = json.load(file)
+                for cookie in cookies:
+                    self.driver.add_cookie(cookie)
+        except Exception as e:
+            logging.error(f"Error loading cookies: {e}")
