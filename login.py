@@ -25,6 +25,10 @@ driver = webdriver.Chrome(options=chrome_options)
 
 
 class FacebookLogIn:
+    """
+    Log in to Facebook using email and password
+    """
+
     def __init__(self, driver: webdriver.Chrome = driver) -> None:
         self.email = os.getenv("FACEBOOK_EMAIL")
         self.password = os.getenv("FACEBOOK_PASSWORD")
@@ -38,10 +42,16 @@ class FacebookLogIn:
         self.wait = WebDriverWait(driver, 10)
 
     def close_cookie_term(self) -> None:
+        """
+        Close modal with cookie information
+        """
         button = driver.find_element(By.CSS_SELECTOR, self.cookie_term_css_selector)
         button.click()
 
     def facebook_login(self) -> None:
+        """
+        Log in to Facebook using email and password
+        """
         user_name = self.wait.until(
             EC.presence_of_element_located((By.XPATH, self.input_text_css_selector))
         )
@@ -58,6 +68,9 @@ class FacebookLogIn:
         )
 
     def security_code(self) -> None:
+        """
+        Add security code for 2-step verification of email and password
+        """
         security_code_input = driver.find_elements(
             By.XPATH, self.input_text_css_selector
         )
@@ -69,6 +82,9 @@ class FacebookLogIn:
         save_button.click()
 
     def save_browser(self) -> None:
+        """
+        Click button to save browser
+        """
         self.wait.until(
             EC.presence_of_element_located((By.XPATH, "//div[@aria-label='Facebook']"))
         )
@@ -77,10 +93,16 @@ class FacebookLogIn:
 
     @staticmethod
     def save_cookies() -> None:
+        """
+        Save cookies with log in account to json file
+        """
         cookies = driver.get_cookies()
         with open("cookies.json", "wb") as file:
             pickle.dump(cookies, file)
 
-    def login(self):
-        # TODO pipeline to run all methods to log in
-        pass
+    def login_2_step(self):
+        self.close_cookie_term()
+        self.facebook_login()
+        self.security_code()
+        self.save_browser()
+        self.save_cookies()
