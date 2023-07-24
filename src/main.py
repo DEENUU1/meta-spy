@@ -1,8 +1,12 @@
+from dotenv import load_dotenv
 from login import FacebookLogIn
 from scraper import FacebookScraper
 from typing import Optional
 import typer
-from main import app
+
+
+load_dotenv()
+app = typer.Typer()
 
 
 @app.command()
@@ -32,3 +36,7 @@ def scrape(name: Optional[str] = None):
         facebook = FacebookScraper(name)
         facebook.pipeline()
     typer.echo("Invalid name")
+
+
+if __name__ == "__main__":
+    app()

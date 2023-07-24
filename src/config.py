@@ -1,10 +1,4 @@
-import typer
 import os
-from dotenv import load_dotenv
-
-
-load_dotenv()
-app = typer.Typer()
 
 
 class Config:
@@ -24,11 +18,7 @@ class Config:
     # Facebook login
     FACEBOOK_EMAIL = os.getenv("FACEBOOK_EMAIL")
     FACEBOOK_PASSWORD = os.getenv("FACEBOOK_PASSWORD")
-    COOKIES_FILE_PATH = "cookies.json"
+    COOKIES_FILE_PATH = "../cookies.json"
 
     # logs
-    LOG_FILE_PATH = "logs.json"
-
-
-if __name__ == "__main__":
-    app()
+    LOG_FILE_PATH = "../logs.json"
