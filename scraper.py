@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.common import TimeoutException
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from dotenv import load_dotenv
@@ -7,6 +8,9 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import logging
 import json
+import pickle
+from time import sleep
+
 
 # Logging setup
 logging.basicConfig(
@@ -38,34 +42,23 @@ class FacebookScraper:
         self.base_url = f"https://www.facebook.com/{user_id}/friends"
         self.driver = webdriver.Chrome(options=chrome_options)
         self.driver = self.driver
-        self.load_cookies()
         self.driver.get(self.base_url)
+        self.cookie_term_css_selector = "._42ft._4jy0._al65._4jy3._4jy1.selected._51sy"
 
     def load_cookies(self) -> None:
         try:
-            with open("cookies.json", "r") as file:
-                cookies = json.load(file)
+            self.driver.delete_all_cookies()
+            with open("cookies.json", "rb") as file:
+                cookies = pickle.load(file)
                 for cookie in cookies:
                     self.driver.add_cookie(cookie)
         except Exception as e:
             logging.error(f"Error loading cookies: {e}")
 
     def scroll_page(self) -> None:
-        last_height = self.driver.execute_script("return document.body.scrollHeight")
-        while True:
-            self.driver.execute_script(
-                "window.scrollTo(0, document.body.scrollHeight);"
-            )
-            WebDriverWait(self.driver, 10).until(
-                lambda driver: driver.execute_script(
-                    "return document.body.scrollHeight"
-                )
-                > last_height
-            )
-            last_height = self.driver.execute_script(
-                "return document.body.scrollHeight"
-            )
-            if last_height == self.driver.execute_script(
-                "return document.body.scrollHeight"
-            ):
-                break
+        pass
+
+    def pipeline(self) -> None:
+        self.load_cookies()
+        self.driver.refresh()
+        self.scroll_page()

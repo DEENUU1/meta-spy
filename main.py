@@ -16,7 +16,7 @@ def login():
 @app.command()
 def scrape():
     facebook = FacebookScraper("marek.pirsztuk")
-    facebook.scroll_page()
+    facebook.pipeline()
 
 
 if __name__ == "__main__":
