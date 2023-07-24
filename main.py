@@ -7,10 +7,23 @@ app = typer.Typer()
 
 
 @app.command()
-def login():
+def login_2_step():
+    """
+    Log in to facebook account with 2-step authentication
+    """
     typer.echo("Logging in")
     facebook = FacebookLogIn()
     facebook.login_2_step()
+
+
+@app.command()
+def login():
+    """
+    Log in to facebook account without 2-step authentication
+    """
+    typer.echo("Logging in")
+    facebook = FacebookLogIn()
+    facebook.login_no_verification()
 
 
 @app.command()
