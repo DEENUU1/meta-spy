@@ -6,11 +6,9 @@ import logging
 import pickle
 from time import sleep
 from typing import List, Dict
-from neo4j import GraphDatabase
 import os
 from dotenv import load_dotenv
-from py2neo import Graph, Node
-
+from py2neo import Graph, Node, Relationship
 
 load_dotenv()
 
@@ -46,15 +44,13 @@ class FacebookScraper:
     """
 
     def __init__(self, user_id) -> None:
-        self.base_url = f"https://www.facebook.com/{user_id}/friends"
+        self.user_id = user_id
+        self.base_url = f"https://www.facebook.com/{self.user_id}/friends"
         self.driver = webdriver.Chrome(options=chrome_options)
         self.driver = self.driver
         self.driver.get(self.base_url)
         self.cookie_term_css_selector = "._42ft._4jy0._al65._4jy3._4jy1.selected._51sy"
         self.wait = WebDriverWait(self.driver, 10)
-        self.neo4j_driver = GraphDatabase.driver(
-            "bolt://localhost:7687", auth=("neo4j", GRAPHDATABASE_PASSWORD)
-        )
         self.data = set()
         self.database_url = os.getenv("DATABASE_URL")
         self.username = os.getenv("GRAPHDATABASE_USERNAME")
@@ -72,6 +68,22 @@ class FacebookScraper:
                     self.driver.add_cookie(cookie)
         except Exception as e:
             logging.error(f"Error loading cookies: {e}")
+
+    def extract_scraped_user_data(self) -> Dict:
+        """
+        Extract scraped user data and return it as a dictionary
+        """
+        extracted_data = {}
+        try:
+            username_element = self.driver.find_element(
+                By.CSS_SELECTOR, "h1.x1heor9g.x1qlqyl8.x1pd3egz.x1a2a7pz"
+            )
+            username = username_element.text.strip()
+            url = f"https://www.facebook.com/{self.user_id}"
+            extracted_data = {"username": username, "url": url}
+        except Exception as e:
+            logging.error(f"Error extracting scraped user data: {e}")
+        return extracted_data
 
     def extract_friends_data(self) -> List[Dict[str, str]]:
         """
@@ -124,7 +136,7 @@ class FacebookScraper:
         except Exception as e:
             logging.error(f"Error occurred while scrolling: {e}")
 
-    def save_data_to_neo4j(self, user_data: List[Dict[str, str]]) -> None:
+    def save_data_to_neo4j(self, user_data) -> None:
         """
         Save data to Neo4j graph database
         """
@@ -132,9 +144,17 @@ class FacebookScraper:
             graph = Graph(
                 uri=self.database_url, user=self.username, password=self.password
             )
-            for data in user_data:
-                user_node = Node("User", username=data["username"], url=data["url"])
-                graph.create(user_node)
+            user_node = Node(
+                "User", username=user_data["username"], url=user_data["url"]
+            )
+            graph.create(user_node)
+
+            for data in user_data["friends"]:
+                friend_node = Node("User", username=data["username"], url=data["url"])
+                graph.create(friend_node)
+                relationship = Relationship(user_node, "FRIEND", friend_node)
+                graph.create(relationship)
+
         except Exception as e:
             logging.error(f"Error occurred while saving data to Neo4j: {e}")
 
@@ -147,12 +167,9 @@ class FacebookScraper:
             self.driver.refresh()
             self.scroll_page()
             sleep(5)
-            extracted_data = self.extract_friends_data()
-            for data in extracted_data:
-                self.data.add((data["username"], data["url"]))
-
-            print(self.data)
-            self.save_data_to_neo4j(extracted_data)
+            user_data = self.extract_scraped_user_data()
+            user_data["friends"] = self.extract_friends_data()
+            self.save_data_to_neo4j(user_data)
         except Exception as e:
             logging.error(f"Error occurred while running the pipeline: {e}")
         finally:
