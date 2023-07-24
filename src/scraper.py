@@ -7,7 +7,7 @@ import pickle
 from time import sleep
 from typing import List, Dict
 from py2neo import Graph, Node, Relationship
-from main import Config
+from config import Config
 
 # Logging setup
 logging.basicConfig(
