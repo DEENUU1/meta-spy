@@ -15,7 +15,7 @@ def login():
 # TODO add arguments for the command
 @app.command()
 def scrape():
-    facebook = FacebookScraper("marek.pirsztuk")
+    facebook = FacebookScraper("zuzia.lipinska.37")
     facebook.pipeline()
 
 
