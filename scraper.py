@@ -10,6 +10,7 @@ import logging
 import json
 import pickle
 from time import sleep
+from typing import List, Dict
 
 
 # Logging setup
@@ -54,22 +55,38 @@ class FacebookScraper:
         Load cookies with a log in session
         """
         try:
-            logging.info("Start loading cookies with log in session")
             self.driver.delete_all_cookies()
             with open("cookies.json", "rb") as file:
                 cookies = pickle.load(file)
                 for cookie in cookies:
                     self.driver.add_cookie(cookie)
-            logging.info("Cookies loaded correctly")
         except Exception as e:
             logging.error(f"Error loading cookies: {e}")
+
+    def extract_friends_data(self) -> List[Dict[str, str]]:
+        extracted_elements = []
+
+        try:
+            elements = self.driver.find_elements(By.CSS_SELECTOR, "a.x1i10hfl")
+
+            for element in elements:
+                element_data = {
+                    "username": element.text,
+                    "url": element.get_attribute("href"),
+                }
+                print(element_data)
+                extracted_elements.append(element_data)
+
+        except Exception as e:
+            logging.error(f"Error extracting friends data: {e}")
+
+        return extracted_elements
 
     def scroll_page(self) -> None:
         """
         Scrolls the page to load more friends from a list
         """
         try:
-            logging.info("Start scrolling page")
             last_height = self.driver.execute_script(
                 "return document.body.scrollHeight"
             )
@@ -81,7 +98,7 @@ class FacebookScraper:
                 )
 
                 sleep(SCROLL_PAUSE_TIME)
-
+                self.extract_friends_data()
                 new_height = self.driver.execute_script(
                     "return document.body.scrollHeight"
                 )
@@ -92,7 +109,6 @@ class FacebookScraper:
                     consecutive_scrolls = 0
 
                 last_height = new_height
-            logging.info("Scrolling page finished")
         except Exception as e:
             logging.error(f"Error occurred while scrolling: {e}")
 
@@ -101,11 +117,9 @@ class FacebookScraper:
         Pipeline to run the scraper
         """
         try:
-            logging.info("Start pipeline to scrape a friend list on facebook")
             self.load_cookies()
             self.driver.refresh()
             self.scroll_page()
-            logging.info("Pipeline finished")
         except Exception as e:
             logging.error(f"Error occurred while running the pipeline: {e}")
         finally:
