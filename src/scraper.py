@@ -39,26 +39,23 @@ class FacebookScraper:
     """
 
     def __init__(self, user_id) -> None:
-        self.config = Config()
-        self.user_id = user_id
-        self.base_url = f"https://www.facebook.com/{self.user_id}"
-        self.driver = webdriver.Chrome(options=chrome_options)
-        self.driver.get(self.base_url)
-        self.cookie_term_css_selector = "._42ft._4jy0._al65._4jy3._4jy1.selected._51sy"
-        self.wait = WebDriverWait(self.driver, 10)
-        self.data = set()
+        self._user_id = user_id
+        self._base_url = f"https://www.facebook.com/{self._user_id}"
+        self._driver = webdriver.Chrome(options=chrome_options)
+        self._driver.get(self._base_url)
+        self._wait = WebDriverWait(self._driver, 10)
 
-    def load_cookies(self) -> None:
+    def _load_cookies(self) -> None:
         """
         Load cookies with a log in session
         """
         try:
-            self.driver.delete_all_cookies()
-            with open(self.config.COOKIES_FILE_PATH, "rb") as file:
+            self._driver.delete_all_cookies()
+            with open(Config.COOKIES_FILE_PATH, "rb") as file:
                 cookies = pickle.load(file)
                 for cookie in cookies:
                     try:
-                        self.driver.add_cookie(cookie)
+                        self._driver.add_cookie(cookie)
                     except Exception as e:
                         logging.error(f"Error adding cookie: {cookie}, Exception: {e}")
         except Exception as e:
@@ -70,11 +67,11 @@ class FacebookScraper:
         """
         extracted_data = {}
         try:
-            username_element = self.driver.find_element(
+            username_element = self._driver.find_element(
                 By.CSS_SELECTOR, "h1.x1heor9g.x1qlqyl8.x1pd3egz.x1a2a7pz"
             )
             username = username_element.text.strip()
-            url = f"https://www.facebook.com/{self.user_id}"
+            url = f"https://www.facebook.com/{self._user_id}"
             extracted_data = {"username": username, "url": url}
         except Exception as e:
             logging.error(f"Error extracting scraped user data: {e}")
@@ -87,9 +84,9 @@ class FacebookScraper:
         extracted_elements = []
 
         try:
-            self.driver.get(f"{self.base_url}/{self.config.FRIEND_LIST_URL}")
+            self._driver.get(f"{self._base_url}/{Config.FRIEND_LIST_URL}")
 
-            elements = self.driver.find_elements(By.CSS_SELECTOR, "a.x1i10hfl span")
+            elements = self._driver.find_elements(By.CSS_SELECTOR, "a.x1i10hfl span")
             for element in elements:
                 username = element.text.strip()
                 url = element.find_element(By.XPATH, "..").get_attribute("href")
@@ -108,9 +105,9 @@ class FacebookScraper:
 
         extracted_work_data = []
         try:
-            self.driver.get(f"{self.base_url}/{self.config.WORK_AND_EDUCATION_URL}")
+            self._driver.get(f"{self._base_url}/{Config.WORK_AND_EDUCATION_URL}")
 
-            work_entries = self.driver.find_elements(
+            work_entries = self._driver.find_elements(
                 By.CSS_SELECTOR,
                 "div.x9f619.x1n2onr6.x1ja2u2z.x78zum5.x1nhvcw1.x1qjc9v5.xozqiw3.x1q0g3np.xexx8yu.xykv574.xbmpl8g.x4cne27.xifccgj.xs83m0k",
             )
@@ -134,9 +131,9 @@ class FacebookScraper:
         """Return history of places"""
         places = []
         try:
-            self.driver.get(f"{self.base_url}/{self.config.PLACES_URL}")
+            self._driver.get(f"{self._base_url}/{Config.PLACES_URL}")
 
-            div_elements = self.driver.find_elements(
+            div_elements = self._driver.find_elements(
                 By.CSS_SELECTOR, "div.x13faqbe.x78zum5"
             )
 
@@ -163,19 +160,19 @@ class FacebookScraper:
         Scrolls the page to load more friends from a list
         """
         try:
-            last_height = self.driver.execute_script(
+            last_height = self._driver.execute_script(
                 "return document.body.scrollHeight"
             )
             consecutive_scrolls = 0
 
-            while consecutive_scrolls < self.config.MAX_CONSECUTIVE_SCROLLS:
-                self.driver.execute_script(
+            while consecutive_scrolls < Config.MAX_CONSECUTIVE_SCROLLS:
+                self._driver.execute_script(
                     "window.scrollTo(0, document.body.scrollHeight);"
                 )
 
-                sleep(self.config.SCROLL_PAUSE_TIME)
+                sleep(Config.SCROLL_PAUSE_TIME)
                 self.extract_friends_data()
-                new_height = self.driver.execute_script(
+                new_height = self._driver.execute_script(
                     "return document.body.scrollHeight"
                 )
 
@@ -192,11 +189,11 @@ class FacebookScraper:
         """
         Pipeline to run the scraper
         """
-        self.load_cookies()
-        self.driver.refresh()
+        self._load_cookies()
+        self._driver.refresh()
         y = self.extract_places()
         print(y)
         x = self.extract_work_and_education()
         print(x)
         self.scroll_page()
-        self.driver.quit()
+        self._driver.quit()
