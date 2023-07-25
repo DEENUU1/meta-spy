@@ -130,27 +130,23 @@ class FacebookLogIn:
         except Exception as e:
             logging.error(f"Error occurred while saving cookies: {e}")
 
-    def login_2_step(self) -> None:
-        """
-        Pipeline to log in on an account with 2-step verification
-        """
-        try:
-            self.close_cookie_term()
-            self.facebook_login()
-            self.security_code()
-            self.save_browser()
-            self.save_cookies()
-        except Exception as e:
-            logging.error(f"Error occurred while logging in: {e}")
 
-    def login_no_verification(self) -> None:
-        """
-        Pipeline to log in on an account without 2-step verification
-        """
-        try:
-            self.close_cookie_term()
-            self.facebook_login()
-            self.save_browser()
-            self.save_cookies()
-        except Exception as e:
-            logging.error(f"Error occurred while logging in: {e}")
+def login_2_step(facebook: FacebookLogIn) -> None:
+    """
+    Pipeline to log in on an account with 2-step verification
+    """
+    facebook.close_cookie_term()
+    facebook.facebook_login()
+    facebook.security_code()
+    facebook.save_browser()
+    facebook.save_cookies()
+
+
+def login_no_verification(facebook: FacebookLogIn) -> None:
+    """
+    Pipeline to log in on an account without 2-step verification
+    """
+    facebook.close_cookie_term()
+    facebook.facebook_login()
+    facebook.save_browser()
+    facebook.save_cookies()
