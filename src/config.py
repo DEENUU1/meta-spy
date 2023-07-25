@@ -23,3 +23,7 @@ class Config:
 
     # SQLALCHEMY DATABASE
     SQLALCHEMY_DATABASE_URL = "sqlite:///database.db"
+
+    # Facebook paths
+    FRIEND_LIST_URL = "friends"
+    WORK_AND_EDUCATION_URL = "about_work_and_education"
