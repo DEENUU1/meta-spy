@@ -20,18 +20,6 @@ logging.basicConfig(
 
 models.Base.metadata.create_all(database.engine)
 
-# Chrome configuration
-chrome_options = Options()
-chrome_options.add_argument("--disable-notifications")
-chrome_options.add_argument("--disable-extensions")
-chrome_options.add_argument("--disable-popup-blocking")
-chrome_options.add_argument("--disable-default-apps")
-chrome_options.add_argument("--disable-infobars")
-chrome_options.add_argument("--disable-web-security")
-chrome_options.add_argument("--disable-features=IsolateOrigins,site-per-process")
-chrome_options.add_argument("--enable-features=NetworkService,NetworkServiceInProcess")
-chrome_options.add_argument("--profile-directory=Default")
-
 
 class FacebookScraper:
     """
@@ -41,7 +29,7 @@ class FacebookScraper:
     def __init__(self, user_id) -> None:
         self._user_id = user_id
         self._base_url = f"https://www.facebook.com/{self._user_id}"
-        self._driver = webdriver.Chrome(options=chrome_options)
+        self._driver = webdriver.Chrome(options=self._chrome_driver_configuration())
         self._driver.get(self._base_url)
         self._wait = WebDriverWait(self._driver, 10)
 
@@ -60,6 +48,24 @@ class FacebookScraper:
                         logging.error(f"Error adding cookie: {cookie}, Exception: {e}")
         except Exception as e:
             logging.error(f"Error loading cookies: {e}")
+
+    @staticmethod
+    def _chrome_driver_configuration() -> Options:
+        chrome_options = Options()
+        chrome_options.add_argument("--disable-notifications")
+        chrome_options.add_argument("--disable-extensions")
+        chrome_options.add_argument("--disable-popup-blocking")
+        chrome_options.add_argument("--disable-default-apps")
+        chrome_options.add_argument("--disable-infobars")
+        chrome_options.add_argument("--disable-web-security")
+        chrome_options.add_argument(
+            "--disable-features=IsolateOrigins,site-per-process"
+        )
+        chrome_options.add_argument(
+            "--enable-features=NetworkService,NetworkServiceInProcess"
+        )
+        chrome_options.add_argument("--profile-directory=Default")
+        return chrome_options
 
     def extract_scraped_user_data(self) -> Dict:
         """
