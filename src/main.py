@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 from login import FacebookLogIn
-from scraper import FacebookScraper
+from account import FacebookScraper
 from typing import Optional
 import typer
 
