@@ -15,67 +15,73 @@ logging.basicConfig(
 )
 
 
-# Chrome configuration
-chrome_options = Options()
-chrome_options.add_argument("--disable-notifications")
-chrome_options.add_argument("--disable-extensions")
-chrome_options.add_argument("--disable-popup-blocking")
-chrome_options.add_argument("--disable-default-apps")
-chrome_options.add_argument("--disable-infobars")
-chrome_options.add_argument("--disable-web-security")
-chrome_options.add_argument("--disable-features=IsolateOrigins,site-per-process")
-chrome_options.add_argument("--enable-features=NetworkService,NetworkServiceInProcess")
-chrome_options.add_argument("--profile-directory=Default")
-
-
 class FacebookLogIn:
     """
     Log in to Facebook using email and password
     """
 
     def __init__(self) -> None:
-        self.config = Config()
-        self.base_url = "https://www.facebook.com/"
-        self.driver = webdriver.Chrome(options=chrome_options)
-        self.driver = self.driver
-        self.driver.get(self.base_url)
-        self.cookie_term_css_selector = "._42ft._4jy0._al65._4jy3._4jy1.selected._51sy"
-        self.input_text_css_selector = "//input[@type='text']"
-        self.password_css_selector = "//input[@placeholder='Hasło']"
-        self.submit_button_selector = "//button[@type='submit']"
-        self.wait = WebDriverWait(self.driver, 10)
+        self._base_url = "https://www.facebook.com/"
+        self._driver = webdriver.Chrome(options=self._chrome_driver_configuration())
+        self._driver = self._driver
+        self._driver.get(self._base_url)
+        self._cookie_term_css_selector = "._42ft._4jy0._al65._4jy3._4jy1.selected._51sy"
+        self._input_text_css_selector = "//input[@type='text']"
+        self._password_css_selector = "//input[@placeholder='Hasło']"
+        self._submit_button_selector = "//button[@type='submit']"
+        self._wait = WebDriverWait(self._driver, 10)
 
-    def close_cookie_term(self) -> None:
+    @staticmethod
+    def _chrome_driver_configuration() -> Options:
+        chrome_options = Options()
+        chrome_options.add_argument("--disable-notifications")
+        chrome_options.add_argument("--disable-extensions")
+        chrome_options.add_argument("--disable-popup-blocking")
+        chrome_options.add_argument("--disable-default-apps")
+        chrome_options.add_argument("--disable-infobars")
+        chrome_options.add_argument("--disable-web-security")
+        chrome_options.add_argument(
+            "--disable-features=IsolateOrigins,site-per-process"
+        )
+        chrome_options.add_argument(
+            "--enable-features=NetworkService,NetworkServiceInProcess"
+        )
+        chrome_options.add_argument("--profile-directory=Default")
+        return chrome_options
+
+    def _close_cookie_term(self) -> None:
         """
         Close modal with cookie information
         """
         try:
-            button = self.driver.find_element(
-                By.CSS_SELECTOR, self.cookie_term_css_selector
+            button = self._driver.find_element(
+                By.CSS_SELECTOR, self._cookie_term_css_selector
             )
             button.click()
         except Exception as e:
             logging.error(f"Error occurred while closing cookie modal: {e}")
 
-    def facebook_login(self) -> None:
+    def _facebook_login(self) -> None:
         """
         Log in to Facebook using email and password
         """
         try:
-            user_name = self.wait.until(
-                EC.presence_of_element_located((By.XPATH, self.input_text_css_selector))
+            user_name = self._wait.until(
+                EC.presence_of_element_located(
+                    (By.XPATH, self._input_text_css_selector)
+                )
             )
-            password = self.driver.find_element(By.XPATH, self.password_css_selector)
+            password = self._driver.find_element(By.XPATH, self._password_css_selector)
 
-            user_name.send_keys(self.config.FACEBOOK_EMAIL)
-            password.send_keys(self.config.FACEBOOK_PASSWORD)
+            user_name.send_keys(Config.FACEBOOK_EMAIL)
+            password.send_keys(Config.FACEBOOK_PASSWORD)
 
-            log_in_button = self.driver.find_element(
-                By.XPATH, self.submit_button_selector
+            log_in_button = self._driver.find_element(
+                By.XPATH, self._submit_button_selector
             )
             log_in_button.click()
 
-            self.wait.until(
+            self._wait.until(
                 EC.presence_of_element_located(
                     (By.XPATH, "//div[@aria-label='Facebook']")
                 )
@@ -83,49 +89,49 @@ class FacebookLogIn:
         except Exception as e:
             logging.error(f"Error occurred while logging in: {e}")
 
-    def security_code(self) -> None:
+    def _security_code(self) -> None:
         """
         Add security code for 2-step verification of email and password
         """
         try:
-            security_code_input = self.driver.find_elements(
-                By.XPATH, self.input_text_css_selector
+            security_code_input = self._driver.find_elements(
+                By.XPATH, self._input_text_css_selector
             )
             if security_code_input:
                 security_code = input("Enter your security code: ")
                 security_code_input[0].send_keys(security_code)
 
-            save_button = self.driver.find_element(
-                By.XPATH, self.submit_button_selector
+            save_button = self._driver.find_element(
+                By.XPATH, self._submit_button_selector
             )
             save_button.click()
         except Exception as e:
             logging.error(f"Error occurred while adding security code: {e}")
 
-    def save_browser(self) -> None:
+    def _save_browser(self) -> None:
         """
         Click button to save browser
         """
         try:
-            self.wait.until(
+            self._wait.until(
                 EC.presence_of_element_located(
                     (By.XPATH, "//div[@aria-label='Facebook']")
                 )
             )
-            continue_button = self.driver.find_element(
-                By.XPATH, self.submit_button_selector
+            continue_button = self._driver.find_element(
+                By.XPATH, self._submit_button_selector
             )
             continue_button.click()
         except Exception as e:
             logging.error(f"Error occurred while saving browser: {e}")
 
-    def save_cookies(self) -> None:
+    def _save_cookies(self) -> None:
         """
         Save cookies with log in account to json file
         """
         try:
-            cookies = self.driver.get_cookies()
-            with open(self.config.COOKIES_FILE_PATH, "wb") as file:
+            cookies = self._driver.get_cookies()
+            with open(Config.COOKIES_FILE_PATH, "wb") as file:
                 pickle.dump(cookies, file)
         except Exception as e:
             logging.error(f"Error occurred while saving cookies: {e}")
@@ -134,17 +140,17 @@ class FacebookLogIn:
         """
         Pipeline to log in on an account with 2-step verification
         """
-        self.close_cookie_term()
-        self.facebook_login()
-        self.security_code()
-        self.save_browser()
-        self.save_cookies()
+        self._close_cookie_term()
+        self._facebook_login()
+        self._security_code()
+        self._save_browser()
+        self._save_cookies()
 
     def login_no_verification(self) -> None:
         """
         Pipeline to log in on an account without 2-step verification
         """
-        self.close_cookie_term()
-        self.facebook_login()
-        self.save_browser()
-        self.save_cookies()
+        self._close_cookie_term()
+        self._facebook_login()
+        self._save_browser()
+        self._save_cookies()
