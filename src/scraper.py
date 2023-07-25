@@ -6,7 +6,6 @@ import logging
 import pickle
 from time import sleep
 from typing import List, Dict
-from py2neo import Graph, Node, Relationship
 from config import Config
 import models
 import database
@@ -132,37 +131,6 @@ class FacebookScraper:
         except Exception as e:
             logging.error(f"Error occurred while scrolling: {e}")
 
-    def save_data_to_neo4j(self, user_data) -> None:
-        """
-        Save data to Neo4j graph database
-        """
-        try:
-            graph = Graph(
-                uri=self.config.DATABASE_URL,
-                user=self.config.GRAPH_DATABASE_USERNAME,
-                password=self.config.GRAPH_DATABASE_PASSWORD,
-            )
-            user_node = Node(
-                "User", username=user_data["username"], url=user_data["url"]
-            )
-            graph.create(user_node)
-
-            for data in user_data["friends"]:
-                friend_node = Node("User", username=data["username"], url=data["url"])
-                graph.create(friend_node)
-                relationship = Relationship(user_node, "FRIEND", friend_node)
-                graph.create(relationship)
-
-        except Exception as e:
-            logging.error(f"Error occurred while saving data to Neo4j: {e}")
-
-    def create_queue(self, user_data, db: Session) -> None:
-        for data in user_data["friends"]:
-            if not repository.get_queue_by_url(db, data["url"]):
-                repository.create_queue(db, data["url"])
-            else:
-                continue
-
     def pipeline(self) -> None:
         """
         Pipeline to run the scraper
@@ -171,11 +139,7 @@ class FacebookScraper:
             self.load_cookies()
             self.driver.refresh()
             self.scroll_page()
-            sleep(5)
-            user_data = self.extract_scraped_user_data()
-            user_data["friends"] = self.extract_friends_data()
-            self.save_data_to_neo4j(user_data)
-            self.create_queue(user_data, database.SessionLocal())
+
         except Exception as e:
             logging.error(f"Error occurred while running the pipeline: {e}")
         finally:

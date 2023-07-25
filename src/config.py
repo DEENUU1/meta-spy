@@ -13,11 +13,6 @@ class Config:
     SCROLL_PAUSE_TIME = 1
     MAX_CONSECUTIVE_SCROLLS = 3
 
-    # Graph database
-    DATABASE_URL = os.getenv("DATABASE_URL")
-    GRAPH_DATABASE_USERNAME = os.getenv("GRAPHDATABASE_USERNAME")
-    GRAPH_DATABASE_PASSWORD = os.getenv("GRAPHDATABASE_PASSWORD")
-
     # Facebook login
     FACEBOOK_EMAIL = os.getenv("FACEBOOK_EMAIL")
     FACEBOOK_PASSWORD = os.getenv("FACEBOOK_PASSWORD")
