@@ -43,9 +43,8 @@ class FacebookScraper:
     def __init__(self, user_id) -> None:
         self.config = Config()
         self.user_id = user_id
-        self.base_url = f"https://www.facebook.com/{self.user_id}/friends"
+        self.base_url = f"https://www.facebook.com/{self.user_id}"
         self.driver = webdriver.Chrome(options=chrome_options)
-        self.driver = self.driver
         self.driver.get(self.base_url)
         self.cookie_term_css_selector = "._42ft._4jy0._al65._4jy3._4jy1.selected._51sy"
         self.wait = WebDriverWait(self.driver, 10)
@@ -60,7 +59,10 @@ class FacebookScraper:
             with open(self.config.COOKIES_FILE_PATH, "rb") as file:
                 cookies = pickle.load(file)
                 for cookie in cookies:
-                    self.driver.add_cookie(cookie)
+                    try:
+                        self.driver.add_cookie(cookie)
+                    except Exception as e:
+                        logging.error(f"Error adding cookie: {cookie}, Exception: {e}")
         except Exception as e:
             logging.error(f"Error loading cookies: {e}")
 
@@ -87,6 +89,8 @@ class FacebookScraper:
         extracted_elements = []
 
         try:
+            self.driver.get(f"{self.base_url}/{self.config.FRIEND_LIST_URL}")
+
             elements = self.driver.find_elements(By.CSS_SELECTOR, "a.x1i10hfl span")
             for element in elements:
                 username = element.text.strip()
@@ -100,6 +104,33 @@ class FacebookScraper:
             logging.error(f"Error extracting friends data: {e}")
 
         return extracted_elements
+
+    def extract_work_and_education(self) -> List[Dict[str, str]]:
+        """Scrape for history of employment and school"""
+
+        extracted_work_data = []
+        try:
+            self.driver.get(f"{self.base_url}/{self.config.WORK_AND_EDUCATION_URL}")
+
+            work_entries = self.driver.find_elements(
+                By.CSS_SELECTOR,
+                "div.x9f619.x1n2onr6.x1ja2u2z.x78zum5.x1nhvcw1.x1qjc9v5.xozqiw3.x1q0g3np.xexx8yu.xykv574.xbmpl8g.x4cne27.xifccgj.xs83m0k",
+            )
+            for entry in work_entries:
+                owner_element = entry.find_element(By.XPATH, ".//span[@dir='auto']")
+                owner = owner_element.text.strip()
+
+                if owner.startswith("http") or owner.startswith("www"):
+                    work_entry_data = {"name": owner}
+                else:
+                    work_entry_data = {"name": owner}
+
+                extracted_work_data.append(work_entry_data)
+
+        except Exception as e:
+            logging.error(f"Error extracting work data: {e}")
+
+        return extracted_work_data
 
     def scroll_page(self) -> None:
         """
@@ -131,12 +162,13 @@ class FacebookScraper:
         except Exception as e:
             logging.error(f"Error occurred while scrolling: {e}")
 
-
-def pipeline(scraper: FacebookScraper) -> None:
-    """
-    Pipeline to run the scraper
-    """
-    scraper.load_cookies()
-    scraper.driver.refresh()
-    scraper.scroll_page()
-    scraper.driver.quit()
+    def pipeline(self) -> None:
+        """
+        Pipeline to run the scraper
+        """
+        self.load_cookies()
+        self.driver.refresh()
+        x = self.extract_work_data()
+        print(x)
+        self.scroll_page()
+        self.driver.quit()
