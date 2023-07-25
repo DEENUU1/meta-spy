@@ -9,8 +9,6 @@ from typing import List, Dict
 from config import Config
 import models
 import database
-import repository
-from sqlalchemy.orm import Session
 
 
 # Logging setup
@@ -132,6 +130,34 @@ class FacebookScraper:
 
         return extracted_work_data
 
+    def extract_places(self) -> List[Dict[str, str]]:
+        """Return history of places"""
+        places = []
+        try:
+            self.driver.get(f"{self.base_url}/{self.config.PLACES_URL}")
+
+            div_elements = self.driver.find_elements(
+                By.CSS_SELECTOR, "div.x13faqbe.x78zum5"
+            )
+
+            for div_element in div_elements:
+                name_element = div_element.find_element(
+                    By.CSS_SELECTOR, "a[class*='x1i10hfl']"
+                )
+                name = name_element.text.strip()
+
+                date_element = div_element.find_element(
+                    By.CSS_SELECTOR, "div span[class*='xi81zsa']"
+                )
+                date = date_element.text.strip()
+
+                places.append({"name": name, "date": date})
+
+        except Exception as e:
+            logging.error(f"Error extracting localization data: {e}")
+
+        return places
+
     def scroll_page(self) -> None:
         """
         Scrolls the page to load more friends from a list
@@ -168,7 +194,9 @@ class FacebookScraper:
         """
         self.load_cookies()
         self.driver.refresh()
-        x = self.extract_work_data()
+        y = self.extract_places()
+        print(y)
+        x = self.extract_work_and_education()
         print(x)
         self.scroll_page()
         self.driver.quit()
