@@ -15,7 +15,7 @@
   <h3 align="center">Facebook link tree</h3>
 
   <p align="center">
-    Create a great network of connections between people.
+    Scrape user's profile on facebook.
     <br />
     <br />
     <a href="https://github.com/DEENUU1/OLX-Analytics/issues">Report Bug</a>
@@ -53,15 +53,12 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-This project allows to enter some user ID on facebook, then the application scrape all friends for this specified person.
-Application save name and url to the profile to Graph database and save URLs to SQL database.
-SQL database works as a Queue of the next people to scrape.
-The script can run indefinitely and create an ever-growing network of connections between people.
+This project allows to log in using selenium to facebook account (even if you have 2-step verification).
+And scrape user based on a given url address.
 
 ### Built With
 - Python
 - Typer
-- Neo4j (graph database)
 - Selenium
 - Sqlite
 
@@ -69,8 +66,7 @@ The script can run indefinitely and create an ever-growing network of connection
 - Log in with 2-step verification
 - Log in without 2-step verification
 - Save cookies to save log in session
-- Scrape a list of friends, save to graph database and create relations between people
-
+- Scrape a list of friends
 
 <img src="assets/app1.png" alt="home">
 
