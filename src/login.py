@@ -6,6 +6,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import logging
 from config import Config
+from scraper import Scraper
+
 
 # Logging setup
 logging.basicConfig(
@@ -15,12 +17,13 @@ logging.basicConfig(
 )
 
 
-class FacebookLogIn:
+class FacebookLogIn(Scraper):
     """
     Log in to Facebook using email and password
     """
 
     def __init__(self) -> None:
+        super().__init__()
         self._base_url = "https://www.facebook.com/"
         self._driver = webdriver.Chrome(options=self._chrome_driver_configuration())
         self._driver = self._driver
@@ -30,24 +33,6 @@ class FacebookLogIn:
         self._password_css_selector = "//input[@placeholder='Hasło']"
         self._submit_button_selector = "//button[@type='submit']"
         self._wait = WebDriverWait(self._driver, 10)
-
-    @staticmethod
-    def _chrome_driver_configuration() -> Options:
-        chrome_options = Options()
-        chrome_options.add_argument("--disable-notifications")
-        chrome_options.add_argument("--disable-extensions")
-        chrome_options.add_argument("--disable-popup-blocking")
-        chrome_options.add_argument("--disable-default-apps")
-        chrome_options.add_argument("--disable-infobars")
-        chrome_options.add_argument("--disable-web-security")
-        chrome_options.add_argument(
-            "--disable-features=IsolateOrigins,site-per-process"
-        )
-        chrome_options.add_argument(
-            "--enable-features=NetworkService,NetworkServiceInProcess"
-        )
-        chrome_options.add_argument("--profile-directory=Default")
-        return chrome_options
 
     def _close_cookie_term(self) -> None:
         """
