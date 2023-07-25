@@ -131,16 +131,12 @@ class FacebookScraper:
         except Exception as e:
             logging.error(f"Error occurred while scrolling: {e}")
 
-    def pipeline(self) -> None:
-        """
-        Pipeline to run the scraper
-        """
-        try:
-            self.load_cookies()
-            self.driver.refresh()
-            self.scroll_page()
 
-        except Exception as e:
-            logging.error(f"Error occurred while running the pipeline: {e}")
-        finally:
-            self.driver.quit()
+def pipeline(scraper: FacebookScraper) -> None:
+    """
+    Pipeline to run the scraper
+    """
+    scraper.load_cookies()
+    scraper.driver.refresh()
+    scraper.scroll_page()
+    scraper.driver.quit()

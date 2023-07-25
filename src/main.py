@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
-from login import FacebookLogIn
-from scraper import FacebookScraper
+from login import FacebookLogIn, login_2_step, login_no_verification
+from scraper import FacebookScraper, pipeline
 from typing import Optional
 import typer
 
@@ -16,7 +16,7 @@ def login_2_step():
     """
     typer.echo("Logging in")
     facebook = FacebookLogIn()
-    facebook.login_2_step()
+    login_2_step(facebook)
 
 
 @app.command()
@@ -26,15 +26,15 @@ def login():
     """
     typer.echo("Logging in")
     facebook = FacebookLogIn()
-    facebook.login_no_verification()
+    login_no_verification(facebook)
 
 
 @app.command()
 def scrape(name: Optional[str] = None):
     if name:
         typer.echo(f"Start scraping friend list for {name}")
-        facebook = FacebookScraper(name)
-        facebook.pipeline()
+        scraper = FacebookScraper(name)
+        pipeline(scraper)
     typer.echo("Invalid name")
 
 
