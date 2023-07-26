@@ -23,7 +23,7 @@ models.Base.metadata.create_all(database.engine)
 
 class AccountScraper(Scraper):
     """
-    Scrape user's personal informations
+    Scrape user's personal information
     """
 
     def __init__(self, user_id) -> None:
