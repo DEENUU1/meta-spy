@@ -1,14 +1,22 @@
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
 import logging
 import pickle
 from time import sleep
 from typing import List, Dict
+import os
+
 from config import Config
-import models
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+
 import database
+import models
 from scraper import Scraper
+import requests
+from PIL import Image
+from io import BytesIO
+import random
+import string
 
 
 # Logging setup
@@ -196,6 +204,47 @@ class FacebookImageScraper(Scraper):
 
         return extracted_image_urls
 
+    def save_images(self, image_urls: List[str]) -> None:
+        """
+        Download and save images from url
+        """
+        try:
+            for url in image_urls:
+                response = requests.get(url)
+                response.raise_for_status()
+
+                image_content = response.content
+
+                try:
+                    image = Image.open(BytesIO(image_content))
+                except Exception as e:
+                    logging.error(f"Skipping image: {url}, Exception: {e}")
+                    continue
+
+                image_directory = os.path.dirname(Config.IMAGE_PATH)
+                if not os.path.exists(image_directory):
+                    os.makedirs(image_directory)
+
+                user_image_directory = os.path.dirname(
+                    f"{Config.IMAGE_PATH}/{self._user_id}/"
+                )
+                if not os.path.exists(user_image_directory):
+                    os.makedirs(user_image_directory)
+
+                image_filename = "".join(
+                    random.choice(string.ascii_letters) for _ in range(10)
+                )
+                image_path = os.path.join(user_image_directory, f"{image_filename}.jpg")
+                with open(image_path, "wb") as file:
+                    file.write(image_content)
+
+        except requests.exceptions.HTTPError as http_err:
+            logging.error(f"Request error: {http_err}")
+        except requests.exceptions.RequestException as req_err:
+            logging.error(f"Request error: {req_err}")
+        except Exception as e:
+            logging.error(f"An error occurred: {e}")
+
     def pipeline(self) -> None:
         """
         Pipeline to run the scraper
@@ -205,6 +254,7 @@ class FacebookImageScraper(Scraper):
         self.scroll_page()
         x = self.extract_image_urls()
         print(x)
+        self.save_images(x)
         self._driver.quit()
 
 
