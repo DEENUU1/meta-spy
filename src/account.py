@@ -118,6 +118,74 @@ class AccountScraper(Scraper):
         self._driver.quit()
 
 
+class FacebookImageScraper(Scraper):
+    """
+    Scrape user's pictures
+    """
+
+    def __init__(self, user_id) -> None:
+        super().__init__()
+        self._user_id = user_id
+        self._base_url = f"https://www.facebook.com/{self._user_id}/photos"
+        self._driver = webdriver.Chrome(options=self._chrome_driver_configuration())
+        self._driver.get(self._base_url)
+        self._wait = WebDriverWait(self._driver, 10)
+
+    def _load_cookies(self) -> None:
+        """
+        Load cookies with a log in session
+        """
+        try:
+            self._driver.delete_all_cookies()
+            with open(Config.COOKIES_FILE_PATH, "rb") as file:
+                cookies = pickle.load(file)
+                for cookie in cookies:
+                    try:
+                        self._driver.add_cookie(cookie)
+                    except Exception as e:
+                        logging.error(f"Error adding cookie: {cookie}, Exception: {e}")
+        except Exception as e:
+            logging.error(f"Error loading cookies: {e}")
+
+    def scroll_page(self) -> None:
+        """
+        Scrolls the page to load more friends from a list
+        """
+        try:
+            last_height = self._driver.execute_script(
+                "return document.body.scrollHeight"
+            )
+            consecutive_scrolls = 0
+
+            while consecutive_scrolls < Config.MAX_CONSECUTIVE_SCROLLS:
+                self._driver.execute_script(
+                    "window.scrollTo(0, document.body.scrollHeight);"
+                )
+
+                sleep(Config.SCROLL_PAUSE_TIME)
+                new_height = self._driver.execute_script(
+                    "return document.body.scrollHeight"
+                )
+
+                if new_height == last_height:
+                    consecutive_scrolls += 1
+                else:
+                    consecutive_scrolls = 0
+
+                last_height = new_height
+        except Exception as e:
+            logging.error(f"Error occurred while scrolling: {e}")
+
+    def pipeline(self) -> None:
+        """
+        Pipeline to run the scraper
+        """
+        self._load_cookies()
+        self._driver.refresh()
+        self.scroll_page()
+        self._driver.quit()
+
+
 class FriendListScraper(Scraper):
     """
     Scrape user's friends list
