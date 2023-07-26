@@ -1,8 +1,7 @@
 from selenium.webdriver.chrome.options import Options
-from abc import ABC, abstractmethod
 
 
-class Scraper(ABC):
+class Scraper:
     """
     Base class for web scrapers.
 
@@ -18,15 +17,6 @@ class Scraper(ABC):
             Returns:
                 Options: A configured ChromeOptions instance to be used with Chrome WebDriver.
     """
-
-    @abstractmethod
-    def _load_cookies(self) -> None:
-        """
-        Abstract method to be implemented by subclasses.
-
-        Load cookies with a log in session
-        """
-        pass
 
     @staticmethod
     def _chrome_driver_configuration() -> Options:
