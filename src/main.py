@@ -1,90 +1,24 @@
 from dotenv import load_dotenv
-from login import FacebookLogIn
-from account import AccountScraper, FriendListScraper, FacebookImageScraper
-from typing import Optional
-import typer
-from home import display_start_menu
-from rich import print
-from version import return_version_info
-
+from commands import (
+    app,
+    home,
+    version,
+    login,
+    login_2_step,
+    scrape,
+    scrape_friend_list,
+    scrape_images,
+)
 
 load_dotenv()
-app = typer.Typer()
 
-
-@app.command()
-def home():
-    display_start_menu()
-
-
-@app.command()
-def version():
-    return_version_info()
-
-
-@app.command()
-def login_2_step():
-    """
-    Log in to facebook account with 2-step authentication
-    """
-    facebook = FacebookLogIn()
-    facebook.login_2_step_pipeline()
-
-    if facebook.is_pipeline_successful:
-        print("✅Logging successful✅")
-    else:
-        print("❌Logging failed❌")
-
-
-@app.command()
-def login():
-    """
-    Log in to facebook account without 2-step authentication
-    """
-    facebook = FacebookLogIn()
-    facebook.login_no_verification_pipeline()
-
-    if facebook.is_pipeline_successful:
-        print("✅Logging successful✅")
-    else:
-        print("❌Logging failed❌")
-
-
-@app.command()
-def scrape(name: Optional[str] = None):
-    print(f"Start scraping friend list for {name}")
-    scraper = AccountScraper(name)
-    scraper.pipeline()
-
-    if scraper.is_pipeline_successful:
-        print("✅Scraping successful✅")
-    else:
-        print("❌Scraping failed❌")
-
-
-@app.command()
-def scrape_friend_list(name: Optional[str] = None):
-    typer.echo(f"Start scraping friend list for {name}")
-    scraper = FriendListScraper(name)
-    scraper.pipeline()
-
-    if scraper.is_pipeline_successful:
-        print("✅Scraping successful✅")
-    else:
-        print("❌Scraping failed❌")
-
-
-@app.command()
-def scrape_images(name: Optional[str] = None):
-    print(f"Start scraping images for {name}")
-    scraper = FacebookImageScraper(name)
-    scraper.pipeline()
-
-    if scraper.is_pipeline_successful:
-        print("✅Scraping successful✅")
-    else:
-        print("❌Scraping failed❌")
-
+app.command()(home)
+app.command()(version)
+app.command()(login_2_step)
+app.command()(login)
+app.command()(scrape)
+app.command()(scrape_friend_list)
+app.command()(scrape_images)
 
 if __name__ == "__main__":
     app()
