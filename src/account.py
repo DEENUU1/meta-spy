@@ -204,6 +204,26 @@ class FacebookImageScraper(Scraper):
 
         return extracted_image_urls
 
+    @staticmethod
+    def generate_image_file_name() -> str:
+        """
+        Generate a random image file name
+        """
+        random_name = "".join(random.choice(string.ascii_letters) for _ in range(10))
+        return f"{random_name}.jpg"
+
+    @staticmethod
+    def check_image_type(image_content) -> bool:
+        """
+        Check if file is an image
+        """
+        try:
+            _ = Image.open(BytesIO(image_content))
+            return True
+        except Exception as e:
+            logging.error(f"Skipping image, Exception: {e}")
+            return False
+
     def save_images(self, image_urls: List[str]) -> None:
         """
         Download and save images from url
@@ -215,10 +235,8 @@ class FacebookImageScraper(Scraper):
 
                 image_content = response.content
 
-                try:
-                    image = Image.open(BytesIO(image_content))
-                except Exception as e:
-                    logging.error(f"Skipping image: {url}, Exception: {e}")
+                image_type = self.check_image_type(image_content)
+                if not image_type:
                     continue
 
                 image_directory = os.path.dirname(Config.IMAGE_PATH)
@@ -231,10 +249,8 @@ class FacebookImageScraper(Scraper):
                 if not os.path.exists(user_image_directory):
                     os.makedirs(user_image_directory)
 
-                image_filename = "".join(
-                    random.choice(string.ascii_letters) for _ in range(10)
-                )
-                image_path = os.path.join(user_image_directory, f"{image_filename}.jpg")
+                image_filename = self.generate_image_file_name()
+                image_path = os.path.join(user_image_directory, image_filename)
                 with open(image_path, "wb") as file:
                     file.write(image_content)
 
@@ -253,7 +269,6 @@ class FacebookImageScraper(Scraper):
         self._driver.refresh()
         self.scroll_page()
         x = self.extract_image_urls()
-        print(x)
         self.save_images(x)
         self._driver.quit()
 
