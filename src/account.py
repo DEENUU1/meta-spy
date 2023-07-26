@@ -123,17 +123,27 @@ class AccountScraper(Scraper):
 
         return places
 
+    @property
+    def is_pipeline_successful(self) -> bool:
+        return self.success
+
     def pipeline(self) -> None:
         """
         Pipeline to run the scraper
         """
-        self._load_cookies()
-        self._driver.refresh()
-        y = self.extract_places()
-        print(y)
-        x = self.extract_work_and_education()
-        print(x)
-        self._driver.quit()
+        try:
+            self._load_cookies()
+            self._driver.refresh()
+            y = self.extract_places()
+            print(y)
+            x = self.extract_work_and_education()
+            print(x)
+            self._driver.quit()
+
+            self.success = True
+
+        except Exception as e:
+            logging.error(f"Error running pipeline: {e}")
 
 
 class FacebookImageScraper(Scraper):
@@ -148,6 +158,7 @@ class FacebookImageScraper(Scraper):
         self._driver = webdriver.Chrome(options=self._chrome_driver_configuration())
         self._driver.get(self._base_url)
         self._wait = WebDriverWait(self._driver, 10)
+        self.success = False
 
     def _load_cookies(self) -> None:
         """
@@ -292,16 +303,25 @@ class FacebookImageScraper(Scraper):
             logging.error(f"An error occurred: {e}")
             print("❗Error while downloading images❗")
 
+    @property
+    def is_pipeline_successful(self) -> bool:
+        return self.success
+
     def pipeline(self) -> None:
         """
         Pipeline to run the scraper
         """
-        self._load_cookies()
-        self._driver.refresh()
-        self.scroll_page()
-        x = self.extract_image_urls()
-        self.save_images(x)
-        self._driver.quit()
+        try:
+            self._load_cookies()
+            self._driver.refresh()
+            self.scroll_page()
+            x = self.extract_image_urls()
+            self.save_images(x)
+            self._driver.quit()
+
+            self.success = True
+        except Exception as e:
+            logging.error(f"An error occurred: {e}")
 
 
 class FriendListScraper(Scraper):
@@ -316,6 +336,7 @@ class FriendListScraper(Scraper):
         self._driver = webdriver.Chrome(options=self._chrome_driver_configuration())
         self._driver.get(self._base_url)
         self._wait = WebDriverWait(self._driver, 10)
+        self.success = False
 
     def _load_cookies(self) -> None:
         """
@@ -391,11 +412,21 @@ class FriendListScraper(Scraper):
             logging.error(f"Error occurred while scrolling: {e}")
             print("❗Page scrolling failed❗")
 
+    @property
+    def is_pipeline_successful(self) -> bool:
+        return self.success
+
     def pipeline(self) -> None:
         """
         Pipeline to run the scraper
         """
-        self._load_cookies()
-        self._driver.refresh()
-        self.scroll_page()
-        self._driver.quit()
+        try:
+            self._load_cookies()
+            self._driver.refresh()
+            self.scroll_page()
+            self._driver.quit()
+
+            self.success = True
+
+        except Exception as e:
+            logging.error(f"An error occurred: {e}")

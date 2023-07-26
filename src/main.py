@@ -52,32 +52,38 @@ def login():
 
 @app.command()
 def scrape(name: Optional[str] = None):
-    try:
-        print(f"Start scraping friend list for {name}")
-        scraper = AccountScraper(name)
-        scraper.pipeline()
-    except Exception as e:
-        print(e)
+    print(f"Start scraping friend list for {name}")
+    scraper = AccountScraper(name)
+    scraper.pipeline()
+
+    if scraper.is_pipeline_successful:
+        print("✅Scraping successful✅")
+    else:
+        print("❌Scraping failed❌")
 
 
 @app.command()
 def scrape_friend_list(name: Optional[str] = None):
-    try:
-        typer.echo(f"Start scraping friend list for {name}")
-        scraper = FriendListScraper(name)
-        scraper.pipeline()
-    except Exception as e:
-        print(e)
+    typer.echo(f"Start scraping friend list for {name}")
+    scraper = FriendListScraper(name)
+    scraper.pipeline()
+
+    if scraper.is_pipeline_successful:
+        print("✅Scraping successful✅")
+    else:
+        print("❌Scraping failed❌")
 
 
 @app.command()
 def scrape_images(name: Optional[str] = None):
-    try:
-        typer.echo(f"Start scraping images for {name}")
-        scraper = FacebookImageScraper(name)
-        scraper.pipeline()
-    except Exception as e:
-        print(e)
+    print(f"Start scraping images for {name}")
+    scraper = FacebookImageScraper(name)
+    scraper.pipeline()
+
+    if scraper.is_pipeline_successful:
+        print("✅Scraping successful✅")
+    else:
+        print("❌Scraping failed❌")
 
 
 if __name__ == "__main__":
