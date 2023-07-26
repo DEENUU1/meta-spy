@@ -27,10 +27,13 @@ def login_2_step():
     """
     Log in to facebook account with 2-step authentication
     """
-    print("Logging in")
     facebook = FacebookLogIn()
-    facebook.login_2_step()
-    # TODO add method to check if login was successful and return bool value
+    facebook.login_2_step_pipeline()
+
+    if facebook.is_pipeline_successful:
+        print("✅Logging successful✅")
+    else:
+        print("❌Logging failed❌")
 
 
 @app.command()
@@ -38,9 +41,13 @@ def login():
     """
     Log in to facebook account without 2-step authentication
     """
-    print("Logging in")
     facebook = FacebookLogIn()
-    facebook.login_no_verification()
+    facebook.login_no_verification_pipeline()
+
+    if facebook.is_pipeline_successful:
+        print("✅Logging successful✅")
+    else:
+        print("❌Logging failed❌")
 
 
 @app.command()
