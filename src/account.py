@@ -176,6 +176,26 @@ class FacebookImageScraper(Scraper):
         except Exception as e:
             logging.error(f"Error occurred while scrolling: {e}")
 
+    def extract_image_urls(self) -> List[str]:
+        """
+        Return a list of all the image urls
+        """
+        extracted_image_urls = []
+        try:
+            img_elements = self._driver.find_elements(
+                By.CSS_SELECTOR,
+                "img.xzg4506.xycxndf.xua58t2.x4xrfw5.x1lq5wgf.xgqcy7u.x30kzoy.x9jhf4c.x9f619.x5yr21d.xl1xv1r.xh8yej3",
+            )
+            for img_element in img_elements:
+                src_attribute = img_element.get_attribute("src")
+                if src_attribute:
+                    extracted_image_urls.append(src_attribute)
+
+        except Exception as e:
+            logging.error(f"Error extracting image URLs: {e}")
+
+        return extracted_image_urls
+
     def pipeline(self) -> None:
         """
         Pipeline to run the scraper
@@ -183,6 +203,8 @@ class FacebookImageScraper(Scraper):
         self._load_cookies()
         self._driver.refresh()
         self.scroll_page()
+        x = self.extract_image_urls()
+        print(x)
         self._driver.quit()
 
 
