@@ -1,12 +1,13 @@
 import pickle
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import logging
 from config import Config
 from scraper import Scraper
+from rich.prompt import Prompt
+from rich import print
 
 
 # Logging setup
@@ -33,11 +34,13 @@ class FacebookLogIn(Scraper):
         self._password_css_selector = "//input[@placeholder='Hasło']"
         self._submit_button_selector = "//button[@type='submit']"
         self._wait = WebDriverWait(self._driver, 10)
+        self.success = False
 
     def _close_cookie_term(self) -> None:
         """
         Close modal with cookie information
         """
+        print("🍪Closing cookie modal🍪")
         try:
             button = self._driver.find_element(
                 By.CSS_SELECTOR, self._cookie_term_css_selector
@@ -50,6 +53,7 @@ class FacebookLogIn(Scraper):
         """
         Log in to Facebook using email and password
         """
+        print("✏️Entering email and password✏️")
         try:
             user_name = self._wait.until(
                 EC.presence_of_element_located(
@@ -74,7 +78,7 @@ class FacebookLogIn(Scraper):
         except Exception as e:
             logging.error(f"Error occurred while logging in: {e}")
 
-    def _security_code(self) -> None:
+    def _security_code(self, security_code) -> None:
         """
         Add security code for 2-step verification of email and password
         """
@@ -83,7 +87,6 @@ class FacebookLogIn(Scraper):
                 By.XPATH, self._input_text_css_selector
             )
             if security_code_input:
-                security_code = input("Enter your security code: ")
                 security_code_input[0].send_keys(security_code)
 
             save_button = self._driver.find_element(
@@ -97,6 +100,7 @@ class FacebookLogIn(Scraper):
         """
         Click button to save browser
         """
+        print("📝Saving browser📝")
         try:
             self._wait.until(
                 EC.presence_of_element_located(
@@ -114,6 +118,7 @@ class FacebookLogIn(Scraper):
         """
         Save cookies with log in account to json file
         """
+        print("📝Saving cookies📝")
         try:
             cookies = self._driver.get_cookies()
             with open(Config.COOKIES_FILE_PATH, "wb") as file:
@@ -121,21 +126,41 @@ class FacebookLogIn(Scraper):
         except Exception as e:
             logging.error(f"Error occurred while saving cookies: {e}")
 
-    def login_2_step(self) -> None:
+    @property
+    def is_pipeline_successful(self) -> bool:
+        """
+        Check if pipeline was successful
+        """
+        return self.success
+
+    def login_2_step_pipeline(self) -> None:
         """
         Pipeline to log in on an account with 2-step verification
         """
-        self._close_cookie_term()
-        self._facebook_login()
-        self._security_code()
-        self._save_browser()
-        self._save_cookies()
+        try:
+            self._close_cookie_term()
+            self._facebook_login()
+            security_code = Prompt.ask("🔒Security code")
+            self._security_code(security_code)
+            self._save_browser()
+            self._save_cookies()
 
-    def login_no_verification(self) -> None:
+            self.success = True
+
+        except Exception as e:
+            logging.error(f"Error occurred while logging in: {e}")
+
+    def login_no_verification_pipeline(self) -> None:
         """
         Pipeline to log in on an account without 2-step verification
         """
-        self._close_cookie_term()
-        self._facebook_login()
-        self._save_browser()
-        self._save_cookies()
+        try:
+            self._close_cookie_term()
+            self._facebook_login()
+            self._save_browser()
+            self._save_cookies()
+
+            self.success = True
+
+        except Exception as e:
+            logging.error(f"Error occurred while logging in: {e}")
