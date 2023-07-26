@@ -8,7 +8,7 @@ from config import Config
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
-
+from rich.progress import Progress
 import database
 import models
 from scraper import Scraper
@@ -196,6 +196,7 @@ class FacebookImageScraper(Scraper):
                     consecutive_scrolls = 0
 
                 last_height = new_height
+
         except Exception as e:
             logging.error(f"Error occurred while scrolling: {e}")
             print("❗Page scrolling failed❗")
@@ -248,30 +249,38 @@ class FacebookImageScraper(Scraper):
         """
         print("📝Start downloading images📝")
         try:
-            for url in image_urls:
-                response = requests.get(url)
-                response.raise_for_status()
+            with Progress() as progress:
+                task = progress.add_task("[cyan]Downloading...", total=len(image_urls))
+                for index, url in enumerate(image_urls, 1):
+                    response = requests.get(url)
+                    response.raise_for_status()
 
-                image_content = response.content
+                    image_content = response.content
 
-                image_type = self.check_image_type(image_content)
-                if not image_type:
-                    continue
+                    image_type = self.check_image_type(image_content)
+                    if not image_type:
+                        continue
 
-                image_directory = os.path.dirname(Config.IMAGE_PATH)
-                if not os.path.exists(image_directory):
-                    os.makedirs(image_directory)
+                    image_directory = os.path.dirname(Config.IMAGE_PATH)
+                    if not os.path.exists(image_directory):
+                        os.makedirs(image_directory)
 
-                user_image_directory = os.path.dirname(
-                    f"{Config.IMAGE_PATH}/{self._user_id}/"
-                )
-                if not os.path.exists(user_image_directory):
-                    os.makedirs(user_image_directory)
+                    user_image_directory = os.path.dirname(
+                        f"{Config.IMAGE_PATH}/{self._user_id}/"
+                    )
+                    if not os.path.exists(user_image_directory):
+                        os.makedirs(user_image_directory)
 
-                image_filename = self.generate_image_file_name()
-                image_path = os.path.join(user_image_directory, image_filename)
-                with open(image_path, "wb") as file:
-                    file.write(image_content)
+                    image_filename = self.generate_image_file_name()
+                    image_path = os.path.join(user_image_directory, image_filename)
+                    with open(image_path, "wb") as file:
+                        file.write(image_content)
+
+                    progress.update(
+                        task,
+                        advance=1,
+                        description=f"[cyan]Downloading... ({index}/{len(image_urls)})",
+                    )
 
         except requests.exceptions.HTTPError as http_err:
             logging.error(f"Request error: {http_err}")
