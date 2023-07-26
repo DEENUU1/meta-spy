@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 from login import FacebookLogIn
-from account import FacebookScraper
+from account import AccountScraper, FriendListScraper
 from typing import Optional
 import typer
 
@@ -33,7 +33,16 @@ def login():
 def scrape(name: Optional[str] = None):
     if name:
         typer.echo(f"Start scraping friend list for {name}")
-        scraper = FacebookScraper(name)
+        scraper = AccountScraper(name)
+        scraper.pipeline()
+    typer.echo("Invalid name")
+
+
+@app.command()
+def scrape_friend_list(name: Optional[str] = None):
+    if name:
+        typer.echo(f"Start scraping friend list for {name}")
+        scraper = FriendListScraper(name)
         scraper.pipeline()
     typer.echo("Invalid name")
 

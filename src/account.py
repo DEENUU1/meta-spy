@@ -21,9 +21,9 @@ logging.basicConfig(
 models.Base.metadata.create_all(database.engine)
 
 
-class FacebookScraper(Scraper):
+class AccountScraper(Scraper):
     """
-    Scrape user's friends and their data
+    Scrape user's personal informations
     """
 
     def __init__(self, user_id) -> None:
@@ -49,45 +49,6 @@ class FacebookScraper(Scraper):
                         logging.error(f"Error adding cookie: {cookie}, Exception: {e}")
         except Exception as e:
             logging.error(f"Error loading cookies: {e}")
-
-    def extract_scraped_user_data(self) -> Dict:
-        """
-        Extract scraped user data and return it as a dictionary
-        """
-        extracted_data = {}
-        try:
-            username_element = self._driver.find_element(
-                By.CSS_SELECTOR, "h1.x1heor9g.x1qlqyl8.x1pd3egz.x1a2a7pz"
-            )
-            username = username_element.text.strip()
-            url = f"https://www.facebook.com/{self._user_id}"
-            extracted_data = {"username": username, "url": url}
-        except Exception as e:
-            logging.error(f"Error extracting scraped user data: {e}")
-        return extracted_data
-
-    def extract_friends_data(self) -> List[Dict[str, str]]:
-        """
-        Return a list of dictionaries with the usernames and the urls to the profile for every person in friends list
-        """
-        extracted_elements = []
-
-        try:
-            self._driver.get(f"{self._base_url}/{Config.FRIEND_LIST_URL}")
-
-            elements = self._driver.find_elements(By.CSS_SELECTOR, "a.x1i10hfl span")
-            for element in elements:
-                username = element.text.strip()
-                url = element.find_element(By.XPATH, "..").get_attribute("href")
-                if username == "":
-                    continue
-                element_data = {"username": username, "url": url}
-                extracted_elements.append(element_data)
-
-        except Exception as e:
-            logging.error(f"Error extracting friends data: {e}")
-
-        return extracted_elements
 
     def extract_work_and_education(self) -> List[Dict[str, str]]:
         """Scrape for history of employment and school"""
@@ -144,6 +105,69 @@ class FacebookScraper(Scraper):
 
         return places
 
+    def pipeline(self) -> None:
+        """
+        Pipeline to run the scraper
+        """
+        self._load_cookies()
+        self._driver.refresh()
+        y = self.extract_places()
+        print(y)
+        x = self.extract_work_and_education()
+        print(x)
+        self._driver.quit()
+
+
+class FriendListScraper(Scraper):
+    """
+    Scrape user's friends list
+    """
+
+    def __init__(self, user_id) -> None:
+        super().__init__()
+        self._user_id = user_id
+        self._base_url = f"https://www.facebook.com/{self._user_id}/friends"
+        self._driver = webdriver.Chrome(options=self._chrome_driver_configuration())
+        self._driver.get(self._base_url)
+        self._wait = WebDriverWait(self._driver, 10)
+
+    def _load_cookies(self) -> None:
+        """
+        Load cookies with a log in session
+        """
+        try:
+            self._driver.delete_all_cookies()
+            with open(Config.COOKIES_FILE_PATH, "rb") as file:
+                cookies = pickle.load(file)
+                for cookie in cookies:
+                    try:
+                        self._driver.add_cookie(cookie)
+                    except Exception as e:
+                        logging.error(f"Error adding cookie: {cookie}, Exception: {e}")
+        except Exception as e:
+            logging.error(f"Error loading cookies: {e}")
+
+    def extract_friends_data(self) -> List[Dict[str, str]]:
+        """
+        Return a list of dictionaries with the usernames and the urls to the profile for every person in friends list
+        """
+        extracted_elements = []
+
+        try:
+            elements = self._driver.find_elements(By.CSS_SELECTOR, "a.x1i10hfl span")
+            for element in elements:
+                username = element.text.strip()
+                url = element.find_element(By.XPATH, "..").get_attribute("href")
+                if username == "":
+                    continue
+                element_data = {"username": username, "url": url}
+                extracted_elements.append(element_data)
+
+        except Exception as e:
+            logging.error(f"Error extracting friends data: {e}")
+
+        return extracted_elements
+
     def scroll_page(self) -> None:
         """
         Scrolls the page to load more friends from a list
@@ -180,9 +204,5 @@ class FacebookScraper(Scraper):
         """
         self._load_cookies()
         self._driver.refresh()
-        y = self.extract_places()
-        print(y)
-        x = self.extract_work_and_education()
-        print(x)
         self.scroll_page()
         self._driver.quit()
