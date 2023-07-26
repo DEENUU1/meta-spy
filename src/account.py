@@ -17,6 +17,7 @@ from PIL import Image
 from io import BytesIO
 import random
 import string
+from rich import print
 
 
 # Logging setup
@@ -27,32 +28,6 @@ logging.basicConfig(
 )
 
 models.Base.metadata.create_all(database.engine)
-
-
-class FacebookBaseScraper(Scraper):
-    def __init__(self, user_id) -> None:
-        super().__init__()
-        self._user_id = user_id
-        self._base_url = f"https://www.facebook.com/{self._user_id}"
-        self._driver = webdriver.Chrome(options=self._chrome_driver_configuration())
-        self._driver.get(self._base_url)
-        self._wait = WebDriverWait(self._driver, 10)
-
-    def _load_cookies(self) -> None:
-        """
-        Load cookies with a log in session
-        """
-        try:
-            self._driver.delete_all_cookies()
-            with open(Config.COOKIES_FILE_PATH, "rb") as file:
-                cookies = pickle.load(file)
-                for cookie in cookies:
-                    try:
-                        self._driver.add_cookie(cookie)
-                    except Exception as e:
-                        logging.error(f"Error adding cookie: {cookie}, Exception: {e}")
-        except Exception as e:
-            logging.error(f"Error loading cookies: {e}")
 
 
 class AccountScraper(Scraper):
@@ -67,11 +42,13 @@ class AccountScraper(Scraper):
         self._driver = webdriver.Chrome(options=self._chrome_driver_configuration())
         self._driver.get(self._base_url)
         self._wait = WebDriverWait(self._driver, 10)
+        self.success = False
 
     def _load_cookies(self) -> None:
         """
         Load cookies with a log in session
         """
+        print("🍪Loading cookies🍪")
         try:
             self._driver.delete_all_cookies()
             with open(Config.COOKIES_FILE_PATH, "rb") as file:
@@ -81,13 +58,17 @@ class AccountScraper(Scraper):
                         self._driver.add_cookie(cookie)
                     except Exception as e:
                         logging.error(f"Error adding cookie: {cookie}, Exception: {e}")
+                        print("❗Loading cookies failed❗")
+
         except Exception as e:
             logging.error(f"Error loading cookies: {e}")
+            print("❗Loading cookies failed❗")
 
     def extract_work_and_education(self) -> List[Dict[str, str]]:
         """Scrape for history of employment and school"""
 
         extracted_work_data = []
+        print("🏫Extracting work and education🏫")
         try:
             self._driver.get(f"{self._base_url}/{Config.WORK_AND_EDUCATION_URL}")
 
@@ -108,12 +89,14 @@ class AccountScraper(Scraper):
 
         except Exception as e:
             logging.error(f"Error extracting work data: {e}")
+            print("❗Extracting work and education failed❗")
 
         return extracted_work_data
 
     def extract_places(self) -> List[Dict[str, str]]:
         """Return history of places"""
         places = []
+        print("🖼️Extracting places🖼️")
         try:
             self._driver.get(f"{self._base_url}/{Config.PLACES_URL}")
 
@@ -136,6 +119,7 @@ class AccountScraper(Scraper):
 
         except Exception as e:
             logging.error(f"Error extracting localization data: {e}")
+            print("❗Extracting places failed❗")
 
         return places
 
@@ -169,6 +153,7 @@ class FacebookImageScraper(Scraper):
         """
         Load cookies with a log in session
         """
+        print("🍪Loading cookies🍪")
         try:
             self._driver.delete_all_cookies()
             with open(Config.COOKIES_FILE_PATH, "rb") as file:
@@ -178,13 +163,17 @@ class FacebookImageScraper(Scraper):
                         self._driver.add_cookie(cookie)
                     except Exception as e:
                         logging.error(f"Error adding cookie: {cookie}, Exception: {e}")
+                        print("❗Loading cookies failed❗")
+
         except Exception as e:
             logging.error(f"Error loading cookies: {e}")
+            print("❗Loading cookies failed❗")
 
     def scroll_page(self) -> None:
         """
         Scrolls the page to load more friends from a list
         """
+        print("🏎️Start scrolling page🏎️")
         try:
             last_height = self._driver.execute_script(
                 "return document.body.scrollHeight"
@@ -209,12 +198,14 @@ class FacebookImageScraper(Scraper):
                 last_height = new_height
         except Exception as e:
             logging.error(f"Error occurred while scrolling: {e}")
+            print("❗Page scrolling failed❗")
 
     def extract_image_urls(self) -> List[str]:
         """
         Return a list of all the image urls
         """
         extracted_image_urls = []
+        print("🖼️Start extracting image URLs🖼️")
         try:
             img_elements = self._driver.find_elements(
                 By.CSS_SELECTOR,
@@ -227,6 +218,7 @@ class FacebookImageScraper(Scraper):
 
         except Exception as e:
             logging.error(f"Error extracting image URLs: {e}")
+            print("❗Extracting image URLs failed❗")
 
         return extracted_image_urls
 
@@ -254,6 +246,7 @@ class FacebookImageScraper(Scraper):
         """
         Download and save images from url
         """
+        print("📝Start downloading images📝")
         try:
             for url in image_urls:
                 response = requests.get(url)
@@ -282,10 +275,13 @@ class FacebookImageScraper(Scraper):
 
         except requests.exceptions.HTTPError as http_err:
             logging.error(f"Request error: {http_err}")
+            print("❗Request error while downloading images❗")
         except requests.exceptions.RequestException as req_err:
             logging.error(f"Request error: {req_err}")
+            print("❗Request error while downloading images❗")
         except Exception as e:
             logging.error(f"An error occurred: {e}")
+            print("❗Error while downloading images❗")
 
     def pipeline(self) -> None:
         """
@@ -316,6 +312,7 @@ class FriendListScraper(Scraper):
         """
         Load cookies with a log in session
         """
+        print("🍪Loading cookies🍪")
         try:
             self._driver.delete_all_cookies()
             with open(Config.COOKIES_FILE_PATH, "rb") as file:
@@ -325,15 +322,18 @@ class FriendListScraper(Scraper):
                         self._driver.add_cookie(cookie)
                     except Exception as e:
                         logging.error(f"Error adding cookie: {cookie}, Exception: {e}")
+                        print("❗Loading cookies failed❗")
+
         except Exception as e:
             logging.error(f"Error loading cookies: {e}")
+        print("❗Loading cookies failed❗")
 
     def extract_friends_data(self) -> List[Dict[str, str]]:
         """
         Return a list of dictionaries with the usernames and the urls to the profile for every person in friends list
         """
         extracted_elements = []
-
+        print("👥Start extracting friends data👥")
         try:
             elements = self._driver.find_elements(By.CSS_SELECTOR, "a.x1i10hfl span")
             for element in elements:
@@ -346,6 +346,7 @@ class FriendListScraper(Scraper):
 
         except Exception as e:
             logging.error(f"Error extracting friends data: {e}")
+            print("❗Extracting friends data failed❗")
 
         return extracted_elements
 
@@ -353,6 +354,7 @@ class FriendListScraper(Scraper):
         """
         Scrolls the page to load more friends from a list
         """
+        print("🏎️Start scrolling page🏎️")
         try:
             last_height = self._driver.execute_script(
                 "return document.body.scrollHeight"
@@ -378,6 +380,7 @@ class FriendListScraper(Scraper):
                 last_height = new_height
         except Exception as e:
             logging.error(f"Error occurred while scrolling: {e}")
+            print("❗Page scrolling failed❗")
 
     def pipeline(self) -> None:
         """
