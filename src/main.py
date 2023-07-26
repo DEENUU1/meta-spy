@@ -3,10 +3,16 @@ from login import FacebookLogIn
 from account import AccountScraper, FriendListScraper
 from typing import Optional
 import typer
+from home import display_start_menu
 
 
 load_dotenv()
 app = typer.Typer()
+
+
+@app.command()
+def home():
+    display_start_menu()
 
 
 @app.command()
