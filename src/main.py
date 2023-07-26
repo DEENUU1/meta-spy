@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 from login import FacebookLogIn
-from account import AccountScraper, FriendListScraper
+from account import AccountScraper, FriendListScraper, FacebookImageScraper
 from typing import Optional
 import typer
 from home import display_start_menu
@@ -58,6 +58,16 @@ def scrape_friend_list(name: Optional[str] = None):
     try:
         typer.echo(f"Start scraping friend list for {name}")
         scraper = FriendListScraper(name)
+        scraper.pipeline()
+    except Exception as e:
+        print(e)
+
+
+@app.command()
+def scrape_images(name: Optional[str] = None):
+    try:
+        typer.echo(f"Start scraping images for {name}")
+        scraper = FacebookImageScraper(name)
         scraper.pipeline()
     except Exception as e:
         print(e)

@@ -6,6 +6,8 @@ data.json
 cookies.json
 .idea/
 ~/
+images/
+
 
 __pycache__/
 *.py[cod]
