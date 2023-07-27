@@ -21,9 +21,6 @@ class Config:
     # logs
     LOG_FILE_PATH = "../logs.json"
 
-    # SQLALCHEMY DATABASE
-    SQLALCHEMY_DATABASE_URL = "sqlite:///database.db"
-
     # images
     IMAGE_PATH = "../images/"
 

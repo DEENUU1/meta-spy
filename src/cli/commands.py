@@ -1,11 +1,13 @@
 from dotenv import load_dotenv
-from login import FacebookLogIn
-from account import AccountScraper, FriendListScraper, FacebookImageScraper
+from facebook.login import FacebookLogIn
+from facebook.account import AccountScraper
+from facebook.friends import FriendListScraper
+from facebook.image import FacebookImageScraper
 from typing import Optional
 import typer
-from home import display_start_menu
+from .home import display_start_menu
 from rich import print
-from version import return_version_info
+from .version import return_version_info
 
 load_dotenv()
 app = typer.Typer()

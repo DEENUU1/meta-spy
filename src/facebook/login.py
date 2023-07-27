@@ -31,7 +31,7 @@ class FacebookLogIn(Scraper):
         self._driver.get(self._base_url)
         self._cookie_term_css_selector = "._42ft._4jy0._al65._4jy3._4jy1.selected._51sy"
         self._input_text_css_selector = "//input[@type='text']"
-        self._password_css_selector = "//input[@placeholder='Hasło']"
+        self._password_css_selector = "//input[@type='password']"
         self._submit_button_selector = "//button[@type='submit']"
         self._wait = WebDriverWait(self._driver, 10)
         self.success = False
