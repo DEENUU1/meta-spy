@@ -24,8 +24,11 @@ class Config:
     # SQLALCHEMY DATABASE
     SQLALCHEMY_DATABASE_URL = "sqlite:///database.db"
 
+    # images
+    IMAGE_PATH = "../images/"
+
     # Facebook paths
     FRIEND_LIST_URL = "friends"
     WORK_AND_EDUCATION_URL = "about_work_and_education"
     PLACES_URL = "about_places"
-    IMAGE_PATH = "../images/"
+    FAMILY_URL = "about_family_and_relationships"
