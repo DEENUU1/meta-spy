@@ -7,8 +7,6 @@ from config import Config
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
-import database
-import models
 from scraper import Scraper
 from rich import print
 
@@ -19,8 +17,6 @@ logging.basicConfig(
     level=logging.ERROR,
     format="%(asctime)s - %(levelname)s - %(message)s",
 )
-
-models.Base.metadata.create_all(database.engine)
 
 
 class FriendListScraper(Scraper):

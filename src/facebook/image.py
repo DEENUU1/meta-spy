@@ -9,8 +9,6 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from rich.progress import Progress
-import database
-import models
 from scraper import Scraper
 import requests
 from PIL import Image
@@ -26,8 +24,6 @@ logging.basicConfig(
     level=logging.ERROR,
     format="%(asctime)s - %(levelname)s - %(message)s",
 )
-
-models.Base.metadata.create_all(database.engine)
 
 
 class FacebookImageScraper(Scraper):

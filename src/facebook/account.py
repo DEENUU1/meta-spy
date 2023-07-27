@@ -6,10 +6,9 @@ from config import Config
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
-import database
-import models
 from scraper import Scraper
 from rich import print
+import repository
 
 
 # Logging setup
@@ -18,8 +17,6 @@ logging.basicConfig(
     level=logging.ERROR,
     format="%(asctime)s - %(levelname)s - %(message)s",
 )
-
-models.Base.metadata.create_all(database.engine)
 
 
 class AccountScraper(Scraper):
@@ -66,6 +63,9 @@ class AccountScraper(Scraper):
                 By.CSS_SELECTOR, "h1.x1heor9g.x1qlqyl8.x1pd3egz.x1a2a7pz"
             )
             data = fullname_element.text.strip()
+
+            if not repository.person_exists(self._user_id):
+                repository.create_person(self._base_url, self._user_id, data)
 
         except Exception as e:
             logging.error(f"Error extracting full name: {e}")
