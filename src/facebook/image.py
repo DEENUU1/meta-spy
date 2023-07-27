@@ -205,9 +205,10 @@ class FacebookImageScraper(Scraper):
             image_urls = self.extract_image_urls()
             image_paths = self.save_images(image_urls)
 
-            if repository.get_person(self._user_id) and len(image_paths) > 0:
+            if repository.person_exists(self._user_id) and len(image_paths) > 0:
+                person = repository.get_person(self._user_id).id
                 for image_path in image_paths:
-                    repository.create_image(image_path, self._user_id)
+                    repository.create_image(image_path, person)
 
             self._driver.quit()
 

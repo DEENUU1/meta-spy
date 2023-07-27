@@ -9,6 +9,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from scraper import Scraper
 from rich import print
+import repository
 
 
 # Logging setup
@@ -120,7 +121,14 @@ class FriendListScraper(Scraper):
             self._driver.refresh()
             self.scroll_page()
 
-            print(self.extract_friends_data())
+            extracted_data = self.extract_friends_data()
+            print(extracted_data)
+
+            if repository.person_exists(self._user_id):
+                person = repository.get_person(self._user_id).id
+                for data in extracted_data:
+                    repository.create_friends(data["username"], data["url"], person)
+
             self._driver.quit()
 
             self.success = True
