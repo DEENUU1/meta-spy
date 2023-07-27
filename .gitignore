@@ -8,6 +8,7 @@ cookies.json
 ~/
 images/
 src/database.db
+src/database_test.db
 
 
 __pycache__/
