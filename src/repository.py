@@ -10,6 +10,10 @@ def person_exists(facebook_id):
     return session.query(Person).filter_by(facebook_id=facebook_id).first() is not None
 
 
+def get_person(facebook_id):
+    return session.query(Person).filter_by(facebook_id=facebook_id).first()
+
+
 def create_person(url, facebook_id, full_name=None):
     person = Person(full_name=full_name, url=url, facebook_id=facebook_id)
     session.add(person)

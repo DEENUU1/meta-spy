@@ -64,9 +64,6 @@ class AccountScraper(Scraper):
             )
             data = fullname_element.text.strip()
 
-            if not repository.person_exists(self._user_id):
-                repository.create_person(self._base_url, self._user_id, data)
-
         except Exception as e:
             logging.error(f"Error extracting full name: {e}")
 
@@ -171,14 +168,38 @@ class AccountScraper(Scraper):
         try:
             self._load_cookies()
             self._driver.refresh()
-            f = self.extract_full_name()
-            print(f)
-            z = self.extract_family()
-            print(z)
-            y = self.extract_places()
-            print(y)
-            x = self.extract_work_and_education()
-            print(x)
+            full_name = self.extract_full_name()
+            print(full_name)
+
+            if not repository.person_exists(self._user_id) and full_name is not None:
+                repository.create_person(self._base_url, self._user_id, full_name)
+
+            person_id = repository.get_person(self._user_id).id
+
+            family_members = self.extract_family()
+            print(family_members)
+            if repository.person_exists(self._user_id):
+                for member in family_members:
+                    repository.create_family_member(
+                        member["name"],
+                        member["relationship"],
+                        member["url"],
+                        person_id,
+                    )
+
+            places = self.extract_places()
+            print(places)
+
+            if repository.person_exists(self._user_id):
+                for place in places:
+                    repository.create_places(place["name"], place["date"], person_id)
+
+            work_and_education = self.extract_work_and_education()
+            print(work_and_education)
+            if repository.person_exists(self._user_id):
+                for data in work_and_education:
+                    repository.create_work_and_education(data["name"], person_id)
+
             self._driver.quit()
 
             self.success = True
