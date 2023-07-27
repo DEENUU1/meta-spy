@@ -473,6 +473,8 @@ class FriendListScraper(Scraper):
             self._load_cookies()
             self._driver.refresh()
             self.scroll_page()
+
+            print(self.extract_friends_data())
             self._driver.quit()
 
             self.success = True
