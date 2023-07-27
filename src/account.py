@@ -64,6 +64,22 @@ class AccountScraper(Scraper):
             logging.error(f"Error loading cookies: {e}")
             print("❗Loading cookies failed❗")
 
+    def extract_full_name(self) -> str | None:
+        """Extract full name from homepage"""
+        data = None
+        print("🤟Extracting full name from homepage🤟")
+        try:
+            self._driver.get(self._base_url)
+            fullname_element = self._driver.find_element(
+                By.CSS_SELECTOR, "h1.x1heor9g.x1qlqyl8.x1pd3egz.x1a2a7pz"
+            )
+            data = fullname_element.text.strip()
+
+        except Exception as e:
+            logging.error(f"Error extracting full name: {e}")
+
+        return data
+
     def extract_work_and_education(self) -> List[Dict[str, str]]:
         """Scrape for history of employment and school"""
 
@@ -163,6 +179,8 @@ class AccountScraper(Scraper):
         try:
             self._load_cookies()
             self._driver.refresh()
+            f = self.extract_full_name()
+            print(f)
             z = self.extract_family()
             print(z)
             y = self.extract_places()
