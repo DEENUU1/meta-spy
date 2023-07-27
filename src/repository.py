@@ -1,9 +1,5 @@
 from models import Person, FamilyMember, Friends, Image, Places, WorkAndEducation
 from database import session
-import models
-
-
-models.Base.metadata.create_all(bind=session.get_bind())
 
 
 def person_exists(facebook_id):
