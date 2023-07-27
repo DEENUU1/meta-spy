@@ -165,15 +165,15 @@ Distributed under the Apache-2.0 license. See `LICENSE.txt` for more information
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/DEENUU1/facebook-link-tree.svg?style=for-the-badge
-[contributors-url]: https://github.com/DEENUU1/facebook-link-tree/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/DEENUU1/facebook-link-tree.svg?style=for-the-badge
-[forks-url]: https://github.com/DEENUU1/facebook-link-tree/network/members
-[stars-shield]: https://img.shields.io/github/stars/DEENUU1/facebook-link-tree.svg?style=for-the-badge
-[stars-url]: https://github.com/DEENUU1/facebook-link-tree/stargazers
-[issues-shield]: https://img.shields.io/github/issues/DEENUU1/facebook-link-tree.svg?style=for-the-badge
-[issues-url]: https://github.com/DEENUU1/facebook-link-tree/issues
-[license-shield]: https://img.shields.io/github/license/DEENUU1/facebook-link-tree.svg?style=for-the-badge
+[contributors-shield]: https://img.shields.io/github/contributors/DEENUU1/facebook-spy.svg?style=for-the-badge
+[contributors-url]: https://github.com/DEENUU1/facebook-spy/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/DEENUU1/facebook-spy.svg?style=for-the-badge
+[forks-url]: https://github.com/DEENUU1/facebook-spy/network/members
+[stars-shield]: https://img.shields.io/github/stars/DEENUU1/facebook-spy.svg?style=for-the-badge
+[stars-url]: https://github.com/DEENUU1/facebook-spy/stargazers
+[issues-shield]: https://img.shields.io/github/issues/DEENUU1/facebook-spy.svg?style=for-the-badge
+[issues-url]: https://github.com/DEENUU1/facebook-spy/issues
+[license-shield]: https://img.shields.io/github/license/DEENUU1/facebook-spy.svg?style=for-the-badge
 [license-url]: https://github.com/DEENUU1/facebook-link-tree/blob/main/LICENSE
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/kacper-wlodarczyk/
