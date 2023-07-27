@@ -1,6 +1,3 @@
-import pytest
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 from src.models import (
     Person,
     FamilyMember,
@@ -8,20 +5,8 @@ from src.models import (
     Image,
     Places,
     WorkAndEducation,
-    Base,
 )
-
-engine = create_engine("sqlite:///:memory:")
-Session = sessionmaker(bind=engine)
-Base.metadata.create_all(bind=engine)
-
-
-@pytest.fixture
-def session():
-    """Create a new SQLAlchemy session for each test."""
-    session = Session()
-    yield session
-    session.close()
+from .conftest import session
 
 
 def test_create_person_model_successfully_create_object(session):
