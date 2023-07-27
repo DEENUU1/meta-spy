@@ -42,6 +42,7 @@
       <ul>
         <li><a href="#installation">Installation</a></li>
         <li><a href="#configuration">Configuration</a></li>
+        <li><a href="#commands">Commands</a></li>
       </ul>
     </li>
     <li><a href="#unit-tests">Tests</a></li>
@@ -52,9 +53,12 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
+<p style="color: red">This project is still in develop. I will regularly publish new versions, you can follow the progress in the issue.</p>
 
-This project allows to log in using selenium to facebook account (even if you have 2-step verification).
-And scrape user based on a given url address.
+This project allows to log in using selenium to facebook account (even if you have 2-step verification), 
+scrape user information based on a given url address and save data to database and local files.
+
+
 
 ### Built With
 - Python
@@ -67,9 +71,24 @@ And scrape user based on a given url address.
 - Log in without 2-step verification
 - Save cookies to save log in session
 - Scrape a list of friends
+- Scrape information like:
+  - work and education
+  - places
+  - full name 
 
 <img src="assets/app1.png" alt="home">
-
+<img src="assets/app2.png" alt="home">
+<img src="assets/app3.png" alt="home">
+<img src="assets/app4.png" alt="home">
+<img src="assets/app5.png" alt="home">
+<img src="assets/app6.png" alt="home">
+<img src="assets/app7.png" alt="home">
+<img src="assets/app8.png" alt="home">
+<img src="assets/app9.png" alt="home">
+<img src="assets/app10.png" alt="home">
+<img src="assets/app11.png" alt="home">
+<img src="assets/app12.png" alt="home">
+<img src="assets/app13.png" alt="home">
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -105,6 +124,33 @@ python main.py login
 python main.py --name <user_id>
 ```
 
+
+### Commands
+```bash
+python main.py --help 
+# Returns a list of all commands
+
+python main.py home
+# Display a home page with information about the application
+
+python main.py version
+# Display current version of the app
+
+python main.py login-2-step
+# Allows to log in on facebook account with 2-step verification
+
+pyton main.py login
+# Allows to log in on facebook account without 2-step verification
+
+python main.py scrape --name <facebook_id>
+# Allows to scrape data like: full name, work and education, places
+
+python main.py scrape-friend-list --name <facebook_id>
+# Allows to scrape all friends 
+
+python main.py scrape-images --name <facebook_id>
+# Allows to scrape all images and save them locally
+```
 
 <!-- LICENSE -->
 ## License

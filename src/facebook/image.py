@@ -65,7 +65,7 @@ class FacebookImageScraper(Scraper):
         """
         Scrolls the page to load more friends from a list
         """
-        print("🏎️Start scrolling page🏎️")
+        print("🏎️Scrolling page🏎️")
         try:
             last_height = self._driver.execute_script(
                 "return document.body.scrollHeight"
