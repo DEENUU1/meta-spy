@@ -16,6 +16,7 @@ from io import BytesIO
 import random
 import string
 from rich import print
+import repository
 
 
 # Logging setup
@@ -134,11 +135,12 @@ class FacebookImageScraper(Scraper):
             logging.error(f"Skipping image, Exception: {e}")
             return False
 
-    def save_images(self, image_urls: List[str]) -> None:
+    def save_images(self, image_urls: List[str]) -> List[str]:
         """
         Download and save images from url
         """
         print("📝Start downloading images📝")
+        downloaded_image_paths = []
         try:
             with Progress() as progress:
                 task = progress.add_task("[cyan]Downloading...", total=len(image_urls))
@@ -164,6 +166,9 @@ class FacebookImageScraper(Scraper):
 
                     image_filename = self.generate_image_file_name()
                     image_path = os.path.join(user_image_directory, image_filename)
+
+                    downloaded_image_paths.append(image_path)
+
                     with open(image_path, "wb") as file:
                         file.write(image_content)
 
@@ -183,6 +188,8 @@ class FacebookImageScraper(Scraper):
             logging.error(f"An error occurred: {e}")
             print("❗Error while downloading images❗")
 
+        return downloaded_image_paths
+
     @property
     def is_pipeline_successful(self) -> bool:
         return self.success
@@ -195,8 +202,13 @@ class FacebookImageScraper(Scraper):
             self._load_cookies()
             self._driver.refresh()
             self.scroll_page()
-            x = self.extract_image_urls()
-            self.save_images(x)
+            image_urls = self.extract_image_urls()
+            image_paths = self.save_images(image_urls)
+
+            if repository.get_person(self._user_id) and len(image_paths) > 0:
+                for image_path in image_paths:
+                    repository.create_image(image_path, self._user_id)
+
             self._driver.quit()
 
             self.success = True
