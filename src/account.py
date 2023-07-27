@@ -123,6 +123,35 @@ class AccountScraper(Scraper):
 
         return places
 
+    def extract_family(self) -> List[Dict[str, str]]:
+        data = []
+        print("☀️Extracting family members☀️")
+        try:
+            self._driver.get(f"{self._base_url}/{Config.FAMILY_URL}")
+
+            elements = self._driver.find_elements(By.CSS_SELECTOR, "div.x1hq5gj4")
+
+            for element in elements:
+                name_element = element.find_element(
+                    By.CSS_SELECTOR,
+                    "span.x193iq5w.xeuugli.x13faqbe.x1vvkbs.x1xmvt09.x1lliihq.x1s928wv.xhkezso.x1gmr53x.x1cpjm7i.x1fgarty.x1943h6x.xudqn12.x3x7a5m.x6prxxf.xvq8zen.xo1l8bm.xzsf02u a",
+                )
+                name = name_element.text
+                profile_url = name_element.get_attribute("href")
+                relationship_element = element.find_element(
+                    By.CSS_SELECTOR, "span.xi81zsa.x1nxh6w3.x1sibtaa"
+                )
+                relationship = relationship_element.text
+
+                data.append(
+                    {"name": name, "relationship": relationship, "url": profile_url}
+                )
+        except Exception as e:
+            logging.error(f"Error extracting family data: {e}")
+            print("❗Extracting family members failed❗")
+
+        return data
+
     @property
     def is_pipeline_successful(self) -> bool:
         return self.success
@@ -134,6 +163,8 @@ class AccountScraper(Scraper):
         try:
             self._load_cookies()
             self._driver.refresh()
+            z = self.extract_family()
+            print(z)
             y = self.extract_places()
             print(y)
             x = self.extract_work_and_education()
