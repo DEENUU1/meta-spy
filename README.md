@@ -120,7 +120,8 @@ scrape user information based on a given url address and save data to database a
   - books
   - likes
   - reviews
-
+- Dockerfile
+  
 ### v0.3 (ideas)
 - Save scraped data from v0.2 to database 
 - Create elastic pipelines to add more interaction with user and more functions
