@@ -2,6 +2,7 @@ from dotenv import load_dotenv
 from facebook.login import FacebookLogIn
 from facebook.account import AccountScraper
 from facebook.friends import FriendListScraper
+from facebook.place_recent import FacebookRecentPlaces
 from facebook.image import FacebookImageScraper
 from typing import Optional
 import typer
@@ -72,6 +73,17 @@ def scrape_friend_list(name: Optional[str] = None):
 def scrape_images(name: Optional[str] = None):
     print(f"Start scraping images for {name}")
     scraper = FacebookImageScraper(name)
+    scraper.pipeline()
+
+    if scraper.is_pipeline_successful:
+        print("✅Scraping successful✅")
+    else:
+        print("❌Scraping failed❌")
+
+
+def scrape_recent_places(name: Optional[str] = None):
+    print(f"Start scraping recent places for {name}")
+    scraper = FacebookRecentPlaces(name)
     scraper.pipeline()
 
     if scraper.is_pipeline_successful:
