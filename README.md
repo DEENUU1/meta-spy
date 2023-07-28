@@ -37,6 +37,8 @@
       </ul>
     </li>
     <li><a href="#key-features">Key features</a></li>
+    <li><a href="#version">Version history and future</a></li>
+    <li><a href="#screenshots">Screenshots</a></li>
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
@@ -74,7 +76,11 @@ scrape user information based on a given url address and save data to database a
 - Scrape information like:
   - work and education
   - places
-  - full name 
+  - full name
+  - recent places 
+
+
+## Screenshots
 
 <img src="assets/app1.png" alt="home">
 <img src="assets/app2.png" alt="home">
@@ -89,6 +95,42 @@ scrape user information based on a given url address and save data to database a
 <img src="assets/app11.png" alt="home">
 <img src="assets/app12.png" alt="home">
 <img src="assets/app13.png" alt="home">
+
+## Version
+### v0.1
+- Login system and saving cookies 
+- Scrape:
+  - user's friend list
+  - user's info about work and education
+  - user's info about places
+  - full name 
+- save scraped data to database
+
+### v0.2 (in develop)
+- Scrape:
+  - ~~recent places~~
+  - contact data and basic info
+  - reels
+  - videos
+  - groups
+  - music
+  - sport
+  - movies
+  - tv
+  - books
+  - likes
+  - reviews
+
+### v0.3 (ideas)
+- Save scraped data from v0.2 to database 
+- Create elastic pipelines to add more interaction with user and more functions
+
+### v0.4 (ideas)
+- Fastapi to return data from database 
+- Local server 
+
+### v0.5 (ideas)
+- React frontend for local server 
 
 <!-- GETTING STARTED -->
 ## Getting Started

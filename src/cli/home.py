@@ -20,6 +20,7 @@ def display_start_menu():
         "[yellow]Feature 4:[/yellow] Scrape user's information about work and education.",
         "[yellow]Feature 5:[/yellow] Scrape user's information about places.",
         "[yellow]Feature 6:[/yellow] Save scraped data to SQLite database.",
+        "[yellow]Feature 73:[/yellow] Scrape recent places.",
     ]
 
     table = Table(show_header=False, box=None, padding=(0, 1))
