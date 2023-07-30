@@ -5,6 +5,10 @@ from src.models import (
     Image,
     Places,
     WorkAndEducation,
+    RecentPlaces,
+    Reels,
+    Videos,
+    Reviews,
 )
 from .conftest import session
 
@@ -112,3 +116,57 @@ def test_relationship_backrefs_model_successfully_create_object(session):
     assert friend1.person == person
     assert friend2.person == person
     assert person.friends == [friend1, friend2]
+
+
+def test_recent_places_model_successfully_create_object(session):
+    person = Person(
+        full_name="Recent Place Person", url="https://example.com/recent_place_person"
+    )
+    recent_place = RecentPlaces(localization="Home", date="2023-07-27", person=person)
+    session.add(recent_place)
+    session.commit()
+
+    assert recent_place.id is not None
+    assert recent_place.localization == "Home"
+    assert recent_place.date == "2023-07-27"
+    assert recent_place.person == person
+
+
+def test_reels_model_successfully_create_object(session):
+    person = Person(full_name="Reels Person", url="https://example.com/reels_person")
+    reels = Reels(url="https://example.com/reels/1", person=person)
+    session.add(reels)
+    session.commit()
+
+    assert reels.id is not None
+    assert reels.url == "https://example.com/reels/1"
+    assert reels.person == person
+
+
+def test_videos_model_successfully_create_object(session):
+    person = Person(full_name="Videos Person", url="https://example.com/videos_person")
+    videos = Videos(url="https://example.com/videos/1", person=person)
+    session.add(videos)
+    session.commit()
+
+    assert videos.id is not None
+    assert videos.url == "https://example.com/videos/1"
+    assert videos.person == person
+
+
+def test_reviews_model_successfully_create_object(session):
+    person = Person(
+        full_name="Reviews Person", url="https://example.com/reviews_person"
+    )
+    reviews = Reviews(
+        company="Test",
+        person=person,
+        review="Test review",
+    )
+    session.add(reviews)
+    session.commit()
+
+    assert reviews.id is not None
+    assert reviews.company == "Test"
+    assert reviews.person == person
+    assert reviews.review == "Test review"
