@@ -114,3 +114,15 @@ class Videos(Base):
 
     # Relationship
     person = relationship("Person", back_populates="videos")
+
+
+class Reviews(Base):
+    __tablename__ = "reviews"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    company = Column(String, nullable=False)
+    review = Column(String, nullable=False)
+    person_id = Column(Integer, ForeignKey("persons.id"))
+
+    # Relationship
+    person = relationship("Person", back_populates="reviews")
