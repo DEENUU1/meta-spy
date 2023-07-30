@@ -5,6 +5,10 @@ from src.models import (
     Image,
     Places,
     WorkAndEducation,
+    RecentPlaces,
+    Reels,
+    Videos,
+    Reviews,
 )
 from .conftest import session
 
@@ -112,3 +116,17 @@ def test_relationship_backrefs_model_successfully_create_object(session):
     assert friend1.person == person
     assert friend2.person == person
     assert person.friends == [friend1, friend2]
+
+
+def test_recent_places_model_successfully_create_object(session):
+    person = Person(
+        full_name="Recent Place Person", url="https://example.com/recent_place_person"
+    )
+    recent_place = RecentPlaces(localization="Home", date="2023-07-27", person=person)
+    session.add(recent_place)
+    session.commit()
+
+    assert recent_place.id is not None
+    assert recent_place.localization == "Home"
+    assert recent_place.date == "2023-07-27"
+    assert recent_place.person == person
