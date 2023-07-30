@@ -3,12 +3,12 @@
 # project
 logs.json
 data.json
-cookies.json
+facebookspy/cookies.json
 .idea/
 ~/
 images/
-src/database.db
-src/database_test.db
+facebookspy/src/database.db
+facebookspy/src/database_test.db
 
 
 __pycache__/

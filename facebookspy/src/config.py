@@ -16,13 +16,13 @@ class Config:
     # Facebook login
     FACEBOOK_EMAIL = os.getenv("FACEBOOK_EMAIL")
     FACEBOOK_PASSWORD = os.getenv("FACEBOOK_PASSWORD")
-    COOKIES_FILE_PATH = "../cookies.json"
+    COOKIES_FILE_PATH = "cookies.json"
 
     # logs
-    LOG_FILE_PATH = "../logs.json"
+    LOG_FILE_PATH = "logs.json"
 
     # images
-    IMAGE_PATH = "../images/"
+    IMAGE_PATH = "images/"
 
     # Facebook paths
     FRIEND_LIST_URL = "friends"

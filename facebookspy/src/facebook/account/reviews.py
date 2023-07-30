@@ -3,12 +3,12 @@ import pickle
 from time import sleep
 from typing import List, Dict
 
-from config import Config
+from ...config import Config
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
-from scraper import Scraper
 from rich import print
+from ..facebook_base import BaseFacebookScraper
 
 
 # Logging setup
@@ -19,45 +19,21 @@ logging.basicConfig(
 )
 
 
-class FacebookReviewsScraper(Scraper):
+class FacebookReviewsScraper(BaseFacebookScraper):
     """
     Scrape user's pictures
     """
 
     def __init__(self, user_id) -> None:
-        super().__init__()
-        self._user_id = user_id
-        self._base_url = f"https://www.facebook.com/{self._user_id}/reviews_written"
-        self._driver = webdriver.Chrome(options=self._chrome_driver_configuration())
-        self._driver.get(self._base_url)
-        self._wait = WebDriverWait(self._driver, 10)
+        super().__init__(
+            user_id, base_url=f"https://www.facebook.com/{user_id}/reviews_written"
+        )
         self.success = False
-
-    def _load_cookies(self) -> None:
-        """
-        Load cookies with a log in session
-        """
-        print("🍪Loading cookies🍪")
-        try:
-            self._driver.delete_all_cookies()
-            with open(Config.COOKIES_FILE_PATH, "rb") as file:
-                cookies = pickle.load(file)
-                for cookie in cookies:
-                    try:
-                        self._driver.add_cookie(cookie)
-                    except Exception as e:
-                        logging.error(f"Error adding cookie: {cookie}, Exception: {e}")
-                        print("❗Loading cookies failed❗")
-
-        except Exception as e:
-            logging.error(f"Error loading cookies: {e}")
-            print("❗Loading cookies failed❗")
 
     def scroll_page(self) -> None:
         """
         Scrolls the page to load more friends from a list
         """
-        print("🏎️Scrolling page🏎️")
         try:
             last_height = self._driver.execute_script(
                 "return document.body.scrollHeight"
@@ -90,7 +66,6 @@ class FacebookReviewsScraper(Scraper):
         Return data about recent places
         """
         extracted_reviews = []
-        print("🖼️Start extracting image URLs🖼️")
         try:
             div_elements = self._driver.find_elements(
                 By.CSS_SELECTOR,
@@ -117,7 +92,6 @@ class FacebookReviewsScraper(Scraper):
                 extracted_reviews.append(data)
         except Exception as e:
             logging.error(f"Error extracting image URLs: {e}")
-            print("❗Extracting image URLs failed❗")
 
         return extracted_reviews
 

@@ -4,8 +4,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import logging
-from config import Config
-from scraper import Scraper
+from ..config import Config
+from .scraper import Scraper
 from rich.prompt import Prompt
 from rich import print
 

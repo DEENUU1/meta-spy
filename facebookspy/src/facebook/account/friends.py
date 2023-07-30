@@ -3,13 +3,11 @@ import pickle
 from time import sleep
 from typing import List, Dict
 
-from config import Config
-from selenium import webdriver
+from ...config import Config
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from scraper import Scraper
 from rich import print
-import repository
+from ...repository import person_exists, get_person, create_friends
+from ..facebook_base import BaseFacebookScraper
 
 
 # Logging setup
@@ -20,46 +18,22 @@ logging.basicConfig(
 )
 
 
-class FriendListScraper(Scraper):
+class FriendListScraper(BaseFacebookScraper):
     """
     Scrape user's friends list
     """
 
     def __init__(self, user_id) -> None:
-        super().__init__()
-        self._user_id = user_id
-        self._base_url = f"https://www.facebook.com/{self._user_id}/friends"
-        self._driver = webdriver.Chrome(options=self._chrome_driver_configuration())
-        self._driver.get(self._base_url)
-        self._wait = WebDriverWait(self._driver, 10)
+        super().__init__(
+            user_id, base_url=f"https://www.facebook.com/{user_id}/friends"
+        )
         self.success = False
-
-    def _load_cookies(self) -> None:
-        """
-        Load cookies with a log in session
-        """
-        print("🍪Loading cookies🍪")
-        try:
-            self._driver.delete_all_cookies()
-            with open(Config.COOKIES_FILE_PATH, "rb") as file:
-                cookies = pickle.load(file)
-                for cookie in cookies:
-                    try:
-                        self._driver.add_cookie(cookie)
-                    except Exception as e:
-                        logging.error(f"Error adding cookie: {cookie}, Exception: {e}")
-                        print("❗Loading cookies failed❗")
-
-        except Exception as e:
-            logging.error(f"Error loading cookies: {e}")
-        print("❗Loading cookies failed❗")
 
     def extract_friends_data(self) -> List[Dict[str, str]]:
         """
         Return a list of dictionaries with the usernames and the urls to the profile for every person in friends list
         """
         extracted_elements = []
-        print("👥Start extracting friends data👥")
         try:
             elements = self._driver.find_elements(By.CSS_SELECTOR, "a.x1i10hfl span")
             for element in elements:
@@ -72,7 +46,6 @@ class FriendListScraper(Scraper):
 
         except Exception as e:
             logging.error(f"Error extracting friends data: {e}")
-            print("❗Extracting friends data failed❗")
 
         return extracted_elements
 
@@ -80,7 +53,6 @@ class FriendListScraper(Scraper):
         """
         Scrolls the page to load more friends from a list
         """
-        print("🏎️Scrolling page🏎️")
         try:
             last_height = self._driver.execute_script(
                 "return document.body.scrollHeight"
@@ -106,7 +78,6 @@ class FriendListScraper(Scraper):
                 last_height = new_height
         except Exception as e:
             logging.error(f"Error occurred while scrolling: {e}")
-            print("❗Page scrolling failed❗")
 
     @property
     def is_pipeline_successful(self) -> bool:
@@ -124,10 +95,10 @@ class FriendListScraper(Scraper):
             extracted_data = self.extract_friends_data()
             print(extracted_data)
 
-            if repository.person_exists(self._user_id):
-                person = repository.get_person(self._user_id).id
+            if person_exists(self._user_id):
+                person = get_person(self._user_id).id
                 for data in extracted_data:
-                    repository.create_friends(data["username"], data["url"], person)
+                    create_friends(data["username"], data["url"], person)
 
             self._driver.quit()
 

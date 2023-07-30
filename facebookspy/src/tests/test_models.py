@@ -1,4 +1,4 @@
-from src.models import (
+from facebookspy.src.models import (
     Person,
     FamilyMember,
     Friends,

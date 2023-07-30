@@ -1,14 +1,18 @@
 import logging
-import pickle
 from typing import List, Dict
 
-from config import Config
-from selenium import webdriver
+from ...config import Config
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from scraper import Scraper
+from ..facebook_base import BaseFacebookScraper
 from rich import print
-import repository
+from ...repository import (
+    person_exists,
+    create_person,
+    create_places,
+    create_work_and_education,
+    create_family_member,
+    get_person,
+)
 
 
 # Logging setup
@@ -19,39 +23,14 @@ logging.basicConfig(
 )
 
 
-class AccountScraper(Scraper):
+class AccountScraper(BaseFacebookScraper):
     """
     Scrape user's personal information
     """
 
     def __init__(self, user_id) -> None:
-        super().__init__()
-        self._user_id = user_id
-        self._base_url = f"https://www.facebook.com/{self._user_id}"
-        self._driver = webdriver.Chrome(options=self._chrome_driver_configuration())
-        self._driver.get(self._base_url)
-        self._wait = WebDriverWait(self._driver, 10)
+        super().__init__(user_id, base_url=f"https://www.facebook.com/{user_id}")
         self.success = False
-
-    def _load_cookies(self) -> None:
-        """
-        Load cookies with a log in session
-        """
-        print("🍪Loading cookies🍪")
-        try:
-            self._driver.delete_all_cookies()
-            with open(Config.COOKIES_FILE_PATH, "rb") as file:
-                cookies = pickle.load(file)
-                for cookie in cookies:
-                    try:
-                        self._driver.add_cookie(cookie)
-                    except Exception as e:
-                        logging.error(f"Error adding cookie: {cookie}, Exception: {e}")
-                        print("❗Loading cookies failed❗")
-
-        except Exception as e:
-            logging.error(f"Error loading cookies: {e}")
-            print("❗Loading cookies failed❗")
 
     def extract_full_name(self) -> str | None:
         """Extract full name from homepage"""
@@ -65,7 +44,7 @@ class AccountScraper(Scraper):
             data = fullname_element.text.strip()
 
         except Exception as e:
-            logging.error(f"Error extracting full name: {e}")
+            logging.error(e)
 
         return data
 
@@ -73,7 +52,6 @@ class AccountScraper(Scraper):
         """Scrape for history of employment and school"""
 
         extracted_work_data = []
-        print("🏫Extracting work and education🏫")
         try:
             self._driver.get(f"{self._base_url}/{Config.WORK_AND_EDUCATION_URL}")
 
@@ -94,14 +72,12 @@ class AccountScraper(Scraper):
 
         except Exception as e:
             logging.error(f"Error extracting work data: {e}")
-            print("❗Extracting work and education failed❗")
 
         return extracted_work_data
 
     def extract_places(self) -> List[Dict[str, str]]:
         """Return history of places"""
         places = []
-        print("🖼️Extracting places🖼️")
         try:
             self._driver.get(f"{self._base_url}/{Config.PLACES_URL}")
 
@@ -124,13 +100,11 @@ class AccountScraper(Scraper):
 
         except Exception as e:
             logging.error(f"Error extracting localization data: {e}")
-            print("❗Extracting places failed❗")
 
         return places
 
     def extract_family(self) -> List[Dict[str, str]]:
         data = []
-        print("☀️Extracting family members☀️")
         try:
             self._driver.get(f"{self._base_url}/{Config.FAMILY_URL}")
 
@@ -153,7 +127,6 @@ class AccountScraper(Scraper):
                 )
         except Exception as e:
             logging.error(f"Error extracting family data: {e}")
-            print("❗Extracting family members failed❗")
 
         return data
 
@@ -171,16 +144,16 @@ class AccountScraper(Scraper):
             full_name = self.extract_full_name()
             print(full_name)
 
-            if not repository.person_exists(self._user_id) and full_name is not None:
-                repository.create_person(self._base_url, self._user_id, full_name)
+            if not person_exists(self._user_id) and full_name is not None:
+                create_person(self._base_url, self._user_id, full_name)
 
-            person_id = repository.get_person(self._user_id).id
+            person_id = get_person(self._user_id).id
 
             family_members = self.extract_family()
             print(family_members)
-            if repository.person_exists(self._user_id):
+            if person_exists(self._user_id):
                 for member in family_members:
-                    repository.create_family_member(
+                    create_family_member(
                         member["name"],
                         member["relationship"],
                         member["url"],
@@ -190,15 +163,15 @@ class AccountScraper(Scraper):
             places = self.extract_places()
             print(places)
 
-            if repository.person_exists(self._user_id):
+            if person_exists(self._user_id):
                 for place in places:
-                    repository.create_places(place["name"], place["date"], person_id)
+                    create_places(place["name"], place["date"], person_id)
 
             work_and_education = self.extract_work_and_education()
             print(work_and_education)
-            if repository.person_exists(self._user_id):
+            if person_exists(self._user_id):
                 for data in work_and_education:
-                    repository.create_work_and_education(data["name"], person_id)
+                    create_work_and_education(data["name"], person_id)
 
             self._driver.quit()
 
