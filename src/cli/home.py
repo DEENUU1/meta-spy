@@ -22,6 +22,7 @@ def display_start_menu():
         "[yellow]Feature 6:[/yellow] Save scraped data to SQLite database.",
         "[yellow]Feature 7:[/yellow] Scrape recent places.",
         "[yellow]Feature 8:[/yellow] Scrape reels urls.",
+        "[yellow]Feature 9:[/yellow] Scrape videos urls.",
     ]
 
     table = Table(show_header=False, box=None, padding=(0, 1))
