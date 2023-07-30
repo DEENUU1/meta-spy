@@ -82,3 +82,10 @@ def create_reels(url: str, person_id: int) -> Reels:
     session.add(reels)
     session.commit()
     return reels
+
+
+def create_videos(url: str, person_id: int) -> Videos:
+    videos = Videos(url=url, person_id=person_id)
+    session.add(videos)
+    session.commit()
+    return videos
