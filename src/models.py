@@ -80,3 +80,49 @@ class WorkAndEducation(Base):
 
     # Relationship
     person = relationship("Person", back_populates="work_and_education")
+
+
+class RecentPlaces(Base):
+    __tablename__ = "recent_places"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    localization = Column(String, nullable=False)
+    date = Column(String, nullable=True)
+    person_id = Column(Integer, ForeignKey("persons.id"))
+
+    # Relationship
+    person = relationship("Person", back_populates="recent_places")
+
+
+class Reels(Base):
+    __tablename__ = "reels"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    url = Column(String, nullable=False)
+    person_id = Column(Integer, ForeignKey("persons.id"))
+
+    # Relationship
+    person = relationship("Person", back_populates="reels")
+
+
+class Videos(Base):
+    __tablename__ = "videos"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    url = Column(String, nullable=False)
+    person_id = Column(Integer, ForeignKey("persons.id"))
+
+    # Relationship
+    person = relationship("Person", back_populates="videos")
+
+
+class Reviews(Base):
+    __tablename__ = "reviews"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    company = Column(String, nullable=False)
+    review = Column(String, nullable=False)
+    person_id = Column(Integer, ForeignKey("persons.id"))
+
+    # Relationship
+    person = relationship("Person", back_populates="reviews")
