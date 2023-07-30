@@ -92,3 +92,14 @@ class RecentPlaces(Base):
 
     # Relationship
     person = relationship("Person", back_populates="recent_places")
+
+
+class Reels(Base):
+    __tablename__ = "reels"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    url = Column(String, nullable=False)
+    person_id = Column(Integer, ForeignKey("persons.id"))
+
+    # Relationship
+    person = relationship("Person", back_populates="reels")
