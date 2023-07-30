@@ -11,6 +11,7 @@ from cli.commands import (
     scrape_recent_places,
     scrape_reels,
     scrape_videos,
+    scrape_reviews,
 )
 
 load_dotenv()
@@ -25,6 +26,8 @@ app.command()(scrape_images)
 app.command()(scrape_recent_places)
 app.command()(scrape_reels)
 app.command()(scrape_videos)
+app.command()(scrape_reviews)
+
 
 if __name__ == "__main__":
     app()
