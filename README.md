@@ -108,12 +108,12 @@ scrape user information based on a given url address and save data to database a
 
 ### v0.2
 - Scrape
-  - recent ~~places~~
+  - recent places
   - reels
   - videos
   - reviews
   
-### v0.3 (ideas)
+### v0.3 (in develop)
 - Save scraped data from v0.2 to database 
 - Create elastic pipelines to add more interaction with user and more functions
 
