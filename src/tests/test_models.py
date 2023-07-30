@@ -152,3 +152,21 @@ def test_videos_model_successfully_create_object(session):
     assert videos.id is not None
     assert videos.url == "https://example.com/videos/1"
     assert videos.person == person
+
+
+def test_reviews_model_successfully_create_object(session):
+    person = Person(
+        full_name="Reviews Person", url="https://example.com/reviews_person"
+    )
+    reviews = Reviews(
+        company="Test",
+        person=person,
+        review="Test review",
+    )
+    session.add(reviews)
+    session.commit()
+
+    assert reviews.id is not None
+    assert reviews.company == "Test"
+    assert reviews.person == person
+    assert reviews.review == "Test review"
