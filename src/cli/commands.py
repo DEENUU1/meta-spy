@@ -6,6 +6,7 @@ from facebook.place_recent import FacebookRecentPlaces
 from facebook.image import FacebookImageScraper
 from facebook.reels import FacebookReelsScraper
 from facebook.videos import FacebookVideoScraper
+from facebook.reviews import FacebookReviewsScraper
 from typing import Optional
 import typer
 from .home import display_start_menu
@@ -108,6 +109,17 @@ def scrape_videos(name: Optional[str] = None):
 def scrape_recent_places(name: Optional[str] = None):
     print(f"Start scraping recent places for {name}")
     scraper = FacebookRecentPlaces(name)
+    scraper.pipeline()
+
+    if scraper.is_pipeline_successful:
+        print("✅Scraping successful✅")
+    else:
+        print("❌Scraping failed❌")
+
+
+def scrape_reviews(name: Optional[str] = None):
+    print(f"Start scraping reviews for {name}")
+    scraper = FacebookReviewsScraper(name)
     scraper.pipeline()
 
     if scraper.is_pipeline_successful:
