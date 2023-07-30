@@ -9,6 +9,7 @@ from cli.commands import (
     scrape_friend_list,
     scrape_images,
     scrape_recent_places,
+    scrape_reels,
 )
 
 load_dotenv()
@@ -21,6 +22,8 @@ app.command()(scrape)
 app.command()(scrape_friend_list)
 app.command()(scrape_images)
 app.command()(scrape_recent_places)
+app.command()(scrape_reels)
+
 
 if __name__ == "__main__":
     app()
