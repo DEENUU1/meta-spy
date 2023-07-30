@@ -1,17 +1,17 @@
 from dotenv import load_dotenv
-from facebook.login import FacebookLogIn
-from facebook.account import AccountScraper
-from facebook.friends import FriendListScraper
-from facebook.place_recent import FacebookRecentPlaces
-from facebook.image import FacebookImageScraper
-from facebook.reels import FacebookReelsScraper
-from facebook.videos import FacebookVideoScraper
-from facebook.reviews import FacebookReviewsScraper
+from .facebook.login import FacebookLogIn
+from .facebook.account.account import AccountScraper
+from .facebook.account.friends import FriendListScraper
+from .facebook.account.place_recent import FacebookRecentPlaces
+from .facebook.account.image import FacebookImageScraper
+from .facebook.account.reels import FacebookReelsScraper
+from .facebook.account.videos import FacebookVideoScraper
+from .facebook.account.reviews import FacebookReviewsScraper
 from typing import Optional
 import typer
-from .home import display_start_menu
+from src.cli.home import display_start_menu
 from rich import print
-from .version import return_version_info
+from src.cli.version import return_version_info
 
 load_dotenv()
 app = typer.Typer()

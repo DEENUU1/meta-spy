@@ -1,4 +1,4 @@
-from models import (
+from .models import (
     Person,
     FamilyMember,
     Friends,
@@ -10,7 +10,7 @@ from models import (
     Reels,
     Reviews,
 )
-from database import session
+from .database import session
 from typing import Any, Type
 
 

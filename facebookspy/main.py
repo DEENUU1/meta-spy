@@ -1,5 +1,5 @@
 from dotenv import load_dotenv
-from cli.commands import (
+from src.commands import (
     app,
     home,
     version,
