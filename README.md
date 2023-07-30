@@ -106,13 +106,12 @@ scrape user information based on a given url address and save data to database a
   - full name 
 - save scraped data to database
 
-### v0.2 (in develop)
-- Scrape:
-  - ~~recent places~~
-  - contact data and basic info
-  - ~~reels~~
-  - ~~videos~~
-  - ~~reviews~~
+### v0.2
+- Scrape
+  - recent ~~places~~
+  - reels
+  - videos
+  - reviews
   
 ### v0.3 (ideas)
 - Save scraped data from v0.2 to database 
@@ -134,6 +133,7 @@ scrape user information based on a given url address and save data to database a
   - tv
   - books
   - likes
+  - contact data and basic info
 
 <!-- GETTING STARTED -->
 ## Getting Started
