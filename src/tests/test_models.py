@@ -130,3 +130,14 @@ def test_recent_places_model_successfully_create_object(session):
     assert recent_place.localization == "Home"
     assert recent_place.date == "2023-07-27"
     assert recent_place.person == person
+
+
+def test_reels_model_successfully_create_object(session):
+    person = Person(full_name="Reels Person", url="https://example.com/reels_person")
+    reels = Reels(url="https://example.com/reels/1", person=person)
+    session.add(reels)
+    session.commit()
+
+    assert reels.id is not None
+    assert reels.url == "https://example.com/reels/1"
+    assert reels.person == person
