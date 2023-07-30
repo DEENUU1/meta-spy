@@ -89,3 +89,10 @@ def create_videos(url: str, person_id: int) -> Videos:
     session.add(videos)
     session.commit()
     return videos
+
+
+def create_reviews(company: str, review: str, person_id: int) -> Reviews:
+    reviews = Reviews(company=company, review=review, person_id=person_id)
+    session.add(reviews)
+    session.commit()
+    return reviews
