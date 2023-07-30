@@ -112,15 +112,7 @@ scrape user information based on a given url address and save data to database a
   - contact data and basic info
   - ~~reels~~
   - ~~videos~~
-  - groups
-  - music
-  - sport
-  - movies
-  - tv
-  - books
-  - likes
-  - reviews
-- Dockerfile
+  - ~~reviews~~
   
 ### v0.3 (ideas)
 - Save scraped data from v0.2 to database 
@@ -132,6 +124,16 @@ scrape user information based on a given url address and save data to database a
 
 ### v0.5 (ideas)
 - React frontend for local server 
+
+### v0.6 (ideas)
+- Scrape:
+  - groups
+  - music
+  - sport
+  - movies
+  - tv
+  - books
+  - likes
 
 <!-- GETTING STARTED -->
 ## Getting Started
