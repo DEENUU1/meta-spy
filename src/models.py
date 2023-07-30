@@ -80,3 +80,15 @@ class WorkAndEducation(Base):
 
     # Relationship
     person = relationship("Person", back_populates="work_and_education")
+
+
+class RecentPlaces(Base):
+    __tablename__ = "recent_places"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    localization = Column(String, nullable=False)
+    date = Column(String, nullable=True)
+    person_id = Column(Integer, ForeignKey("persons.id"))
+
+    # Relationship
+    person = relationship("Person", back_populates="recent_places")
