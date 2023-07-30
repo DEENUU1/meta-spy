@@ -111,7 +111,7 @@ scrape user information based on a given url address and save data to database a
   - ~~recent places~~
   - contact data and basic info
   - ~~reels~~
-  - videos
+  - ~~videos~~
   - groups
   - music
   - sport
