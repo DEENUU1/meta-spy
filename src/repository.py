@@ -75,3 +75,10 @@ def create_recent_places(localization: str, date: str, person_id: int) -> Recent
     session.add(recent_places)
     session.commit()
     return recent_places
+
+
+def create_reels(url: str, person_id: int) -> Reels:
+    reels = Reels(url=url, person_id=person_id)
+    session.add(reels)
+    session.commit()
+    return reels
