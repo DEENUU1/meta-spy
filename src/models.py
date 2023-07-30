@@ -57,6 +57,10 @@ class Person(Base):
         "WorkAndEducation", uselist=False, back_populates="person"
     )
     family_member = relationship("FamilyMember", uselist=False, back_populates="person")
+    recent_places = relationship("RecentPlaces", uselist=False, back_populates="person")
+    reels = relationship("Reels", uselist=False, back_populates="person")
+    videos = relationship("Videos", uselist=False, back_populates="person")
+    reviews = relationship("Reviews", uselist=False, back_populates="person")
 
 
 class Places(Base):
