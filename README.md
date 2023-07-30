@@ -110,7 +110,7 @@ scrape user information based on a given url address and save data to database a
 - Scrape:
   - ~~recent places~~
   - contact data and basic info
-  - reels
+  - ~~reels~~
   - videos
   - groups
   - music
