@@ -94,7 +94,7 @@ class FacebookVideoScraper(BaseFacebookScraper):
             if not person_exists(self._user_id):
                 create_person(self._user_id)
 
-            person_id = get_person(self._user_id)
+            person_id = get_person(self._user_id).id
             for video in videos:
                 create_videos(video, person_id)
 

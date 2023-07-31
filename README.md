@@ -114,8 +114,10 @@ scrape user information based on a given url address and save data to database a
   - reviews
   
 ### v0.3 (in develop)
-- Save scraped data from v0.2 to database 
-- Create elastic pipelines to add more interaction with user and more functions
+- ~~Save scraped data from v0.2 to database~~ 
+- ~~Create elastic pipelines to add more interaction with user and more functions~~
+- Functions to return data from database
+- Add commands for new pipelines and update docs
 
 ### v0.4 (ideas)
 - Fastapi to return data from database 
