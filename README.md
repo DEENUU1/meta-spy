@@ -78,7 +78,7 @@ scrape user information based on a given url address and save data to database a
   - places
   - full name
   - recent places 
-
+- Save scraped data to database
 
 ## Screenshots
 
@@ -125,6 +125,7 @@ scrape user information based on a given url address and save data to database a
 
 ### v0.5 (ideas)
 - React frontend for local server 
+- Static page for project with demo etc.
 
 ### v0.6 (ideas)
 - Scrape:
@@ -218,8 +219,6 @@ python main.py scrape-reels --name <facebook_id>
 
 python main.py scrape-reviews --name <facebook_id>
 # Scrape written reviews from facebook account 
-
-
 
 ```
 
