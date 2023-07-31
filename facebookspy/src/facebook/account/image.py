@@ -1,5 +1,4 @@
 import logging
-import pickle
 from time import sleep
 from typing import List
 import os
@@ -12,9 +11,9 @@ from PIL import Image
 from io import BytesIO
 import random
 import string
-from rich import print
+from rich import print as rprint
 from ..facebook_base import BaseFacebookScraper
-from ...repository import person_exists, get_person, create_image
+from ...repository import person_exists, get_person, create_image, create_person
 
 # Logging setup
 logging.basicConfig(
@@ -169,14 +168,17 @@ class FacebookImageScraper(BaseFacebookScraper):
             self.scroll_page()
             image_urls = self.extract_image_urls()
             image_paths = self.save_images(image_urls)
+            rprint(image_paths)
 
-            if person_exists(self._user_id) and len(image_paths) > 0:
-                person = get_person(self._user_id).id
-                for image_path in image_paths:
-                    create_image(image_path, person)
+            if not person_exists(self._user_id):
+                create_person(self._user_id)
+
+            person = get_person(self._user_id).id
+            for image_path in image_paths:
+                create_image(image_path, person)
 
             self._driver.quit()
-
             self.success = True
+
         except Exception as e:
             logging.error(f"An error occurred: {e}")

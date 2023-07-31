@@ -22,7 +22,8 @@ def get_person(facebook_id: str) -> Type[Person] | None:
     return session.query(Person).filter_by(facebook_id=facebook_id).first()
 
 
-def create_person(url: str, facebook_id: str, full_name=None) -> Person:
+def create_person(facebook_id: str, full_name=None) -> Person:
+    url = f"https://www.facebook.com/{facebook_id}/"
     person = Person(full_name=full_name, url=url, facebook_id=facebook_id)
     session.add(person)
     session.commit()

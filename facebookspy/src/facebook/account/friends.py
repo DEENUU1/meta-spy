@@ -1,12 +1,11 @@
 import logging
-import pickle
 from time import sleep
 from typing import List, Dict
 
 from ...config import Config
 from selenium.webdriver.common.by import By
-from rich import print
-from ...repository import person_exists, get_person, create_friends
+from rich import print as rprint
+from ...repository import person_exists, get_person, create_friends, create_person
 from ..facebook_base import BaseFacebookScraper
 
 
@@ -93,15 +92,17 @@ class FriendListScraper(BaseFacebookScraper):
             self.scroll_page()
 
             extracted_data = self.extract_friends_data()
-            print(extracted_data)
+            rprint(extracted_data)
 
-            if person_exists(self._user_id):
-                person = get_person(self._user_id).id
-                for data in extracted_data:
-                    create_friends(data["username"], data["url"], person)
+            if not person_exists(self._user_id):
+                create_person(self._user_id)
+
+            person = get_person(self._user_id).id
+
+            for data in extracted_data:
+                create_friends(data["username"], data["url"], person)
 
             self._driver.quit()
-
             self.success = True
 
         except Exception as e:

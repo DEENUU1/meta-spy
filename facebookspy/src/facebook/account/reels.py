@@ -1,14 +1,12 @@
 import logging
-import pickle
 from time import sleep
 from typing import List
 
 from ...config import Config
-from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
 from ..facebook_base import BaseFacebookScraper
-from rich import print
+from rich import print as rprint
+from ...repository import create_person, get_person, person_exists, create_reels
 
 
 # Logging setup
@@ -25,9 +23,7 @@ class FacebookReelsScraper(BaseFacebookScraper):
     """
 
     def __init__(self, user_id) -> None:
-        super().__init__(
-            user_id, base_url=f"https://www.facebook.com/{self._user_id}/reels"
-        )
+        super().__init__(user_id, base_url=f"https://www.facebook.com/{user_id}/reels")
         self.success = False
 
     def scroll_page(self) -> None:
@@ -93,11 +89,18 @@ class FacebookReelsScraper(BaseFacebookScraper):
             self._driver.refresh()
             self.scroll_page()
             reels = self.extract_reels_urls()
+            rprint(reels)
 
-            print(reels)
+            if not person_exists(self._user_id):
+                create_person(self._user_id)
+
+            person_id = get_person(self._user_id).id
+
+            for reel in reels:
+                create_reels(reel, person_id)
 
             self._driver.quit()
-
             self.success = True
+
         except Exception as e:
             logging.error(f"An error occurred: {e}")
