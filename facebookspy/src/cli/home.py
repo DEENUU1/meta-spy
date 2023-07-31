@@ -1,38 +1,81 @@
+from rich import box
+from rich import print as rprint
+from rich.layout import Layout
+from rich.panel import Panel
+from .baner import print_banner
 from rich.console import Console
-from rich.table import Table
-from rich.text import Text
 
 
-def display_start_menu():
+def display_start_menu() -> None:
     console = Console()
-
-    # Application information
-    project_name = Text("🕵️Facebook SPY🕵️", justify="center")
-    description = (
-        "[cyan]This project allows you to log in using Selenium to your Facebook account "
-        "(even if you have 2-step verification enabled). You can also scrape user data "
-        "based on a given URL address.[/cyan]"
+    print_banner(console)
+    layout = Layout()
+    header_content = Panel(
+        renderable="🕵️ [gold1 bold]Facebook spy[/gold1 bold] allows you to log in and scrape information from facebook accounts just with a few clicks. Data are saved to database and then you can easly browse them from your local web application. \n\n🖥️ I am still working on developing more functions and making easy to use application. ",
+        title="[reverse]ABOUT Facebook Spy[/reverse]",
+        title_align="center",
+        border_style="bold green",
+        padding=(1, 1),
+        box=box.DOUBLE_EDGE,
+        highlight=True,
     )
-    key_features = [
-        "[yellow]Feature 1:[/yellow] Login on Facebook (even with 2-step verification).",
-        "[yellow]Feature 2:[/yellow] Save cookies to maintain the login session.",
-        "[yellow]Feature 3:[/yellow] Scrape user's friend list.",
-        "[yellow]Feature 4:[/yellow] Scrape user's information about work and education.",
-        "[yellow]Feature 5:[/yellow] Scrape user's information about places.",
-        "[yellow]Feature 6:[/yellow] Save scraped data to SQLite database.",
-        "[yellow]Feature 7:[/yellow] Scrape recent places.",
-        "[yellow]Feature 8:[/yellow] Scrape reels urls.",
-        "[yellow]Feature 9:[/yellow] Scrape videos urls.",
-        "[yellow]Feature 10:[/yellow] Scrape reviews.",
-    ]
 
-    table = Table(show_header=False, box=None, padding=(0, 1))
-    table.add_column(justify="left")
+    footer_content = Panel(
+        renderable="\n    👩‍💻 [b reverse]Source[/b reverse]: [link=https://github.com/DEENUU1/facebook-spy]GitHub[/link]\t\t\t    📚 [b reverse]Docs[/b reverse]: [link=https://github.com/DEENUU1/facebook-spy/blob/main/README.md]Read[/link]\t\t\t   🌐 [b reverse]Website (in develop) [/b reverse]: [link=...]Explore[/link]\t\t\t",
+        title="[reverse]THANK YOU FOR USING THIS APP[/reverse]",
+        title_align="center",
+        border_style="bold violet",
+        padding=(1, 0),
+        box=box.DOUBLE_EDGE,
+        highlight=True,
+    )
 
-    table.add_row(project_name)
-    table.add_row(description)
-    table.add_row("[bold]Key Features:")
-    for feature in key_features:
-        table.add_row(feature)
+    main_content = Panel(
+        renderable="[bold green]1.[/bold green] Log in with/without 2-step verification\n[bold green]2.[/bold green] Scrape basic information from facebook account (fullname, list of friends, places, work and education, family members) \n[bold green]3.[/bold green] Scraping and downloading images from facebook account\n[bold green]4.[/bold green] Extracting urls to reels and videos from facebook account\n[bold green]5.[/bold green] Saving all scraped data to database (sqlite)",
+        title="[reverse]FEATURES[/reverse]",
+        title_align="center",
+        border_style="bold blue",
+        padding=(1, 1),
+        box=box.DOUBLE_EDGE,
+    )
 
-    console.print(table)
+    # Divide the "screen" in to three parts
+    layout.split(
+        Layout(name="header", size=14),
+        Layout(name="main", size=18),
+        Layout(name="footer", size=6),
+    )
+
+    # HEADER
+    layout["header"].update(header_content)
+
+    # MAIN CONTENT
+    layout["main"].split_row(
+        Layout(
+            name="side",
+        ),
+        Layout(main_content, name="body", ratio=2),
+    )
+
+    # SIDE CONTENT
+    layout["side"].split(
+        # SIDE CONTENT TOP
+        Layout(
+            Panel(
+                renderable="\t\t  💲💲💲 \n\n              EVERYBODY LIES      \n\n              GREGORY HOUSE\n\n \t\t  💰💰💰",
+                border_style="green",
+            )
+        ),
+        # SIDE CONTENT BOTTOM
+        Layout(
+            Panel(
+                "🐍 [b u]Developed with[/b u]: Python, Typer, Rich, PyTest, Selenium, SQLite\n\n😎 [b u]Copyright[/b u]: 2023 (Kacper Wlodarczyk)\n\n✅ [b u]Language Support[/b u]: English, Polish",
+                border_style="red",
+            )
+        ),
+    )
+
+    # FOOTER
+    layout["footer"].update(footer_content)
+
+    rprint(layout)

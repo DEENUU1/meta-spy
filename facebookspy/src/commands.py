@@ -16,6 +16,8 @@ from src.cli.version import return_version_info
 load_dotenv()
 app = typer.Typer()
 
+""" Project commands """
+
 
 def home():
     display_start_menu()
@@ -23,6 +25,9 @@ def home():
 
 def version():
     return_version_info()
+
+
+""" Log In commands """
 
 
 def login_2_step():
@@ -49,6 +54,9 @@ def login():
         rprint("✅Logging successful✅")
     else:
         rprint("❌Logging failed❌")
+
+
+""" Account basic data commands """
 
 
 def scrape_full_account(name: Optional[str] = None):
@@ -106,6 +114,9 @@ def scrape_full_name(name: Optional[str] = None):
         rprint("❌Scraping failed❌")
 
 
+""" Friend list commands """
+
+
 def scrape_friend_list(name: Optional[str] = None):
     typer.echo(f"Start scraping friend list for {name}")
     scraper = FriendListScraper(name)
@@ -115,6 +126,9 @@ def scrape_friend_list(name: Optional[str] = None):
         print("✅Scraping successful✅")
     else:
         print("❌Scraping failed❌")
+
+
+""" Image scraper commands """
 
 
 def scrape_images(name: Optional[str] = None):
@@ -128,26 +142,7 @@ def scrape_images(name: Optional[str] = None):
         print("❌Scraping failed❌")
 
 
-def scrape_reels(name: Optional[str] = None):
-    print(f"Start scraping reels for {name}")
-    scraper = FacebookReelsScraper(name)
-    scraper.pipeline()
-
-    if scraper.is_pipeline_successful:
-        print("✅Scraping successful✅")
-    else:
-        print("❌Scraping failed❌")
-
-
-def scrape_videos(name: Optional[str] = None):
-    print(f"Start scraping reels for {name}")
-    scraper = FacebookVideoScraper(name)
-    scraper.pipeline()
-
-    if scraper.is_pipeline_successful:
-        print("✅Scraping successful✅")
-    else:
-        print("❌Scraping failed❌")
+""" Recent place scraper commands """
 
 
 def scrape_recent_places(name: Optional[str] = None):
@@ -161,9 +156,40 @@ def scrape_recent_places(name: Optional[str] = None):
         print("❌Scraping failed❌")
 
 
+""" Reels scraper commands """
+
+
+def scrape_reels(name: Optional[str] = None):
+    print(f"Start scraping reels for {name}")
+    scraper = FacebookReelsScraper(name)
+    scraper.pipeline()
+
+    if scraper.is_pipeline_successful:
+        print("✅Scraping successful✅")
+    else:
+        print("❌Scraping failed❌")
+
+
+""" Reviews scraper commands """
+
+
 def scrape_reviews(name: Optional[str] = None):
     print(f"Start scraping reviews for {name}")
     scraper = FacebookReviewsScraper(name)
+    scraper.pipeline()
+
+    if scraper.is_pipeline_successful:
+        print("✅Scraping successful✅")
+    else:
+        print("❌Scraping failed❌")
+
+
+""" Videos scraper commands """
+
+
+def scrape_videos(name: Optional[str] = None):
+    print(f"Start scraping reels for {name}")
+    scraper = FacebookVideoScraper(name)
     scraper.pipeline()
 
     if scraper.is_pipeline_successful:
