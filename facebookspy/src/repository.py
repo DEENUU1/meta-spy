@@ -56,12 +56,12 @@ def create_friends(full_name: str, url: str, person_id: int) -> Friends:
     return friends
 
 
-def get_friends_list() -> List[Friends]:
-    pass
+def get_friends_list(person_id: int) -> List[Friends]:
+    return session.query(Friends).filter_by(person_id=person_id).all()
 
 
-def get_friend() -> Friends:
-    pass
+def get_friend(friend_id: int) -> Friends:
+    return session.query(Friends).filter_by(id=friend_id).first()
 
 
 def create_image(path: str, person_id: int) -> Image:
