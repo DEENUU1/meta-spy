@@ -101,12 +101,12 @@ def create_work_and_education(name: str, person_id: int) -> WorkAndEducation:
     return work_and_education
 
 
-def get_work_and_education_list() -> List[WorkAndEducation]:
-    pass
+def get_work_and_education_list(person_id: int) -> List[WorkAndEducation]:
+    return session.query(WorkAndEducation).filter_by(person_id=person_id).all()
 
 
-def get_work_and_education() -> WorkAndEducation:
-    pass
+def get_work_and_education(work_and_education_id: int) -> WorkAndEducation:
+    return session.query(WorkAndEducation).filter_by(id=work_and_education_id).first()
 
 
 def create_recent_places(localization: str, date: str, person_id: int) -> RecentPlaces:
