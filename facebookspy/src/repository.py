@@ -71,12 +71,12 @@ def create_image(path: str, person_id: int) -> Image:
     return image
 
 
-def get_image_list() -> List[Image]:
-    pass
+def get_image_list(person_id: int) -> List[Image]:
+    return session.query(Image).filter_by(person_id=person_id).all()
 
 
-def get_image() -> Image:
-    pass
+def get_image(image_id: int) -> Image:
+    return session.query(Image).filter_by(id=image_id).first()
 
 
 def create_places(name: str, date: str, person_id: int) -> Places:
