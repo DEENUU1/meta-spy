@@ -7,8 +7,8 @@ facebookspy/cookies.json
 .idea/
 ~/
 images/
-facebookspy/src/database.db
-facebookspy/src/database_test.db
+facebookspy/database.db
+facebookspy/database_test.db
 
 
 __pycache__/

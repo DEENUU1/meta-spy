@@ -1,10 +1,9 @@
 import logging
 from typing import List, Dict
-
 from ...config import Config
 from selenium.webdriver.common.by import By
 from ..facebook_base import BaseFacebookScraper
-from rich import print
+from rich import print as rprint
 from ...repository import (
     person_exists,
     create_person,
@@ -35,7 +34,6 @@ class AccountScraper(BaseFacebookScraper):
     def extract_full_name(self) -> str | None:
         """Extract full name from homepage"""
         data = None
-        print("🤟Extracting full name from homepage🤟")
         try:
             self._driver.get(self._base_url)
             fullname_element = self._driver.find_element(
@@ -44,12 +42,12 @@ class AccountScraper(BaseFacebookScraper):
             data = fullname_element.text.strip()
 
         except Exception as e:
-            logging.error(e)
+            logging.error(f"Error occurred while extracting full name: {e}")
 
         return data
 
     def extract_work_and_education(self) -> List[Dict[str, str]]:
-        """Scrape for history of employment and school"""
+        """Return employment and education history"""
 
         extracted_work_data = []
         try:
@@ -104,6 +102,7 @@ class AccountScraper(BaseFacebookScraper):
         return places
 
     def extract_family(self) -> List[Dict[str, str]]:
+        """Return family members"""
         data = []
         try:
             self._driver.get(f"{self._base_url}/{Config.FAMILY_URL}")
@@ -132,50 +131,178 @@ class AccountScraper(BaseFacebookScraper):
 
     @property
     def is_pipeline_successful(self) -> bool:
+        """Check if pipeline is successful"""
         return self.success
 
-    def pipeline(self) -> None:
+    def work_and_education_pipeline(self) -> None:
         """
-        Pipeline to run the scraper
+        Pipeline to run extract work and education data
         """
         try:
+            rprint("[bold]Step 1 of 3 - Load cookies[/bold]")
             self._load_cookies()
-            self._driver.refresh()
-            full_name = self.extract_full_name()
-            print(full_name)
 
-            if not person_exists(self._user_id) and full_name is not None:
-                create_person(self._base_url, self._user_id, full_name)
+            rprint("[bold]Step 2 of 3 - Refresh driver[/bold]")
+            self._driver.refresh()
+
+            if not person_exists(self._user_id):
+                create_person(self._user_id)
 
             person_id = get_person(self._user_id).id
 
-            family_members = self.extract_family()
-            print(family_members)
-            if person_exists(self._user_id):
-                for member in family_members:
-                    create_family_member(
-                        member["name"],
-                        member["relationship"],
-                        member["url"],
-                        person_id,
-                    )
-
-            places = self.extract_places()
-            print(places)
-
-            if person_exists(self._user_id):
-                for place in places:
-                    create_places(place["name"], place["date"], person_id)
-
+            rprint("[bold]Step 3 of 3 - Extract work and education data[/bold]")
             work_and_education = self.extract_work_and_education()
-            print(work_and_education)
-            if person_exists(self._user_id):
-                for data in work_and_education:
-                    create_work_and_education(data["name"], person_id)
+            for data in work_and_education:
+                create_work_and_education(data["name"], person_id)
+                rprint(f"[cyan]{data['name']}[/cyan]")
 
             self._driver.quit()
 
             self.success = True
-
         except Exception as e:
             logging.error(f"Error running pipeline: {e}")
+            rprint(f"[bold red]Something went wrong[/bold red] {e}")
+
+    def localization_pipeline(self) -> None:
+        """
+        Pipeline to return localization data
+        """
+        try:
+            rprint("[bold]Step 1 of 4 - Load cookies[/bold]")
+            self._load_cookies()
+
+            rprint("[bold]Step 2 of 4 - Refresh driver[/bold]")
+            self._driver.refresh()
+
+            rprint("[bold]Step 3 of 4 - Extract full name[/bold]")
+
+            if not person_exists(self._user_id):
+                create_person(self._user_id)
+
+            person_id = get_person(self._user_id).id
+
+            rprint("[bold]Step 4 of 4 - Extract localization data[/bold]")
+            places = self.extract_places()
+            for place in places:
+                create_places(place["name"], place["date"], person_id)
+                rprint(f"[cyan]{place['name']}[/cyan] - [blue]{place['date']}[/blue]")
+
+            self._driver.quit()
+
+            self.success = True
+        except Exception as e:
+            logging.error(f"Error running pipeline: {e}")
+            rprint(f"[bold red]Something went wrong[/bold red] {e}")
+
+    def family_member_pipeline(self) -> None:
+        """
+        Pipeline to extract family members data
+        """
+        try:
+            rprint("[bold]Step 1 of 3 - Load cookies[/bold]")
+            self._load_cookies()
+
+            rprint("[bold]Step 2 of 3 - Refresh driver[/bold]")
+            self._driver.refresh()
+
+            if not person_exists(self._user_id):
+                create_person(self._user_id)
+
+            person_id = get_person(self._user_id).id
+
+            rprint("[bold]Step 3 of 3 - Extract family members[/bold]")
+            family_members = self.extract_family()
+            for member in family_members:
+                create_family_member(
+                    member["name"],
+                    member["relationship"],
+                    member["url"],
+                    person_id,
+                )
+                rprint(
+                    f"[cyan]{member['name']}[/cyan] - [magenta]{member['relationship']}[/magenta] - [blue]{member['url']}[/blue]"
+                )
+
+            self._driver.quit()
+
+            self.success = True
+        except Exception as e:
+            logging.error(f"Error running pipeline: {e}")
+            rprint(f"[bold red]Something went wrong[/bold red] {e}")
+
+    def full_name_pipeline(self) -> None:
+        """
+        Pipeline to extract full name data
+        """
+        try:
+            rprint("[bold]Step 1 of 3 - Load cookies[/bold]")
+            self._load_cookies()
+
+            rprint("[bold]Step 2 of 3 - Refresh driver[/bold]")
+            self._driver.refresh()
+
+            rprint("[bold]Step 3 of 3 - Extract full name[/bold]")
+            full_name = self.extract_full_name()
+            rprint(f"[cyan]{full_name}[/cyan]")
+
+            if not person_exists(self._user_id):
+                create_person(self._user_id, full_name)
+
+            self._driver.quit()
+
+            self.success = True
+        except Exception as e:
+            logging.error(f"Error running pipeline: {e}")
+            rprint(f"[bold red]Something went wrong[/bold red] {e}")
+
+    def pipeline(self) -> None:
+        """
+        Pipeline to run full script
+        """
+        try:
+            rprint("[bold]Step 1 of 6 - Load cookies[/bold]")
+            self._load_cookies()
+
+            rprint("[bold]Step 2 of 6 - Refresh driver[/bold]")
+            self._driver.refresh()
+
+            rprint("[bold]Step 3 of 6 - Extract full name[/bold]")
+            full_name = self.extract_full_name()
+            rprint(f"[cyan]{full_name}[/cyan]")
+
+            if not person_exists(self._user_id):
+                create_person(self._user_id, full_name)
+
+            person_id = get_person(self._user_id).id
+
+            rprint("[bold]Step 4 of 6 - Extract family members[/bold]")
+            family_members = self.extract_family()
+            for member in family_members:
+                create_family_member(
+                    member["name"],
+                    member["relationship"],
+                    member["url"],
+                    person_id,
+                )
+                rprint(
+                    f"[cyan]{member['name']}[/cyan] - [magenta]{member['relationship']}[/magenta] - [blue]{member['url']}[/blue]"
+                )
+
+            rprint("[bold]Step 5 of 6 - Extract localization data[/bold]")
+            places = self.extract_places()
+            for place in places:
+                create_places(place["name"], place["date"], person_id)
+                rprint(f"[cyan]{place['name']}[/cyan] - [blue]{place['date']}[/blue]")
+
+            rprint("[bold]Step 6 of 6 - Extract work and education data[/bold]")
+            work_and_education = self.extract_work_and_education()
+            for data in work_and_education:
+                create_work_and_education(data["name"], person_id)
+                rprint(f"[cyan]{data['name']}[/cyan]")
+
+            self._driver.quit()
+
+            self.success = True
+        except Exception as e:
+            logging.error(f"Error running pipeline: {e}")
+            rprint(f"[bold red]Something went wrong[/bold red] {e}")

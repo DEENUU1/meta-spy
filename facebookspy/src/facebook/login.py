@@ -7,7 +7,7 @@ import logging
 from ..config import Config
 from .scraper import Scraper
 from rich.prompt import Prompt
-from rich import print
+from rich import print as rprint
 
 
 # Logging setup
@@ -40,7 +40,6 @@ class FacebookLogIn(Scraper):
         """
         Close modal with cookie information
         """
-        print("🍪Closing cookie modal🍪")
         try:
             button = self._driver.find_element(
                 By.CSS_SELECTOR, self._cookie_term_css_selector
@@ -53,7 +52,6 @@ class FacebookLogIn(Scraper):
         """
         Log in to Facebook using email and password
         """
-        print("✏️Entering email and password✏️")
         try:
             user_name = self._wait.until(
                 EC.presence_of_element_located(
@@ -100,7 +98,6 @@ class FacebookLogIn(Scraper):
         """
         Click button to save browser
         """
-        print("📝Saving browser📝")
         try:
             self._wait.until(
                 EC.presence_of_element_located(
@@ -118,7 +115,6 @@ class FacebookLogIn(Scraper):
         """
         Save cookies with log in account to json file
         """
-        print("📝Saving cookies📝")
         try:
             cookies = self._driver.get_cookies()
             with open(Config.COOKIES_FILE_PATH, "wb") as file:
@@ -138,29 +134,40 @@ class FacebookLogIn(Scraper):
         Pipeline to log in on an account with 2-step verification
         """
         try:
+            rprint("Step 1 of 5 - Closing cookie term modal")
             self._close_cookie_term()
+            rprint("Step 2 of 5 - Logging in")
             self._facebook_login()
             security_code = Prompt.ask("🔒Security code")
+            rprint("Step 3 of 5 - Adding security code")
             self._security_code(security_code)
+            rprint("Step 4 of 5 - Saving browser")
             self._save_browser()
+            rprint("Step 5 of 5 - Saving cookies")
             self._save_cookies()
 
             self.success = True
 
         except Exception as e:
             logging.error(f"Error occurred while logging in: {e}")
+            rprint(f"[bold red]Something went wrong[/bold red] {e}")
 
     def login_no_verification_pipeline(self) -> None:
         """
         Pipeline to log in on an account without 2-step verification
         """
         try:
+            rprint("Step 1 of 4 - Closing cookie term modal")
             self._close_cookie_term()
+            rprint("Step 2 of 4 - Logging in")
             self._facebook_login()
+            rprint("Step 3 of 4 - Saving browser")
             self._save_browser()
+            rprint("Step 4 of 4 - Saving cookies")
             self._save_cookies()
 
             self.success = True
 
         except Exception as e:
             logging.error(f"Error occurred while logging in: {e}")
+            rprint(f"[bold red]Something went wrong[/bold red] {e}")
