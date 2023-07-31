@@ -1,14 +1,12 @@
 import logging
-import pickle
 from time import sleep
 from typing import List
 
 from ...config import Config
-from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from rich import print
+from rich import print as rprint
 from ..facebook_base import BaseFacebookScraper
+from ...repository import create_person, get_person, person_exists, create_videos
 
 
 # Logging setup
@@ -91,11 +89,17 @@ class FacebookVideoScraper(BaseFacebookScraper):
             self._driver.refresh()
             self.scroll_page()
             videos = self.extract_videos_urls()
+            rprint(videos)
 
-            print(videos)
+            if not person_exists(self._user_id):
+                create_person(self._user_id)
+
+            person_id = get_person(self._user_id)
+            for video in videos:
+                create_videos(video, person_id)
 
             self._driver.quit()
-
             self.success = True
+
         except Exception as e:
             logging.error(f"An error occurred: {e}")

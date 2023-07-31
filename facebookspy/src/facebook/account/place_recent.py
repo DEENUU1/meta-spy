@@ -6,7 +6,7 @@ from ..facebook_base import BaseFacebookScraper
 from ...config import Config
 from selenium.webdriver.common.by import By
 from rich import print as rprint
-from ...repository import create_person, get_person, person_exists, create_places
+from ...repository import create_person, get_person, person_exists, create_recent_places
 
 
 # Logging setup
@@ -112,7 +112,7 @@ class FacebookRecentPlaces(BaseFacebookScraper):
             person_id = get_person(self._user_id).id
 
             for place in recent_places:
-                create_places(place["localization"], place["date"], person_id)
+                create_recent_places(place["localization"], place["date"], person_id)
 
             self._driver.quit()
             self.success = True
