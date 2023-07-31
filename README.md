@@ -113,10 +113,10 @@ scrape user information based on a given url address and save data to database a
   - videos
   - reviews
   
-### v0.3 (in develop)
-- ~~Save scraped data from v0.2 to database~~ 
-- ~~Create elastic pipelines to add more interaction with user and more functions~~
-- ~~Functions to return data from database~~
+### v0.3
+- Save scraped data from v0.2 to database 
+- Create elastic pipelines to add more interaction with user and more functions
+- Functions to return data from database
 - Add commands for new pipelines and update docs
 
 ### v0.4 (ideas)
@@ -189,14 +189,38 @@ python main.py login-2-step
 pyton main.py login
 # Allows to log in on facebook account without 2-step verification
 
-python main.py scrape --name <facebook_id>
-# Allows to scrape data like: full name, work and education, places
-
 python main.py scrape-friend-list --name <facebook_id>
 # Allows to scrape all friends 
 
 python main.py scrape-images --name <facebook_id>
 # Allows to scrape all images and save them locally
+
+python main.py scrape-full-account --name <facebook_id>
+# Scrape all basic information from facebook account (family members, full name etc)
+  
+    python main.py scrape-family-member --name <facebook_id>
+    # Scrape family members from specified facebook account
+
+    python main.py scrape-localization --name <facebook_id>
+    # Scrape places from facebook account
+    
+    python main.py scrape-work-and-education --name <facebook_id>
+    # Scrape work and education data from facebook account
+    
+    python main.py scrape-full-name --name <facebook_id>
+    # Scrape full name from facebook account
+    
+python main.py scrape-recent-places --name <facebook_id>
+# Scrape recent places from facebook account
+
+python main.py scrape-reels --name <facebook_id>
+# Scrape reels from facebook account
+
+python main.py scrape-reviews --name <facebook_id>
+# Scrape written reviews from facebook account 
+
+
+
 ```
 
 <!-- LICENSE -->

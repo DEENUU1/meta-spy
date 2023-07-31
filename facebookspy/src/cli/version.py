@@ -1,9 +1,12 @@
-from rich import print
+from rich import print as rprint
+
+
+VERSION = "0.3"
 
 
 def return_version_info():
     """
     Return the version of the package.
     """
-    text = "You are using 0.3 version of the facebook spy. For more info visit https://github.com/DEENUU1/facebook-spy"
-    print(text)
+    text = f"You are using {VERSION} version of the facebook spy. For more info visit https://github.com/DEENUU1/facebook-spy"
+    rprint(text)
