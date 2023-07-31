@@ -163,10 +163,15 @@ class FacebookImageScraper(BaseFacebookScraper):
         Pipeline to run the scraper
         """
         try:
+            rprint("[bold]Step 1 of 5 - Load cookies[/bold]")
             self._load_cookies()
+            rprint("[bold]Step 2 of 5 - Refresh driver[/bold]")
             self._driver.refresh()
+            rprint("[bold]Step 3 of 5 - Scrolling page[/bold]")
             self.scroll_page()
+            rprint("[bold]Step 4 of 5 - Extract image urls[/bold]")
             image_urls = self.extract_image_urls()
+            rprint("[bold]Step 5 of 5 - Downloading images[/bold]")
             image_paths = self.save_images(image_urls)
             rprint(image_paths)
 

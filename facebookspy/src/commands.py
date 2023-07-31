@@ -21,10 +21,14 @@ app = typer.Typer()
 
 
 def home():
+    """Display basic information about the project"""
+
     display_start_menu()
 
 
 def version():
+    """Display data about the project version"""
+
     return_version_info()
 
 
@@ -32,9 +36,8 @@ def version():
 
 
 def login_2_step():
-    """
-    Log in to facebook account with 2-step authentication
-    """
+    """Log in to facebook account with 2-step authentication"""
+
     facebook = FacebookLogIn()
     facebook.login_2_step_pipeline()
 
@@ -45,9 +48,8 @@ def login_2_step():
 
 
 def login():
-    """
-    Log in to facebook account without 2-step authentication
-    """
+    """Log in to facebook account without 2-step authentication"""
+
     facebook = FacebookLogIn()
     facebook.login_no_verification_pipeline()
 
@@ -61,6 +63,13 @@ def login():
 
 
 def scrape_full_account(name: Optional[str] = None):
+    """Scrape data from facebook account:
+    - full name
+    - places
+    - family members
+    - work and education
+    """
+
     rprint(f"Start scraping all data from {name} account")
     scraper = AccountScraper(name)
     scraper.pipeline()
@@ -72,6 +81,8 @@ def scrape_full_account(name: Optional[str] = None):
 
 
 def scrape_work_and_education(name: Optional[str] = None):
+    """Scrape work and education history data"""
+
     rprint(f"Start scraping work and education data from {name} account")
     scraper = AccountScraper(name)
     scraper.work_and_education_pipeline()
@@ -83,6 +94,8 @@ def scrape_work_and_education(name: Optional[str] = None):
 
 
 def scrape_localization(name: Optional[str] = None):
+    """Scrape visited places"""
+
     rprint(f"Start scraping localization data from {name} account")
     scraper = AccountScraper(name)
     scraper.localization_pipeline()
@@ -94,6 +107,8 @@ def scrape_localization(name: Optional[str] = None):
 
 
 def scrape_family_member(name: Optional[str] = None):
+    """Scrape family member data"""
+
     rprint(f"Start scraping family member data from {name} account")
     scraper = AccountScraper(name)
     scraper.family_member_pipeline()
@@ -105,6 +120,8 @@ def scrape_family_member(name: Optional[str] = None):
 
 
 def scrape_full_name(name: Optional[str] = None):
+    """Scrape full name from facebook account"""
+
     rprint(f"Start scraping full name data from {name} account")
     scraper = AccountScraper(name)
     scraper.full_name_pipeline()
@@ -119,6 +136,8 @@ def scrape_full_name(name: Optional[str] = None):
 
 
 def scrape_friend_list(name: Optional[str] = None):
+    """Scrape friend list from facebook account"""
+
     rprint(f"Start scraping friend list for {name}")
     scraper = FriendListScraper(name)
     scraper.pipeline()
@@ -133,6 +152,8 @@ def scrape_friend_list(name: Optional[str] = None):
 
 
 def scrape_images(name: Optional[str] = None):
+    """Scrape images from facebook account"""
+
     rprint(f"Start scraping images for {name}")
     scraper = FacebookImageScraper(name)
     scraper.pipeline()
@@ -147,6 +168,8 @@ def scrape_images(name: Optional[str] = None):
 
 
 def scrape_recent_places(name: Optional[str] = None):
+    """Scrape recent places from facebook account"""
+
     rprint(f"Start scraping recent places for {name}")
     scraper = FacebookRecentPlaces(name)
     scraper.pipeline()
@@ -161,6 +184,8 @@ def scrape_recent_places(name: Optional[str] = None):
 
 
 def scrape_reels(name: Optional[str] = None):
+    """Scrape reels urls from facebook account"""
+
     rprint(f"Start scraping reels for {name}")
     scraper = FacebookReelsScraper(name)
     scraper.pipeline()
@@ -175,6 +200,8 @@ def scrape_reels(name: Optional[str] = None):
 
 
 def scrape_reviews(name: Optional[str] = None):
+    """Scrape written reviews from facebook account"""
+
     rprint(f"Start scraping reviews for {name}")
     scraper = FacebookReviewsScraper(name)
     scraper.pipeline()
@@ -189,6 +216,8 @@ def scrape_reviews(name: Optional[str] = None):
 
 
 def scrape_videos(name: Optional[str] = None):
+    """Scrape videos urls from facebook account"""
+
     rprint(f"Start scraping reels for {name}")
     scraper = FacebookVideoScraper(name)
     scraper.pipeline()

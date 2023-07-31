@@ -45,7 +45,7 @@ class Person(Base):
     __tablename__ = "persons"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    full_name = Column(String, nullable=False)
+    full_name = Column(String, nullable=True)
     url = Column(String, nullable=True)
     facebook_id = Column(String, nullable=True)
 

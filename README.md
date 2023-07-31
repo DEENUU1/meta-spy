@@ -9,7 +9,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/DEENUU1/">
-    <img src="assets/facebook.png" alt="Logo" width="100" height="100">
+    <img src="assets/dashboard.png" alt="Logo" >
   </a>
 
   <h3 align="center">Facebook link tree</h3>
@@ -82,19 +82,8 @@ scrape user information based on a given url address and save data to database a
 
 ## Screenshots
 
-<img src="assets/app1.png" alt="home">
-<img src="assets/app2.png" alt="home">
-<img src="assets/app3.png" alt="home">
-<img src="assets/app4.png" alt="home">
-<img src="assets/app5.png" alt="home">
-<img src="assets/app6.png" alt="home">
-<img src="assets/app7.png" alt="home">
-<img src="assets/app8.png" alt="home">
-<img src="assets/app9.png" alt="home">
-<img src="assets/app10.png" alt="home">
-<img src="assets/app11.png" alt="home">
-<img src="assets/app12.png" alt="home">
-<img src="assets/app13.png" alt="home">
+<img src="assets/dashboard.png" alt="home">
+
 
 ## Version
 ### v0.1

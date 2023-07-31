@@ -100,9 +100,13 @@ class FacebookRecentPlaces(BaseFacebookScraper):
         Pipeline to run the scraper
         """
         try:
+            rprint("[bold]Step 1 of 4 - Load cookies[/bold]")
             self._load_cookies()
+            rprint("[bold]Step 2 of 4 - Refresh driver[/bold]")
             self._driver.refresh()
+            rprint("[bold]Step 3 of 4 - Scrolling page[/bold]")
             self.scroll_page()
+            rprint("[bold]Step 4 of 4 - Extracting recent places[/bold]")
             recent_places = self.extract_recent_places()
             rprint(recent_places)
 

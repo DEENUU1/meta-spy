@@ -85,9 +85,13 @@ class FacebookReelsScraper(BaseFacebookScraper):
         Pipeline to run the scraper
         """
         try:
+            rprint("[bold]Step 1 of 4 - Load cookies[/bold]")
             self._load_cookies()
+            rprint("[bold]Step 2 of 4 - Refresh driver[/bold]")
             self._driver.refresh()
+            rprint("[bold]Step 3 of 4 - Scrolling page[/bold]")
             self.scroll_page()
+            rprint("[bold]Step 4 of 4 - Extract reels urls[/bold]")
             reels = self.extract_reels_urls()
             rprint(reels)
 
