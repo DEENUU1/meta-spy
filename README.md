@@ -8,9 +8,6 @@
 
 <br />
 <div align="center">
-  <a href="https://github.com/DEENUU1/">
-    <img src="assets/facebook.png" alt="Logo" width="100" height="100">
-  </a>
 
   <h3 align="center">Facebook link tree</h3>
 
@@ -22,44 +19,17 @@
     ·
     <a href="https://github.com/DEENUU1/OLX-Analytics/issues">Request Feature</a>
   </p>
+
+  <a href="https://github.com/DEENUU1/">
+    <img src="assets/home.png" alt="Logo" >
+  </a>
 </div>
 
 
-
-<!-- TABLE OF CONTENTS -->
-
-### Table of Contents
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li><a href="#key-features">Key features</a></li>
-    <li><a href="#version">Version history and future</a></li>
-    <li><a href="#screenshots">Screenshots</a></li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#installation">Installation</a></li>
-        <li><a href="#configuration">Configuration</a></li>
-        <li><a href="#commands">Commands</a></li>
-      </ul>
-    </li>
-    <li><a href="#unit-tests">Tests</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#author">Author</a></li>
-  </ol>
-
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-<p style="color: red">This project is still in develop. I will regularly publish new versions, you can follow the progress in the issue.</p>
-
 This project allows to log in using selenium to facebook account (even if you have 2-step verification), 
 scrape user information based on a given url address and save data to database and local files.
-
 
 
 ### Built With
@@ -78,44 +48,20 @@ scrape user information based on a given url address and save data to database a
   - places
   - full name
   - recent places 
-
+- Save scraped data to database
 
 ## Screenshots
 
-<img src="assets/app1.png" alt="home">
-<img src="assets/app2.png" alt="home">
-<img src="assets/app3.png" alt="home">
-<img src="assets/app4.png" alt="home">
-<img src="assets/app5.png" alt="home">
-<img src="assets/app6.png" alt="home">
-<img src="assets/app7.png" alt="home">
-<img src="assets/app8.png" alt="home">
-<img src="assets/app9.png" alt="home">
-<img src="assets/app10.png" alt="home">
-<img src="assets/app11.png" alt="home">
-<img src="assets/app12.png" alt="home">
-<img src="assets/app13.png" alt="home">
+<img src="assets/help.png" alt="home">
+-
+<img src="assets/scrapeimage.png" alt="home">
+-
+<img src="assets/fullaccount.png" alt="home">
+-
+<img src="assets/scrapefullaccount.png" alt="home">
 
-## Version
-### v0.1
-- Login system and saving cookies 
-- Scrape:
-  - user's friend list
-  - user's info about work and education
-  - user's info about places
-  - full name 
-- save scraped data to database
 
-### v0.2
-- Scrape
-  - recent places
-  - reels
-  - videos
-  - reviews
-  
-### v0.3 (in develop)
-- Save scraped data from v0.2 to database 
-- Create elastic pipelines to add more interaction with user and more functions
+## Upcoming versions
 
 ### v0.4 (ideas)
 - Fastapi to return data from database 
@@ -125,6 +71,9 @@ scrape user information based on a given url address and save data to database a
 - React frontend for local server 
 
 ### v0.6 (ideas)
+- Static page for project with demo etc.
+
+### v0.7 (ideas)
 - Scrape:
   - groups
   - music
@@ -187,14 +136,36 @@ python main.py login-2-step
 pyton main.py login
 # Allows to log in on facebook account without 2-step verification
 
-python main.py scrape --name <facebook_id>
-# Allows to scrape data like: full name, work and education, places
-
 python main.py scrape-friend-list --name <facebook_id>
 # Allows to scrape all friends 
 
 python main.py scrape-images --name <facebook_id>
 # Allows to scrape all images and save them locally
+
+python main.py scrape-full-account --name <facebook_id>
+# Scrape all basic information from facebook account (family members, full name etc)
+  
+    python main.py scrape-family-member --name <facebook_id>
+    # Scrape family members from specified facebook account
+
+    python main.py scrape-localization --name <facebook_id>
+    # Scrape places from facebook account
+    
+    python main.py scrape-work-and-education --name <facebook_id>
+    # Scrape work and education data from facebook account
+    
+    python main.py scrape-full-name --name <facebook_id>
+    # Scrape full name from facebook account
+    
+python main.py scrape-recent-places --name <facebook_id>
+# Scrape recent places from facebook account
+
+python main.py scrape-reels --name <facebook_id>
+# Scrape reels from facebook account
+
+python main.py scrape-reviews --name <facebook_id>
+# Scrape written reviews from facebook account 
+
 ```
 
 <!-- LICENSE -->
