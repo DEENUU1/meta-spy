@@ -10,7 +10,7 @@ from .facebook.account.reviews import FacebookReviewsScraper
 from typing import Optional
 import typer
 from src.cli.home import display_start_menu
-from rich import print
+from rich import print as rprint
 from src.cli.version import return_version_info
 
 load_dotenv()
@@ -33,9 +33,9 @@ def login_2_step():
     facebook.login_2_step_pipeline()
 
     if facebook.is_pipeline_successful:
-        print("✅Logging successful✅")
+        rprint("✅Logging successful✅")
     else:
-        print("❌Logging failed❌")
+        rprint("❌Logging failed❌")
 
 
 def login():
@@ -46,20 +46,64 @@ def login():
     facebook.login_no_verification_pipeline()
 
     if facebook.is_pipeline_successful:
-        print("✅Logging successful✅")
+        rprint("✅Logging successful✅")
     else:
-        print("❌Logging failed❌")
+        rprint("❌Logging failed❌")
 
 
-def scrape(name: Optional[str] = None):
-    print(f"Start scraping friend list for {name}")
+def scrape_full_account(name: Optional[str] = None):
+    rprint(f"Start scraping all data from {name} account")
     scraper = AccountScraper(name)
     scraper.pipeline()
 
     if scraper.is_pipeline_successful:
-        print("✅Scraping successful✅")
+        rprint("✅Scraping successful✅")
     else:
-        print("❌Scraping failed❌")
+        rprint("❌Scraping failed❌")
+
+
+def scrape_work_and_education(name: Optional[str] = None):
+    rprint(f"Start scraping work and education data from {name} account")
+    scraper = AccountScraper(name)
+    scraper.work_and_education_pipeline()
+
+    if scraper.is_pipeline_successful:
+        rprint("✅Scraping successful✅")
+    else:
+        rprint("❌Scraping failed❌")
+
+
+def scrape_localization(name: Optional[str] = None):
+    rprint(f"Start scraping localization data from {name} account")
+    scraper = AccountScraper(name)
+    scraper.localization_pipeline()
+
+    if scraper.is_pipeline_successful:
+        rprint("✅Scraping successful✅")
+    else:
+        rprint("❌Scraping failed❌")
+
+
+def scrape_family_member(name: Optional[str] = None):
+    rprint(f"Start scraping family member data from {name} account")
+    scraper = AccountScraper(name)
+    scraper.family_member_pipeline()
+
+    if scraper.is_pipeline_successful:
+        rprint("✅Scraping successful✅")
+    else:
+        rprint("❌Scraping failed❌")
+
+
+def scrape_full_name(name: Optional[str] = None):
+    rprint(f"Start scraping full name data from {name} account")
+    scraper = AccountScraper(name)
+    scraper.full_name_pipeline()
+
+    if scraper.is_pipeline_successful:
+        rprint("✅Scraping successful✅")
+    else:
+        rprint("❌Scraping failed❌")
 
 
 def scrape_friend_list(name: Optional[str] = None):
