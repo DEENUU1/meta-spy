@@ -148,12 +148,12 @@ def create_videos(url: str, person_id: int) -> Videos:
     return videos
 
 
-def get_videos_list() -> List[Videos]:
-    pass
+def get_videos_list(person_id: int) -> List[Videos]:
+    return session.query(Videos).filter_by(person_id=person_id).all()
 
 
-def get_video() -> Videos:
-    pass
+def get_video(video_id: int) -> Videos:
+    return session.query(Videos).filter_by(id=video_id).first()
 
 
 def create_reviews(company: str, review: str, person_id: int) -> Reviews:
