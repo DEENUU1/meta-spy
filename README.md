@@ -8,9 +8,6 @@
 
 <br />
 <div align="center">
-  <a href="https://github.com/DEENUU1/">
-    <img src="assets/dashboard.png" alt="Logo" >
-  </a>
 
   <h3 align="center">Facebook link tree</h3>
 
@@ -22,44 +19,17 @@
     ·
     <a href="https://github.com/DEENUU1/OLX-Analytics/issues">Request Feature</a>
   </p>
+
+  <a href="https://github.com/DEENUU1/">
+    <img src="assets/home.png" alt="Logo" >
+  </a>
 </div>
 
 
-
-<!-- TABLE OF CONTENTS -->
-
-### Table of Contents
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li><a href="#key-features">Key features</a></li>
-    <li><a href="#version">Version history and future</a></li>
-    <li><a href="#screenshots">Screenshots</a></li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#installation">Installation</a></li>
-        <li><a href="#configuration">Configuration</a></li>
-        <li><a href="#commands">Commands</a></li>
-      </ul>
-    </li>
-    <li><a href="#unit-tests">Tests</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#author">Author</a></li>
-  </ol>
-
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-<p style="color: red">This project is still in develop. I will regularly publish new versions, you can follow the progress in the issue.</p>
-
 This project allows to log in using selenium to facebook account (even if you have 2-step verification), 
 scrape user information based on a given url address and save data to database and local files.
-
 
 
 ### Built With
@@ -82,31 +52,16 @@ scrape user information based on a given url address and save data to database a
 
 ## Screenshots
 
-<img src="assets/dashboard.png" alt="home">
+<img src="assets/help.png" alt="home">
+-
+<img src="assets/scrapeimage.png" alt="home">
+-
+<img src="assets/fullaccount.png" alt="home">
+-
+<img src="assets/scrapefullaccount.png" alt="home">
 
 
-## Version
-### v0.1
-- Login system and saving cookies 
-- Scrape:
-  - user's friend list
-  - user's info about work and education
-  - user's info about places
-  - full name 
-- save scraped data to database
-
-### v0.2
-- Scrape
-  - recent places
-  - reels
-  - videos
-  - reviews
-  
-### v0.3
-- Save scraped data from v0.2 to database 
-- Create elastic pipelines to add more interaction with user and more functions
-- Functions to return data from database
-- Add commands for new pipelines and update docs
+## Upcoming versions
 
 ### v0.4 (ideas)
 - Fastapi to return data from database 
@@ -114,9 +69,11 @@ scrape user information based on a given url address and save data to database a
 
 ### v0.5 (ideas)
 - React frontend for local server 
-- Static page for project with demo etc.
 
 ### v0.6 (ideas)
+- Static page for project with demo etc.
+
+### v0.7 (ideas)
 - Scrape:
   - groups
   - music
