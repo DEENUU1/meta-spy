@@ -11,7 +11,7 @@ from .models import (
     Reviews,
 )
 from .database import session
-from typing import Any, Type
+from typing import Any, Type, List
 
 
 def person_exists(facebook_id: str) -> Any:
@@ -41,11 +41,27 @@ def create_family_member(
     return family_member
 
 
+def get_family_member_list() -> List[FamilyMember]:
+    pass
+
+
+def get_family_member() -> FamilyMember:
+    pass
+
+
 def create_friends(full_name: str, url: str, person_id: int) -> Friends:
     friends = Friends(full_name=full_name, url=url, person_id=person_id)
     session.add(friends)
     session.commit()
     return friends
+
+
+def get_friends_list() -> List[Friends]:
+    pass
+
+
+def get_friend() -> Friends:
+    pass
 
 
 def create_image(path: str, person_id: int) -> Image:
@@ -55,6 +71,14 @@ def create_image(path: str, person_id: int) -> Image:
     return image
 
 
+def get_image_list() -> List[Image]:
+    pass
+
+
+def get_image() -> Image:
+    pass
+
+
 def create_places(name: str, date: str, person_id: int) -> Places:
     places = Places(name=name, date=date, person_id=person_id)
     session.add(places)
@@ -62,11 +86,27 @@ def create_places(name: str, date: str, person_id: int) -> Places:
     return places
 
 
+def get_places_list() -> List[Places]:
+    pass
+
+
+def get_place() -> Places:
+    pass
+
+
 def create_work_and_education(name: str, person_id: int) -> WorkAndEducation:
     work_and_education = WorkAndEducation(name=name, person_id=person_id)
     session.add(work_and_education)
     session.commit()
     return work_and_education
+
+
+def get_work_and_education_list() -> List[WorkAndEducation]:
+    pass
+
+
+def get_work_and_education() -> WorkAndEducation:
+    pass
 
 
 def create_recent_places(localization: str, date: str, person_id: int) -> RecentPlaces:
@@ -78,11 +118,27 @@ def create_recent_places(localization: str, date: str, person_id: int) -> Recent
     return recent_places
 
 
+def get_recent_places_list() -> List[RecentPlaces]:
+    pass
+
+
+def get_recent_place() -> RecentPlaces:
+    pass
+
+
 def create_reels(url: str, person_id: int) -> Reels:
     reels = Reels(url=url, person_id=person_id)
     session.add(reels)
     session.commit()
     return reels
+
+
+def get_reels_list() -> List[Reels]:
+    pass
+
+
+def get_reel() -> Reels:
+    pass
 
 
 def create_videos(url: str, person_id: int) -> Videos:
@@ -92,8 +148,24 @@ def create_videos(url: str, person_id: int) -> Videos:
     return videos
 
 
+def get_videos_list() -> List[Videos]:
+    pass
+
+
+def get_video() -> Videos:
+    pass
+
+
 def create_reviews(company: str, review: str, person_id: int) -> Reviews:
     reviews = Reviews(company=company, review=review, person_id=person_id)
     session.add(reviews)
     session.commit()
     return reviews
+
+
+def get_reviews_list() -> List[Reviews]:
+    pass
+
+
+def get_review() -> Reviews:
+    pass
