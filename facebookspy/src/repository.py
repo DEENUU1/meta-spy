@@ -41,12 +41,12 @@ def create_family_member(
     return family_member
 
 
-def get_family_member_list() -> List[FamilyMember]:
-    pass
+def get_family_member_list(person_id: int) -> List[FamilyMember]:
+    return session.query(FamilyMember).filter_by(person_id=person_id).all()
 
 
-def get_family_member() -> FamilyMember:
-    pass
+def get_family_member(family_member_id: int) -> FamilyMember:
+    return session.query(FamilyMember).filter_by(id=family_member_id).first()
 
 
 def create_friends(full_name: str, url: str, person_id: int) -> Friends:
