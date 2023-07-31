@@ -152,13 +152,14 @@ class AccountScraper(BaseFacebookScraper):
 
             rprint("[bold]Step 3 of 3 - Extract work and education data[/bold]")
             work_and_education = self.extract_work_and_education()
+            rprint(work_and_education)
+
             for data in work_and_education:
                 create_work_and_education(data["name"], person_id)
-                rprint(f"[cyan]{data['name']}[/cyan]")
 
             self._driver.quit()
-
             self.success = True
+
         except Exception as e:
             logging.error(f"Error running pipeline: {e}")
             rprint(f"[bold red]Something went wrong[/bold red] {e}")
@@ -183,13 +184,14 @@ class AccountScraper(BaseFacebookScraper):
 
             rprint("[bold]Step 4 of 4 - Extract localization data[/bold]")
             places = self.extract_places()
+            rprint(places)
+
             for place in places:
                 create_places(place["name"], place["date"], person_id)
-                rprint(f"[cyan]{place['name']}[/cyan] - [blue]{place['date']}[/blue]")
 
             self._driver.quit()
-
             self.success = True
+
         except Exception as e:
             logging.error(f"Error running pipeline: {e}")
             rprint(f"[bold red]Something went wrong[/bold red] {e}")
@@ -212,6 +214,8 @@ class AccountScraper(BaseFacebookScraper):
 
             rprint("[bold]Step 3 of 3 - Extract family members[/bold]")
             family_members = self.extract_family()
+            rprint(family_members)
+
             for member in family_members:
                 create_family_member(
                     member["name"],
@@ -219,13 +223,10 @@ class AccountScraper(BaseFacebookScraper):
                     member["url"],
                     person_id,
                 )
-                rprint(
-                    f"[cyan]{member['name']}[/cyan] - [magenta]{member['relationship']}[/magenta] - [blue]{member['url']}[/blue]"
-                )
 
             self._driver.quit()
-
             self.success = True
+
         except Exception as e:
             logging.error(f"Error running pipeline: {e}")
             rprint(f"[bold red]Something went wrong[/bold red] {e}")
@@ -243,14 +244,14 @@ class AccountScraper(BaseFacebookScraper):
 
             rprint("[bold]Step 3 of 3 - Extract full name[/bold]")
             full_name = self.extract_full_name()
-            rprint(f"[cyan]{full_name}[/cyan]")
+            rprint(full_name)
 
             if not person_exists(self._user_id):
                 create_person(self._user_id, full_name)
 
             self._driver.quit()
-
             self.success = True
+
         except Exception as e:
             logging.error(f"Error running pipeline: {e}")
             rprint(f"[bold red]Something went wrong[/bold red] {e}")
@@ -268,7 +269,7 @@ class AccountScraper(BaseFacebookScraper):
 
             rprint("[bold]Step 3 of 6 - Extract full name[/bold]")
             full_name = self.extract_full_name()
-            rprint(f"[cyan]{full_name}[/cyan]")
+            rprint(full_name)
 
             if not person_exists(self._user_id):
                 create_person(self._user_id, full_name)
@@ -277,6 +278,8 @@ class AccountScraper(BaseFacebookScraper):
 
             rprint("[bold]Step 4 of 6 - Extract family members[/bold]")
             family_members = self.extract_family()
+            rprint(family_members)
+
             for member in family_members:
                 create_family_member(
                     member["name"],
@@ -284,25 +287,22 @@ class AccountScraper(BaseFacebookScraper):
                     member["url"],
                     person_id,
                 )
-                rprint(
-                    f"[cyan]{member['name']}[/cyan] - [magenta]{member['relationship']}[/magenta] - [blue]{member['url']}[/blue]"
-                )
 
             rprint("[bold]Step 5 of 6 - Extract localization data[/bold]")
             places = self.extract_places()
+            rprint(places)
             for place in places:
                 create_places(place["name"], place["date"], person_id)
-                rprint(f"[cyan]{place['name']}[/cyan] - [blue]{place['date']}[/blue]")
 
             rprint("[bold]Step 6 of 6 - Extract work and education data[/bold]")
             work_and_education = self.extract_work_and_education()
+            rprint(work_and_education)
             for data in work_and_education:
                 create_work_and_education(data["name"], person_id)
-                rprint(f"[cyan]{data['name']}[/cyan]")
 
             self._driver.quit()
-
             self.success = True
+
         except Exception as e:
             logging.error(f"Error running pipeline: {e}")
             rprint(f"[bold red]Something went wrong[/bold red] {e}")
