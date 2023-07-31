@@ -163,9 +163,9 @@ def create_reviews(company: str, review: str, person_id: int) -> Reviews:
     return reviews
 
 
-def get_reviews_list() -> List[Reviews]:
-    pass
+def get_reviews_list(person_id: int) -> List[Reviews]:
+    return session.query(Reviews).filter_by(person_id=person_id).all()
 
 
-def get_review() -> Reviews:
-    pass
+def get_review(review_id: int) -> Reviews:
+    return session.query(Reviews).filter_by(id=review_id).first()
