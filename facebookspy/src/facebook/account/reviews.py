@@ -111,10 +111,11 @@ class FacebookReviewsScraper(BaseFacebookScraper):
             if not person_exists(self._user_id):
                 create_person(self._user_id)
 
-            person_id = get_person(self._user_id)
+            person_id = get_person(self._user_id).id
 
             for review in reviews:
-                create_reviews(review["company"], review["opinions"], person_id)
+                opinion = "".join([data for data in review["opinions"]])
+                create_reviews(review["company"], opinion, person_id)
 
             self._driver.quit()
             self.success = True

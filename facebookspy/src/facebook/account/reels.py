@@ -23,9 +23,7 @@ class FacebookReelsScraper(BaseFacebookScraper):
     """
 
     def __init__(self, user_id) -> None:
-        super().__init__(
-            user_id, base_url=f"https://www.facebook.com/{self._user_id}/reels"
-        )
+        super().__init__(user_id, base_url=f"https://www.facebook.com/{user_id}/reels")
         self.success = False
 
     def scroll_page(self) -> None:
@@ -96,7 +94,7 @@ class FacebookReelsScraper(BaseFacebookScraper):
             if not person_exists(self._user_id):
                 create_person(self._user_id)
 
-            person_id = get_person(self._user_id)
+            person_id = get_person(self._user_id).id
 
             for reel in reels:
                 create_reels(reel, person_id)
