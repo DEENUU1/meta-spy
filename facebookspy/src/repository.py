@@ -118,12 +118,12 @@ def create_recent_places(localization: str, date: str, person_id: int) -> Recent
     return recent_places
 
 
-def get_recent_places_list() -> List[RecentPlaces]:
-    pass
+def get_recent_places_list(person_id: int) -> List[RecentPlaces]:
+    return session.query(RecentPlaces).filter_by(person_id=person_id).all()
 
 
-def get_recent_place() -> RecentPlaces:
-    pass
+def get_recent_place(recent_place_id: int) -> RecentPlaces:
+    return session.query(RecentPlaces).filter_by(id=recent_place_id).first()
 
 
 def create_reels(url: str, person_id: int) -> Reels:
