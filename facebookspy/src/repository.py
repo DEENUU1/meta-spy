@@ -133,12 +133,12 @@ def create_reels(url: str, person_id: int) -> Reels:
     return reels
 
 
-def get_reels_list() -> List[Reels]:
-    pass
+def get_reels_list(person_id: int) -> List[Reels]:
+    return session.query(Reels).filter_by(person_id=person_id).all()
 
 
-def get_reel() -> Reels:
-    pass
+def get_reel(reel_id: int) -> Reels:
+    return session.query(Reels).filter_by(id=reel_id).first()
 
 
 def create_videos(url: str, person_id: int) -> Videos:
