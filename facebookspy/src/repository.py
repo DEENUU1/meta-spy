@@ -86,12 +86,12 @@ def create_places(name: str, date: str, person_id: int) -> Places:
     return places
 
 
-def get_places_list() -> List[Places]:
-    pass
+def get_places_list(person_id: int) -> List[Places]:
+    return session.query(Places).filter_by(person_id=person_id).all()
 
 
-def get_place() -> Places:
-    pass
+def get_place(place_id: int) -> Places:
+    return session.query(Places).filter_by(id=place_id).first()
 
 
 def create_work_and_education(name: str, person_id: int) -> WorkAndEducation:
