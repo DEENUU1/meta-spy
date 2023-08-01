@@ -1,6 +1,6 @@
-from fastapi import FastAPI
-from typing import List
-from ...schemas import PersonListSchema
+from fastapi import FastAPI, Depends
+from typing import List, Annotated
+from ...schemas import PersonSchema
 from ...repository import (
     get_people,
 )
@@ -13,7 +13,6 @@ def home():
     return {"Hello": "World"}
 
 
-@app.get("/people/", response_model=List[PersonListSchema])
-def get_people_list():
-    people = get_people()
+@app.get("/people/")
+def get_people_list(people: Annotated[List[PersonSchema], Depends(get_people)]):
     return people

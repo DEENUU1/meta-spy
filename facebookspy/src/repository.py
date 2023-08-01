@@ -26,7 +26,7 @@ def get_person(facebook_id: str) -> Type[Person] | None:
     return person
 
 
-def get_people() -> List[Person]:
+async def get_people() -> List[Person]:
     session = get_session()
     people = session.query(Person).all()
     return people
