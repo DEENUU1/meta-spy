@@ -11,7 +11,7 @@ from .models import (
     Reviews,
 )
 from .database import get_session
-from typing import Type, List, Optional
+from typing import List, Optional
 
 
 def person_exists(facebook_id: str) -> bool:
@@ -24,18 +24,6 @@ def get_person(facebook_id: str) -> Optional[Person]:
     session = get_session()
     person = session.query(Person).filter_by(facebook_id=facebook_id).first()
     return person
-
-
-async def get_person_by_facebook_id(facebook_id: str) -> Optional[Person]:
-    session = get_session()
-    person = session.query(Person).filter_by(facebook_id=facebook_id).first()
-    return person
-
-
-async def get_people() -> List[Person]:
-    session = get_session()
-    people = session.query(Person).all()
-    return people
 
 
 def create_person(facebook_id: str, full_name=None) -> Person:
@@ -206,12 +194,6 @@ def create_reviews(company: str, review: str, person_id: int) -> Reviews:
     reviews = Reviews(company=company, review=review, person_id=person_id)
     session.add(reviews)
     session.commit()
-    return reviews
-
-
-async def get_reviews_list(person_id: int) -> List[Reviews]:
-    session = get_session()
-    reviews = session.query(Reviews).filter_by(person_id=person_id).all()
     return reviews
 
 
