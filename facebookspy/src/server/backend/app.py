@@ -6,8 +6,18 @@ from ...schemas import (
     VideosSchema,
     ReelsSchema,
     RecentPlacesSchema,
+    WorkAndEducationSchema,
+    PlacesSchema,
 )
-from ...models import Person, Videos, Reviews, Reels, RecentPlaces
+from ...models import (
+    Person,
+    Videos,
+    Reviews,
+    Reels,
+    RecentPlaces,
+    WorkAndEducation,
+    Places,
+)
 from ...database import Session, get_session
 
 app = FastAPI()
@@ -80,3 +90,16 @@ async def get_recent_places_by_person_id(
     if not recent_places:
         raise HTTPException(status_code=404, detail="Recent Places not found")
     return recent_places
+
+
+@app.get("/work_and_education/{person_id}", response_model=List[WorkAndEducationSchema])
+async def get_work_and_education_by_person_id(
+    person_id: int, session: Session = Depends(get_session)
+):
+    """Returns a list of work and education for specified person object"""
+    work_and_education = (
+        session.query(WorkAndEducation).filter_by(person_id=person_id).all()
+    )
+    if not work_and_education:
+        raise HTTPException(status_code=404, detail="Work and Education not found")
+    return work_and_education
