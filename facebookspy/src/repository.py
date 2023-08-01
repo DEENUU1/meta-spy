@@ -20,7 +20,13 @@ def person_exists(facebook_id: str) -> bool:
     return person is not None
 
 
-async def get_person(facebook_id: str) -> Optional[Person]:
+def get_person(facebook_id: str) -> Optional[Person]:
+    session = get_session()
+    person = session.query(Person).filter_by(facebook_id=facebook_id).first()
+    return person
+
+
+async def get_person_by_facebook_id(facebook_id: str) -> Optional[Person]:
     session = get_session()
     person = session.query(Person).filter_by(facebook_id=facebook_id).first()
     return person
@@ -203,9 +209,10 @@ def create_reviews(company: str, review: str, person_id: int) -> Reviews:
     return reviews
 
 
-def get_reviews_list(person_id: int) -> List[Reviews]:
+async def get_reviews_list(person_id: int) -> List[Reviews]:
     session = get_session()
-    return session.query(Reviews).filter_by(person_id=person_id).all()
+    reviews = session.query(Reviews).filter_by(person_id=person_id).all()
+    return reviews
 
 
 def get_review(review_id: int) -> Reviews:
