@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends, HTTPException
 from typing import List
-from ...schemas import PersonSchema, ReviewsSchema
-from ...models import Person
+from ...schemas import PersonSchema, ReviewsSchema, VideosSchema
+from ...models import Person, Videos
 from ...database import Session, get_session
 
 app = FastAPI()
@@ -16,6 +16,8 @@ def home():
 async def get_people_list(session: Session = Depends(get_session)):
     """Returns a list of person objects"""
     people = session.query(Person).all()
+    if not people:
+        raise HTTPException(status_code=404, detail="People not found")
     return people
 
 
