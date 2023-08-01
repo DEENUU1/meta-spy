@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends, HTTPException
 from typing import List
-from ...schemas import PersonSchema, ReviewsSchema, VideosSchema
-from ...models import Person, Videos
+from ...schemas import PersonSchema, ReviewsSchema, VideosSchema, ReelsSchema
+from ...models import Person, Videos, Reviews, Reels
 from ...database import Session, get_session
 
 app = FastAPI()
@@ -37,7 +37,7 @@ async def get_reviews_by_person_id(
     person_id: int, session: Session = Depends(get_session)
 ):
     """Returns a list of reviews for specified person object"""
-    reviews = session.query(ReviewsSchema).filter_by(person_id=person_id).all()
+    reviews = session.query(Reviews).filter_by(person_id=person_id).all()
     if not reviews:
         raise HTTPException(status_code=404, detail="Reviews not found")
     return reviews
@@ -48,7 +48,18 @@ async def get_videos_by_person_id(
     person_id: int, session: Session = Depends(get_session)
 ):
     """Returns a list of videos for specified person object"""
-    videos = session.query(VideosSchema).filter_by(person_id=person_id).all()
+    videos = session.query(Videos).filter_by(person_id=person_id).all()
     if not videos:
         raise HTTPException(status_code=404, detail="Videos not found")
     return videos
+
+
+@app.get("/reels/{person_id}", response_model=List[ReelsSchema])
+async def get_reels_by_person_id(
+    person_id: int, session: Session = Depends(get_session)
+):
+    """Returns a list of reels for specified person object"""
+    reels = session.query(Reels).filter_by(person_id=person_id).all()
+    if not reels:
+        raise HTTPException(status_code=404, detail="Reels not found")
+    return reels
