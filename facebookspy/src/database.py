@@ -6,3 +6,7 @@ engine = create_engine("sqlite:///database.db")
 Base.metadata.create_all(bind=engine)
 Session = sessionmaker(bind=engine)
 session = Session()
+
+
+def get_session():
+    return Session()
