@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from typing import List
-from ...schemas import PersonSchema
+from ...schemas import PersonListSchema
 from ...repository import (
     get_people,
 )
@@ -13,7 +13,7 @@ def home():
     return {"Hello": "World"}
 
 
-@app.get("/people/", response_model=List[PersonSchema])
+@app.get("/people/", response_model=List[PersonListSchema])
 def get_people_list():
     people = get_people()
     return people
