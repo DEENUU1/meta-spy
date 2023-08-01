@@ -1,7 +1,13 @@
 from fastapi import FastAPI, Depends, HTTPException
 from typing import List
-from ...schemas import PersonSchema, ReviewsSchema, VideosSchema, ReelsSchema
-from ...models import Person, Videos, Reviews, Reels
+from ...schemas import (
+    PersonSchema,
+    ReviewsSchema,
+    VideosSchema,
+    ReelsSchema,
+    RecentPlacesSchema,
+)
+from ...models import Person, Videos, Reviews, Reels, RecentPlaces
 from ...database import Session, get_session
 
 app = FastAPI()
@@ -63,3 +69,14 @@ async def get_reels_by_person_id(
     if not reels:
         raise HTTPException(status_code=404, detail="Reels not found")
     return reels
+
+
+@app.get("/recent_places/{person_id}", response_model=List[RecentPlacesSchema])
+async def get_recent_places_by_person_id(
+    person_id: int, session: Session = Depends(get_session)
+):
+    """Returns a list of recent places for specified person object"""
+    recent_places = session.query(RecentPlaces).filter_by(person_id=person_id).all()
+    if not recent_places:
+        raise HTTPException(status_code=404, detail="Recent Places not found")
+    return recent_places
