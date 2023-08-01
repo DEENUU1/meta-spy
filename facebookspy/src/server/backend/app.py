@@ -41,3 +41,14 @@ async def get_reviews_by_person_id(
     if not reviews:
         raise HTTPException(status_code=404, detail="Reviews not found")
     return reviews
+
+
+@app.get("/video/{person_id}", response_model=List[VideosSchema])
+async def get_videos_by_person_id(
+    person_id: int, session: Session = Depends(get_session)
+):
+    """Returns a list of videos for specified person object"""
+    videos = session.query(VideosSchema).filter_by(person_id=person_id).all()
+    if not videos:
+        raise HTTPException(status_code=404, detail="Videos not found")
+    return videos
