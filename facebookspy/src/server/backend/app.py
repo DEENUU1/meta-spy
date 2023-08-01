@@ -103,3 +103,14 @@ async def get_work_and_education_by_person_id(
     if not work_and_education:
         raise HTTPException(status_code=404, detail="Work and Education not found")
     return work_and_education
+
+
+@app.get("/places/{person_id}", response_model=List[PlacesSchema])
+async def get_places_by_person_id(
+    person_id: int, session: Session = Depends(get_session)
+):
+    """Return a list of places for specified person object"""
+    places = session.query(Places).filter_by(person_id=person_id).all()
+    if not places:
+        raise HTTPException(status_code=404, detail="Places not found")
+    return places
