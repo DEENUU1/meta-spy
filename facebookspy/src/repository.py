@@ -11,7 +11,7 @@ from .models import (
     Reviews,
 )
 from .database import get_session
-from typing import Type, List
+from typing import Type, List, Optional
 
 
 def person_exists(facebook_id: str) -> bool:
@@ -20,7 +20,7 @@ def person_exists(facebook_id: str) -> bool:
     return person is not None
 
 
-def get_person(facebook_id: str) -> Type[Person] | None:
+async def get_person(facebook_id: str) -> Optional[Person]:
     session = get_session()
     person = session.query(Person).filter_by(facebook_id=facebook_id).first()
     return person
