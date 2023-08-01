@@ -63,7 +63,7 @@ scrape user information based on a given url address and save data to database a
 
 ## Upcoming versions
 
-### v0.4 (ideas)
+### v0.4 (In develop)
 - Fastapi to return data from database 
 - Local server 
 
