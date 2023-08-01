@@ -10,7 +10,7 @@ from .models import (
     Reels,
     Reviews,
 )
-from .database import session
+from .database import session, get_session
 from typing import Any, Type, List
 
 
@@ -22,8 +22,10 @@ def get_person(facebook_id: str) -> Type[Person] | None:
     return session.query(Person).filter_by(facebook_id=facebook_id).first()
 
 
-def get_person_list() -> List[Person]:
-    return session.query(Person).all()
+def get_people() -> List[Person]:
+    session = get_session()
+    people = session.query(Person).all()
+    return people
 
 
 def create_person(facebook_id: str, full_name=None) -> Person:
