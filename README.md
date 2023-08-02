@@ -64,11 +64,8 @@ scrape user information based on a given url address and save data to database a
 
 ## Upcoming versions
 
-### v0.4 (In develop)
-- Fastapi to return data from database 
-- Local server 
 
-### v0.5 (ideas)
+### v0.5 (In develop)
 - React frontend for local server 
 
 ### v0.6 (ideas)
