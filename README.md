@@ -34,6 +34,7 @@ scrape user information based on a given url address and save data to database a
 
 ### Built With
 - Python
+- FastAPI 
 - Typer
 - Selenium
 - Sqlite
@@ -52,12 +53,12 @@ scrape user information based on a given url address and save data to database a
 
 ## Screenshots
 
-<img src="assets/help.png" alt="home">
--
-<img src="assets/scrapeimage.png" alt="home">
--
-<img src="assets/fullaccount.png" alt="home">
--
+<img style="margin-bottom: 20px" src="assets/help.png" alt="home"> 
+
+<img style="margin-bottom: 20px" src="assets/scrapeimage.png" alt="home">
+
+<img style="margin-bottom: 20px" src="assets/fullaccount.png" alt="home">
+
 <img src="assets/scrapefullaccount.png" alt="home">
 
 
@@ -165,6 +166,9 @@ python main.py scrape-reels --name <facebook_id>
 
 python main.py scrape-reviews --name <facebook_id>
 # Scrape written reviews from facebook account 
+
+python main.py start-fastapi-server
+# Run fastapi server, allows to browse scraped data 
 
 ```
 
