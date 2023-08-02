@@ -127,3 +127,14 @@ async def get_images_by_person_id(
     if not images:
         raise HTTPException(status_code=404, detail="Images not found")
     return images
+
+
+@app.get("/image/{image_id}", response_model=ImageSchema)
+async def get_image_by_image_id(
+    person_id: int, session: Session = Depends(get_session)
+):
+    """Return a list of images for specified person object"""
+    images = session.query(Image).filter_by(person_id=person_id).all()
+    if not images:
+        raise HTTPException(status_code=404, detail="Images not found")
+    return images
