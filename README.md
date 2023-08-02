@@ -116,6 +116,11 @@ python main.py login
 python main.py --name <user_id>
 ```
 
+### Tests
+```bazaar
+# To run pytest use this command
+pytest 
+```
 
 ### Commands
 ```bash
