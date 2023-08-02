@@ -8,6 +8,7 @@ from ...schemas import (
     RecentPlacesSchema,
     WorkAndEducationSchema,
     PlacesSchema,
+    ImageSchema,
 )
 from ...models import (
     Person,
@@ -17,6 +18,7 @@ from ...models import (
     RecentPlaces,
     WorkAndEducation,
     Places,
+    Image,
 )
 from ...database import Session, get_session
 
@@ -70,7 +72,7 @@ async def get_videos_by_person_id(
     return videos
 
 
-@app.get("/reels/{person_id}", response_model=List[ReelsSchema])
+@app.get("/reel/{person_id}", response_model=List[ReelsSchema])
 async def get_reels_by_person_id(
     person_id: int, session: Session = Depends(get_session)
 ):
@@ -81,7 +83,7 @@ async def get_reels_by_person_id(
     return reels
 
 
-@app.get("/recent_places/{person_id}", response_model=List[RecentPlacesSchema])
+@app.get("/recent_place/{person_id}", response_model=List[RecentPlacesSchema])
 async def get_recent_places_by_person_id(
     person_id: int, session: Session = Depends(get_session)
 ):
@@ -105,7 +107,7 @@ async def get_work_and_education_by_person_id(
     return work_and_education
 
 
-@app.get("/places/{person_id}", response_model=List[PlacesSchema])
+@app.get("/place/{person_id}", response_model=List[PlacesSchema])
 async def get_places_by_person_id(
     person_id: int, session: Session = Depends(get_session)
 ):
@@ -114,3 +116,14 @@ async def get_places_by_person_id(
     if not places:
         raise HTTPException(status_code=404, detail="Places not found")
     return places
+
+
+@app.get("/image/{person_id}", response_model=List[ImageSchema])
+async def get_images_by_person_id(
+    person_id: int, session: Session = Depends(get_session)
+):
+    """Return a list of images for specified person object"""
+    images = session.query(Image).filter_by(person_id=person_id).all()
+    if not images:
+        raise HTTPException(status_code=404, detail="Images not found")
+    return images
