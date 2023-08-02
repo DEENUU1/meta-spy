@@ -16,6 +16,7 @@ from src.commands import (
     scrape_reels,
     scrape_videos,
     scrape_reviews,
+    start_fastapi_server,
 )
 
 load_dotenv()
@@ -35,6 +36,7 @@ app.command()(scrape_full_account)
 app.command()(scrape_work_and_education)
 app.command()(scrape_localization)
 app.command()(scrape_family_member)
+app.command()(start_fastapi_server)
 
 
 if __name__ == "__main__":

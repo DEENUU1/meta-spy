@@ -31,7 +31,7 @@ def display_start_menu() -> None:
     )
 
     main_content = Panel(
-        renderable="[bold green]1.[/bold green] Log in with/without 2-step verification\n[bold green]2.[/bold green] Scrape basic information from facebook account (fullname, list of friends, places, work and education, family members) \n[bold green]3.[/bold green] Scraping and downloading images from facebook account\n[bold green]4.[/bold green] Extracting urls to reels and videos from facebook account\n[bold green]5.[/bold green] Saving all scraped data to database (sqlite)",
+        renderable="[bold green]1.[/bold green] Log in with/without 2-step verification\n[bold green]2.[/bold green] Scrape basic information from facebook account (fullname, list of friends, places, work and education, family members) \n[bold green]3.[/bold green] Scraping and downloading images from facebook account\n[bold green]4.[/bold green] Extracting urls to reels and videos from facebook account\n[bold green]5.[/bold green] Saving all scraped data to database (sqlite)\n[bold green]6.[/bold green] FastAPI server to browse scraped data",
         title="[reverse]FEATURES[/reverse]",
         title_align="center",
         border_style="bold blue",
@@ -69,7 +69,7 @@ def display_start_menu() -> None:
         # SIDE CONTENT BOTTOM
         Layout(
             Panel(
-                "🐍 [b u]Developed with[/b u]: Python, Typer, Rich, PyTest, Selenium, SQLite\n\n😎 [b u]Copyright[/b u]: 2023 (Kacper Wlodarczyk)\n\n✅ [b u]Language Support[/b u]: English, Polish",
+                "🐍 [b u]Developed with[/b u]: Python, FastAPI, Typer, Rich, PyTest, Selenium, SQLite\n\n😎 [b u]Copyright[/b u]: 2023 (Kacper Wlodarczyk)\n\n✅ [b u]Language Support[/b u]: English, Polish",
                 border_style="red",
             )
         ),
