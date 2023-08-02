@@ -1,8 +1,6 @@
 from fastapi import FastAPI, Depends, HTTPException
 from typing import List
 
-from sqlalchemy import func
-
 from ...schemas import (
     PersonSchema,
     ReviewsSchema,
@@ -12,6 +10,7 @@ from ...schemas import (
     WorkAndEducationSchema,
     PlacesSchema,
     FriendsSchema,
+    ImageSchema,
 )
 from ...models import (
     Person,
@@ -22,6 +21,7 @@ from ...models import (
     WorkAndEducation,
     Places,
     Friends,
+    Image,
 )
 from ...database import Session, get_session
 
@@ -130,3 +130,25 @@ async def get_friends_by_person_id(
     if not friends:
         raise HTTPException(status_code=404, detail="Friends not found")
     return friends
+
+
+@app.get("/image/{person_id}", response_model=List[ImageSchema])
+async def get_images_by_person_id(
+    person_id: int, session: Session = Depends(get_session)
+):
+    """Return a list of images for specified person object"""
+    images = session.query(Image).filter_by(person_id=person_id).all()
+    if not images:
+        raise HTTPException(status_code=404, detail="Images not found")
+    return images
+
+
+@app.get("/image/{image_id}", response_model=ImageSchema)
+async def get_image_by_image_id(
+    person_id: int, session: Session = Depends(get_session)
+):
+    """Return a list of images for specified person object"""
+    images = session.query(Image).filter_by(person_id=person_id).all()
+    if not images:
+        raise HTTPException(status_code=404, detail="Images not found")
+    return images
