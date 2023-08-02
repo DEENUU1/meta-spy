@@ -11,6 +11,7 @@ from ...schemas import (
     PlacesSchema,
     FriendsSchema,
     ImageSchema,
+    FamilyMemberSchema,
 )
 from ...models import (
     Person,
@@ -22,6 +23,7 @@ from ...models import (
     Places,
     Friends,
     Image,
+    FamilyMember,
 )
 from ...database import Session, get_session
 
@@ -152,3 +154,14 @@ async def get_image_by_image_id(
     if not images:
         raise HTTPException(status_code=404, detail="Images not found")
     return images
+
+
+@app.get("/family_member/{person_id}", response_model=List[FamilyMemberSchema])
+async def get_family_member_by_person_id(
+    person_id: int, session: Session = Depends(get_session)
+):
+    """Return a list of family members for specified person object"""
+    family_members = session.query(FamilyMember).filter_by(person_id=person_id).all()
+    if not family_members:
+        raise HTTPException(status_code=404, detail="Family Members not found")
+    return family_members
