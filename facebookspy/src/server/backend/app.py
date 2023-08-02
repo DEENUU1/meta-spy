@@ -1,5 +1,8 @@
 from fastapi import FastAPI, Depends, HTTPException
 from typing import List
+
+from sqlalchemy import func
+
 from ...schemas import (
     PersonSchema,
     ReviewsSchema,
@@ -8,6 +11,7 @@ from ...schemas import (
     RecentPlacesSchema,
     WorkAndEducationSchema,
     PlacesSchema,
+    FriendsSchema,
 )
 from ...models import (
     Person,
@@ -17,6 +21,7 @@ from ...models import (
     RecentPlaces,
     WorkAndEducation,
     Places,
+    Friends,
 )
 from ...database import Session, get_session
 
@@ -114,3 +119,14 @@ async def get_places_by_person_id(
     if not places:
         raise HTTPException(status_code=404, detail="Places not found")
     return places
+
+
+@app.get("/friends/{person_id}", response_model=List[FriendsSchema])
+async def get_friends_by_person_id(
+    person_id: int, session: Session = Depends(get_session)
+):
+    """Return a list of friends for specified person object"""
+    friends = session.query(Friends).filter_by(person_id=person_id).all()
+    if not friends:
+        raise HTTPException(status_code=404, detail="Friends not found")
+    return friends
