@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import * as FaIcons from "react-icons/fa";
 import { IconContext } from "react-icons";
 import { Link } from "react-router-dom";
 import { SidebarData } from "./SliderbarData";
-import "../styles/Sidebar.css";
+import "../styles/Navbar.css";
 
 export default function Navbar() {
   const [sidebar, setSidebar] = useState(true);
