@@ -1,16 +1,16 @@
 import React from 'react';
 import Navbar from './Navbar';
-// import './Page.css'; 
+// import './Page.css';
 
-const HomePage = () => {
+const PersonsPage = () => {
   return (
     <div className="page">
       <Navbar />
       <div className="content">
-        <h1>Home</h1>
+        <h1>Scraped persons</h1>
       </div>
     </div>
   );
 };
 
-export default HomePage;
+export default PersonsPage;
