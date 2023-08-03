@@ -2,12 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "../styles/HomePage.css";
 import illustration from "/public/home.png/";
-import Navbar from "../components/Navbar";
+// import Navbar from "../components/Navbar";
 
 export default function Home() {
   return (
     <div className="page">
-      <Navbar />
+      {/* <Navbar /> */}
 
       <div className="main-content">
         <div className="content">
