@@ -3,11 +3,13 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import PersonDetail from './pages/PersonDetail';
 import PersonsPage from './pages/PersonsPage';
+import Navbar from "./components/Navbar";
 
 function App() {
   return (
     <Router>
       <div className="app-container">
+        <Navbar/>
         <div className="content-container">
         <Routes>  
           <Route element={<HomePage/>} path="/"/>

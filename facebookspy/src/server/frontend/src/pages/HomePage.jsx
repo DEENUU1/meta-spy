@@ -7,7 +7,6 @@ import Navbar from "../components/Navbar";
 export default function Home() {
   return (
     <div className="page">
-      <Navbar />
 
       <div className="main-content">
         <div className="content">
