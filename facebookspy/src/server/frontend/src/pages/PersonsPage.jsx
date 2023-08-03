@@ -5,19 +5,40 @@ import '../styles/PersonsPage.css';
 
 const PersonsPage = () => {
   const [persons, setPersons] = useState([]);
+  const [loading, setLoading] = useState(true); 
+  const [dots, setDots] = useState(''); 
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:8000/person/')
-      .then(response => setPersons(response.data))
-      .catch(error => console.error('Error fetching data:', error));
+    const interval = setInterval(() => {
+      setDots(dots => (dots.length === 3 ? '' : dots + '.')); 
+    }, 500); 
+
+    setTimeout(() => {
+      axios.get('http://127.0.0.1:8000/person/')
+        .then(response => {
+          setPersons(response.data);
+          setLoading(false); 
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+          setLoading(false); 
+        });
+    }, 5000); 
+
+    return () => {
+      clearInterval(interval); 
+    };
   }, []);
 
   return (
     <div className="page">
       <div className="content">
         <h1>Scraped persons</h1>
-        <ul className="person-list"> 
-          {persons.map(person => (
+        {loading ? ( 
+          <div className="loading">Loading{dots}</div> 
+        ) : (
+          <ul className="person-list">
+            {persons.map(person => (
             <li key={person.id} className="person-card"> 
               <Link to={`/person/${person.id}`}>
                 <div className="person-info">
@@ -29,10 +50,11 @@ const PersonsPage = () => {
               </Link>
             </li>
           ))}
-        </ul>
+          </ul>
+        )}
       </div>
     </div>
   );
-};
+}
 
 export default PersonsPage;
