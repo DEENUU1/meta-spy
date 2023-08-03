@@ -1,11 +1,10 @@
 import React from 'react';
-import Sidebar from './Sidebar';
-// import './Page.css';
+// import Navbar from '../components/Navbar';
 
 const PersonDetail = () => {
   return (
     <div className="page">
-      <Sidebar />
+      {/* <Navbar /> */}
       <div className="content">
         <h1>Person detail</h1>
       </div>
