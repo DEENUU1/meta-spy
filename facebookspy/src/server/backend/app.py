@@ -31,10 +31,11 @@ from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 
 origins = [
-    "http://localhost",
+    "http://localhost:5173",
+    "localhost:3000",
     "http://localhost:3000",
-    "http://127.0.0.1",
-    "http://127.0.0.1:3000",
+    "http://127.0.0.1:8000",
+    "127.0.0.1:8000",
 ]
 
 app.add_middleware(
@@ -44,11 +45,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
-@app.get("/")
-def home():
-    return {"Hello": "World"}
 
 
 @app.get("/person/", response_model=List[PersonSchema])
