@@ -66,17 +66,21 @@ scrape user information based on a given url address and save data to database a
 
 
 ### v0.5 (In develop)
-- React frontend for local server 
+- ~~React frontend for local server~~ 
 - Automatically google search in person detail 
 - Adding notes for specified person 
-- FastAPI search 
+- FastAPI search:
+  - Family member
+  - Friends
+  - Person
 - Downloading videos and reels 
 - Docker & Dockercompose 
 
 
 ### v0.6 (ideas)
+- Delete and update operations on database  
+- Create methods in react app 
 - Static page for project with demo etc.
-
 ### v0.7 (ideas)
 - Scrape:
   - groups
