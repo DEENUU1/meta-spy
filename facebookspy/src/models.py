@@ -130,3 +130,14 @@ class Reviews(Base):
 
     # Relationship
     person = relationship("Person", back_populates="reviews")
+
+
+class Note(Base):
+    __tablename__ = "notes"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    content = Column(String, nullable=True)
+    person_id = Column(Integer, ForeignKey("persons.id"))
+
+    # Relationship
+    person = relationship("Person", back_populates="notes")
