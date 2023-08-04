@@ -71,6 +71,8 @@ scrape user information based on a given url address and save data to database a
 - Adding notes for specified person 
 - FastAPI search 
 - Downloading videos and reels 
+- Docker & Dockercompose 
+
 
 ### v0.6 (ideas)
 - Static page for project with demo etc.
