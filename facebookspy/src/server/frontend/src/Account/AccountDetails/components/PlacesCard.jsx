@@ -20,7 +20,7 @@ const PlacesCard = ({ personId }) => {
 
   return (
     <div className="card places-card">
-      <h2>Reviews</h2>
+      <h2>Places</h2>
       {loading ? (
         <LoadingDots />
       ) : (

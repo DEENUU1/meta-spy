@@ -21,14 +21,15 @@ const FamilyMemberCard = ({ personId }) => {
 
   return (
     <div className="card family-member-card">
-      <h2>Work and Education History</h2>
+      <h2>Family members</h2>
       {loading ? (
         <LoadingDots />
       ) : (
         <ul>
           {familyMember.map(item => (
             <li key={item.id}>
-              {item.full_name} | {item.role} | {item.url}
+              <a href={item.url} target="_blank" rel="noopener noreferrer">
+              <strong>{item.full_name}</strong> </a> - {item.role}
             </li>
           ))}
         </ul>
