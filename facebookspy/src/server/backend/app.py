@@ -28,6 +28,8 @@ from ...models import (
 from ...database import Session, get_session
 from fastapi.middleware.cors import CORSMiddleware
 from time import sleep
+from fastapi.responses import FileResponse
+from pathlib import Path
 
 app = FastAPI()
 
@@ -154,15 +156,28 @@ async def get_images_by_person_id(
     return images
 
 
-@app.get("/image/{image_id}", response_model=ImageSchema)
-async def get_image_by_image_id(
-    person_id: int, session: Session = Depends(get_session)
+def get_image_folder_path():
+    curr_dir = Path(__file__).resolve().parent
+    image_dir = curr_dir.parent.parent.parent
+    return image_dir
+
+
+@app.get("/image/{image_id}/view")
+async def view_image_by_image_id(
+    image_id: int, session: Session = Depends(get_session)
 ):
-    """Return a list of images for specified person object"""
-    images = session.query(Image).filter_by(person_id=person_id).all()
-    if not images:
-        raise HTTPException(status_code=404, detail="Images not found")
-    return images
+    """View an image for the specified image_id"""
+    image = session.query(Image).filter_by(id=image_id).first()
+    if not image:
+        raise HTTPException(status_code=404, detail="Image not found")
+
+    images_folder = get_image_folder_path()
+    image_path = images_folder / image.path
+
+    if not image_path.is_file():
+        raise HTTPException(status_code=404, detail="Image file not found")
+
+    return FileResponse(image_path, media_type="image/jpeg")
 
 
 @app.get("/family_member/{person_id}", response_model=List[FamilyMemberSchema])

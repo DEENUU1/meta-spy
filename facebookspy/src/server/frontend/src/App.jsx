@@ -5,6 +5,7 @@ import PersonDetail from './Account/AccountDetails/pages/PersonDetail';
 import PersonsPage from './Account/AccountList/pages/PersonsPage';
 import Navbar from "./Account/Home/components/Navbar";
 import PersonVideoReel from './Account/AccountDetails/pages/PersonVideoReel';
+import PersonImage from './Account/AccountDetails/pages/PersonImage';
 import './App.css';
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
           <Route element={<PersonDetail/>} path="/person/:id"/>
           <Route element={<PersonsPage/>} path="/person/"/>
           <Route element={<PersonVideoReel/>} path="/person/:id/video"/>
+          <Route element={<PersonImage/>} path="/person/:id/image"/>
           
         </Routes>
         </div>
