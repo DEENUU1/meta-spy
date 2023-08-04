@@ -10,6 +10,18 @@ images/
 facebookspy/database.db
 facebookspy/database_test.db
 
+# project - frontend
+
+facebookspy/src/server/frontend/logs
+facebookspy/src/server/frontend/npm-debug.log*
+facebookspy/src/server/frontend/yarn-debug.log*
+facebookspy/src/server/frontend/yarn-error.log*
+facebookspy/src/server/frontend/pnpm-debug.log*
+facebookspy/src/server/frontend/lerna-debug.log*
+facebookspy/src/server/frontend/node_modules
+facebookspy/src/server/frontend/dist
+facebookspy/src/server/frontend/dist-ssr
+
 
 __pycache__/
 *.py[cod]

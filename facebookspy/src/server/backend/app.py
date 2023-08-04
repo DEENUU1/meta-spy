@@ -26,13 +26,24 @@ from ...models import (
     FamilyMember,
 )
 from ...database import Session, get_session
+from fastapi.middleware.cors import CORSMiddleware
+from time import sleep
+from fastapi.responses import FileResponse
+from pathlib import Path
 
 app = FastAPI()
 
+origins = [
+    "http://localhost:5173",
+]
 
-@app.get("/")
-def home():
-    return {"Hello": "World"}
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/person/", response_model=List[PersonSchema])
@@ -44,12 +55,12 @@ async def get_people_list(session: Session = Depends(get_session)):
     return people
 
 
-@app.get("/person/{facebook_id}", response_model=PersonSchema)
+@app.get("/person/{person_id}", response_model=PersonSchema)
 async def get_person_by_facebook_id(
-    facebook_id: str, session: Session = Depends(get_session)
+    person_id: int, session: Session = Depends(get_session)
 ):
     """Returns a person object based on facebook_id"""
-    person = session.query(Person).filter_by(facebook_id=facebook_id).first()
+    person = session.query(Person).filter_by(id=person_id).first()
     if not person:
         raise HTTPException(status_code=404, detail="Person not found")
     return person
@@ -77,7 +88,7 @@ async def get_videos_by_person_id(
     return videos
 
 
-@app.get("/reels/{person_id}", response_model=List[ReelsSchema])
+@app.get("/reel/{person_id}", response_model=List[ReelsSchema])
 async def get_reels_by_person_id(
     person_id: int, session: Session = Depends(get_session)
 ):
@@ -88,7 +99,7 @@ async def get_reels_by_person_id(
     return reels
 
 
-@app.get("/recent_places/{person_id}", response_model=List[RecentPlacesSchema])
+@app.get("/recent_place/{person_id}", response_model=List[RecentPlacesSchema])
 async def get_recent_places_by_person_id(
     person_id: int, session: Session = Depends(get_session)
 ):
@@ -112,7 +123,7 @@ async def get_work_and_education_by_person_id(
     return work_and_education
 
 
-@app.get("/places/{person_id}", response_model=List[PlacesSchema])
+@app.get("/place/{person_id}", response_model=List[PlacesSchema])
 async def get_places_by_person_id(
     person_id: int, session: Session = Depends(get_session)
 ):
@@ -123,7 +134,7 @@ async def get_places_by_person_id(
     return places
 
 
-@app.get("/friends/{person_id}", response_model=List[FriendsSchema])
+@app.get("/friend/{person_id}", response_model=List[FriendsSchema])
 async def get_friends_by_person_id(
     person_id: int, session: Session = Depends(get_session)
 ):
@@ -145,15 +156,28 @@ async def get_images_by_person_id(
     return images
 
 
-@app.get("/image/{image_id}", response_model=ImageSchema)
-async def get_image_by_image_id(
-    person_id: int, session: Session = Depends(get_session)
+def get_image_folder_path():
+    curr_dir = Path(__file__).resolve().parent
+    image_dir = curr_dir.parent.parent.parent
+    return image_dir
+
+
+@app.get("/image/{image_id}/view")
+async def view_image_by_image_id(
+    image_id: int, session: Session = Depends(get_session)
 ):
-    """Return a list of images for specified person object"""
-    images = session.query(Image).filter_by(person_id=person_id).all()
-    if not images:
-        raise HTTPException(status_code=404, detail="Images not found")
-    return images
+    """View an image for the specified image_id"""
+    image = session.query(Image).filter_by(id=image_id).first()
+    if not image:
+        raise HTTPException(status_code=404, detail="Image not found")
+
+    images_folder = get_image_folder_path()
+    image_path = images_folder / image.path
+
+    if not image_path.is_file():
+        raise HTTPException(status_code=404, detail="Image file not found")
+
+    return FileResponse(image_path, media_type="image/jpeg")
 
 
 @app.get("/family_member/{person_id}", response_model=List[FamilyMemberSchema])
