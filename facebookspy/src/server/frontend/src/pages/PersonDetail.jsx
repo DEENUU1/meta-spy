@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import '../styles/PersonDetail.css';
 import LoadingDots from '../components/Loading';
+import ReviewsCard from '../components/ReviewsCard';
+import WorkAndEducationCard from '../components/WorkAndEducationCard';
 
 const PersonDetail = () => {
   const { id } = useParams();
@@ -39,6 +41,10 @@ const PersonDetail = () => {
             <div className="detail-item">
               <strong>Facebook ID:</strong> {person.facebook_id}
             </div>
+
+            <ReviewsCard personId={id} />
+            <WorkAndEducationCard personId={id} />
+
           </div>
         )}
       </div>
