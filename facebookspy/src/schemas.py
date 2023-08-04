@@ -98,3 +98,11 @@ class PersonSchema(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class NoteSchema(BaseModel):
+    id: int
+    content: str | None
+
+    class Config:
+        orm_mode = True
