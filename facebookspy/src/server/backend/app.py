@@ -53,12 +53,12 @@ async def get_people_list(session: Session = Depends(get_session)):
     return people
 
 
-@app.get("/person/{facebook_id}", response_model=PersonSchema)
+@app.get("/person/{person_id}", response_model=PersonSchema)
 async def get_person_by_facebook_id(
-    facebook_id: str, session: Session = Depends(get_session)
+    person_id: int, session: Session = Depends(get_session)
 ):
     """Returns a person object based on facebook_id"""
-    person = session.query(Person).filter_by(facebook_id=facebook_id).first()
+    person = session.query(Person).filter_by(id=person_id).first()
     if not person:
         raise HTTPException(status_code=404, detail="Person not found")
     return person
