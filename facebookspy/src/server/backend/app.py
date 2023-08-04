@@ -53,12 +53,12 @@ async def get_people_list(session: Session = Depends(get_session)):
     return people
 
 
-@app.get("/person/{facebook_id}", response_model=PersonSchema)
+@app.get("/person/{person_id}", response_model=PersonSchema)
 async def get_person_by_facebook_id(
-    facebook_id: str, session: Session = Depends(get_session)
+    person_id: int, session: Session = Depends(get_session)
 ):
     """Returns a person object based on facebook_id"""
-    person = session.query(Person).filter_by(facebook_id=facebook_id).first()
+    person = session.query(Person).filter_by(id=person_id).first()
     if not person:
         raise HTTPException(status_code=404, detail="Person not found")
     return person
@@ -97,7 +97,7 @@ async def get_reels_by_person_id(
     return reels
 
 
-@app.get("/recent_places/{person_id}", response_model=List[RecentPlacesSchema])
+@app.get("/recent_place/{person_id}", response_model=List[RecentPlacesSchema])
 async def get_recent_places_by_person_id(
     person_id: int, session: Session = Depends(get_session)
 ):
@@ -121,7 +121,7 @@ async def get_work_and_education_by_person_id(
     return work_and_education
 
 
-@app.get("/places/{person_id}", response_model=List[PlacesSchema])
+@app.get("/place/{person_id}", response_model=List[PlacesSchema])
 async def get_places_by_person_id(
     person_id: int, session: Session = Depends(get_session)
 ):
@@ -132,7 +132,7 @@ async def get_places_by_person_id(
     return places
 
 
-@app.get("/friends/{person_id}", response_model=List[FriendsSchema])
+@app.get("/friend/{person_id}", response_model=List[FriendsSchema])
 async def get_friends_by_person_id(
     person_id: int, session: Session = Depends(get_session)
 ):
