@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import LoadingDots from '../../Home/components/Loading';
-// import '../styles/FriendCard.css'; 
+import '../styles/RecentPlacesCard.css'; 
 
 const RecentPlacesCard = ({ personId }) => {
   const [recentPlaces, setRecentPlaces] = useState([]);

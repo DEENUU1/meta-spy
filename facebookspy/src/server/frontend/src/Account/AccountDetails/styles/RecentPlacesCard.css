@@ -1,0 +1,29 @@
+.recent-places-card {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .recent-places-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    grid-gap: 20px; 
+    list-style-type: none; 
+    padding: 0;
+  }
+  
+  .recent-places-card {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: box-shadow 0.3s, transform 0.3s;
+  }
+  
+  .recent-places-card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+  }
+  
