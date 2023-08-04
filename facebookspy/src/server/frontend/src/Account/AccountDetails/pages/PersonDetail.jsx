@@ -29,19 +29,13 @@ const PersonDetail = () => {
   return (
     <div className="pagex">
       <div className="content">
-        <h1>Person Detail</h1>
         {loading ? (
           <LoadingDots />
         ) : (
           <div className="person-details">
+            <h1>{person.facebook_id} details</h1>
             <div className="detail-item">
-              <strong>ID:</strong> {person.id}
-            </div>
-            <div className="detail-item">
-              <strong>Full Name:</strong> {person.full_name}
-            </div>
-            <div className="detail-item">
-              <strong>Facebook ID:</strong> {person.facebook_id}
+              {person.full_name}
             </div>
 
             <div className='card-container'>

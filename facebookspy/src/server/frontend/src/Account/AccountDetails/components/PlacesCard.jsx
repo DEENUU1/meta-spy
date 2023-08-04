@@ -27,8 +27,7 @@ const PlacesCard = ({ personId }) => {
         <ul>
           {places.map(item => (
             <li key={item.id}>
-              <strong>Place:</strong> {item.name}<br />
-              <strong>Date:</strong> {item.date}
+              <strong>{item.name}</strong> - {item.date}
             </li>
           ))}
         </ul>

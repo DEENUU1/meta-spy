@@ -27,8 +27,7 @@ const ReviewsCard = ({ personId }) => {
         <ul>
           {reviews.map(review => (
             <li key={review.id}>
-              <strong>Company:</strong> {review.company}<br />
-              <strong>Review:</strong> {review.review}
+              <strong>{review.company}</strong> - " {review.review} "
             </li>
           ))}
         </ul>
