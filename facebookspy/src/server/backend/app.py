@@ -86,7 +86,7 @@ async def get_videos_by_person_id(
     return videos
 
 
-@app.get("/reels/{person_id}", response_model=List[ReelsSchema])
+@app.get("/reel/{person_id}", response_model=List[ReelsSchema])
 async def get_reels_by_person_id(
     person_id: int, session: Session = Depends(get_session)
 ):
