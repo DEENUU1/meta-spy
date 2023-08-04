@@ -69,6 +69,8 @@ scrape user information based on a given url address and save data to database a
 - React frontend for local server 
 - Automatically google search in person detail 
 - Adding notes for specified person 
+- FastAPI search 
+- Downloading videos and reels 
 
 ### v0.6 (ideas)
 - Static page for project with demo etc.
@@ -126,6 +128,10 @@ pytest
 
 ### Commands
 ```bash
+
+# Work dir - facebookspy/
+
+
 python main.py --help 
 # Returns a list of all commands
 
@@ -173,6 +179,13 @@ python main.py scrape-reviews --name <facebook_id>
 
 python main.py start-fastapi-server
 # Run fastapi server, allows to browse scraped data 
+
+
+# Workdir - frontend/
+
+
+yarn run dev
+# Run react app 
 
 ```
 
