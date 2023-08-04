@@ -44,11 +44,13 @@ const PersonDetail = () => {
               <strong>Facebook ID:</strong> {person.facebook_id}
             </div>
 
-            <ReviewsCard personId={id} />
-            <WorkAndEducationCard personId={id} />
-            <FamilyMemberCard personId={id} />
-            <PlacesCard personId={id} />
-            
+            <div className='card-container'>
+
+              <FamilyMemberCard personId={id} />
+              <WorkAndEducationCard personId={id} />
+              <PlacesCard personId={id} />
+              <ReviewsCard personId={id} />
+            </div>
           </div>
         )}
       </div>

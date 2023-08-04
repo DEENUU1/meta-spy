@@ -20,7 +20,7 @@ const FamilyMemberCard = ({ personId }) => {
   }, [personId]);
 
   return (
-    <div className="card">
+    <div className="card family-member-card">
       <h2>Work and Education History</h2>
       {loading ? (
         <LoadingDots />

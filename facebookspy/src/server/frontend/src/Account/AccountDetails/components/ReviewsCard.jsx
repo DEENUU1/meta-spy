@@ -19,7 +19,7 @@ const ReviewsCard = ({ personId }) => {
   }, [personId]);
 
   return (
-    <div className="card">
+    <div className="card reviews-card">
       <h2>Reviews</h2>
       {loading ? (
         <LoadingDots />

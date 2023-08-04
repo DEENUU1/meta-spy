@@ -19,7 +19,7 @@ const WorkAndEducationCard = ({ personId }) => {
   }, [personId]);
 
   return (
-    <div className="card">
+    <div className="card work-and-education-card">
       <h2>Work and Education History</h2>
       {loading ? (
         <LoadingDots />
