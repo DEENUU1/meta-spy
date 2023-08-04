@@ -1,60 +1,44 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios'; 
+import axios from 'axios';
 import '../styles/PersonsPage.css';
+import LoadingDots from '../components/Loading';
+import PersonCard from '../components/PersonCard';
 
 const PersonsPage = () => {
   const [persons, setPersons] = useState([]);
-  const [loading, setLoading] = useState(true); 
-  const [dots, setDots] = useState(''); 
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setDots(dots => (dots.length === 3 ? '' : dots + '.')); 
-    }, 500); 
-
     setTimeout(() => {
-      axios.get('http://127.0.0.1:8000/person/')
+      axios
+        .get('http://127.0.0.1:8000/person/')
         .then(response => {
           setPersons(response.data);
-          setLoading(false); 
+          setLoading(false);
         })
         .catch(error => {
           console.error('Error fetching data:', error);
-          setLoading(false); 
+          setLoading(false);
         });
-    }, 5000); 
-
-    return () => {
-      clearInterval(interval); 
-    };
+    }, 2000);
   }, []);
 
   return (
     <div className="page">
       <div className="content">
-        <h1>Scraped persons</h1>
-        {loading ? ( 
-          <div className="loading">Loading{dots}</div> 
+        <h1>Scraped people</h1>
+        {loading ? (
+          <LoadingDots />
         ) : (
           <ul className="person-list">
             {persons.map(person => (
-            <li key={person.id} className="person-card"> 
-              <Link to={`/person/${person.id}`}>
-                <div className="person-info">
-                  <div className="facebook-id">{person.facebook_id}</div>
-                  <div className="other-info">
-                    {person.full_name && <div className="full-name">{person.full_name}</div>}
-                  </div>
-                </div>
-              </Link>
-            </li>
-          ))}
+              <PersonCard key={person.id} person={person} />
+            ))}
           </ul>
         )}
       </div>
     </div>
   );
-}
+};
 
 export default PersonsPage;
