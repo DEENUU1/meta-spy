@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom'; 
 import axios from 'axios';
 import '../styles/PersonDetail.css';
 import LoadingDots from '../../Home/components/Loading';
@@ -36,6 +36,7 @@ const PersonDetail = () => {
             <h1>{person.facebook_id} details</h1>
             <div className="detail-item">
               {person.full_name}
+              <Link to={`/person/${id}/video`}>Go to Video Page</Link>
             </div>
 
             <div className='card-container'>
@@ -44,6 +45,7 @@ const PersonDetail = () => {
               <WorkAndEducationCard personId={id} />
               <PlacesCard personId={id} />
               <ReviewsCard personId={id} />
+
             </div>
           </div>
         )}
