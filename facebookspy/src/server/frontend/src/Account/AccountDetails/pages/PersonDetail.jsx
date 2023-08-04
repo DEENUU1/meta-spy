@@ -38,6 +38,7 @@ const PersonDetail = () => {
               {person.full_name}
               <Link to={`/person/${id}/video`}>Go to Video & Reel Page</Link>
               <Link to={`/person/${id}/image`}>Go to Image Page</Link>
+              <Link to={`/person/${id}/friend`}>Go to Friend List Page</Link>
 
             </div>
 

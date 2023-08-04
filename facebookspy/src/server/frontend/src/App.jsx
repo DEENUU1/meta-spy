@@ -6,6 +6,7 @@ import PersonsPage from './Account/AccountList/pages/PersonsPage';
 import Navbar from "./Account/Home/components/Navbar";
 import PersonVideoReel from './Account/AccountDetails/pages/PersonVideoReel';
 import PersonImage from './Account/AccountDetails/pages/PersonImage';
+import PersonFriendList from './Account/AccountDetails/pages/PersonFriendList';
 import './App.css';
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
           <Route element={<PersonsPage/>} path="/person/"/>
           <Route element={<PersonVideoReel/>} path="/person/:id/video"/>
           <Route element={<PersonImage/>} path="/person/:id/image"/>
+          <Route element={<PersonFriendList/>} path="/person/:id/friend"/>
           
         </Routes>
         </div>

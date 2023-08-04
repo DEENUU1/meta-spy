@@ -19,11 +19,6 @@ class FriendsSchema(BaseModel):
     full_name: str
     url: Optional[str] = None
     person_id: int
-    has_multiple_persons: bool
-
-    def __init__(self, *, has_multiple_persons: bool, **data):
-        super().__init__(**data)
-        self.has_multiple_persons = has_multiple_persons
 
     class Config:
         orm_mode = True
