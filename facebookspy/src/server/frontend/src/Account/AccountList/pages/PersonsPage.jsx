@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../styles/PersonsPage.css';
-import LoadingDots from '../components/Loading';
+import LoadingDots from '../../Home/components/Loading';
 import PersonCard from '../components/PersonCard';
 
 const PersonsPage = () => {

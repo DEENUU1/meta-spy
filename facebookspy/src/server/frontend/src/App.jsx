@@ -1,9 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import HomePage from './pages/HomePage';
-import PersonDetail from './pages/PersonDetail';
-import PersonsPage from './pages/PersonsPage';
-import Navbar from "./components/Navbar";
+import HomePage from './Account/Home/pages/HomePage';
+import PersonDetail from './Account/AccountDetails/pages/PersonDetail';
+import PersonsPage from './Account/AccountList/pages/PersonsPage';
+import Navbar from "./Account/Home/components/Navbar";
 
 function App() {
   return (

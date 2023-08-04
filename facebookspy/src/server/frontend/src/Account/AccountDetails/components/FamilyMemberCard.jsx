@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import LoadingDots from './Loading';
+import LoadingDots from '../../Home/components/Loading';
 
-const WorkAndEducationCard = ({ personId }) => {
-  const [workAndEducation, setWorkAndEducation] = useState([]);
+const FamilyMemberCard = ({ personId }) => {
+  const [familyMember, setFamilyMember] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(`http://localhost:8000/work_and_education/${personId}`)
+    axios.get(`http://localhost:8000/family_member/${personId}`)
       .then(response => {
-        setWorkAndEducation(response.data);
+        setFamilyMember(response.data);
         setLoading(false);
       })
       .catch(error => {
@@ -25,9 +25,9 @@ const WorkAndEducationCard = ({ personId }) => {
         <LoadingDots />
       ) : (
         <ul>
-          {workAndEducation.map(item => (
+          {familyMember.map(item => (
             <li key={item.id}>
-              {item.name}
+              {item.full_name} | {item.role} | {item.url}
             </li>
           ))}
         </ul>
@@ -36,4 +36,4 @@ const WorkAndEducationCard = ({ personId }) => {
   );
 };
 
-export default WorkAndEducationCard;
+export default FamilyMemberCard;
