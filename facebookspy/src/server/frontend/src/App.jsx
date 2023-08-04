@@ -4,6 +4,7 @@ import HomePage from './Account/Home/pages/HomePage';
 import PersonDetail from './Account/AccountDetails/pages/PersonDetail';
 import PersonsPage from './Account/AccountList/pages/PersonsPage';
 import Navbar from "./Account/Home/components/Navbar";
+import './App.css';
 
 function App() {
   return (

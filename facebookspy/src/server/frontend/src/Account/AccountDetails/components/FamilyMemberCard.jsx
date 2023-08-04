@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import LoadingDots from '../../Home/components/Loading';
+import '../styles/Card.css';
 
 const FamilyMemberCard = ({ personId }) => {
   const [familyMember, setFamilyMember] = useState([]);

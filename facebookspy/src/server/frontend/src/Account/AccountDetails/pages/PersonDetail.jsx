@@ -27,7 +27,7 @@ const PersonDetail = () => {
   }, [id]);
 
   return (
-    <div className="page">
+    <div className="pagex">
       <div className="content">
         <h1>Person Detail</h1>
         {loading ? (
@@ -47,6 +47,8 @@ const PersonDetail = () => {
             <ReviewsCard personId={id} />
             <WorkAndEducationCard personId={id} />
             <FamilyMemberCard personId={id} />
+
+            
           </div>
         )}
       </div>
