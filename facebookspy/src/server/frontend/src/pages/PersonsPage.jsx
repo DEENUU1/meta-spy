@@ -20,7 +20,7 @@ const PersonsPage = () => {
           console.error('Error fetching data:', error);
           setLoading(false);
         });
-    }, 2000);
+    });
   }, []);
 
   return (
