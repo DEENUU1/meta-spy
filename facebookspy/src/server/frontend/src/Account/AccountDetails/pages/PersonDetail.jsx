@@ -36,10 +36,10 @@ const PersonDetail = () => {
             <h1>{person.facebook_id} details</h1>
             <div className="detail-item">
               {person.full_name}
-              <Link to={`/person/${id}/video`}>Go to Video & Reel Page</Link>
-              <Link to={`/person/${id}/image`}>Go to Image Page</Link>
-              <Link to={`/person/${id}/friend`}>Go to Friend List Page</Link>
-
+              <Link to={`/person/${id}/video`}>Videos & Reels</Link> <br/>
+              <Link to={`/person/${id}/image`}>Images</Link> <br/>
+              <Link to={`/person/${id}/friend`}>Friends</Link> <br/>
+              <Link to={`/person/${id}/place`}>Recent Places</Link>
             </div>
 
             <div className='card-container'>
