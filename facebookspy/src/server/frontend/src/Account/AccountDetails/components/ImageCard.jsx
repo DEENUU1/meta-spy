@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import LoadingDots from '../../Home/components/Loading';
+import "../styles/image.css";
 
 const ImageCard = ({ personId }) => {
   const [images, setImages] = useState([]);
@@ -19,12 +20,12 @@ const ImageCard = ({ personId }) => {
   }, [personId]);
 
   return (
-    <div className="card video-card">
+    <div className="image-card">
       <h2>Images</h2>
       {loading ? (
         <LoadingDots />
       ) : (
-        <ul>
+        <ul className="image-grid"> 
           {images.map(item => (
             <li key={item.id}>
               <a href={`http://localhost:8000/image/${item.id}/view`} target="_blank" rel="noopener noreferrer">

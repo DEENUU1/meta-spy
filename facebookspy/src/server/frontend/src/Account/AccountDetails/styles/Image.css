@@ -1,0 +1,23 @@
+.image-card {
+    text-align: center;
+  }
+  
+  .image-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .image-grid li {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .image-grid img {
+    max-width: 100%;
+    height: auto;
+  }
+  
