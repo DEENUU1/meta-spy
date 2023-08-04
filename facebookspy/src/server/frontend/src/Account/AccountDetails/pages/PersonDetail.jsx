@@ -36,7 +36,9 @@ const PersonDetail = () => {
             <h1>{person.facebook_id} details</h1>
             <div className="detail-item">
               {person.full_name}
-              <Link to={`/person/${id}/video`}>Go to Video Page</Link>
+              <Link to={`/person/${id}/video`}>Go to Video & Reel Page</Link>
+              <Link to={`/person/${id}/image`}>Go to Image Page</Link>
+
             </div>
 
             <div className='card-container'>

@@ -27,7 +27,9 @@ const ImageCard = ({ personId }) => {
         <ul>
           {image.map(item => (
             <li key={item.id}>
-              <img src={item.path}/>
+                <img src={`http://localhost:8000/${item.path}`} />
+
+               {/* {`../../../../../../../${item.path}`} */}
             </li>
           ))}
         </ul>
