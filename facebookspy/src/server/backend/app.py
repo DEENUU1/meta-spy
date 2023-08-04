@@ -26,13 +26,22 @@ from ...models import (
     FamilyMember,
 )
 from ...database import Session, get_session
+from fastapi.middleware.cors import CORSMiddleware
+from time import sleep
 
 app = FastAPI()
 
+origins = [
+    "http://localhost:5173",
+]
 
-@app.get("/")
-def home():
-    return {"Hello": "World"}
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/person/", response_model=List[PersonSchema])

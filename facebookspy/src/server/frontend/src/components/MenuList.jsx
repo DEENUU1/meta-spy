@@ -5,7 +5,7 @@ export const MenuList = [
     },
     {
       title: "Account Scraper",
-      url: "/persons",
+      url: "/person",
     },
   ];
   
