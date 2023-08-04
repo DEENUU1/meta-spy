@@ -5,6 +5,8 @@ import '../styles/PersonDetail.css';
 import LoadingDots from '../components/Loading';
 import ReviewsCard from '../components/ReviewsCard';
 import WorkAndEducationCard from '../components/WorkAndEducationCard';
+import FamilyMemberCard from '../components/FamilyMemberCard';
+
 
 const PersonDetail = () => {
   const { id } = useParams();
@@ -44,7 +46,7 @@ const PersonDetail = () => {
 
             <ReviewsCard personId={id} />
             <WorkAndEducationCard personId={id} />
-
+            <FamilyMemberCard personId={id} />
           </div>
         )}
       </div>
