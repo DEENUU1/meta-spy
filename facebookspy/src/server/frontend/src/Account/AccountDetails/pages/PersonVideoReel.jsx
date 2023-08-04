@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import VideoCard from '../components/VideoCard';
-import '../styles/Card.css';
+import ReelCard from '../components/ReelCard';
+import '../styles/VideoReel.css';
 
 const PersonVideoReel = () => {
   const { id } = useParams();
@@ -10,6 +11,7 @@ const PersonVideoReel = () => {
       <div className="content">
         <div className='card-container'>
           <VideoCard personId={id} />
+          <ReelCard personId={id} />
         </div>
       </div>
     </div>

@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import LoadingDots from '../../Home/components/Loading';
 
-const VideoCard = ({ personId }) => {
-  const [video, setVideo] = useState([]);
+const ReelCard = ({ personId }) => {
+  const [reel, setReel] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(`http://localhost:8000/video/${personId}`)
+    axios.get(`http://localhost:8000/reel/${personId}`)
       .then(response => {
-        setVideo(response.data);
+        setReel(response.data);
         setLoading(false);
       })
       .catch(error => {
@@ -20,14 +20,14 @@ const VideoCard = ({ personId }) => {
 
   return (
     <div className="card video-card">
-      <h2>Videos</h2>
+      <h2>Reels</h2>
       {loading ? (
         <LoadingDots />
       ) : (
         <ul>
-          {video.map(item => (
+          {reel.map(item => (
             <li key={item.id}>
-              <a href={item.url}>Video</a>
+              <a href={item.url}>Reel</a>
             </li>
           ))}
         </ul>
@@ -36,4 +36,4 @@ const VideoCard = ({ personId }) => {
   );
 };
 
-export default VideoCard;
+export default ReelCard;
