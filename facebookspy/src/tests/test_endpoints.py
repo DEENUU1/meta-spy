@@ -281,3 +281,27 @@ def get_note_for_person(client: TestClient, session: Session):
         "content": "This is a note",
         "person_id": 1,
     }
+
+
+def get_all_notes(client: TestClient, session: Session):
+    person = Person(
+        full_name="John Doe", url="https://example.com/john-doe", facebook_id="abc"
+    )
+    note1 = Notes(content="This is a note", person=person)
+    note2 = Notes(content="This is a note 2", person=person)
+    note3 = Notes(content="This is a note 3", person=person)
+
+    session.add(person)
+
+    session.add(note1)
+    session.add(note2)
+    session.add(note3)
+    session.commit()
+
+    response = client.get("/note")
+    response_json = response.json()
+    assert response.status_code == 200
+    assert len(response_json) == 3
+    assert response_json[0]["content"] == "This is a note"
+    assert response_json[1]["content"] == "This is a note 2"
+    assert response_json[2]["content"] == "This is a note 3"
