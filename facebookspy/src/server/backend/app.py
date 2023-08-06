@@ -231,3 +231,12 @@ def get_note_for_person(person_id: int, db: Session = Depends(get_session)):
     if not db_note:
         raise HTTPException(status_code=404, detail="Note not found")
     return db_note
+
+
+@app.get("/note/", response_class=List[NoteSchema])
+def get_all_notes(db: Session = Depends(get_session)):
+    """Return a list of notes"""
+    db_note = db.query(Notes).all()
+    if not db_note:
+        raise HTTPException(status_code=404, detail="Notes not found")
+    return db_note
