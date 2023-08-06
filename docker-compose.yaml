@@ -3,7 +3,7 @@ services:
   fastapi-app:
     build:
       context: .
-      dockerfile: Dockerfile.backend
+      dockerfile: config/fastapi/Dockerfile
     ports:
       - "8000:8000"
     volumes:
@@ -15,7 +15,7 @@ services:
   react-app:
     build:
       context: .
-      dockerfile: Dockerfile.frontend
+      dockerfile: config/react/Dockerfile
     ports:
       - "3000:80"
     volumes:
