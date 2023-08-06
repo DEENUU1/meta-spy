@@ -100,7 +100,7 @@ class PersonSchema(BaseModel):
         orm_mode = True
 
 
-class NoteSchema(BaseModel):
+class NotesSchema(BaseModel):
     id: int
     content: str | None
 

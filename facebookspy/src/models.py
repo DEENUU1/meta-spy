@@ -61,6 +61,7 @@ class Person(Base):
     reels = relationship("Reels", uselist=False, back_populates="person")
     videos = relationship("Videos", uselist=False, back_populates="person")
     reviews = relationship("Reviews", uselist=False, back_populates="person")
+    note = relationship("Notes", uselist=False, back_populates="person")
 
 
 class Places(Base):
@@ -132,7 +133,7 @@ class Reviews(Base):
     person = relationship("Person", back_populates="reviews")
 
 
-class Note(Base):
+class Notes(Base):
     __tablename__ = "notes"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -140,4 +141,4 @@ class Note(Base):
     person_id = Column(Integer, ForeignKey("persons.id"))
 
     # Relationship
-    person = relationship("Person", back_populates="notes")
+    person = relationship("Person", back_populates="note")

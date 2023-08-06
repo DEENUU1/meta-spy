@@ -9,6 +9,7 @@ from facebookspy.src.models import (
     Reels,
     Videos,
     Reviews,
+    Notes,
 )
 from .conftest import session
 
@@ -170,3 +171,14 @@ def test_reviews_model_successfully_create_object(session):
     assert reviews.company == "Test"
     assert reviews.person == person
     assert reviews.review == "Test review"
+
+
+def test_note_model_successfully_create_object(session):
+    person = Person(full_name="Note Person", url="https://example.com/note_person")
+    note = Notes(content="Test note", person=person)
+    session.add(note)
+    session.commit()
+
+    assert note.id is not None
+    assert note.content == "Test note"
+    assert note.person == person
