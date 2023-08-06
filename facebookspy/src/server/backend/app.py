@@ -243,3 +243,14 @@ def get_all_notes(db: Session = Depends(get_session)):
     if not db_note:
         raise HTTPException(status_code=404, detail="Notes not found")
     return db_note
+
+
+@app.get("/friends/", response_model=List[FriendsSchema])
+def search_friends(search_term: str, db: Session = Depends(get_session)):
+    """Search Friend objects"""
+    friends = (
+        db.query(Friends).filter(Friends.full_name.ilike(f"%{search_term}%")).all()
+    )
+    if not friends:
+        raise HTTPException(status_code=404, detail="Friends not found")
+    return friends
