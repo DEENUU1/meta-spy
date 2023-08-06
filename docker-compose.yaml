@@ -3,7 +3,7 @@ services:
   fastapi-app:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.backend
     ports:
       - "8000:8000"
     volumes:
@@ -11,3 +11,13 @@ services:
     environment:
       - PYTHONPATH=/app
     command: ["uvicorn", "facebookspy.src.server.backend.app:app", "--host", "0.0.0.0", "--port", "8000"]
+
+  react-app:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "3000:80"
+    volumes:
+      - ./facebook-link-tree:/app/facebook-link-tree
+    command: ["nginx", "-g", "daemon off;"]
