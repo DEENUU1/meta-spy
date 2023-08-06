@@ -197,13 +197,13 @@ async def get_family_member_by_person_id(
 
 @app.post("/note/{person_id}", response_model=NoteSchema)
 def create_note_for_person(
-    person_id: int, note: NoteCreateSchema, db: Session = Depends(get_session())
+    person_id: int, note: NoteCreateSchema, db: Session = Depends(get_session)
 ):
     """Create note object for specified person"""
     person = db.query(Person).filter(Person.id == person_id).first()
     if not person:
         raise HTTPException(status_code=404, detail="Person not found")
-    db_note = Notes(**note.dict(), person_id=person_id)
+    db_note = Notes(**note.dict())
     db.add(db_note)
     db.commit()
     db.refresh(db_note)
@@ -212,7 +212,7 @@ def create_note_for_person(
 
 @app.put("/note/{person_id}", response_model=NoteSchema)
 def update_note_for_person(
-    person_id: int, note: NoteUpdateSchema, db: Session = Depends(get_session())
+    person_id: int, note: NoteUpdateSchema, db: Session = Depends(get_session)
 ):
     """Update note object for specified person"""
     db_note = db.query(Notes).filter(Notes.person_id == person_id).first()
@@ -224,8 +224,8 @@ def update_note_for_person(
     return db_note
 
 
-@app.get("/notes/{person_id}", response_model=Notes)
-def get_note_for_person(person_id: int, db: Session = Depends(get_session())):
+@app.get("/notes/{person_id}", response_model=NoteSchema)
+def get_note_for_person(person_id: int, db: Session = Depends(get_session)):
     """Return note object for specified person"""
     db_note = db.query(Notes).filter(Notes.person_id == person_id).first()
     if not db_note:

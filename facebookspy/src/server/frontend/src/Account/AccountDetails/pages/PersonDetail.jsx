@@ -7,11 +7,18 @@ import ReviewsCard from '../components/ReviewsCard';
 import WorkAndEducationCard from '../components/WorkAndEducationCard';
 import FamilyMemberCard from '../components/FamilyMemberCard';
 import PlacesCard from '../components/PlacesCard';
+import CreateNoteModal from '../components/CreateNoteModal';
+import ViewNoteModal from '../components/ViewNoteModal';
+import UpdateNoteModal from '../components/UpdateNoteModal';
 
 const PersonDetail = () => {
   const { id } = useParams();
   const [person, setPerson] = useState({});
   const [loading, setLoading] = useState(true);
+  const [note, setNote] = useState(null);
+  const [showCreateNoteModal, setShowCreateNoteModal] = useState(false);
+  const [showViewNoteModal, setShowViewNoteModal] = useState(false);
+  const [showUpdateNoteModal, setShowUpdateNoteModal] = useState(false);
 
   useEffect(() => {
     axios
@@ -26,6 +33,29 @@ const PersonDetail = () => {
       });
   }, [id]);
 
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8000/note/${id}`)
+      .then(response => {
+        setNote(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  }, [id]);
+
+  const handleCreateNote = () => {
+    setShowCreateNoteModal(true);
+  };
+
+  const handleViewNote = () => {
+    setShowViewNoteModal(true);
+  };
+
+  const handleUpdateNote = () => {
+    setShowUpdateNoteModal(true);
+  };
+
   return (
     <div className="pagex">
       <div className="content">
@@ -36,6 +66,11 @@ const PersonDetail = () => {
             <h1>{person.facebook_id} details</h1>
             <div className="detail-item">
               {person.full_name}
+              {note ? (
+                <button onClick={handleViewNote}>View Note</button>
+              ) : (
+                <button onClick={handleCreateNote}>Create Note</button>
+              )}
               <Link to={`/person/${id}/video`}>Videos & Reels</Link> <br/>
               <Link to={`/person/${id}/image`}>Images</Link> <br/>
               <Link to={`/person/${id}/friend`}>Friends</Link> <br/>
@@ -53,6 +88,27 @@ const PersonDetail = () => {
           </div>
         )}
       </div>
+      {showCreateNoteModal && (
+        <CreateNoteModal
+          personId={id}
+          setShowCreateNoteModal={setShowCreateNoteModal}
+          setNote={setNote}
+        />
+      )}
+      {showViewNoteModal && (
+        <ViewNoteModal
+          note={note}
+          setShowViewNoteModal={setShowViewNoteModal}
+          setShowUpdateNoteModal={setShowUpdateNoteModal}
+        />
+      )}
+      {showUpdateNoteModal && (
+        <UpdateNoteModal
+          note={note}
+          setShowUpdateNoteModal={setShowUpdateNoteModal}
+          setNote={setNote}
+        />
+      )}
     </div>
   );
 };
