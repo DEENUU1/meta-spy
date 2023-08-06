@@ -7,7 +7,7 @@ const WorkAndEducationCard = ({ personId }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(`http://localhost:8000/work_and_education/${personId}`)
+    axios.get(`http://localhost:8000/person/work_and_education/${personId}`)
       .then(response => {
         setWorkAndEducation(response.data);
         setLoading(false);

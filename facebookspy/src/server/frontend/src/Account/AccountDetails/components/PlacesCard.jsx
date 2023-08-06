@@ -7,7 +7,7 @@ const PlacesCard = ({ personId }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(`http://localhost:8000/place/${personId}`)
+    axios.get(`http://localhost:8000/person/place/${personId}`)
       .then(response => {
         setPlaces(response.data);
         setLoading(false);

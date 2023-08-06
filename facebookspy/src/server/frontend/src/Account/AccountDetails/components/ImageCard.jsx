@@ -8,7 +8,7 @@ const ImageCard = ({ personId }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(`http://localhost:8000/image/${personId}`)
+    axios.get(`http://localhost:8000/person/image/${personId}`)
       .then(response => {
         setImages(response.data);
         setLoading(false);

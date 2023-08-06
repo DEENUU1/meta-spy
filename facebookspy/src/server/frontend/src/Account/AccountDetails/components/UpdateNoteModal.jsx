@@ -8,7 +8,7 @@ const UpdateNoteModal = ({ personId, setShowUpdateNoteModal, setNote, note }) =>
 
   const handleUpdateNote = () => {
     axios
-      .put(`http://localhost:8000/note/${personId}`, { content })
+      .put(`http://localhost:8000/person/note/${personId}`, { content })
       .then(response => {
         setNote(response.data);
         setShowUpdateNoteModal(false);

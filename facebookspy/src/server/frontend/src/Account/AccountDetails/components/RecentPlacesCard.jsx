@@ -8,7 +8,7 @@ const RecentPlacesCard = ({ personId }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(`http://localhost:8000/recent_place/${personId}`)
+    axios.get(`http://localhost:8000/person/recent_place/${personId}`)
       .then(response => {
         setRecentPlaces(response.data);
         setLoading(false);

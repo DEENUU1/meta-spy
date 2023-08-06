@@ -7,7 +7,7 @@ const CreateNoteModal = ({ personId, setShowCreateNoteModal, setNote }) => {
 
   const handleCreateNote = () => {
     axios
-      .post(`http://localhost:8000/note/${personId}`, { content, person_id: personId })
+      .post(`http://localhost:8000/person/note/${personId}`, { content, person_id: personId })
       .then(response => {
         setNote(response.data);
         setShowCreateNoteModal(false);

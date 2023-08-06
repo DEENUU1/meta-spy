@@ -7,7 +7,7 @@ const ReelCard = ({ personId }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(`http://localhost:8000/reel/${personId}`)
+    axios.get(`http://localhost:8000/person/reel/${personId}`)
       .then(response => {
         setReel(response.data);
         setLoading(false);

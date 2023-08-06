@@ -7,7 +7,7 @@ const ReviewsCard = ({ personId }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(`http://localhost:8000/review/${personId}`)
+    axios.get(`http://localhost:8000/person/review/${personId}`)
       .then(response => {
         setReviews(response.data);
         setLoading(false);

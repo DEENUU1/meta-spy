@@ -70,7 +70,7 @@ async def get_person_by_facebook_id(
     return person
 
 
-@app.get("/review/{person_id}", response_model=List[ReviewsSchema])
+@app.get("/person/review/{person_id}", response_model=List[ReviewsSchema])
 async def get_reviews_by_person_id(
     person_id: int, session: Session = Depends(get_session)
 ):
@@ -81,7 +81,7 @@ async def get_reviews_by_person_id(
     return reviews
 
 
-@app.get("/video/{person_id}", response_model=List[VideosSchema])
+@app.get("/person/video/{person_id}", response_model=List[VideosSchema])
 async def get_videos_by_person_id(
     person_id: int, session: Session = Depends(get_session)
 ):
@@ -92,7 +92,7 @@ async def get_videos_by_person_id(
     return videos
 
 
-@app.get("/reel/{person_id}", response_model=List[ReelsSchema])
+@app.get("/person/reel/{person_id}", response_model=List[ReelsSchema])
 async def get_reels_by_person_id(
     person_id: int, session: Session = Depends(get_session)
 ):
@@ -103,7 +103,7 @@ async def get_reels_by_person_id(
     return reels
 
 
-@app.get("/recent_place/{person_id}", response_model=List[RecentPlacesSchema])
+@app.get("/person/recent_place/{person_id}", response_model=List[RecentPlacesSchema])
 async def get_recent_places_by_person_id(
     person_id: int, session: Session = Depends(get_session)
 ):
@@ -114,7 +114,10 @@ async def get_recent_places_by_person_id(
     return recent_places
 
 
-@app.get("/work_and_education/{person_id}", response_model=List[WorkAndEducationSchema])
+@app.get(
+    "/person/work_and_education/{person_id}",
+    response_model=List[WorkAndEducationSchema],
+)
 async def get_work_and_education_by_person_id(
     person_id: int, session: Session = Depends(get_session)
 ):
@@ -127,7 +130,7 @@ async def get_work_and_education_by_person_id(
     return work_and_education
 
 
-@app.get("/place/{person_id}", response_model=List[PlacesSchema])
+@app.get("/person/place/{person_id}", response_model=List[PlacesSchema])
 async def get_places_by_person_id(
     person_id: int, session: Session = Depends(get_session)
 ):
@@ -138,7 +141,7 @@ async def get_places_by_person_id(
     return places
 
 
-@app.get("/friend/{person_id}", response_model=List[FriendsSchema])
+@app.get("/person/friend/{person_id}", response_model=List[FriendsSchema])
 async def get_friends_by_person_id(
     person_id: int, session: Session = Depends(get_session)
 ):
@@ -149,7 +152,7 @@ async def get_friends_by_person_id(
     return friends
 
 
-@app.get("/image/{person_id}", response_model=List[ImageSchema])
+@app.get("/person/image/{person_id}", response_model=List[ImageSchema])
 async def get_images_by_person_id(
     person_id: int, session: Session = Depends(get_session)
 ):
@@ -166,7 +169,7 @@ def get_image_folder_path():
     return image_dir
 
 
-@app.get("/image/{image_id}/view")
+@app.get("/person/image/{image_id}/view")
 async def view_image_by_image_id(
     image_id: int, session: Session = Depends(get_session)
 ):
@@ -195,7 +198,7 @@ async def get_family_member_by_person_id(
     return family_members
 
 
-@app.post("/note/{person_id}", response_model=NoteSchema)
+@app.post("/person/note/{person_id}", response_model=NoteSchema)
 def create_note_for_person(
     person_id: int, note: NoteCreateSchema, db: Session = Depends(get_session)
 ):
@@ -210,7 +213,7 @@ def create_note_for_person(
     return db_note
 
 
-@app.put("/note/{person_id}", response_model=NoteSchema)
+@app.put("/person/note/{person_id}", response_model=NoteSchema)
 def update_note_for_person(
     person_id: int, note: NoteUpdateSchema, db: Session = Depends(get_session)
 ):
@@ -224,7 +227,7 @@ def update_note_for_person(
     return db_note
 
 
-@app.get("/note/{person_id}", response_model=NoteSchema)
+@app.get("/person/note/{person_id}", response_model=NoteSchema)
 def get_note_for_person(person_id: int, db: Session = Depends(get_session)):
     """Return note object for specified person"""
     db_note = db.query(Notes).filter(Notes.person_id == person_id).first()

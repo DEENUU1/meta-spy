@@ -36,7 +36,7 @@ const PersonDetail = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/note/${id}`)
+      .get(`http://localhost:8000/person/note/${id}`)
       .then(response => {
         setNote(response.data);
         setNoteExists(true); 
