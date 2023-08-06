@@ -1,10 +1,6 @@
-from typing import List
-
-import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
-from ..server.backend.app import app
-from ..database import get_session
+
 from ..models import (
     Person,
     Videos,
@@ -12,20 +8,9 @@ from ..models import (
     Friends,
     Places,
     Image,
-    FamilyMember,
     Notes,
 )
-
-
-@pytest.fixture
-def client(session: Session):
-    def override_get_session():
-        return session
-
-    app.dependency_overrides[get_session] = override_get_session
-    client = TestClient(app)
-    yield client
-    app.dependency_overrides.pop(get_session)
+from .conftest import client
 
 
 def test_get_people_list_empty(client):

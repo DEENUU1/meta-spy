@@ -4,6 +4,11 @@ from sqlalchemy.orm import sessionmaker
 from facebookspy.src.models import (
     Base,
 )
+from ..server.backend.app import app
+from ..database import get_session
+import pytest
+
+from fastapi.testclient import TestClient
 
 engine = create_engine("sqlite:///database_test.db")
 Session = sessionmaker(bind=engine)
@@ -21,3 +26,14 @@ def session():
     session.close()
     transaction.rollback()
     connection.close()
+
+
+@pytest.fixture
+def client(session: Session):
+    def override_get_session():
+        return session
+
+    app.dependency_overrides[get_session] = override_get_session
+    client = TestClient(app)
+    yield client
+    app.dependency_overrides.pop(get_session)
