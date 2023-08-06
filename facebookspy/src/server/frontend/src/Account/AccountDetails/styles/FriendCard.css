@@ -27,3 +27,14 @@
     transform: translateY(-2px);
   }
   
+  .search-form {
+    margin: 10px 0;
+  }
+  
+  .search-form input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
