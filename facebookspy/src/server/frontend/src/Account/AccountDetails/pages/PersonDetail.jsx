@@ -19,6 +19,7 @@ const PersonDetail = () => {
   const [showCreateNoteModal, setShowCreateNoteModal] = useState(false);
   const [showViewNoteModal, setShowViewNoteModal] = useState(false);
   const [showUpdateNoteModal, setShowUpdateNoteModal] = useState(false);
+  const [noteExists, setNoteExists] = useState(false);
 
   useEffect(() => {
     axios
@@ -38,9 +39,11 @@ const PersonDetail = () => {
       .get(`http://localhost:8000/note/${id}`)
       .then(response => {
         setNote(response.data);
+        setNoteExists(true); 
       })
       .catch(error => {
         console.error('Error fetching data:', error);
+        setNoteExists(false);
       });
   }, [id]);
 
@@ -66,7 +69,7 @@ const PersonDetail = () => {
             <h1>{person.facebook_id} details</h1>
             <div className="detail-item">
               {person.full_name}
-              {note ? (
+              {noteExists ? ( 
                 <button onClick={handleViewNote}>View Note</button>
               ) : (
                 <button onClick={handleCreateNote}>Create Note</button>
@@ -78,12 +81,10 @@ const PersonDetail = () => {
             </div>
 
             <div className='card-container'>
-
               <FamilyMemberCard personId={id} />
               <WorkAndEducationCard personId={id} />
               <PlacesCard personId={id} />
               <ReviewsCard personId={id} />
-
             </div>
           </div>
         )}
@@ -104,9 +105,10 @@ const PersonDetail = () => {
       )}
       {showUpdateNoteModal && (
         <UpdateNoteModal
-          note={id}
+          personId={id}
           setShowUpdateNoteModal={setShowUpdateNoteModal}
           setNote={setNote}
+          note={note}
         />
       )}
     </div>

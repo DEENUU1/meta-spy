@@ -3,8 +3,8 @@ import axios from 'axios';
 import "../styles/ModalContainer.css";
 
 
-const UpdateNoteModal = ({ personId, setShowUpdateNoteModal, setNote }) => {
-  const [content, setContent] = useState(note.content);
+const UpdateNoteModal = ({ personId, setShowUpdateNoteModal, setNote, note }) => {
+  const [content, setContent] = useState(note ? note.content: "");
 
   const handleUpdateNote = () => {
     axios
@@ -19,7 +19,7 @@ const UpdateNoteModal = ({ personId, setShowUpdateNoteModal, setNote }) => {
   };
 
   const handleCloseModal = () => {
-    setShowUpdateNoteModal(false);
+    setShowUpdateNoteModal(true);
   };
 
   return (

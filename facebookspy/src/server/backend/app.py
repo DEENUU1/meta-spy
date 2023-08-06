@@ -224,7 +224,7 @@ def update_note_for_person(
     return db_note
 
 
-@app.get("/notes/{person_id}", response_model=NoteSchema)
+@app.get("/note/{person_id}", response_model=NoteSchema)
 def get_note_for_person(person_id: int, db: Session = Depends(get_session)):
     """Return note object for specified person"""
     db_note = db.query(Notes).filter(Notes.person_id == person_id).first()
