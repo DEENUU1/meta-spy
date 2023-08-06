@@ -263,3 +263,21 @@ def test_update_note_for_person(client: TestClient, session: Session):
         "content": "This is a note",
         "person_id": 1,
     }
+
+
+def get_note_for_person(client: TestClient, session: Session):
+    person = Person(
+        full_name="John Doe", url="https://example.com/john-doe", facebook_id="abc"
+    )
+    note = Notes(content="This is a note", person=person)
+    session.add(person)
+    session.add(note)
+    session.commit()
+
+    response = client.get("/person/note/1")
+    assert response.status_code == 200
+    assert response.json() == {
+        "id": 1,
+        "content": "This is a note",
+        "person_id": 1,
+    }
