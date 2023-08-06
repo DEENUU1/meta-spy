@@ -196,3 +196,49 @@ def test_get_images_by_person_id(client: TestClient, session: Session):
             "person_id": 1,
         }
     ]
+
+
+# def test_get_family_member_by_person_id(client: TestClient, session: Session):
+#     person = Person(
+#         full_name="John Doe", url="https://example.com/john-doe", facebook_id="abc"
+#     )
+#     family_member = FamilyMember(
+#         full_name="John Toe",
+#         role="Father",
+#         url="https://example.com/john-toe",
+#         person=person,
+#     )
+#     session.add(person)
+#     session.add(family_member)
+#     session.commit()
+#
+#     response = client.get("/person/family_member/1")
+#     assert response.status_code == 200
+#     assert response.json() == [
+#         {
+#             "id": 1,
+#             "full_name": "John Toe",
+#             "role": "Father",
+#             "url": "https://example.com/john-toe",
+#             "person_id": 1,
+#         }
+#     ]
+
+
+def test_create_note_for_person(client: TestClient, session: Session):
+    person = Person(
+        full_name="John Doe", url="https://example.com/john-doe", facebook_id="abc"
+    )
+    session.add(person)
+    session.commit()
+
+    response = client.post(
+        "/person/note/1",
+        json={"content": "This is a note", "person_id": 1},
+    )
+    assert response.status_code == 200
+    assert response.json() == {
+        "id": 1,
+        "content": "This is a note",
+        "person_id": 1,
+    }
