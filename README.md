@@ -67,7 +67,7 @@ scrape user information based on a given url address and save data to database a
 
 ### v0.5 (In develop)
 - ~~React frontend for local server~~ 
-- Automatically google search in person detail 
+- ~~Automatically google search in person detail~~ 
 - ~~Adding notes for specified person~~ 
 - ~~FastAPI search~~:
   - ~~Friends~~
