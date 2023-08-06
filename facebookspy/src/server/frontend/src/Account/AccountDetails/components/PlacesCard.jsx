@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import LoadingDots from '../../../Home/components/Loading';
+import GoogleSearch from '../../../Home/components/GoogleSearch';
 
 const PlacesCard = ({ personId }) => {
   const [places, setPlaces] = useState([]);
@@ -28,6 +29,7 @@ const PlacesCard = ({ personId }) => {
           {places.map(item => (
             <li key={item.id}>
               <strong>{item.name}</strong> - {item.date}
+              <GoogleSearch value={item.name} />
             </li>
           ))}
         </ul>

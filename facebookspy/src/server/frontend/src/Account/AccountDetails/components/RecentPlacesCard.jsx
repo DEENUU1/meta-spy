@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import LoadingDots from '../../../Home/components/Loading';
 import '../styles/RecentPlacesCard.css'; 
+import GoogleSearch from '../../../Home/components/GoogleSearch';
 
 const RecentPlacesCard = ({ personId }) => {
   const [recentPlaces, setRecentPlaces] = useState([]);
@@ -30,6 +31,7 @@ const RecentPlacesCard = ({ personId }) => {
             <li className="friend-card" key={item.id}> 
               <strong>{item.localization}</strong> <br />
               <p>{item.date}</p>
+              <GoogleSearch value={item.localization} />
             </li>
           ))}
         </ul>

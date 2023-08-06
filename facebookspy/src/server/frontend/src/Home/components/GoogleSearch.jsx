@@ -1,4 +1,5 @@
 import React from 'react';
+import { FaGoogle } from 'react-icons/fa';
 
 const GoogleSearch = ({ value }) => {
   const handleClick = () => {
@@ -7,9 +8,9 @@ const GoogleSearch = ({ value }) => {
 
   return (
     <div>
-      <input type="text" value={value} readOnly />
       <button onClick={handleClick}>
-        <img src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" alt="Google" />
+        <FaGoogle />
+        Search in google
       </button>
     </div>
   );

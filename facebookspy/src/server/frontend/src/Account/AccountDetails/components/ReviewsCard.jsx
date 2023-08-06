@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import LoadingDots from '../../../Home/components/Loading';
+import GoogleSearch from '../../../Home/components/GoogleSearch';
 
 const ReviewsCard = ({ personId }) => {
   const [reviews, setReviews] = useState([]);
@@ -28,6 +29,7 @@ const ReviewsCard = ({ personId }) => {
           {reviews.map(review => (
             <li key={review.id}>
               <strong>{review.company}</strong> - " {review.review} "
+              <GoogleSearch value={review.company} />
             </li>
           ))}
         </ul>
