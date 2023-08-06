@@ -7,6 +7,8 @@ import PersonCard from '../components/PersonCard';
 const PersonsPage = () => {
   const [persons, setPersons] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -23,15 +25,37 @@ const PersonsPage = () => {
     });
   }, []);
 
+  useEffect(() => {
+    if (searchTerm) {
+      axios.get(`http://127.0.0.1:8000/person/search/?search_term=${searchTerm}`)
+        .then(response => {
+          setSearchResults(response.data);
+        })
+        .catch(error => {
+          console.error('Error searching persons:', error);
+        });
+    } else {
+      setSearchResults([]);
+    }
+  }, [searchTerm]);
+
   return (
     <div className="page">
       <div className="content">
         <h1>Scraped people</h1>
+        <div className="search-form">
+          <input
+            type="text"
+            placeholder="Search persons..."
+            value={searchTerm}
+            onChange={e => setSearchTerm(e.target.value)}
+          />
+        </div>
         {loading ? (
           <LoadingDots />
         ) : (
           <ul className="person-list">
-            {persons.map(person => (
+            {(searchTerm ? searchResults : persons).map(person => (
               <PersonCard key={person.id} person={person} />
             ))}
           </ul>

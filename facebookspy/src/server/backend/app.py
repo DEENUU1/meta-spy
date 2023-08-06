@@ -1,6 +1,8 @@
 from fastapi import FastAPI, Depends, HTTPException
 from typing import List
 
+from sqlalchemy import or_
+
 from ...schemas import (
     PersonSchema,
     ReviewsSchema,
@@ -254,3 +256,21 @@ def search_friends(search_term: str, db: Session = Depends(get_session)):
     if not friends:
         raise HTTPException(status_code=404, detail="Friends not found")
     return friends
+
+
+@app.get("/person/search/", response_model=List[PersonSchema])
+def search_person(search_term: str, db: Session = Depends(get_session)):
+    """Search Person objects"""
+    person = (
+        db.query(Person)
+        .filter(
+            or_(
+                Person.full_name.ilike(f"%{search_term}%"),
+                Person.facebook_id.ilike(f"%{search_term}%"),
+            )
+        )
+        .all()
+    )
+    if not person:
+        raise HTTPException(status_code=404, detail="Person not found")
+    return person
