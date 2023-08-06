@@ -187,7 +187,7 @@ async def view_image_by_image_id(
     return FileResponse(image_path, media_type="image/jpeg")
 
 
-@app.get("/family_member/{person_id}", response_model=List[FamilyMemberSchema])
+@app.get("person/family_member/{person_id}", response_model=List[FamilyMemberSchema])
 async def get_family_member_by_person_id(
     person_id: int, session: Session = Depends(get_session)
 ):

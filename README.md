@@ -68,14 +68,14 @@ scrape user information based on a given url address and save data to database a
 ### v0.5 (In develop)
 - ~~React frontend for local server~~ 
 - Automatically google search in person detail 
-- Adding notes for specified person 
+- ~~Adding notes for specified person~~ 
 - FastAPI search:
   - Family member
   - Friends
   - Person
 - Downloading videos and reels 
-- Docker & Dockercompose 
-
+- Docker & Docker compose 
+- ~~Pytest for fastapi endpoints~~ 
 
 ### v0.6 (ideas)
 - Delete and update operations on database  
