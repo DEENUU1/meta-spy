@@ -12,6 +12,10 @@ from ...schemas import (
     FriendsSchema,
     ImageSchema,
     FamilyMemberSchema,
+    NoteBaseSchema,
+    NoteCreateSchema,
+    NoteUpdateSchema,
+    NoteSchema,
 )
 from ...models import (
     Person,
@@ -24,10 +28,10 @@ from ...models import (
     Friends,
     Image,
     FamilyMember,
+    Notes,
 )
 from ...database import Session, get_session
 from fastapi.middleware.cors import CORSMiddleware
-from time import sleep
 from fastapi.responses import FileResponse
 from pathlib import Path
 
@@ -189,3 +193,18 @@ async def get_family_member_by_person_id(
     if not family_members:
         raise HTTPException(status_code=404, detail="Family Members not found")
     return family_members
+
+
+@app.post("/notes/{person_id}", response_model=NoteSchema)
+def create_note_for_person(
+    person_id: int, note: NoteCreateSchema, db: Session = Depends(get_session())
+):
+    """Create note object for specified person"""
+    person = db.query(Person).filter(Person.id == person_id).first()
+    if not person:
+        raise HTTPException(status_code=404, detail="Person not found")
+    db_note = Notes(**note.dict(), person_id=person_id)
+    db.add(db_note)
+    db.commit()
+    db.refresh(db_note)
+    return db_note
