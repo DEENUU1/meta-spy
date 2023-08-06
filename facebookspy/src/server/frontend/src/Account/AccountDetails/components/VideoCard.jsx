@@ -7,7 +7,7 @@ const VideoCard = ({ personId }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(`http://localhost:8000/video/${personId}`)
+    axios.get(`http://localhost:8000/person/video/${personId}`)
       .then(response => {
         setVideo(response.data);
         setLoading(false);

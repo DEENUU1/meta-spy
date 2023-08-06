@@ -7,5 +7,9 @@ export const MenuList = [
       title: "Account Scraper",
       url: "/person",
     },
+    {
+      title: "Notes",
+      url: "/note",
+    }
   ];
   

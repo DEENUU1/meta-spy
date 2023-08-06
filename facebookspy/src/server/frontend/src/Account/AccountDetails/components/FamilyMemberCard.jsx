@@ -8,7 +8,7 @@ const FamilyMemberCard = ({ personId }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(`http://localhost:8000/family_member/${personId}`)
+    axios.get(`http://localhost:8000/person/family_member/${personId}`)
       .then(response => {
         setFamilyMember(response.data);
         setLoading(false);

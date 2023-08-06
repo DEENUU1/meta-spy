@@ -8,7 +8,7 @@ const FriendCard = ({ personId }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(`http://localhost:8000/friend/${personId}`)
+    axios.get(`http://localhost:8000/person/friend/${personId}`)
       .then(response => {
         setFriends(response.data);
         setLoading(false);

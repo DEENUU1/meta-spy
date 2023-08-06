@@ -8,6 +8,8 @@ import PersonVideoReel from './Account/AccountDetails/pages/PersonVideoReel';
 import PersonImage from './Account/AccountDetails/pages/PersonImage';
 import PersonFriendList from './Account/AccountDetails/pages/PersonFriendList';
 import PersonRecentPlaces from './Account/AccountDetails/pages/PersonRecentPlaces';
+import NotePage from './Note/NotePage'; 
+
 import './App.css';
 
 function App() {
@@ -24,6 +26,7 @@ function App() {
           <Route element={<PersonImage/>} path="/person/:id/image"/>
           <Route element={<PersonFriendList/>} path="/person/:id/friend"/>
           <Route element={<PersonRecentPlaces/>} path="/person/:id/place"/>
+          <Route element={<NotePage/>} path="/note/"/>
           
         </Routes>
         </div>

@@ -98,3 +98,23 @@ class PersonSchema(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class NoteBaseSchema(BaseModel):
+    content: Optional[str] = None
+
+
+class NoteCreateSchema(NoteBaseSchema):
+    person_id: int
+
+
+class NoteUpdateSchema(NoteBaseSchema):
+    pass
+
+
+class NoteSchema(NoteBaseSchema):
+    id: int
+    person_id: int
+
+    class Config:
+        orm_mode = True
