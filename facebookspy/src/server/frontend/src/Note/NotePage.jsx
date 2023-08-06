@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import NoteCard from './NoteCard';
-import ViewNoteModal from '../Account/AccountDetails/components/ViewNoteModal';
+import ViewNoteModal from './ViewNoteModal';
 import './NotePage.css';
 
 const NotesPage = () => {
   const [notes, setNotes] = useState([]);
   const [selectedNote, setSelectedNote] = useState(null);
   const [showViewNoteModal, setShowViewNoteModal] = useState(false);
+  const [showUpdateNoteModal, setShowUpdateNoteModal] = useState(false); 
 
   useEffect(() => {
     fetchNotes();
@@ -27,9 +28,10 @@ const NotesPage = () => {
     setShowViewNoteModal(true);
   };
 
-  const closeViewNoteModal = () => {
+  const closeModals = () => {
     setSelectedNote(null);
     setShowViewNoteModal(false);
+    setShowUpdateNoteModal(false); 
   };
 
   return (
@@ -41,7 +43,8 @@ const NotesPage = () => {
       {showViewNoteModal && (
         <ViewNoteModal
           note={selectedNote}
-          onClose={closeViewNoteModal}
+          onClose={closeModals} 
+          setShowUpdateNoteModal={setShowUpdateNoteModal} 
         />
       )}
     </div>
