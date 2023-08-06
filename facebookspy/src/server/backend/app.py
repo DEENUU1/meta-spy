@@ -245,7 +245,7 @@ def get_all_notes(db: Session = Depends(get_session)):
     return db_note
 
 
-@app.get("/friends/", response_model=List[FriendsSchema])
+@app.get("/friends/search/", response_model=List[FriendsSchema])
 def search_friends(search_term: str, db: Session = Depends(get_session)):
     """Search Friend objects"""
     friends = (
