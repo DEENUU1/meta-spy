@@ -3,7 +3,7 @@ from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 from ..server.backend.app import app
 from ..database import get_session
-from ..models import Person
+from ..models import Person, Videos, Reviews
 
 
 @pytest.fixture
@@ -49,4 +49,71 @@ def test_get_people_list(client, session):
             "url": "https://example.com/jane-smith",
             "facebook_id": "abc1",
         },
+    ]
+
+
+def test_get_person_by_facebook_id_not_found(client):
+    response = client.get("/person/1")
+    assert response.status_code == 404
+    assert response.json() == {"detail": "Person not found"}
+
+
+def test_get_person_by_facebook_id(client, session):
+    person = Person(
+        full_name="John Doe", url="https://example.com/john-doe", facebook_id="abc"
+    )
+    session.add(person)
+    session.commit()
+
+    response = client.get("/person/1")
+    assert response.status_code == 200
+    assert response.json() == {
+        "id": 1,
+        "full_name": "John Doe",
+        "url": "https://example.com/john-doe",
+        "facebook_id": "abc",
+    }
+
+
+def test_get_reviews_by_person_id_not_found(client):
+    response = client.get("/person/review/1")
+    assert response.status_code == 404
+    assert response.json() == {"detail": "Reviews not found"}
+
+
+def test_get_reviews_by_person_id(client, session):
+    person = Person(
+        full_name="John Doe", url="https://example.com/john-doe", facebook_id="abc"
+    )
+    review1 = Reviews(company="Company A", review="Review A", person=person)
+    session.add(person)
+    session.add(review1)
+    session.commit()
+
+    response = client.get("/person/review/1")
+    assert response.status_code == 200
+    assert response.json() == [
+        {"id": 1, "company": "Company A", "review": "Review A", "person_id": 1},
+    ]
+
+
+def test_get_videos_by_person_id_not_found(client):
+    response = client.get("/person/video/1")
+    assert response.status_code == 404
+    assert response.json() == {"detail": "Videos not found"}
+
+
+def test_get_videos_by_person_id(client, session):
+    person = Person(
+        full_name="John Doe", url="https://example.com/john-doe", facebook_id="abc"
+    )
+    video1 = Videos(url="https://www.youtube.com/watch?v=abc123", person=person)
+    session.add(person)
+    session.add(video1)
+    session.commit()
+
+    response = client.get("/person/video/1")
+    assert response.status_code == 200
+    assert response.json() == [
+        {"id": 1, "url": "https://www.youtube.com/watch?v=abc123", "person_id": 1},
     ]

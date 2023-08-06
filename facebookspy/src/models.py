@@ -142,19 +142,3 @@ class Notes(Base):
 
     # Relationship
     person = relationship("Person", back_populates="note")
-
-
-def test_get_person_by_facebook_id_not_found(client):
-    response = client.get("/person/1")
-    assert response.status_code == 404
-    assert response.json() == {"detail": "Person not found"}
-
-
-def test_get_person_by_facebook_id(client, session):
-    person = Person(name="John Doe", age=30)
-    session.add(person)
-    session.commit()
-
-    response = client.get("/person/1")
-    assert response.status_code == 200
-    assert response.json() == {"name": "John Doe", "age": 30}
