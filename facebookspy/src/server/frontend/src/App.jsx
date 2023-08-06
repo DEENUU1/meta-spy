@@ -1,9 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import HomePage from './Account/Home/pages/HomePage';
+import HomePage from './Home/pages/HomePage';
 import PersonDetail from './Account/AccountDetails/pages/PersonDetail';
 import PersonsPage from './Account/AccountList/pages/PersonsPage';
-import Navbar from "./Account/Home/components/Navbar";
+import Navbar from "./Home/components/Navbar";
 import PersonVideoReel from './Account/AccountDetails/pages/PersonVideoReel';
 import PersonImage from './Account/AccountDetails/pages/PersonImage';
 import PersonFriendList from './Account/AccountDetails/pages/PersonFriendList';

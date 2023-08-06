@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom'; 
 import axios from 'axios';
 import '../styles/PersonDetail.css';
-import LoadingDots from '../../Home/components/Loading';
+import LoadingDots from '../../../Home/components/Loading';
 import ReviewsCard from '../components/ReviewsCard';
 import WorkAndEducationCard from '../components/WorkAndEducationCard';
 import FamilyMemberCard from '../components/FamilyMemberCard';
