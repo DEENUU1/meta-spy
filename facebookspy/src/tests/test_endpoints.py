@@ -5,7 +5,16 @@ from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 from ..server.backend.app import app
 from ..database import get_session
-from ..models import Person, Videos, Reviews, Friends, Places
+from ..models import (
+    Person,
+    Videos,
+    Reviews,
+    Friends,
+    Places,
+    Image,
+    FamilyMember,
+    Notes,
+)
 
 
 @pytest.fixture
@@ -164,6 +173,26 @@ def test_get_friends_by_person_id(client: TestClient, session: Session):
             "id": 1,
             "full_name": "John Toe",
             "url": "https://example.com/john-toe",
+            "person_id": 1,
+        }
+    ]
+
+
+def test_get_images_by_person_id(client: TestClient, session: Session):
+    person = Person(
+        full_name="John Doe", url="https://example.com/john-doe", facebook_id="abc"
+    )
+    image = Image(path="src/images/johndoe/1.jpg", person=person)
+    session.add(person)
+    session.add(image)
+    session.commit()
+
+    response = client.get("/person/image/1")
+    assert response.status_code == 200
+    assert response.json() == [
+        {
+            "id": 1,
+            "path": "src/images/johndoe/1.jpg",
             "person_id": 1,
         }
     ]
