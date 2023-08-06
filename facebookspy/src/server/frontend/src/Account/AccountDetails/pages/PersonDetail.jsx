@@ -104,7 +104,7 @@ const PersonDetail = () => {
       )}
       {showUpdateNoteModal && (
         <UpdateNoteModal
-          note={note}
+          note={id}
           setShowUpdateNoteModal={setShowUpdateNoteModal}
           setNote={setNote}
         />
