@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import LoadingDots from '../../Home/components/Loading';
+import LoadingDots from '../../../Home/components/Loading';
 import '../styles/FriendCard.css'; 
 
 const FriendCard = ({ personId }) => {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import LoadingDots from '../../Home/components/Loading';
+import LoadingDots from '../../../Home/components/Loading';
 
 const ReelCard = ({ personId }) => {
   const [reel, setReel] = useState([]);
