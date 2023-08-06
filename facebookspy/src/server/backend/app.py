@@ -236,7 +236,7 @@ def get_note_for_person(person_id: int, db: Session = Depends(get_session)):
     return db_note
 
 
-@app.get("/note/", response_class=List[NoteSchema])
+@app.get("/note/", response_model=List[NoteSchema])
 def get_all_notes(db: Session = Depends(get_session)):
     """Return a list of notes"""
     db_note = db.query(Notes).all()
