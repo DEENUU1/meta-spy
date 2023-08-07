@@ -9,7 +9,7 @@ facebookspy/cookies.json
 images/
 facebookspy/database.db
 facebookspy/database_test.db
-
+facebookspy/videos/
 # project - frontend
 
 facebookspy/src/server/frontend/logs

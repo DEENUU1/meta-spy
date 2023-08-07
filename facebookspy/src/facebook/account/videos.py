@@ -89,10 +89,20 @@ class FacebookVideoScraper(BaseFacebookScraper):
 
     def download_video(self, video_url: str):
         """Download videos using youtube_dl library"""
+
+        video_path = Config.VIDEO_PATH
+        if not os.path.exists(video_path):
+            os.makedirs(video_path)
+
+        user_video_path = os.path.dirname(f"{video_path}/{self._user_id}/")
+        if not os.path.exists(user_video_path):
+            os.makedirs(user_video_path)
+
+        video_filename = self.generate_random_video_title()
+        video_full_path = os.path.join(user_video_path, video_filename)
+
         ydl_opts = {
-            "outtmpl": os.path.join(
-                Config.VIDEO_PATH, f"{self.generate_random_video_title()}.%(ext)s"
-            ),
+            "outtmpl": os.path.join(video_full_path),
         }
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
             ydl.download([video_url])
