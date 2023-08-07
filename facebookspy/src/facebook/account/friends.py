@@ -1,20 +1,15 @@
-import logging
 from time import sleep
 from typing import List, Dict
 
 from ...config import Config
 from selenium.webdriver.common.by import By
-from rich import print as rprint
 from ...repository import person_exists, get_person, create_friends, create_person
 from ..facebook_base import BaseFacebookScraper
+from ...logs import Logs
+from rich import print as rprint
 
 
-# Logging setup
-logging.basicConfig(
-    filename=Config.LOG_FILE_PATH,
-    level=logging.ERROR,
-    format="%(asctime)s - %(levelname)s - %(message)s",
-)
+logs = Logs("friends.py")
 
 
 class FriendListScraper(BaseFacebookScraper):
@@ -44,7 +39,7 @@ class FriendListScraper(BaseFacebookScraper):
                 extracted_elements.append(element_data)
 
         except Exception as e:
-            logging.error(f"Error extracting friends data: {e}")
+            logs.log_error(f"Error extracting friends data: {e}")
 
         return extracted_elements
 
@@ -76,7 +71,7 @@ class FriendListScraper(BaseFacebookScraper):
 
                 last_height = new_height
         except Exception as e:
-            logging.error(f"Error occurred while scrolling: {e}")
+            logs.log_error(f"Error occurred while scrolling: {e}")
 
     @property
     def is_pipeline_successful(self) -> bool:
@@ -110,4 +105,5 @@ class FriendListScraper(BaseFacebookScraper):
             self.success = True
 
         except Exception as e:
-            logging.error(f"An error occurred: {e}")
+            logs.log_error(f"An error occurred: {e}")
+            rprint(f"An error occurred {e}")

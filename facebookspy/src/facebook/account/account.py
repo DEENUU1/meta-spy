@@ -1,9 +1,7 @@
-import logging
 from typing import List, Dict
 from ...config import Config
 from selenium.webdriver.common.by import By
 from ..facebook_base import BaseFacebookScraper
-from rich import print as rprint
 from ...repository import (
     person_exists,
     create_person,
@@ -12,14 +10,11 @@ from ...repository import (
     create_family_member,
     get_person,
 )
+from ...logs import Logs
+from rich import print as rprint
 
 
-# Logging setup
-logging.basicConfig(
-    filename=Config.LOG_FILE_PATH,
-    level=logging.ERROR,
-    format="%(asctime)s - %(levelname)s - %(message)s",
-)
+logs = Logs("account.py")
 
 
 class AccountScraper(BaseFacebookScraper):
@@ -42,7 +37,7 @@ class AccountScraper(BaseFacebookScraper):
             data = fullname_element.text.strip()
 
         except Exception as e:
-            logging.error(f"Error occurred while extracting full name: {e}")
+            logs.log_error(f"Error occurred while extracting full name: {e}")
 
         return data
 
@@ -69,7 +64,7 @@ class AccountScraper(BaseFacebookScraper):
                 extracted_work_data.append(work_entry_data)
 
         except Exception as e:
-            logging.error(f"Error extracting work data: {e}")
+            logs.log_error(f"Error extracting work data: {e}")
 
         return extracted_work_data
 
@@ -97,7 +92,7 @@ class AccountScraper(BaseFacebookScraper):
                 places.append({"name": name, "date": date})
 
         except Exception as e:
-            logging.error(f"Error extracting localization data: {e}")
+            logs.log_error(f"Error extracting localization data: {e}")
 
         return places
 
@@ -125,7 +120,7 @@ class AccountScraper(BaseFacebookScraper):
                     {"name": name, "relationship": relationship, "url": profile_url}
                 )
         except Exception as e:
-            logging.error(f"Error extracting family data: {e}")
+            logs.log_error(f"Error extracting family data: {e}")
 
         return data
 
@@ -161,8 +156,8 @@ class AccountScraper(BaseFacebookScraper):
             self.success = True
 
         except Exception as e:
-            logging.error(f"Error running pipeline: {e}")
-            rprint(f"[bold red]Something went wrong[/bold red] {e}")
+            logs.log_error(f"Error running pipeline: {e}")
+            rprint(f"An error occurred {e}")
 
     def localization_pipeline(self) -> None:
         """
@@ -193,8 +188,8 @@ class AccountScraper(BaseFacebookScraper):
             self.success = True
 
         except Exception as e:
-            logging.error(f"Error running pipeline: {e}")
-            rprint(f"[bold red]Something went wrong[/bold red] {e}")
+            logs.log_error(f"Error running pipeline: {e}")
+            rprint(f"An error occurred {e}")
 
     def family_member_pipeline(self) -> None:
         """
@@ -228,8 +223,8 @@ class AccountScraper(BaseFacebookScraper):
             self.success = True
 
         except Exception as e:
-            logging.error(f"Error running pipeline: {e}")
-            rprint(f"[bold red]Something went wrong[/bold red] {e}")
+            logs.log_error(f"Error running pipeline: {e}")
+            rprint(f"An Error occurred {e}")
 
     def full_name_pipeline(self) -> None:
         """
@@ -253,8 +248,8 @@ class AccountScraper(BaseFacebookScraper):
             self.success = True
 
         except Exception as e:
-            logging.error(f"Error running pipeline: {e}")
-            rprint(f"[bold red]Something went wrong[/bold red] {e}")
+            logs.log_error(f"Error running pipeline: {e}")
+            rprint(f"An error occurred {e}")
 
     def pipeline(self) -> None:
         """
@@ -304,5 +299,5 @@ class AccountScraper(BaseFacebookScraper):
             self.success = True
 
         except Exception as e:
-            logging.error(f"Error running pipeline: {e}")
-            rprint(f"[bold red]Something went wrong[/bold red] {e}")
+            logs.log_error(f"Error running pipeline: {e}")
+            rprint(f"An Error occurred {e}")

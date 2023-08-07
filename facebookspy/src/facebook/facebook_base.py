@@ -1,18 +1,14 @@
-import logging
 import pickle
 
 from ..config import Config
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from .scraper import Scraper
+from ..logs import Logs
+from rich import print as rprint
 
 
-# Logging setup
-logging.basicConfig(
-    filename=Config.LOG_FILE_PATH,
-    level=logging.ERROR,
-    format="%(asctime)s - %(levelname)s - %(message)s",
-)
+logs = Logs("facebook_base.py")
 
 
 class BaseFacebookScraper(Scraper):
@@ -34,7 +30,9 @@ class BaseFacebookScraper(Scraper):
                     try:
                         self._driver.add_cookie(cookie)
                     except Exception as e:
-                        logging.error(f"Error adding cookie: {cookie}, Exception: {e}")
+                        logs.log_error(f"An Error occurred adding cookies {e}")
+                        rprint(f"An Error occurred while adding cookies {e}")
 
         except Exception as e:
-            logging.error(f"Error loading cookies: {e}")
+            logs.log_error(f"An Error occurred while loading cookies: {e}")
+            rprint(f"An Error occurred while loading cookies {e}")

@@ -10,13 +10,18 @@ from .facebook.account.reviews import FacebookReviewsScraper
 from typing import Optional
 import typer
 from src.cli.home import display_start_menu
-from rich import print as rprint
 from src.cli.version import return_version_info
 import subprocess
+from .logs import Logs
+from rich import print as rprint
+
+
+logs = Logs("commands.py")
 
 
 load_dotenv()
 app = typer.Typer()
+
 
 """ Fastapi """
 
@@ -27,12 +32,12 @@ def server():
         build_command = ["docker-compose", "build"]
         subprocess.run(build_command, check=True)
 
-        # run_command = ["docker-compose", "up", "-d"]
-        run_command = ["docker-compose", "up"]
+        run_command = ["docker-compose", "up", "-d"]
         subprocess.run(run_command, check=True)
 
     except subprocess.CalledProcessError as e:
-        rprint(f"An error occurred while building the server: {e}")
+        logs.log_error(f"An error occurred while starting local server {e}")
+        rprint(f"An error occurred {e}")
 
 
 """ Project commands """

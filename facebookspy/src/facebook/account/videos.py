@@ -1,10 +1,8 @@
-import logging
 from time import sleep
 from typing import List
 
 from ...config import Config
 from selenium.webdriver.common.by import By
-from rich import print as rprint
 from ..facebook_base import BaseFacebookScraper
 from ...repository import create_person, get_person, person_exists, create_videos
 import youtube_dl
@@ -12,14 +10,11 @@ from rich.progress import Progress
 import os
 import random
 import string
+from ...logs import Logs
+from rich import print as rprint
 
 
-# Logging setup
-logging.basicConfig(
-    filename=Config.LOG_FILE_PATH,
-    level=logging.ERROR,
-    format="%(asctime)s - %(levelname)s - %(message)s",
-)
+logs = Logs("videos.py")
 
 
 class FacebookVideoScraper(BaseFacebookScraper):
@@ -59,7 +54,7 @@ class FacebookVideoScraper(BaseFacebookScraper):
                 last_height = new_height
 
         except Exception as e:
-            logging.error(f"Error occurred while scrolling: {e}")
+            logs.log_error(f"An Error occurred while scrolling: {e}")
 
     def extract_videos_urls(self) -> List[str]:
         """
@@ -77,7 +72,7 @@ class FacebookVideoScraper(BaseFacebookScraper):
                     extracted_videos_urls.append(src_attribute)
 
         except Exception as e:
-            logging.error(f"Error extracting reels URLs: {e}")
+            logs.log_error(f"An Error extracting while extracting video URL: {e}")
 
         return extracted_videos_urls
 
@@ -108,7 +103,7 @@ class FacebookVideoScraper(BaseFacebookScraper):
             with youtube_dl.YoutubeDL(ydl_opts) as ydl:
                 ydl.download([video_url])
         except Exception as e:
-            logging.error(f"Error occurred while downloading videos: {e}")
+            logs.log_error(f"An Error occurred while downloading videos: {e}")
 
     def save_downloaded_videos(self, video_urls: List[str]):
         """Save and download scraped videos from facebook profile"""
@@ -124,7 +119,7 @@ class FacebookVideoScraper(BaseFacebookScraper):
                         description=f"[cyan]Downloading... {index}/{len(video_urls)}",
                     )
         except Exception as e:
-            logging.error(f"Error downloading videos: {e}")
+            logs.log_error(f"An Error occurred while downloading videos: {e}")
 
     @property
     def is_pipeline_successful(self) -> bool:
@@ -156,7 +151,8 @@ class FacebookVideoScraper(BaseFacebookScraper):
             self.success = True
 
         except Exception as e:
-            logging.error(f"An error occurred: {e}")
+            logs.log_error(f"An error occurred: {e}")
+            rprint(f"An error occurred {e}")
 
     def save_video_urls_to_database_pipeline(self) -> None:
         """Pipeline to save video url to database"""
@@ -182,4 +178,5 @@ class FacebookVideoScraper(BaseFacebookScraper):
             self.success = True
 
         except Exception as e:
-            logging.error(f"An error occurred: {e}")
+            logs.log_error(f"An error occurred: {e}")
+            rprint(f"An error occurred {e}")

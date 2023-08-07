@@ -1,20 +1,15 @@
-import logging
 from time import sleep
 from typing import List, Dict
 
 from ...config import Config
 from selenium.webdriver.common.by import By
-from rich import print as rprint
 from ..facebook_base import BaseFacebookScraper
 from ...repository import create_person, get_person, person_exists, create_reviews
+from ...logs import Logs
+from rich import print as rprint
 
 
-# Logging setup
-logging.basicConfig(
-    filename=Config.LOG_FILE_PATH,
-    level=logging.ERROR,
-    format="%(asctime)s - %(levelname)s - %(message)s",
-)
+logs = Logs("reviews.py")
 
 
 class FacebookReviewsScraper(BaseFacebookScraper):
@@ -56,8 +51,7 @@ class FacebookReviewsScraper(BaseFacebookScraper):
                 last_height = new_height
 
         except Exception as e:
-            logging.error(f"Error occurred while scrolling: {e}")
-            print("❗Page scrolling failed❗")
+            logs.log_error(f"Error occurred while scrolling: {e}")
 
     def extract_reviews(self) -> List[Dict[str, str]]:
         """
@@ -89,7 +83,7 @@ class FacebookReviewsScraper(BaseFacebookScraper):
 
                 extracted_reviews.append(data)
         except Exception as e:
-            logging.error(f"Error extracting image URLs: {e}")
+            logs.log_error(f"Error extracting image URLs: {e}")
 
         return extracted_reviews
 
@@ -125,4 +119,5 @@ class FacebookReviewsScraper(BaseFacebookScraper):
             self.success = True
 
         except Exception as e:
-            logging.error(f"An error occurred: {e}")
+            logs.log_error(f"An error occurred: {e}")
+            rprint(f"An error occurred {e}")
