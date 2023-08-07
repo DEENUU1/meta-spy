@@ -27,7 +27,7 @@ const PersonsPage = () => {
 
   useEffect(() => {
     if (searchTerm) {
-      axios.get(`http://127.0.0.1:8000/person/search/?search_term=${searchTerm}`)
+      axios.get(`http://localhost:8000/person/search/?search_term=${searchTerm}`)
         .then(response => {
           setSearchResults(response.data);
         })

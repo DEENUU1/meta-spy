@@ -9,10 +9,10 @@
 <br />
 <div align="center">
 
-  <h3 align="center">Facebook link tree</h3>
+  <h3 align="center">Facebook Spy</h3>
 
   <p align="center">
-    Scrape user's profile on facebook.
+    Scrape user's profile on facebook using CLI app and browse data using local web app.
     <br />
     <br />
     <a href="https://github.com/DEENUU1/OLX-Analytics/issues">Report Bug</a>
@@ -30,27 +30,39 @@
 ## About The Project
 This project allows to log in using selenium to facebook account (even if you have 2-step verification), 
 scrape user information based on a given url address and save data to database and local files.
-
+After that you can browse scraped data, add notes, search more detail in google using local web application.
 
 ### Built With
 - Python
+  - Typer
+  - Selenium
 - FastAPI 
-- Typer
-- Selenium
+- React
+  - Vite 
 - Sqlite
-- Docker & docker compsoe 
+- Docker & docker compose 
 
 ## Key Features
 - Log in with 2-step verification
 - Log in without 2-step verification
 - Save cookies to save log in session
-- Scrape a list of friends
 - Scrape information like:
   - work and education
   - places
   - full name
   - recent places 
+  - videos
+    - download videos
+  - reels
+  - list of friends
+  - images
+    - downlaod images
+  - reviews
 - Save scraped data to database
+- Local web app (FastAPI + React):
+  - Browse scraped data
+  - Adding notes in local web app for specified person
+  - Automatically search scraped data in google
 
 ## Screenshots
 
@@ -65,22 +77,11 @@ scrape user information based on a given url address and save data to database a
 
 ## Upcoming versions
 
-
-### v0.5 (In develop)
-- ~~React frontend for local server~~ 
-- ~~Automatically google search in person detail~~ 
-- ~~Adding notes for specified person~~ 
-- ~~FastAPI search~~:
-  - ~~Friends~~
-  - ~~Person~~
-- Downloading videos and reels 
-- ~~Docker & Docker compose~~ 
-- ~~Pytest for fastapi endpoints~~ 
-
-### v0.6 (ideas)
+### v0.6 (In develop)
 - Delete and update operations on database  
 - Create methods in react app 
 - Static page for project with demo etc.
+
 ### v0.7 (ideas)
 - Scrape:
   - groups
