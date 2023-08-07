@@ -14,7 +14,6 @@ from ...schemas import (
     FriendsSchema,
     ImageSchema,
     FamilyMemberSchema,
-    NoteBaseSchema,
     NoteCreateSchema,
     NoteUpdateSchema,
     NoteSchema,
@@ -36,6 +35,7 @@ from ...database import Session, get_session
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from pathlib import Path
+from ...config import Config
 
 app = FastAPI()
 
@@ -165,12 +165,6 @@ async def get_images_by_person_id(
     return images
 
 
-def get_image_folder_path():
-    curr_dir = Path(__file__).resolve().parent
-    image_dir = curr_dir.parent.parent.parent
-    return image_dir
-
-
 @app.get("/person/image/{image_id}/view")
 async def view_image_by_image_id(
     image_id: int, session: Session = Depends(get_session)
@@ -180,16 +174,14 @@ async def view_image_by_image_id(
     if not image:
         raise HTTPException(status_code=404, detail="Image not found")
 
-    images_folder = get_image_folder_path()
-    image_path = images_folder / image.path
-
+    image_path = Config.DOCKER_IMAGE_PATH / Path(image.path.replace("\\", "/"))
     if not image_path.is_file():
         raise HTTPException(status_code=404, detail="Image file not found")
 
     return FileResponse(image_path, media_type="image/jpeg")
 
 
-@app.get("person/family_member/{person_id}", response_model=List[FamilyMemberSchema])
+@app.get("/person/family_member/{person_id}", response_model=List[FamilyMemberSchema])
 async def get_family_member_by_person_id(
     person_id: int, session: Session = Depends(get_session)
 ):

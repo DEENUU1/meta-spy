@@ -27,7 +27,8 @@ def server():
         build_command = ["docker-compose", "build"]
         subprocess.run(build_command, check=True)
 
-        run_command = ["docker-compose", "up", "-d"]
+        # run_command = ["docker-compose", "up", "-d"]
+        run_command = ["docker-compose", "up"]
         subprocess.run(run_command, check=True)
 
     except subprocess.CalledProcessError as e:
