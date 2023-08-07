@@ -233,12 +233,25 @@ def scrape_reviews(name: Optional[str] = None):
 """ Videos scraper commands """
 
 
-def scrape_videos(name: Optional[str] = None):
+def scrape_videos_urls(name: Optional[str] = None):
     """Scrape videos urls from facebook account"""
 
-    rprint(f"Start scraping reels for {name}")
+    rprint(f"Start scraping videos urls for {name}")
     scraper = FacebookVideoScraper(name)
-    scraper.pipeline()
+    scraper.save_video_urls_to_database_pipeline()
+
+    if scraper.is_pipeline_successful:
+        rprint("✅Scraping successful✅")
+    else:
+        rprint("❌Scraping failed❌")
+
+
+def scrape_and_download_videos(name: Optional[str] = None):
+    """Scrape and download videos from facebook account"""
+
+    rprint(f"Start scraping and downloading videos for {name}")
+    scraper = FacebookVideoScraper(name)
+    scraper.save_and_download_videos_pipeline()
 
     if scraper.is_pipeline_successful:
         rprint("✅Scraping successful✅")
