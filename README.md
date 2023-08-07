@@ -79,9 +79,12 @@ After that you can browse scraped data, add notes, search more detail in google 
 ## Upcoming versions
 
 ### v0.6 (In develop)
-- Delete and update operations on database  
-- Create methods in react app 
-- Static page for project with demo etc.
+- Add Create, Delete and Update endpoints and add that endpoints in react app 
+- Add bool field to Video and Reel models 
+- Update class to scrape Video and Reels to move current code to download files after success saving scraped data do database
+- Update class to scrape Image - make more methods to avoid one big method 
+- Fix saving data to database to avoid creating duplicates 
+- Display errors in react app (currently only in console)
 
 ### v0.7 (ideas)
 - Scrape:
@@ -93,6 +96,10 @@ After that you can browse scraped data, add notes, search more detail in google 
   - books
   - likes
   - contact data and basic info
+
+### vX.X (ideas)
+- Scrape groups
+- Scrape posts 
 
 <!-- GETTING STARTED -->
 ## Getting Started
