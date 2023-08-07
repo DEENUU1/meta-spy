@@ -38,6 +38,7 @@ scrape user information based on a given url address and save data to database a
 - Typer
 - Selenium
 - Sqlite
+- Docker & docker compsoe 
 
 ## Key Features
 - Log in with 2-step verification
@@ -73,7 +74,7 @@ scrape user information based on a given url address and save data to database a
   - ~~Friends~~
   - ~~Person~~
 - Downloading videos and reels 
-- Docker & Docker compose 
+- ~~Docker & Docker compose~~ 
 - ~~Pytest for fastapi endpoints~~ 
 
 ### v0.6 (ideas)
@@ -177,6 +178,12 @@ python main.py scrape-full-account --name <facebook_id>
     
 python main.py scrape-recent-places --name <facebook_id>
 # Scrape recent places from facebook account
+
+python main.py scrape-videos-urls --name <facebook_id>
+# Scrape and save to database video urls 
+
+python main.py scrape-and-download-videos --name <facebook_id>
+# Scrape, save urls to database and download videos 
 
 python main.py scrape-reels --name <facebook_id>
 # Scrape reels from facebook account

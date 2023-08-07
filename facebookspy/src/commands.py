@@ -12,7 +12,6 @@ import typer
 from src.cli.home import display_start_menu
 from rich import print as rprint
 from src.cli.version import return_version_info
-from .server.backend.app import app as fastapi_app
 import subprocess
 
 
@@ -28,7 +27,8 @@ def server():
         build_command = ["docker-compose", "build"]
         subprocess.run(build_command, check=True)
 
-        run_command = ["docker-compose", "up", "-d"]
+        # run_command = ["docker-compose", "up", "-d"]
+        run_command = ["docker-compose", "up"]
         subprocess.run(run_command, check=True)
 
     except subprocess.CalledProcessError as e:
@@ -233,12 +233,25 @@ def scrape_reviews(name: Optional[str] = None):
 """ Videos scraper commands """
 
 
-def scrape_videos(name: Optional[str] = None):
+def scrape_videos_urls(name: Optional[str] = None):
     """Scrape videos urls from facebook account"""
 
-    rprint(f"Start scraping reels for {name}")
+    rprint(f"Start scraping videos urls for {name}")
     scraper = FacebookVideoScraper(name)
-    scraper.pipeline()
+    scraper.save_video_urls_to_database_pipeline()
+
+    if scraper.is_pipeline_successful:
+        rprint("✅Scraping successful✅")
+    else:
+        rprint("❌Scraping failed❌")
+
+
+def scrape_and_download_videos(name: Optional[str] = None):
+    """Scrape and download videos from facebook account"""
+
+    rprint(f"Start scraping and downloading videos for {name}")
+    scraper = FacebookVideoScraper(name)
+    scraper.save_and_download_videos_pipeline()
 
     if scraper.is_pipeline_successful:
         rprint("✅Scraping successful✅")

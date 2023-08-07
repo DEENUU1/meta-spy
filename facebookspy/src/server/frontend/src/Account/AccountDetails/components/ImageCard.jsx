@@ -25,11 +25,11 @@ const ImageCard = ({ personId }) => {
       {loading ? (
         <LoadingDots />
       ) : (
-        <ul className="image-grid"> 
+        <ul className="image-grid">
           {images.map(item => (
             <li key={item.id}>
-              <a href={`http://localhost:8000/image/${item.id}/view`} target="_blank" rel="noopener noreferrer">
-                <img src={`http://localhost:8000/image/${item.id}/view`} alt={`image ${item.id}`} />
+              <a href={`http://localhost:8000/person/image/${item.id}/view`} target="_blank" rel="noopener noreferrer">
+                <img src={`http://localhost:8000/person/image/${item.id}/view`} alt={`image ${item.id}`} />
               </a>
             </li>
           ))}

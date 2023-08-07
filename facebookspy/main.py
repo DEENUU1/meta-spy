@@ -14,7 +14,8 @@ from src.commands import (
     scrape_images,
     scrape_recent_places,
     scrape_reels,
-    scrape_videos,
+    scrape_videos_urls,
+    scrape_and_download_videos,
     scrape_reviews,
     server,
 )
@@ -29,7 +30,8 @@ app.command()(scrape_friend_list)
 app.command()(scrape_images)
 app.command()(scrape_recent_places)
 app.command()(scrape_reels)
-app.command()(scrape_videos)
+app.command()(scrape_videos_urls)
+app.command()(scrape_and_download_videos)
 app.command()(scrape_reviews)
 app.command()(scrape_full_name)
 app.command()(scrape_full_account)
