@@ -136,7 +136,6 @@ pytest
 
 # Work dir - facebookspy/
 
-
 python main.py --help 
 # Returns a list of all commands
 
@@ -151,6 +150,9 @@ python main.py login-2-step
 
 pyton main.py login
 # Allows to log in on facebook account without 2-step verification
+
+python main.py server 
+# Run local server to browse scraped data
 
 python main.py scrape-friend-list --name <facebook_id>
 # Allows to scrape all friends 
@@ -185,12 +187,6 @@ python main.py scrape-reviews --name <facebook_id>
 python main.py start-fastapi-server
 # Run fastapi server, allows to browse scraped data 
 
-
-# Workdir - frontend/
-
-
-yarn run dev
-# Run react app 
 
 ```
 

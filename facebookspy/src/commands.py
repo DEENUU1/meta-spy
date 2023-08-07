@@ -13,6 +13,7 @@ from src.cli.home import display_start_menu
 from rich import print as rprint
 from src.cli.version import return_version_info
 from .server.backend.app import app as fastapi_app
+import subprocess
 
 
 load_dotenv()
@@ -21,12 +22,17 @@ app = typer.Typer()
 """ Fastapi """
 
 
-def start_fastapi_server():
-    """Start fastapi server"""
+def server():
+    """Run local server to browse scraped data"""
+    try:
+        build_command = ["docker-compose", "build"]
+        subprocess.run(build_command, check=True)
 
-    import uvicorn
+        run_command = ["docker-compose", "up", "-d"]
+        subprocess.run(run_command, check=True)
 
-    uvicorn.run(fastapi_app, host="127.0.0.1", port=8000)
+    except subprocess.CalledProcessError as e:
+        rprint(f"An error occurred while building the server: {e}")
 
 
 """ Project commands """
