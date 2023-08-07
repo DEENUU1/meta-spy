@@ -101,11 +101,14 @@ class FacebookVideoScraper(BaseFacebookScraper):
         video_filename = self.generate_random_video_title()
         video_full_path = os.path.join(user_video_path, video_filename)
 
-        ydl_opts = {
-            "outtmpl": os.path.join(video_full_path),
-        }
-        with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-            ydl.download([video_url])
+        try:
+            ydl_opts = {
+                "outtmpl": os.path.join(video_full_path),
+            }
+            with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+                ydl.download([video_url])
+        except Exception as e:
+            logging.error(f"Error occurred while downloading videos: {e}")
 
     def save_downloaded_videos(self, video_urls: List[str]):
         """Save and download scraped videos from facebook profile"""
@@ -138,7 +141,7 @@ class FacebookVideoScraper(BaseFacebookScraper):
             self.scroll_page()
             rprint("[bold]Step 4 of 5 - Extract videos urls[/bold]")
             videos = self.extract_videos_urls()
-
+            print(videos)
             rprint("[bold]Step 5 of 5 - Extract videos urls[/bold]")
             self.save_downloaded_videos(videos)
 
