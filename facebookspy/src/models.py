@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Integer, ForeignKey
+from sqlalchemy import Column, String, Integer, ForeignKey, Boolean
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -105,6 +105,7 @@ class Reels(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     url = Column(String, nullable=False)
     person_id = Column(Integer, ForeignKey("persons.id"))
+    downloaded = Column(Boolean, default=False)
 
     # Relationship
     person = relationship("Person", back_populates="reels")
@@ -116,6 +117,7 @@ class Videos(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     url = Column(String, nullable=False)
     person_id = Column(Integer, ForeignKey("persons.id"))
+    downloaded = Column(Boolean, default=False)
 
     # Relationship
     person = relationship("Person", back_populates="videos")
