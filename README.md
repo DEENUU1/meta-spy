@@ -38,6 +38,7 @@ scrape user information based on a given url address and save data to database a
 - Typer
 - Selenium
 - Sqlite
+- Docker & docker compsoe 
 
 ## Key Features
 - Log in with 2-step verification
@@ -73,7 +74,7 @@ scrape user information based on a given url address and save data to database a
   - ~~Friends~~
   - ~~Person~~
 - Downloading videos and reels 
-- Docker & Docker compose 
+- ~~Docker & Docker compose~~ 
 - ~~Pytest for fastapi endpoints~~ 
 
 ### v0.6 (ideas)

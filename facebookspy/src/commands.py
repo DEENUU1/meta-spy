@@ -12,7 +12,6 @@ import typer
 from src.cli.home import display_start_menu
 from rich import print as rprint
 from src.cli.version import return_version_info
-from .server.backend.app import app as fastapi_app
 import subprocess
 
 
