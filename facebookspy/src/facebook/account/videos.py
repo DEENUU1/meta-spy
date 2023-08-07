@@ -83,20 +83,35 @@ class FacebookVideoScraper(BaseFacebookScraper):
 
     @staticmethod
     def generate_random_video_title() -> str:
+        """Generate random video title"""
         chars = string.ascii_letters
         return "".join(random.choice(chars) for _ in range(12))
 
-    # def download_videos(self, video_urls: List[str]):
-    #     """
-    #     Download and save scraped videos from facebook profile
-    #     """
-    #     try:
-    #         with Progress() as progress:
-    #             task = progress.add_task("[cyan]Downloading...", total=len(video_urls))
-    #             for index, url in enumerate(video_urls, 1):
-    #                 with youtube_dl.YoutubeDL() as ydl:
-    #                     ydl.download([url])
-    #
+    def download_video(self, video_url: str):
+        """Download videos using youtube_dl library"""
+        ydl_opts = {
+            "outtmpl": os.path.join(
+                Config.VIDEO_PATH, f"{self.generate_random_video_title()}.%(ext)s"
+            ),
+        }
+        with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+            ydl.download([video_url])
+
+    def save_downloaded_videos(self, video_urls: List[str]):
+        """Save and download scraped videos from facebook profile"""
+        try:
+            with Progress() as progress:
+                task = progress.add_task("[cyan]Downloading...", total=len(video_urls))
+                for index, url in enumerate(video_urls, 1):
+                    self.download_video(url)
+
+                    progress.update(
+                        task,
+                        advance=1,
+                        description=f"[cyan]Downloading... {index}/{len(video_urls)}",
+                    )
+        except Exception as e:
+            logging.error(f"Error downloading videos: {e}")
 
     @property
     def is_pipeline_successful(self) -> bool:
