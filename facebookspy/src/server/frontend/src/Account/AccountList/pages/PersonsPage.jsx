@@ -13,7 +13,7 @@ const PersonsPage = () => {
   useEffect(() => {
     setTimeout(() => {
       axios
-        .get('http://127.0.0.1:8000/person/')
+        .get('http://localhost:8000/person/')
         .then(response => {
           setPersons(response.data);
           setLoading(false);

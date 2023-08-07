@@ -1,11 +1,18 @@
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from .models import Base
 
-engine = create_engine("sqlite:///database.db")
+docker_container = os.environ.get("DOCKER_CONTAINER")
+
+if docker_container == "true":
+    db_path = "sqlite:////app/facebookspy/database.db"
+else:
+    db_path = "sqlite:///database.db"
+
+engine = create_engine(db_path)
 Base.metadata.create_all(bind=engine)
 Session = sessionmaker(bind=engine)
-session = Session()
 
 
 def get_session():
