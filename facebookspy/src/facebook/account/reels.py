@@ -1,20 +1,15 @@
-import logging
 from time import sleep
 from typing import List
 
 from ...config import Config
 from selenium.webdriver.common.by import By
 from ..facebook_base import BaseFacebookScraper
-from rich import print as rprint
 from ...repository import create_person, get_person, person_exists, create_reels
+from ...logs import Logs
+from rich import print as rprint
 
 
-# Logging setup
-logging.basicConfig(
-    filename=Config.LOG_FILE_PATH,
-    level=logging.ERROR,
-    format="%(asctime)s - %(levelname)s - %(message)s",
-)
+logs = Logs("reviews.py")
 
 
 class FacebookReelsScraper(BaseFacebookScraper):
@@ -54,7 +49,7 @@ class FacebookReelsScraper(BaseFacebookScraper):
                 last_height = new_height
 
         except Exception as e:
-            logging.error(f"Error occurred while scrolling: {e}")
+            logs.log_error(f"Error occurred while scrolling: {e}")
 
     def extract_reels_urls(self) -> List[str]:
         """
@@ -72,7 +67,7 @@ class FacebookReelsScraper(BaseFacebookScraper):
                     extracted_reels_urls.append(src_attribute)
 
         except Exception as e:
-            logging.error(f"Error extracting reels URLs: {e}")
+            logs.log_error(f"Error extracting reels URLs: {e}")
 
         return extracted_reels_urls
 
@@ -107,4 +102,5 @@ class FacebookReelsScraper(BaseFacebookScraper):
             self.success = True
 
         except Exception as e:
-            logging.error(f"An error occurred: {e}")
+            logs.log_error(f"An error occurred: {e}")
+            rprint(f"An error occurred {e}")

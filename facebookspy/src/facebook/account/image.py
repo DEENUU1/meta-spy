@@ -1,4 +1,3 @@
-import logging
 from time import sleep
 from typing import List
 import os
@@ -11,16 +10,13 @@ from PIL import Image
 from io import BytesIO
 import random
 import string
-from rich import print as rprint
 from ..facebook_base import BaseFacebookScraper
 from ...repository import person_exists, get_person, create_image, create_person
+from ...logs import Logs
+from rich import print as rprint
 
-# Logging setup
-logging.basicConfig(
-    filename=Config.LOG_FILE_PATH,
-    level=logging.ERROR,
-    format="%(asctime)s - %(levelname)s - %(message)s",
-)
+
+logs = Logs("image.py")
 
 
 class FacebookImageScraper(BaseFacebookScraper):
@@ -60,7 +56,7 @@ class FacebookImageScraper(BaseFacebookScraper):
                 last_height = new_height
 
         except Exception as e:
-            logging.error(f"Error occurred while scrolling: {e}")
+            logs.log_error(f"Error occurred while scrolling: {e}")
 
     def extract_image_urls(self) -> List[str]:
         """
@@ -78,7 +74,7 @@ class FacebookImageScraper(BaseFacebookScraper):
                     extracted_image_urls.append(src_attribute)
 
         except Exception as e:
-            logging.error(f"Error extracting image URLs: {e}")
+            logs.log_error(f"Error extracting image URLs: {e}")
 
         return extracted_image_urls
 
@@ -99,7 +95,7 @@ class FacebookImageScraper(BaseFacebookScraper):
             _ = Image.open(BytesIO(image_content))
             return True
         except Exception as e:
-            logging.error(f"Skipping image, Exception: {e}")
+            logs.log_error(f"Skipping image, Exception: {e}")
             return False
 
     def save_images(self, image_urls: List[str]) -> List[str]:
@@ -145,12 +141,12 @@ class FacebookImageScraper(BaseFacebookScraper):
                     )
 
         except requests.exceptions.HTTPError as http_err:
-            logging.error(f"Request error: {http_err}")
+            logs.log_error(f"Request error: {http_err}")
 
         except requests.exceptions.RequestException as req_err:
-            logging.error(f"Request error: {req_err}")
+            logs.log_error(f"Request error: {req_err}")
         except Exception as e:
-            logging.error(f"An error occurred: {e}")
+            logs.log_error(f"An error occurred: {e}")
 
         return downloaded_image_paths
 
@@ -186,4 +182,5 @@ class FacebookImageScraper(BaseFacebookScraper):
             self.success = True
 
         except Exception as e:
-            logging.error(f"An error occurred: {e}")
+            logs.log_error(f"An error occurred: {e}")
+            rprint(f"An error occurred {e}")

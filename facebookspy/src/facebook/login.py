@@ -3,19 +3,14 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import logging
 from ..config import Config
 from .scraper import Scraper
 from rich.prompt import Prompt
 from rich import print as rprint
+from ..logs import Logs
 
 
-# Logging setup
-logging.basicConfig(
-    filename=Config.LOG_FILE_PATH,
-    level=logging.ERROR,
-    format="%(asctime)s - %(levelname)s - %(message)s",
-)
+logs = Logs("login.py")
 
 
 class FacebookLogIn(Scraper):
@@ -46,7 +41,7 @@ class FacebookLogIn(Scraper):
             )
             button.click()
         except Exception as e:
-            logging.error(f"Error occurred while closing cookie modal: {e}")
+            logs.log_error(f"An error occurred while closing cookie term {e}")
 
     def _facebook_login(self) -> None:
         """
@@ -74,7 +69,7 @@ class FacebookLogIn(Scraper):
                 )
             )
         except Exception as e:
-            logging.error(f"Error occurred while logging in: {e}")
+            logs.log_error(f"An Error occurred while logging in: {e}")
 
     def _security_code(self, security_code) -> None:
         """
@@ -92,7 +87,7 @@ class FacebookLogIn(Scraper):
             )
             save_button.click()
         except Exception as e:
-            logging.error(f"Error occurred while adding security code: {e}")
+            logs.log_error(f"An Error occurred while adding security code: {e}")
 
     def _save_browser(self) -> None:
         """
@@ -109,7 +104,7 @@ class FacebookLogIn(Scraper):
             )
             continue_button.click()
         except Exception as e:
-            logging.error(f"Error occurred while saving browser: {e}")
+            logs.log_error(f"An Error occurred while saving browser: {e}")
 
     def _save_cookies(self) -> None:
         """
@@ -120,7 +115,7 @@ class FacebookLogIn(Scraper):
             with open(Config.COOKIES_FILE_PATH, "wb") as file:
                 pickle.dump(cookies, file)
         except Exception as e:
-            logging.error(f"Error occurred while saving cookies: {e}")
+            logs.log_error(f"An Error occurred while saving cookies: {e}")
 
     @property
     def is_pipeline_successful(self) -> bool:
@@ -149,8 +144,8 @@ class FacebookLogIn(Scraper):
             self.success = True
 
         except Exception as e:
-            logging.error(f"Error occurred while logging in: {e}")
-            rprint(f"[bold red]Something went wrong[/bold red] {e}")
+            logs.log_error(f"An Error occurred while logging in: {e}")
+            rprint(f"An Error occurred while logging in {e}")
 
     def login_no_verification_pipeline(self) -> None:
         """
@@ -169,5 +164,5 @@ class FacebookLogIn(Scraper):
             self.success = True
 
         except Exception as e:
-            logging.error(f"Error occurred while logging in: {e}")
-            rprint(f"[bold red]Something went wrong[/bold red] {e}")
+            logs.log_error(f"An Error occurred while logging in: {e}")
+            rprint(f"An Error occurred while logging in {e}")

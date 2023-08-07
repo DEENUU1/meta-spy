@@ -1,20 +1,15 @@
-import logging
 from time import sleep
 from typing import List, Dict
 
 from ..facebook_base import BaseFacebookScraper
 from ...config import Config
 from selenium.webdriver.common.by import By
-from rich import print as rprint
 from ...repository import create_person, get_person, person_exists, create_recent_places
+from ...logs import Logs
+from rich import print as rprint
 
 
-# Logging setup
-logging.basicConfig(
-    filename=Config.LOG_FILE_PATH,
-    level=logging.ERROR,
-    format="%(asctime)s - %(levelname)s - %(message)s",
-)
+logs = Logs("place_recent.py")
 
 
 class FacebookRecentPlaces(BaseFacebookScraper):
@@ -56,7 +51,7 @@ class FacebookRecentPlaces(BaseFacebookScraper):
                 last_height = new_height
 
         except Exception as e:
-            logging.error(f"Error occurred while scrolling: {e}")
+            logs.log_error(f"Error occurred while scrolling: {e}")
 
     def extract_recent_places(self) -> List[Dict[str, str]]:
         """
@@ -87,7 +82,7 @@ class FacebookRecentPlaces(BaseFacebookScraper):
 
             extracted_image_urls.append(data)
         except Exception as e:
-            logging.error(f"Error extracting image URLs: {e}")
+            logs.log_error(f"Error extracting image URLs: {e}")
 
         return extracted_image_urls
 
@@ -122,4 +117,5 @@ class FacebookRecentPlaces(BaseFacebookScraper):
             self.success = True
 
         except Exception as e:
-            logging.error(f"An error occurred: {e}")
+            logs.log_error(f"An error occurred: {e}")
+            rprint(f"An error occurred {e}")
