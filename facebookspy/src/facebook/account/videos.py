@@ -7,6 +7,11 @@ from selenium.webdriver.common.by import By
 from rich import print as rprint
 from ..facebook_base import BaseFacebookScraper
 from ...repository import create_person, get_person, person_exists, create_videos
+import youtube_dl
+from rich.progress import Progress
+import os
+import random
+import string
 
 
 # Logging setup
@@ -75,6 +80,23 @@ class FacebookVideoScraper(BaseFacebookScraper):
             logging.error(f"Error extracting reels URLs: {e}")
 
         return extracted_videos_urls
+
+    @staticmethod
+    def generate_random_video_title() -> str:
+        chars = string.ascii_letters
+        return "".join(random.choice(chars) for _ in range(12))
+
+    # def download_videos(self, video_urls: List[str]):
+    #     """
+    #     Download and save scraped videos from facebook profile
+    #     """
+    #     try:
+    #         with Progress() as progress:
+    #             task = progress.add_task("[cyan]Downloading...", total=len(video_urls))
+    #             for index, url in enumerate(video_urls, 1):
+    #                 with youtube_dl.YoutubeDL() as ydl:
+    #                     ydl.download([url])
+    #
 
     @property
     def is_pipeline_successful(self) -> bool:
