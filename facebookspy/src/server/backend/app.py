@@ -87,6 +87,19 @@ async def create_person(
     return db_person
 
 
+@app.delete("/person/", response_model=PersonSchema)
+async def delete_person(
+    person_id: int, person: PersonSchema, db: Session = Depends(get_session)
+):
+    """Delete a Person object"""
+    person_object = db.query(Person).filter(Person.id == person_id).first()
+    if not person_object:
+        raise HTTPException(status_code=404, detail="Person not found")
+    db.delete(person_object)
+    db.commit()
+    return person_object
+
+
 @app.get("/person/review/{person_id}", response_model=List[ReviewsSchema])
 async def get_reviews_by_person_id(
     person_id: int, session: Session = Depends(get_session)
