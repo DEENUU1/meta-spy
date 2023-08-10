@@ -72,6 +72,21 @@ async def get_person_by_facebook_id(
     return person
 
 
+@app.post("/person/", response_model=PersonSchema)
+async def create_person(
+    facebook_id: str, person: PersonSchema, db: Session = Depends(get_session)
+):
+    """Create a Person object"""
+    person_object = db.query(Person).filter(Person.facebook_id == facebook_id).first()
+    if person_object:
+        raise HTTPException(status_code=404, detail="Person already exist")
+    db_person = Person(**person.dict())
+    db.add(db_person)
+    db.commit()
+    db.refresh(db_person)
+    return db_person
+
+
 @app.get("/person/review/{person_id}", response_model=List[ReviewsSchema])
 async def get_reviews_by_person_id(
     person_id: int, session: Session = Depends(get_session)
