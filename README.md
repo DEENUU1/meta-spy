@@ -80,11 +80,14 @@ After that you can browse scraped data, add notes, search more detail in google 
 
 ### v0.6 (In develop)
 - Add Create, Delete and Update endpoints and add that endpoints in react app 
-- Add bool field to Video and Reel models 
+- ~~Add bool field to Video and Reel models~~ 
 - Update class to scrape Video and Reels to move current code to download files after success saving scraped data do database
-- Update class to scrape Image - make more methods to avoid one big method 
 - Fix saving data to database to avoid creating duplicates 
 - Display errors in react app (currently only in console)
+- Fix Image class to save only Photos
+- Fix Video & Reels class to save only videos & reels
+- ~~Add Logs class and display errors in CLI app~~ 
+- Change structure of backend files 
 
 ### v0.7 (ideas)
 - Scrape:
@@ -100,6 +103,7 @@ After that you can browse scraped data, add notes, search more detail in google 
 ### vX.X (ideas)
 - Scrape groups
 - Scrape posts 
+- Search for connections between Person objects 
 
 <!-- GETTING STARTED -->
 ## Getting Started
