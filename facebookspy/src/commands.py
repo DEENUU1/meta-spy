@@ -256,16 +256,3 @@ def scrape_videos_urls(name: Optional[str] = None):
         rprint("✅Scraping successful✅")
     else:
         rprint("❌Scraping failed❌")
-
-
-def scrape_and_download_videos(name: Optional[str] = None):
-    """Scrape and download videos from facebook account"""
-
-    rprint(f"Start scraping and downloading videos for {name}")
-    scraper = FacebookVideoScraper(name)
-    scraper.save_and_download_videos_pipeline()
-
-    if scraper.is_pipeline_successful:
-        rprint("✅Scraping successful✅")
-    else:
-        rprint("❌Scraping failed❌")
