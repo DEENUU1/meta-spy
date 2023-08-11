@@ -14,7 +14,7 @@ from src.cli.version import return_version_info
 import subprocess
 from .logs import Logs
 from rich import print as rprint
-
+from .server.backend.app import app as fastapi_app
 
 logs = Logs("commands.py")
 
@@ -38,6 +38,13 @@ def server():
     except subprocess.CalledProcessError as e:
         logs.log_error(f"An error occurred while starting local server {e}")
         rprint(f"An error occurred {e}")
+
+
+def server_backend():
+    """Run only backend (fastapi) local app"""
+    import uvicorn
+
+    uvicorn.run(fastapi_app, host="127.0.0.1", port=8000)
 
 
 """ Project commands """

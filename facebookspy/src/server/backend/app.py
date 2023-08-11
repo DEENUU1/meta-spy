@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, status
 from typing import List
 
 from sqlalchemy import or_
@@ -36,6 +36,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from pathlib import Path
 from ...config import Config
+from fastapi.responses import JSONResponse
 
 app = FastAPI()
 
@@ -72,6 +73,36 @@ async def get_person_by_facebook_id(
     return person
 
 
+@app.post("/person/", response_model=PersonSchema)
+async def create_person(
+    facebook_id: str, person: PersonSchema, db: Session = Depends(get_session)
+):
+    """Create a Person object"""
+    person_object = db.query(Person).filter(Person.facebook_id == facebook_id).first()
+    if person_object:
+        raise HTTPException(status_code=404, detail="Person already exist")
+    db_person = Person(**person.dict())
+    db.add(db_person)
+    db.commit()
+    db.refresh(db_person)
+    return JSONResponse(
+        status_code=status.HTTP_201_CREATED, content="Person object created"
+    )
+
+
+@app.delete("/person/", response_model=PersonSchema)
+async def delete_person(person_id: int, db: Session = Depends(get_session)):
+    """Delete a Person object"""
+    person_object = db.query(Person).filter(Person.id == person_id).first()
+    if not person_object:
+        raise HTTPException(status_code=404, detail="Person not found")
+    db.delete(person_object)
+    db.commit()
+    return JSONResponse(
+        status_code=status.HTTP_200_OK, content=f"Person {person_id} deleted"
+    )
+
+
 @app.get("/person/review/{person_id}", response_model=List[ReviewsSchema])
 async def get_reviews_by_person_id(
     person_id: int, session: Session = Depends(get_session)
@@ -81,6 +112,37 @@ async def get_reviews_by_person_id(
     if not reviews:
         raise HTTPException(status_code=404, detail="Reviews not found")
     return reviews
+
+
+@app.post("/review/", response_model=ReviewsSchema)
+async def create_review(
+    person_id: int, review: ReviewsSchema, db: Session = Depends(get_session)
+):
+    """Create a review object"""
+    person_object = db.query(Person).filter(Person.id == person_id).first()
+    if not person_object:
+        raise HTTPException(status_code=404, detail="Person object not found")
+
+    db_review = Reviews(**review.dict())
+    db.add(db_review)
+    db.commit()
+    db.refresh(db_review)
+    return JSONResponse(
+        status_code=status.HTTP_201_CREATED, content="Review object created"
+    )
+
+
+@app.delete("/review/", response_model=ReviewsSchema)
+async def delete_review(review_id: int, db: Session = Depends(get_session)):
+    """Delete a review object"""
+    review_object = db.query(Reviews).filter(Reviews.id == review_id).first()
+    if not review_object:
+        raise HTTPException(status_code=404, detail="Review not found")
+    db.delete(review_object)
+    db.commit()
+    return JSONResponse(
+        status_code=status.HTTP_200_OK, content=f"Review {review_id} deleted"
+    )
 
 
 @app.get("/person/video/{person_id}", response_model=List[VideosSchema])

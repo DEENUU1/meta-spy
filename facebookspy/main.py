@@ -18,6 +18,7 @@ from src.commands import (
     scrape_and_download_videos,
     scrape_reviews,
     server,
+    server_backend,
 )
 
 load_dotenv()
@@ -39,6 +40,7 @@ app.command()(scrape_work_and_education)
 app.command()(scrape_localization)
 app.command()(scrape_family_member)
 app.command()(server)
+app.command()(server_backend)
 
 
 if __name__ == "__main__":
