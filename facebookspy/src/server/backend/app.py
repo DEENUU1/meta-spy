@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, status
 from typing import List
 
 from sqlalchemy import or_
@@ -36,6 +36,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from pathlib import Path
 from ...config import Config
+from fastapi.responses import JSONResponse
 
 app = FastAPI()
 
@@ -84,20 +85,22 @@ async def create_person(
     db.add(db_person)
     db.commit()
     db.refresh(db_person)
-    return db_person
+    return JSONResponse(
+        status_code=status.HTTP_201_CREATED, content="Person object created"
+    )
 
 
 @app.delete("/person/", response_model=PersonSchema)
-async def delete_person(
-    person_id: int, person: PersonSchema, db: Session = Depends(get_session)
-):
+async def delete_person(person_id: int, db: Session = Depends(get_session)):
     """Delete a Person object"""
     person_object = db.query(Person).filter(Person.id == person_id).first()
     if not person_object:
         raise HTTPException(status_code=404, detail="Person not found")
     db.delete(person_object)
     db.commit()
-    return person_object
+    return JSONResponse(
+        status_code=status.HTTP_200_OK, content=f"Person {person_id} deleted"
+    )
 
 
 @app.get("/person/review/{person_id}", response_model=List[ReviewsSchema])
@@ -109,6 +112,24 @@ async def get_reviews_by_person_id(
     if not reviews:
         raise HTTPException(status_code=404, detail="Reviews not found")
     return reviews
+
+
+@app.post("/review/", response_model=ReviewsSchema)
+async def create_review(
+    person_id: int, review: ReviewsSchema, db: Session = Depends(get_session)
+):
+    """Create a review object"""
+    person_object = db.query(Person).filter(Person.id == person_id).first()
+    if not person_object:
+        raise HTTPException(status_code=404, detail="Person object not found")
+
+    db_review = Reviews(**review.dict())
+    db.add(db_review)
+    db.commit()
+    db.refresh(db_review)
+    return JSONResponse(
+        status_code=status.HTTP_201_CREATED, content="Review object created"
+    )
 
 
 @app.get("/person/video/{person_id}", response_model=List[VideosSchema])
