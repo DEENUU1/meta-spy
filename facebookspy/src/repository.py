@@ -161,7 +161,7 @@ def create_reels(url: str, person_id: int) -> Reels:
     return reels
 
 
-def get_reels_list(person_id: int) -> List[Reels]:
+def get_reels(person_id: int) -> List[Reels]:
     session = get_session()
     return session.query(Reels).filter_by(person_id=person_id).all()
 
@@ -177,6 +177,12 @@ def create_videos(url: str, person_id: int) -> Videos:
     session.add(videos)
     session.commit()
     return videos
+
+
+def get_videos(person_id: int) -> List[Videos]:
+    """Return all videos for specified person object"""
+    session = get_session()
+    return session.query(Videos).filter_by(person_id=person_id).all()
 
 
 def create_reviews(company: str, review: str, person_id: int) -> Reviews:
