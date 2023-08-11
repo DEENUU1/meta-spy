@@ -86,10 +86,27 @@ class Downloader:
                 f"An Error occurred while downloading videos for {self.person_facebook_id}: {e}"
             )
 
-    def download_single_video_pipeline(self) -> None:
+    def download_single_video_pipeline(self, video_url: str) -> None:
         """Download videos just by passing a URL"""
-        pass
+        self.save_single_video(video_url)
 
     def download_person_reels_pipeline(self) -> None:
         """Download reels from specified facebook account based on the urls from the database"""
-        pass
+        reels = get_reels(self.person)
+        try:
+            with Progress() as progress:
+                task = progress.add_task("[cyan]Downloading...", total=len(reels))
+
+                for idx, reel in enumerate(reels, 1):
+                    self.save_person_video(reel.url)
+
+                    progress.update(
+                        task,
+                        advance=1,
+                        description=f"[cyan]Downloading... {idx}/{len(reels)}",
+                    )
+
+        except Exception as e:
+            logs.log_error(
+                f"An Error occurred while downloading reels for {self.person_facebook_id}: {e}"
+            )
