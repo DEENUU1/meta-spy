@@ -17,9 +17,10 @@ class Downloader:
     Download videos from facebook
     """
 
-    def __init__(self, person_facebook_id: str, video_url: str) -> None:
+    def __init__(self, video_url: str, person_facebook_id: str = None) -> None:
         self.person_facebook_id = person_facebook_id
         self.video_url = video_url
+        self.video_path = Config.VIDEO_PATH
 
     @staticmethod
     def generate_random_video_title() -> str:
@@ -38,11 +39,12 @@ class Downloader:
 
     def save_person_video(self):
         """Download videos/reels from specified account"""
-        video_path = Config.VIDEO_PATH
-        if not os.path.exists(video_path):
-            os.makedirs(video_path)
+        if not os.path.exists(self.video_path):
+            os.makedirs(self.video_url)
 
-        person_video_path = os.path.dirname(f"{video_path}/{self.person_facebook_id}/")
+        person_video_path = os.path.dirname(
+            f"{self.video_path}/{self.person_facebook_id}/"
+        )
         if not os.path.exists(person_video_path):
             os.makedirs(person_video_path)
 
@@ -53,4 +55,10 @@ class Downloader:
 
     def save_single_video(self):
         """Download single video/reel just by passing url"""
-        pass
+        if not os.path.exists(self.video_path):
+            os.makedirs(self.video_path)
+
+        video_filename = self.generate_random_video_title()
+        video_full_path = os.path.join(self.video_path, video_filename)
+
+        self.download_video(video_full_path, self.video_url)
