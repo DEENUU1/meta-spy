@@ -82,12 +82,13 @@ After that you can browse scraped data, add notes, search more detail in google 
 - Add Create, Delete and Update endpoints and add that endpoints in react app 
 - ~~Add bool field to Video and Reel models~~ 
 - Update class to scrape Video and Reels to move current code to download files after success saving scraped data do database
+  - Add download reel video
 - Fix saving data to database to avoid creating duplicates 
 - Display errors in react app (currently only in console)
 - ~~Fix Image class to save only Photos~~
 - Fix Video & Reels class to save only videos & reels
 - ~~Add Logs class and display errors in CLI app~~ 
-- Change structure of backend files 
+- Change structure of backend files
 
 ### v0.7 (ideas)
 - Scrape:
