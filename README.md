@@ -86,7 +86,7 @@ After that you can browse scraped data, add notes, search more detail in google 
 - Fix saving data to database to avoid creating duplicates 
 - Display errors in react app (currently only in console)
 - ~~Fix Image class to save only Photos~~
-- Fix Video & Reels class to save only videos & reels
+- ~~Fix Video & Reels class to save only videos & reels~~
 - ~~Add Logs class and display errors in CLI app~~ 
 - Change structure of backend files
 
