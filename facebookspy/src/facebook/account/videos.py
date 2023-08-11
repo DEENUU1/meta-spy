@@ -62,7 +62,11 @@ class FacebookVideoScraper(BaseFacebookScraper):
         """
         extracted_videos_urls = []
         try:
-            videos_elements = self._driver.find_elements(
+            div_element = self._driver.find_element(
+                By.CLASS_NAME,
+                "x1qjc9v5.x1lq5wgf.xgqcy7u.x30kzoy.x9jhf4c.x78zum5.xdt5ytf.x1l90r2v.xyamay9.xjl7jj",
+            )
+            videos_elements = div_element.find_elements(
                 By.CSS_SELECTOR,
                 "a.x1i10hfl.xjbqb8w.x6umtig.x1b1mbwd.xaqea5y.xav7gou.x9f619.x1ypdohk.xt0psk2.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x16tdsg8.x1hl2dhg.xggy1nq.x1a2a7pz.x1heor9g.xt0b8zv",
             )
