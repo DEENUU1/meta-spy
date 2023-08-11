@@ -132,6 +132,19 @@ async def create_review(
     )
 
 
+@app.delete("/review/", response_model=ReviewsSchema)
+async def delete_review(review_id: int, db: Session = Depends(get_session)):
+    """Delete a review object"""
+    review_object = db.query(Reviews).filter(Reviews.id == review_id).first()
+    if not review_object:
+        raise HTTPException(status_code=404, detail="Review not found")
+    db.delete(review_object)
+    db.commit()
+    return JSONResponse(
+        status_code=status.HTTP_200_OK, content=f"Review {review_id} deleted"
+    )
+
+
 @app.get("/person/video/{person_id}", response_model=List[VideosSchema])
 async def get_videos_by_person_id(
     person_id: int, session: Session = Depends(get_session)
