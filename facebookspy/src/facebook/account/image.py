@@ -64,7 +64,10 @@ class FacebookImageScraper(BaseFacebookScraper):
         """
         extracted_image_urls = []
         try:
-            img_elements = self._driver.find_elements(
+            div_element = self._driver.find_element(
+                By.CLASS_NAME, "xyamay9.x1pi30zi.x1l90r2v.x1swvt13"
+            )
+            img_elements = div_element.find_elements(
                 By.CSS_SELECTOR,
                 "img.xzg4506.xycxndf.xua58t2.x4xrfw5.x1lq5wgf.xgqcy7u.x30kzoy.x9jhf4c.x9f619.x5yr21d.xl1xv1r.xh8yej3",
             )
