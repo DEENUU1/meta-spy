@@ -5,7 +5,15 @@ import random
 import string
 from .logs import Logs
 from rich import print as rprint
-from .repository import get_videos, get_reels, get_person, get_new_reels, get_new_videos
+from .repository import (
+    get_videos,
+    get_reels,
+    get_person,
+    get_new_reels,
+    get_new_videos,
+    update_reels_downloaded,
+    update_videos_downloaded,
+)
 from rich.progress import Progress
 
 
@@ -20,7 +28,7 @@ class Downloader:
     def __init__(self, person_facebook_id: str = None) -> None:
         self.person_facebook_id = person_facebook_id
         self.video_path = Config.VIDEO_PATH
-        self.person = get_person(self.person_facebook_id)
+        self.success = False
 
     @staticmethod
     def generate_random_video_title() -> str:
@@ -63,10 +71,16 @@ class Downloader:
 
         self.download_video(video_full_path, video_url)
 
+    @property
+    def is_pipeline_successful(self) -> bool:
+        return self.success
+
     def download_all_person_videos_pipeline(self) -> None:
         """Download videos from specified facebook account based on the urls from the database
         This command download all videos and may create duplicates"""
-        videos = get_videos(self.person)
+
+        person = get_person(self.person_facebook_id)
+        videos = get_videos(person.id)
         try:
             with Progress() as progress:
                 task = progress.add_task("[cyan]Downloading...", total=len(videos))
@@ -79,6 +93,9 @@ class Downloader:
                         advance=1,
                         description=f"[cyan]Downloading... {idx}/{len(videos)}",
                     )
+                    update_videos_downloaded(video.id)
+
+            self.success = True
 
         except Exception as e:
             logs.log_error(
@@ -88,7 +105,8 @@ class Downloader:
     def download_new_person_videos_pipeline(self) -> None:
         """Download videos from specified facebook account based on the urls from the database
         This command downloads only new not downloaded yet videos"""
-        videos = get_new_videos(self.person)
+        person = get_person(self.person_facebook_id)
+        videos = get_new_videos(person.id)
         try:
             with Progress() as progress:
                 task = progress.add_task("[cyan]Downloading...", total=len(videos))
@@ -101,6 +119,9 @@ class Downloader:
                         advance=1,
                         description=f"[cyan]Downloading... {idx}/{len(videos)}",
                     )
+                    update_videos_downloaded(video.id)
+
+            self.success = True
 
         except Exception as e:
             logs.log_error(
@@ -115,7 +136,8 @@ class Downloader:
         """Download reels from specified facebook account based on the urls from the database
         This command downloads all reels from facebook account and may create duplicates
         """
-        reels = get_reels(self.person)
+        person = get_person(self.person_facebook_id)
+        reels = get_reels(person.id)
         try:
             with Progress() as progress:
                 task = progress.add_task("[cyan]Downloading...", total=len(reels))
@@ -128,6 +150,9 @@ class Downloader:
                         advance=1,
                         description=f"[cyan]Downloading... {idx}/{len(reels)}",
                     )
+                    update_reels_downloaded(reel.id)
+
+            self.success = True
 
         except Exception as e:
             logs.log_error(
@@ -137,7 +162,8 @@ class Downloader:
     def download_new_person_reels_pipeline(self) -> None:
         """Download reels from specified facebook account based on the urls from the database
         This command downloads only new not downloaded yet reels"""
-        reels = get_new_reels(self.person)
+        person = get_person(self.person_facebook_id)
+        reels = get_new_reels(person.id)
         try:
             with Progress() as progress:
                 task = progress.add_task("[cyan]Downloading...", total=len(reels))
@@ -150,6 +176,9 @@ class Downloader:
                         advance=1,
                         description=f"[cyan]Downloading... {idx}/{len(reels)}",
                     )
+                    update_reels_downloaded(reel.id)
+
+            self.success = True
 
         except Exception as e:
             logs.log_error(

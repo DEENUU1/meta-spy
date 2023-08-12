@@ -269,10 +269,10 @@ def download_all_person_videos(name: Optional[str] = None):
     scraper = Downloader(name)
     scraper.download_all_person_videos_pipeline()
 
-    # if scraper.is_pipeline_successful:
-    #     rprint("✅Scraping successful✅")
-    # else:
-    #     rprint("❌Scraping failed❌")
+    if scraper.is_pipeline_successful:
+        rprint("✅Scraping successful✅")
+    else:
+        rprint("❌Scraping failed❌")
 
 
 def download_new_person_videos(name: Optional[str] = None):
@@ -282,10 +282,10 @@ def download_new_person_videos(name: Optional[str] = None):
     scraper = Downloader(name)
     scraper.download_new_person_videos_pipeline()
 
-    # if scraper.is_pipeline_successful:
-    #     rprint("✅Scraping successful✅")
-    # else:
-    #     rprint("❌Scraping failed❌")
+    if scraper.is_pipeline_successful:
+        rprint("✅Scraping successful✅")
+    else:
+        rprint("❌Scraping failed❌")
 
 
 def download_video(url: Optional[str] = None):
@@ -295,10 +295,10 @@ def download_video(url: Optional[str] = None):
     scraper = Downloader()
     scraper.download_single_video_pipeline(url)
 
-    # if scraper.is_pipeline_successful:
-    #     rprint("✅Scraping successful✅")
-    # else:
-    #     rprint("❌Scraping failed❌")
+    if scraper.is_pipeline_successful:
+        rprint("✅Scraping successful✅")
+    else:
+        rprint("❌Scraping failed❌")
 
 
 def download_all_person_reels(name: Optional[str] = None):
@@ -308,10 +308,10 @@ def download_all_person_reels(name: Optional[str] = None):
     scraper = Downloader(name)
     scraper.download_all_person_reels_pipeline()
 
-    # if scraper.is_pipeline_successful:
-    #     rprint("✅Scraping successful✅")
-    # else:
-    #     rprint("❌Scraping failed❌")
+    if scraper.is_pipeline_successful:
+        rprint("✅Scraping successful✅")
+    else:
+        rprint("❌Scraping failed❌")
 
 
 def download_new_person_reels(name: Optional[str] = None):
@@ -321,7 +321,7 @@ def download_new_person_reels(name: Optional[str] = None):
     scraper = Downloader(name)
     scraper.download_new_person_reels_pipeline()
 
-    # if scraper.is_pipeline_successful:
-    #     rprint("✅Scraping successful✅")
-    # else:
-    #     rprint("❌Scraping failed❌")
+    if scraper.is_pipeline_successful:
+        rprint("✅Scraping successful✅")
+    else:
+        rprint("❌Scraping failed❌")

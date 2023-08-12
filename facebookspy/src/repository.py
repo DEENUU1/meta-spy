@@ -171,7 +171,7 @@ def get_new_reels(person_id: int) -> List[Reels]:
     session = get_session()
     return (
         session.query(Reels)
-        .filter_by(person_id == person_id, Reels.downloaded == False)
+        .filter(person_id == person_id, Reels.downloaded == False)
         .all()
     )
 
@@ -201,7 +201,7 @@ def create_videos(url: str, person_id: int) -> Videos:
 def get_videos(person_id: int) -> List[Videos]:
     """Return all videos for specified person object"""
     session = get_session()
-    return session.query(Videos).filter_by(person_id=person_id).all()
+    return session.query(Videos).filter(Videos.person_id == person_id).all()
 
 
 def update_videos_downloaded(video_id: int):
