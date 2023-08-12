@@ -7,7 +7,7 @@ from .facebook.account.image import FacebookImageScraper
 from .facebook.account.reels import FacebookReelsScraper
 from .facebook.account.videos import FacebookVideoScraper
 from .facebook.account.reviews import FacebookReviewsScraper
-from .downloader import Downloader
+from .facebook.downloader import Downloader
 from typing import Optional
 import typer
 from src.cli.home import display_start_menu
@@ -17,8 +17,7 @@ from .logs import Logs
 from rich import print as rprint
 from .server.backend.app import app as fastapi_app
 
-logs = Logs("commands.py")
-
+logs = Logs()
 
 load_dotenv()
 app = typer.Typer()

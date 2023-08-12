@@ -3,8 +3,8 @@ from .config import Config
 
 
 class Logs(logging.Logger):
-    def __init__(self, name, level=logging.ERROR):
-        super().__init__(name, level=level)
+    def __init__(self, level=logging.ERROR):
+        super().__init__(level=level)
         file_handler = logging.FileHandler(Config.LOG_FILE_PATH)
         file_handler.setLevel(level)
         file_handler.setFormatter(

@@ -14,7 +14,7 @@ from ...logs import Logs
 from rich import print as rprint
 
 
-logs = Logs("account.py")
+logs = Logs()
 
 
 class AccountScraper(BaseFacebookScraper):

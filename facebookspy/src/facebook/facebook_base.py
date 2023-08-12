@@ -8,7 +8,7 @@ from ..logs import Logs
 from rich import print as rprint
 
 
-logs = Logs("facebook_base.py")
+logs = Logs()
 
 
 class BaseFacebookScraper(Scraper):

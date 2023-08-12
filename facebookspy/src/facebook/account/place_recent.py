@@ -9,7 +9,7 @@ from ...logs import Logs
 from rich import print as rprint
 
 
-logs = Logs("place_recent.py")
+logs = Logs()
 
 
 class FacebookRecentPlaces(BaseFacebookScraper):

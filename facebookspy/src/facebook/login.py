@@ -10,7 +10,7 @@ from rich import print as rprint
 from ..logs import Logs
 
 
-logs = Logs("login.py")
+logs = Logs()
 
 
 class FacebookLogIn(Scraper):
