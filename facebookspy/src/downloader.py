@@ -66,7 +66,8 @@ class Downloader:
         self.download_video(video_full_path, video_url)
 
     def download_all_person_videos_pipeline(self) -> None:
-        """Download videos from specified facebook account based on the urls from the database, this command download all videos and may create duplicates"""
+        """Download videos from specified facebook account based on the urls from the database
+        This command download all videos and may create duplicates"""
         videos = get_videos(self.person)
         try:
             with Progress() as progress:
@@ -87,7 +88,8 @@ class Downloader:
             )
 
     def download_new_person_videos_pipeline(self) -> None:
-        """Download videos from specified facebook account based on the urls from the database, this command downloads only new not downloaded yet videos"""
+        """Download videos from specified facebook account based on the urls from the database
+        This command downloads only new not downloaded yet videos"""
         videos = get_new_videos(self.person)
         try:
             with Progress() as progress:
@@ -111,9 +113,33 @@ class Downloader:
         """Download videos just by passing a URL"""
         self.save_single_video(video_url)
 
-    def download_person_reels_pipeline(self) -> None:
-        """Download reels from specified facebook account based on the urls from the database"""
+    def download_all_person_reels_pipeline(self) -> None:
+        """Download reels from specified facebook account based on the urls from the database
+        This command downloads all reels from facebook account and may create duplicates
+        """
         reels = get_reels(self.person)
+        try:
+            with Progress() as progress:
+                task = progress.add_task("[cyan]Downloading...", total=len(reels))
+
+                for idx, reel in enumerate(reels, 1):
+                    self.save_person_video(reel.url)
+
+                    progress.update(
+                        task,
+                        advance=1,
+                        description=f"[cyan]Downloading... {idx}/{len(reels)}",
+                    )
+
+        except Exception as e:
+            logs.log_error(
+                f"An Error occurred while downloading reels for {self.person_facebook_id}: {e}"
+            )
+
+    def download_new_person_reels_pipeline(self) -> None:
+        """Download reels from specified facebook account based on the urls from the database
+        This command downloads only new not downloaded yet reels"""
+        reels = get_new_reels(self.person)
         try:
             with Progress() as progress:
                 task = progress.add_task("[cyan]Downloading...", total=len(reels))
