@@ -175,6 +175,16 @@ def get_work_and_education(work_and_education_id: int) -> WorkAndEducation:
     return session.query(WorkAndEducation).filter_by(id=work_and_education_id).first()
 
 
+def recent_places_exists(localization: str, date: str, person_id: int) -> bool:
+    session = get_session()
+    recent_places = (
+        session.query(RecentPlaces)
+        .filter_by(localization=localization, date=date, person_id=person_id)
+        .first()
+    )
+    return recent_places is not None
+
+
 def create_recent_places(localization: str, date: str, person_id: int) -> RecentPlaces:
     session = get_session()
     recent_places = RecentPlaces(
