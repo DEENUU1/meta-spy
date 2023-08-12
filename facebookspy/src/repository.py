@@ -69,6 +69,16 @@ def get_family_member(family_member_id: int) -> FamilyMember:
     return family_member
 
 
+def friend_exists(person_id: int, full_name: str) -> bool:
+    session = get_session()
+    friend = (
+        session.query(Friends)
+        .filter_by(person_id=person_id, full_name=full_name)
+        .first()
+    )
+    return friend is not None
+
+
 def create_friends(full_name: str, url: str, person_id: int) -> Friends:
     session = get_session()
     friends = Friends(full_name=full_name, url=url, person_id=person_id)
