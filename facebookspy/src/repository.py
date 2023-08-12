@@ -147,6 +147,16 @@ def get_place(place_id: int) -> Places:
     return session.query(Places).filter_by(id=place_id).first()
 
 
+def work_and_education_exists(name: str, person_id: int) -> bool:
+    session = get_session()
+    work_and_education = (
+        session.query(WorkAndEducation)
+        .filter_by(name=name, person_id=person_id)
+        .first()
+    )
+    return work_and_education is not None
+
+
 def create_work_and_education(name: str, person_id: int) -> WorkAndEducation:
     session = get_session()
     work_and_education = WorkAndEducation(name=name, person_id=person_id)
