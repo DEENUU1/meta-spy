@@ -87,7 +87,7 @@ After that you can browse scraped data, add notes, search more detail in google 
 - ~~Fix Image class to save only Photos~~
 - ~~Fix Video & Reels class to save only videos & reels~~
 - ~~Add Logs class and display errors in CLI app~~ 
-- Change structure of backend files
+- ~~Change structure of backend files~~
 
 ### v0.7 (ideas)
 - Scrape:
