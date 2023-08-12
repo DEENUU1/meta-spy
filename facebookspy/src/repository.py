@@ -123,6 +123,12 @@ def get_image(image_id: int) -> Image:
     return session.query(Image).filter_by(id=image_id).first()
 
 
+def places_exists(name: str, person_id: int) -> bool:
+    session = get_session()
+    places = session.query(Places).filter_by(name=name, person_id=person_id).first()
+    return places is not None
+
+
 def create_places(name: str, date: str, person_id: int) -> Places:
     session = get_session()
     places = Places(name=name, date=date, person_id=person_id)
