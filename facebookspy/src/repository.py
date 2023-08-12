@@ -166,6 +166,16 @@ def get_reels(person_id: int) -> List[Reels]:
     return session.query(Reels).filter_by(person_id=person_id).all()
 
 
+def get_new_reels(person_id: int) -> List[Reels]:
+    """Return a list of Reels with bool field set to False"""
+    session = get_session()
+    return (
+        session.query(Reels)
+        .filter_by(person_id == person_id, Reels.downloaded == False)
+        .all()
+    )
+
+
 def get_reel(reel_id: int) -> Reels:
     session = get_session()
     return session.query(Reels).filter_by(id=reel_id).first()
@@ -183,6 +193,16 @@ def get_videos(person_id: int) -> List[Videos]:
     """Return all videos for specified person object"""
     session = get_session()
     return session.query(Videos).filter_by(person_id=person_id).all()
+
+
+def get_new_videos(person_id: int) -> List[Videos]:
+    """Return a list of videos with a bool field set to False"""
+    session = get_session()
+    return (
+        session.query(Videos)
+        .filter(Videos.person_id == person_id, Videos.downloaded == False)
+        .all()
+    )
 
 
 def create_reviews(company: str, review: str, person_id: int) -> Reviews:
