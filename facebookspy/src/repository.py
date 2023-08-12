@@ -35,6 +35,16 @@ def create_person(facebook_id: str, full_name=None) -> Person:
     return person
 
 
+def family_member_exists(person_id: int, full_name: str) -> bool:
+    session = get_session()
+    family_member = (
+        session.query(FamilyMember)
+        .filter_by(person_id=person_id, full_name=full_name)
+        .first()
+    )
+    return family_member is not None
+
+
 def create_family_member(
     full_name: str, role: str, url: str, person_id: int
 ) -> FamilyMember:
