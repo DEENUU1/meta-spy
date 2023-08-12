@@ -1,5 +1,3 @@
-from time import sleep
-from typing import List
 from .config import Config
 import youtube_dl
 import os
