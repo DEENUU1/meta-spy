@@ -300,30 +300,3 @@ def download_video(url: Optional[str] = None):
         rprint("✅Scraping successful✅")
     else:
         rprint("❌Scraping failed❌")
-
-
-def download_all_person_reels(name: Optional[str] = None):
-    """Download all reels for specified facebook account based on the scraped URLs"""
-
-    rprint(f"Start downloading all reels for {name}")
-    scraper = Downloader(name)
-    scraper.download_all_person_reels_pipeline()
-
-    if scraper.is_pipeline_successful:
-        rprint("✅Scraping successful✅")
-    else:
-        rprint("❌Scraping failed❌")
-
-
-def download_new_person_reels(name: Optional[str] = None):
-    """Download all reels with 'downloaded' field with value False for specified
-    facebook account based on the scraped URLs"""
-
-    rprint(f"Start downloading all new reels for {name}")
-    scraper = Downloader(name)
-    scraper.download_new_person_reels_pipeline()
-
-    if scraper.is_pipeline_successful:
-        rprint("✅Scraping successful✅")
-    else:
-        rprint("❌Scraping failed❌")

@@ -21,8 +21,6 @@ from src.commands import (
     download_all_person_videos,
     download_new_person_videos,
     download_video,
-    download_all_person_reels,
-    download_new_person_reels,
 )
 
 load_dotenv()
@@ -45,9 +43,7 @@ app.command()(scrape_family_member)
 app.command()(server)
 app.command()(server_backend)
 app.command()(download_all_person_videos)
-app.command()(download_new_person_reels)
 app.command()(download_video)
-app.command()(download_all_person_reels)
 app.command()(download_new_person_videos)
 
 if __name__ == "__main__":

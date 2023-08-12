@@ -4,14 +4,10 @@ import os
 import random
 import string
 from .logs import Logs
-from rich import print as rprint
 from .repository import (
     get_videos,
-    get_reels,
     get_person,
-    get_new_reels,
     get_new_videos,
-    update_reels_downloaded,
     update_videos_downloaded,
 )
 from rich.progress import Progress
@@ -39,20 +35,23 @@ class Downloader:
     @staticmethod
     def download_video(path: str, video_url: str) -> None:
         try:
-            ydl_opts = {"outtmpl": os.path.join(path)}
+            ydl_opts = {
+                "outtmpl": os.path.join(path, "%(title)s.%(ext)s"),
+            }
             with youtube_dl.YoutubeDL(ydl_opts) as ydl:
                 ydl.download([video_url])
         except Exception as e:
             logs.log_error(f"An Error occurred while downloading videos: {e}")
 
     def save_person_video(self, video_url: str) -> None:
-        """Download videos/reels from specified account"""
+        """Download videos from specified account"""
         if not os.path.exists(self.video_path):
             os.makedirs(self.video_path)
 
         person_video_path = os.path.dirname(
             f"{self.video_path}/{self.person_facebook_id}/"
         )
+        print(person_video_path)
         if not os.path.exists(person_video_path):
             os.makedirs(person_video_path)
 
@@ -62,7 +61,7 @@ class Downloader:
         self.download_video(video_full_path, video_url)
 
     def save_single_video(self, video_url: str) -> None:
-        """Download single video/reel just by passing url"""
+        """Download single video just by passing url"""
         if not os.path.exists(self.video_path):
             os.makedirs(self.video_path)
 
@@ -130,57 +129,10 @@ class Downloader:
 
     def download_single_video_pipeline(self, video_url: str) -> None:
         """Download videos just by passing a URL"""
-        self.save_single_video(video_url)
-
-    def download_all_person_reels_pipeline(self) -> None:
-        """Download reels from specified facebook account based on the urls from the database
-        This command downloads all reels from facebook account and may create duplicates
-        """
-        person = get_person(self.person_facebook_id)
-        reels = get_reels(person.id)
         try:
-            with Progress() as progress:
-                task = progress.add_task("[cyan]Downloading...", total=len(reels))
-
-                for idx, reel in enumerate(reels, 1):
-                    self.save_person_video(reel.url)
-
-                    progress.update(
-                        task,
-                        advance=1,
-                        description=f"[cyan]Downloading... {idx}/{len(reels)}",
-                    )
-                    update_reels_downloaded(reel.id)
+            self.save_single_video(video_url)
 
             self.success = True
 
         except Exception as e:
-            logs.log_error(
-                f"An Error occurred while downloading reels for {self.person_facebook_id}: {e}"
-            )
-
-    def download_new_person_reels_pipeline(self) -> None:
-        """Download reels from specified facebook account based on the urls from the database
-        This command downloads only new not downloaded yet reels"""
-        person = get_person(self.person_facebook_id)
-        reels = get_new_reels(person.id)
-        try:
-            with Progress() as progress:
-                task = progress.add_task("[cyan]Downloading...", total=len(reels))
-
-                for idx, reel in enumerate(reels, 1):
-                    self.save_person_video(reel.url)
-
-                    progress.update(
-                        task,
-                        advance=1,
-                        description=f"[cyan]Downloading... {idx}/{len(reels)}",
-                    )
-                    update_reels_downloaded(reel.id)
-
-            self.success = True
-
-        except Exception as e:
-            logs.log_error(
-                f"An Error occurred while downloading reels for {self.person_facebook_id}: {e}"
-            )
+            logs.log_error(f"An Error occurred while downloading video: {e}")
