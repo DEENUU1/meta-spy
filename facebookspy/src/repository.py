@@ -205,6 +205,12 @@ def get_recent_place(recent_place_id: int) -> RecentPlaces:
     return session.query(RecentPlaces).filter_by(id=recent_place_id).first()
 
 
+def reels_exists(url: str, person_id: int) -> bool:
+    session = get_session()
+    reels = session.query(Reels).filter_by(url=url, person_id=person_id).first()
+    return reels is not None
+
+
 def create_reels(url: str, person_id: int) -> Reels:
     session = get_session()
     reels = Reels(url=url, person_id=person_id)
