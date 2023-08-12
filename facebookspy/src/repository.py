@@ -239,13 +239,10 @@ def get_reel(reel_id: int) -> Reels:
     return session.query(Reels).filter_by(id=reel_id).first()
 
 
-def update_reels_downloaded(reel_id: int):
-    """Update the 'downloaded' field for a single Reels object"""
+def video_exists(url: str, person_id: int) -> bool:
     session = get_session()
-    reel = session.query(Reels).filter_by(id=reel_id).first()
-    if reel:
-        reel.downloaded = True
-        session.commit()
+    video = session.query(Videos).filter_by(url=url, person_id=person_id).first()
+    return video is not None
 
 
 def create_videos(url: str, person_id: int) -> Videos:
