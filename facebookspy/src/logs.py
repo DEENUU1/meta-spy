@@ -3,7 +3,7 @@ from .config import Config
 
 
 class Logs(logging.Logger):
-    def __init__(self, name, level=logging.ERROR):
+    def __init__(self, name="logger", level=logging.ERROR):
         super().__init__(name, level=level)
         file_handler = logging.FileHandler(Config.LOG_FILE_PATH)
         file_handler.setLevel(level)

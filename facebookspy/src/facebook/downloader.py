@@ -1,10 +1,10 @@
-from .config import Config
+from ..config import Config
 import youtube_dl
 import os
 import random
 import string
-from .logs import Logs
-from .repository import (
+from ..logs import Logs
+from ..repository import (
     get_videos,
     get_person,
     get_new_videos,
@@ -13,7 +13,7 @@ from .repository import (
 from rich.progress import Progress
 
 
-logs = Logs("downloader.py")
+logs = Logs()
 
 
 class Downloader:

@@ -16,7 +16,7 @@ from ...logs import Logs
 from rich import print as rprint
 
 
-logs = Logs("image.py")
+logs = Logs()
 
 
 class FacebookImageScraper(BaseFacebookScraper):

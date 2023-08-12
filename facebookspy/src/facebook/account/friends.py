@@ -9,7 +9,7 @@ from ...logs import Logs
 from rich import print as rprint
 
 
-logs = Logs("friends.py")
+logs = Logs()
 
 
 class FriendListScraper(BaseFacebookScraper):
