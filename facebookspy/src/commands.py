@@ -7,6 +7,7 @@ from .facebook.account.image import FacebookImageScraper
 from .facebook.account.reels import FacebookReelsScraper
 from .facebook.account.videos import FacebookVideoScraper
 from .facebook.account.reviews import FacebookReviewsScraper
+from .downloader import Downloader
 from typing import Optional
 import typer
 from src.cli.home import display_start_menu
@@ -258,12 +259,42 @@ def scrape_videos_urls(name: Optional[str] = None):
         rprint("❌Scraping failed❌")
 
 
-def scrape_and_download_videos(name: Optional[str] = None):
-    """Scrape and download videos from facebook account"""
+""" Downloader commands """
 
-    rprint(f"Start scraping and downloading videos for {name}")
-    scraper = FacebookVideoScraper(name)
-    scraper.save_and_download_videos_pipeline()
+
+def download_all_person_videos(name: Optional[str] = None):
+    """Download all reels for specified facebook account based on the scraped URLs"""
+
+    rprint(f"Start downloading all videos for {name}")
+    scraper = Downloader(name)
+    scraper.download_all_person_videos_pipeline()
+
+    if scraper.is_pipeline_successful:
+        rprint("✅Scraping successful✅")
+    else:
+        rprint("❌Scraping failed❌")
+
+
+def download_new_person_videos(name: Optional[str] = None):
+    """Download all videos with 'downloaded' field with value False for specified
+    facebook account based on the scraped URLs"""
+
+    rprint(f"Start downloading all new videos for {name}")
+    scraper = Downloader(name)
+    scraper.download_new_person_videos_pipeline()
+
+    if scraper.is_pipeline_successful:
+        rprint("✅Scraping successful✅")
+    else:
+        rprint("❌Scraping failed❌")
+
+
+def download_video(url: Optional[str] = None):
+    """Download single video"""
+
+    rprint(f"Start downloading video")
+    scraper = Downloader()
+    scraper.download_single_video_pipeline(url)
 
     if scraper.is_pipeline_successful:
         rprint("✅Scraping successful✅")

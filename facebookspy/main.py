@@ -15,10 +15,12 @@ from src.commands import (
     scrape_recent_places,
     scrape_reels,
     scrape_videos_urls,
-    scrape_and_download_videos,
     scrape_reviews,
     server,
     server_backend,
+    download_all_person_videos,
+    download_new_person_videos,
+    download_video,
 )
 
 load_dotenv()
@@ -32,7 +34,6 @@ app.command()(scrape_images)
 app.command()(scrape_recent_places)
 app.command()(scrape_reels)
 app.command()(scrape_videos_urls)
-app.command()(scrape_and_download_videos)
 app.command()(scrape_reviews)
 app.command()(scrape_full_name)
 app.command()(scrape_full_account)
@@ -41,7 +42,9 @@ app.command()(scrape_localization)
 app.command()(scrape_family_member)
 app.command()(server)
 app.command()(server_backend)
-
+app.command()(download_all_person_videos)
+app.command()(download_video)
+app.command()(download_new_person_videos)
 
 if __name__ == "__main__":
     app()

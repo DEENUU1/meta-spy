@@ -161,14 +161,33 @@ def create_reels(url: str, person_id: int) -> Reels:
     return reels
 
 
-def get_reels_list(person_id: int) -> List[Reels]:
+def get_reels(person_id: int) -> List[Reels]:
     session = get_session()
     return session.query(Reels).filter_by(person_id=person_id).all()
+
+
+def get_new_reels(person_id: int) -> List[Reels]:
+    """Return a list of Reels with bool field set to False"""
+    session = get_session()
+    return (
+        session.query(Reels)
+        .filter(person_id == person_id, Reels.downloaded == False)
+        .all()
+    )
 
 
 def get_reel(reel_id: int) -> Reels:
     session = get_session()
     return session.query(Reels).filter_by(id=reel_id).first()
+
+
+def update_reels_downloaded(reel_id: int):
+    """Update the 'downloaded' field for a single Reels object"""
+    session = get_session()
+    reel = session.query(Reels).filter_by(id=reel_id).first()
+    if reel:
+        reel.downloaded = True
+        session.commit()
 
 
 def create_videos(url: str, person_id: int) -> Videos:
@@ -177,6 +196,31 @@ def create_videos(url: str, person_id: int) -> Videos:
     session.add(videos)
     session.commit()
     return videos
+
+
+def get_videos(person_id: int) -> List[Videos]:
+    """Return all videos for specified person object"""
+    session = get_session()
+    return session.query(Videos).filter(Videos.person_id == person_id).all()
+
+
+def update_videos_downloaded(video_id: int):
+    """Update the 'downloaded' field for a single Videos object"""
+    session = get_session()
+    video = session.query(Videos).filter_by(id=video_id).first()
+    if video:
+        video.downloaded = True
+        session.commit()
+
+
+def get_new_videos(person_id: int) -> List[Videos]:
+    """Return a list of videos with a bool field set to False"""
+    session = get_session()
+    return (
+        session.query(Videos)
+        .filter(Videos.person_id == person_id, Videos.downloaded == False)
+        .all()
+    )
 
 
 def create_reviews(company: str, review: str, person_id: int) -> Reviews:
