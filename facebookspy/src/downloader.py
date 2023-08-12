@@ -7,7 +7,7 @@ import random
 import string
 from .logs import Logs
 from rich import print as rprint
-from .repository import get_videos, get_reels, get_person
+from .repository import get_videos, get_reels, get_person, get_new_reels, get_new_videos
 from rich.progress import Progress
 
 
@@ -65,9 +65,30 @@ class Downloader:
 
         self.download_video(video_full_path, video_url)
 
-    def download_person_videos_pipeline(self) -> None:
-        """Download videos from specified facebook account based on the urls from the database"""
+    def download_all_person_videos_pipeline(self) -> None:
+        """Download videos from specified facebook account based on the urls from the database, this command download all videos and may create duplicates"""
         videos = get_videos(self.person)
+        try:
+            with Progress() as progress:
+                task = progress.add_task("[cyan]Downloading...", total=len(videos))
+
+                for idx, video in enumerate(videos, 1):
+                    self.save_person_video(video.url)
+
+                    progress.update(
+                        task,
+                        advance=1,
+                        description=f"[cyan]Downloading... {idx}/{len(videos)}",
+                    )
+
+        except Exception as e:
+            logs.log_error(
+                f"An Error occurred while downloading videos for {self.person_facebook_id}: {e}"
+            )
+
+    def download_new_person_videos_pipeline(self) -> None:
+        """Download videos from specified facebook account based on the urls from the database, this command downloads only new not downloaded yet videos"""
+        videos = get_new_videos(self.person)
         try:
             with Progress() as progress:
                 task = progress.add_task("[cyan]Downloading...", total=len(videos))
