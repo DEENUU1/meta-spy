@@ -99,6 +99,12 @@ def get_friend(friend_id: int) -> Friends:
     return friend
 
 
+def image_exists(path: str, person_id: int) -> bool:
+    session = get_session()
+    image = session.query(Image).filter_by(path=path, person_id=person_id).first()
+    return image is not None
+
+
 def create_image(path: str, person_id: int) -> Image:
     session = get_session()
     image = Image(path=path, person_id=person_id)
