@@ -263,9 +263,9 @@ def scrape_videos_urls(name: Optional[str] = None):
 
 
 def download_all_person_videos(name: Optional[str] = None):
-    # """Scrape videos urls from facebook account"""
+    """Download all reels for specified facebook account based on the scraped URLs"""
 
-    # rprint(f"Start scraping videos urls for {name}")
+    rprint(f"Start downloading all videos for {name}")
     scraper = Downloader(name)
     scraper.download_all_person_videos_pipeline()
 
@@ -276,9 +276,10 @@ def download_all_person_videos(name: Optional[str] = None):
 
 
 def download_new_person_videos(name: Optional[str] = None):
-    # """Scrape videos urls from facebook account"""
+    """Download all videos with 'downloaded' field with value False for specified
+    facebook account based on the scraped URLs"""
 
-    # rprint(f"Start scraping videos urls for {name}")
+    rprint(f"Start downloading all new videos for {name}")
     scraper = Downloader(name)
     scraper.download_new_person_videos_pipeline()
 
@@ -289,9 +290,9 @@ def download_new_person_videos(name: Optional[str] = None):
 
 
 def download_video(url: Optional[str] = None):
-    # """Scrape videos urls from facebook account"""
+    """Download single video"""
 
-    # rprint(f"Start scraping videos urls for {name}")
+    rprint(f"Start downloading video")
     scraper = Downloader()
     scraper.download_single_video_pipeline(url)
 
@@ -302,9 +303,9 @@ def download_video(url: Optional[str] = None):
 
 
 def download_all_person_reels(name: Optional[str] = None):
-    # """Scrape videos urls from facebook account"""
+    """Download all reels for specified facebook account based on the scraped URLs"""
 
-    # rprint(f"Start scraping videos urls for {name}")
+    rprint(f"Start downloading all reels for {name}")
     scraper = Downloader(name)
     scraper.download_all_person_reels_pipeline()
 
@@ -315,9 +316,10 @@ def download_all_person_reels(name: Optional[str] = None):
 
 
 def download_new_person_reels(name: Optional[str] = None):
-    # """Scrape videos urls from facebook account"""
+    """Download all reels with 'downloaded' field with value False for specified
+    facebook account based on the scraped URLs"""
 
-    # rprint(f"Start scraping videos urls for {name}")
+    rprint(f"Start downloading all new reels for {name}")
     scraper = Downloader(name)
     scraper.download_new_person_reels_pipeline()
 
