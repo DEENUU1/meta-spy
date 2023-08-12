@@ -1,10 +1,10 @@
-from facebookspy.src.config import Config
+from ..config import Config
 import youtube_dl
 import os
 import random
 import string
-from facebookspy.src.logs import Logs
-from facebookspy.src.repository import (
+from ..logs import Logs
+from ..repository import (
     get_videos,
     get_person,
     get_new_videos,
