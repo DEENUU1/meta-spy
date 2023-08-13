@@ -35,6 +35,16 @@ def create_person(facebook_id: str, full_name=None) -> Person:
     return person
 
 
+def family_member_exists(person_id: int, full_name: str) -> bool:
+    session = get_session()
+    family_member = (
+        session.query(FamilyMember)
+        .filter_by(person_id=person_id, full_name=full_name)
+        .first()
+    )
+    return family_member is not None
+
+
 def create_family_member(
     full_name: str, role: str, url: str, person_id: int
 ) -> FamilyMember:
@@ -59,6 +69,16 @@ def get_family_member(family_member_id: int) -> FamilyMember:
     return family_member
 
 
+def friend_exists(person_id: int, full_name: str, url: str) -> bool:
+    session = get_session()
+    friend = (
+        session.query(Friends)
+        .filter_by(person_id=person_id, full_name=full_name, url=url)
+        .first()
+    )
+    return friend is not None
+
+
 def create_friends(full_name: str, url: str, person_id: int) -> Friends:
     session = get_session()
     friends = Friends(full_name=full_name, url=url, person_id=person_id)
@@ -79,6 +99,12 @@ def get_friend(friend_id: int) -> Friends:
     return friend
 
 
+def image_exists(path: str, person_id: int) -> bool:
+    session = get_session()
+    image = session.query(Image).filter_by(path=path, person_id=person_id).first()
+    return image is not None
+
+
 def create_image(path: str, person_id: int) -> Image:
     session = get_session()
     image = Image(path=path, person_id=person_id)
@@ -95,6 +121,16 @@ def get_image_list(person_id: int) -> List[Image]:
 def get_image(image_id: int) -> Image:
     session = get_session()
     return session.query(Image).filter_by(id=image_id).first()
+
+
+def places_exists(name: str, data: str, person_id: int) -> bool:
+    session = get_session()
+    places = (
+        session.query(Places)
+        .filter_by(name=name, date=data, person_id=person_id)
+        .first()
+    )
+    return places is not None
 
 
 def create_places(name: str, date: str, person_id: int) -> Places:
@@ -115,6 +151,16 @@ def get_place(place_id: int) -> Places:
     return session.query(Places).filter_by(id=place_id).first()
 
 
+def work_and_education_exists(name: str, person_id: int) -> bool:
+    session = get_session()
+    work_and_education = (
+        session.query(WorkAndEducation)
+        .filter_by(name=name, person_id=person_id)
+        .first()
+    )
+    return work_and_education is not None
+
+
 def create_work_and_education(name: str, person_id: int) -> WorkAndEducation:
     session = get_session()
     work_and_education = WorkAndEducation(name=name, person_id=person_id)
@@ -131,6 +177,16 @@ def get_work_and_education_list(person_id: int) -> List[WorkAndEducation]:
 def get_work_and_education(work_and_education_id: int) -> WorkAndEducation:
     session = get_session()
     return session.query(WorkAndEducation).filter_by(id=work_and_education_id).first()
+
+
+def recent_places_exists(localization: str, date: str, person_id: int) -> bool:
+    session = get_session()
+    recent_places = (
+        session.query(RecentPlaces)
+        .filter_by(localization=localization, date=date, person_id=person_id)
+        .first()
+    )
+    return recent_places is not None
 
 
 def create_recent_places(localization: str, date: str, person_id: int) -> RecentPlaces:
@@ -151,6 +207,12 @@ def get_recent_places_list(person_id: int) -> List[RecentPlaces]:
 def get_recent_place(recent_place_id: int) -> RecentPlaces:
     session = get_session()
     return session.query(RecentPlaces).filter_by(id=recent_place_id).first()
+
+
+def reels_exists(url: str, person_id: int) -> bool:
+    session = get_session()
+    reels = session.query(Reels).filter_by(url=url, person_id=person_id).first()
+    return reels is not None
 
 
 def create_reels(url: str, person_id: int) -> Reels:
@@ -181,13 +243,10 @@ def get_reel(reel_id: int) -> Reels:
     return session.query(Reels).filter_by(id=reel_id).first()
 
 
-def update_reels_downloaded(reel_id: int):
-    """Update the 'downloaded' field for a single Reels object"""
+def video_exists(url: str, person_id: int) -> bool:
     session = get_session()
-    reel = session.query(Reels).filter_by(id=reel_id).first()
-    if reel:
-        reel.downloaded = True
-        session.commit()
+    video = session.query(Videos).filter_by(url=url, person_id=person_id).first()
+    return video is not None
 
 
 def create_videos(url: str, person_id: int) -> Videos:
@@ -221,6 +280,16 @@ def get_new_videos(person_id: int) -> List[Videos]:
         .filter(Videos.person_id == person_id, Videos.downloaded == False)
         .all()
     )
+
+
+def review_exists(company: str, review: str, person_id: int) -> bool:
+    session = get_session()
+    review = (
+        session.query(Reviews)
+        .filter_by(company=company, review=review, person_id=person_id)
+        .first()
+    )
+    return review is not None
 
 
 def create_reviews(company: str, review: str, person_id: int) -> Reviews:

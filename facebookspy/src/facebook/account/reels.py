@@ -4,7 +4,13 @@ from typing import List
 from ...config import Config
 from selenium.webdriver.common.by import By
 from ..facebook_base import BaseFacebookScraper
-from ...repository import create_person, get_person, person_exists, create_reels
+from ...repository import (
+    create_person,
+    get_person,
+    person_exists,
+    create_reels,
+    reels_exists,
+)
 from ...logs import Logs
 from rich import print as rprint
 
@@ -99,7 +105,8 @@ class FacebookReelsScraper(BaseFacebookScraper):
             person_id = get_person(self._user_id).id
 
             for reel in reels:
-                create_reels(reel, person_id)
+                if not reels_exists(reel, person_id):
+                    create_reels(reel, person_id)
 
             self._driver.quit()
             self.success = True
