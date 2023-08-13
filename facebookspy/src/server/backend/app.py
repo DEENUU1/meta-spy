@@ -165,7 +165,7 @@ async def create_video(
     if not person_object:
         raise HTTPException(status_code=404, detail="Person not found")
 
-    db_video = Videos(**video.dict(), person_id=person_id)
+    db_video = Videos(**video.dict())
     db.add(db_video)
     db.commit()
     db.refresh(db_video)
@@ -202,7 +202,7 @@ async def create_reel(
     if not person_object:
         raise HTTPException(status_code=404, detail="Person not found")
 
-    db_reel = Reels(**reel.dict(), person_id=person_id)
+    db_reel = Reels(**reel.dict())
     db.add(db_reel)
     db.commit()
     db.refresh(db_reel)
@@ -239,7 +239,7 @@ async def create_recent_place(
     if not person_object:
         raise HTTPException(status_code=404, detail="Person not found")
 
-    db_recent_place = RecentPlaces(**recent_place.dict(), person_id=person_id)
+    db_recent_place = RecentPlaces(**recent_place.dict())
     db.add(db_recent_place)
     db.commit()
     db.refresh(db_recent_place)
@@ -285,7 +285,7 @@ async def create_work_and_education(
     if not person_object:
         raise HTTPException(status_code=404, detail="Person not found")
 
-    db_work_education = WorkAndEducation(**work_education.dict(), person_id=person_id)
+    db_work_education = WorkAndEducation(**work_education.dict())
     db.add(db_work_education)
     db.commit()
     db.refresh(db_work_education)
@@ -328,7 +328,7 @@ async def create_place(
     if not person_object:
         raise HTTPException(status_code=404, detail="Person not found")
 
-    db_place = Places(**place.dict(), person_id=person_id)
+    db_place = Places(**place.dict())
     db.add(db_place)
     db.commit()
     db.refresh(db_place)
@@ -365,7 +365,7 @@ async def create_friend(
     if not person_object:
         raise HTTPException(status_code=404, detail="Person not found")
 
-    db_friend = Friends(**friend.dict(), person_id=person_id)
+    db_friend = Friends(**friend.dict())
     db.add(db_friend)
     db.commit()
     db.refresh(db_friend)
@@ -431,7 +431,7 @@ async def create_family_member(
     if not person_object:
         raise HTTPException(status_code=404, detail="Person not found")
 
-    db_family_member = FamilyMember(**family_member.dict(), person_id=person_id)
+    db_family_member = FamilyMember(**family_member.dict())
     db.add(db_family_member)
     db.commit()
     db.refresh(db_family_member)
