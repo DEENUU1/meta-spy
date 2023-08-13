@@ -31,6 +31,7 @@ from ...models import (
     FamilyMember,
     Notes,
 )
+
 from ...database import Session, get_session
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
@@ -73,24 +74,26 @@ async def get_person_by_facebook_id(
     return person
 
 
-@app.post("/person/", response_model=PersonSchema)
+@app.post("/person/", status_code=status.HTTP_201_CREATED)
 async def create_person(
     facebook_id: str, person: PersonSchema, db: Session = Depends(get_session)
 ):
     """Create a Person object"""
     person_object = db.query(Person).filter(Person.facebook_id == facebook_id).first()
     if person_object:
-        raise HTTPException(status_code=404, detail="Person already exist")
+        raise HTTPException(status_code=400, detail="Person already exist")
     db_person = Person(**person.dict())
     db.add(db_person)
     db.commit()
     db.refresh(db_person)
+
     return JSONResponse(
-        status_code=status.HTTP_201_CREATED, content="Person object created"
+        status_code=status.HTTP_201_CREATED,
+        content={"message": "Person created successfully"},
     )
 
 
-@app.delete("/person/", response_model=PersonSchema)
+@app.delete("/person/", status_code=status.HTTP_200_OK)
 async def delete_person(person_id: int, db: Session = Depends(get_session)):
     """Delete a Person object"""
     person_object = db.query(Person).filter(Person.id == person_id).first()
@@ -98,8 +101,10 @@ async def delete_person(person_id: int, db: Session = Depends(get_session)):
         raise HTTPException(status_code=404, detail="Person not found")
     db.delete(person_object)
     db.commit()
+
     return JSONResponse(
-        status_code=status.HTTP_200_OK, content=f"Person {person_id} deleted"
+        status_code=status.HTTP_200_OK,
+        content={"message": "Person deleted successfully"},
     )
 
 
@@ -114,7 +119,7 @@ async def get_reviews_by_person_id(
     return reviews
 
 
-@app.post("/review/", response_model=ReviewsSchema)
+@app.post("/review/", status_code=status.HTTP_201_CREATED)
 async def create_review(
     person_id: int, review: ReviewsSchema, db: Session = Depends(get_session)
 ):
@@ -123,16 +128,30 @@ async def create_review(
     if not person_object:
         raise HTTPException(status_code=404, detail="Person object not found")
 
+    review_object = (
+        db.query(Reviews)
+        .filter(
+            Reviews.facebook_id == facebook_id,
+            Reviews.company == review.company,
+            Reviews.review == review.review,
+        )
+        .first()
+    )
+    if review_object:
+        raise HTTPException(status_code=400, detail="Review already exist")
+
     db_review = Reviews(**review.dict())
     db.add(db_review)
     db.commit()
     db.refresh(db_review)
+
     return JSONResponse(
-        status_code=status.HTTP_201_CREATED, content="Review object created"
+        status_code=status.HTTP_201_CREATED,
+        content={"message": "Review created successfully"},
     )
 
 
-@app.delete("/review/", response_model=ReviewsSchema)
+@app.delete("/review/", status_code=status.HTTP_200_OK)
 async def delete_review(review_id: int, db: Session = Depends(get_session)):
     """Delete a review object"""
     review_object = db.query(Reviews).filter(Reviews.id == review_id).first()
@@ -140,8 +159,10 @@ async def delete_review(review_id: int, db: Session = Depends(get_session)):
         raise HTTPException(status_code=404, detail="Review not found")
     db.delete(review_object)
     db.commit()
+
     return JSONResponse(
-        status_code=status.HTTP_200_OK, content=f"Review {review_id} deleted"
+        status_code=status.HTTP_200_OK,
+        content={"message": "Review deleted successfully"},
     )
 
 
@@ -156,6 +177,50 @@ async def get_videos_by_person_id(
     return videos
 
 
+@app.post("/video/", status_code=status.HTTP_201_CREATED)
+async def create_video(
+    person_id: int, video: VideosSchema, db: Session = Depends(get_session)
+):
+    """Create a video object for the specified person ID"""
+    person_object = db.query(Person).filter(Person.id == person_id).first()
+    if not person_object:
+        raise HTTPException(status_code=404, detail="Person not found")
+
+    video_object = (
+        db.query(Videos)
+        .filter(Videos.person_id == person_id, Videos.url == video.url)
+        .first()
+    )
+    if video_object:
+        raise HTTPException(status_code=400, detail="Video already exist")
+
+    db_video = Videos(**video.dict())
+    db.add(db_video)
+    db.commit()
+    db.refresh(db_video)
+
+    return JSONResponse(
+        status_code=status.HTTP_200_OK,
+        content={"message": "Video created successfully"},
+    )
+
+
+@app.delete("/video/", status_code=status.HTTP_200_OK)
+async def delete_video(video_id: int, db: Session = Depends(get_session)):
+    """Delete a video object by ID"""
+    video_object = db.query(Videos).filter(Videos.id == video_id).first()
+    if not video_object:
+        raise HTTPException(status_code=404, detail="Video not found")
+
+    db.delete(video_object)
+    db.commit()
+
+    return JSONResponse(
+        status_code=status.HTTP_200_OK,
+        content={"message": "Video deleted successfully"},
+    )
+
+
 @app.get("/person/reel/{person_id}", response_model=List[ReelsSchema])
 async def get_reels_by_person_id(
     person_id: int, session: Session = Depends(get_session)
@@ -167,6 +232,49 @@ async def get_reels_by_person_id(
     return reels
 
 
+@app.post("/reel/", status_code=status.HTTP_201_CREATED)
+async def create_reel(
+    person_id: int, reel: ReelsSchema, db: Session = Depends(get_session)
+):
+    """Create a reel object for the specified person ID"""
+    person_object = db.query(Person).filter(Person.id == person_id).first()
+    if not person_object:
+        raise HTTPException(status_code=404, detail="Person not found")
+
+    reel_object = (
+        db.query(Reels)
+        .filter(Reels.person_id == person_id, Reels.url == reel.url)
+        .first()
+    )
+    if reel_object:
+        raise HTTPException(status_code=400, detail="Reel already exist")
+
+    db_reel = Reels(**reel.dict())
+    db.add(db_reel)
+    db.commit()
+    db.refresh(db_reel)
+
+    return JSONResponse(
+        status_code=status.HTTP_201_CREATED,
+        content={"message": "Reel created successfully"},
+    )
+
+
+@app.delete("/reel/", status_code=status.HTTP_200_OK)
+async def delete_reel(reel_id: int, db: Session = Depends(get_session)):
+    """Delete a reel object by ID"""
+    reel_object = db.query(Reels).filter(Reels.id == reel_id).first()
+    if not reel_object:
+        raise HTTPException(status_code=404, detail="Reel not found")
+
+    db.delete(reel_object)
+    db.commit()
+
+    return JSONResponse(
+        status_code=status.HTTP_200_OK, content={"message": "Reel deleted successfully"}
+    )
+
+
 @app.get("/person/recent_place/{person_id}", response_model=List[RecentPlacesSchema])
 async def get_recent_places_by_person_id(
     person_id: int, session: Session = Depends(get_session)
@@ -176,6 +284,56 @@ async def get_recent_places_by_person_id(
     if not recent_places:
         raise HTTPException(status_code=404, detail="Recent Places not found")
     return recent_places
+
+
+@app.post("/recent_place/", status_code=status.HTTP_201_CREATED)
+async def create_recent_place(
+    person_id: int, recent_place: RecentPlacesSchema, db: Session = Depends(get_session)
+):
+    """Create a recent place object for the specified person ID"""
+    person_object = db.query(Person).filter(Person.id == person_id).first()
+    if not person_object:
+        raise HTTPException(status_code=404, detail="Person not found")
+
+    recent_place_object = (
+        db.query(RecentPlaces)
+        .filter(
+            RecentPlaces.person_id == person_id,
+            RecentPlaces.localization == recent_place.localization,
+            RecentPlaces.date == recent_place.date,
+        )
+        .first()
+    )
+    if recent_place_object:
+        raise HTTPException(status_code=400, detail="Recent Place already exist")
+
+    db_recent_place = RecentPlaces(**recent_place.dict())
+    db.add(db_recent_place)
+    db.commit()
+    db.refresh(db_recent_place)
+
+    return JSONResponse(
+        status_code=status.HTTP_201_CREATED,
+        content={"message": "Recent Place created successfully"},
+    )
+
+
+@app.delete("/recent_place/", status_code=status.HTTP_200_OK)
+async def delete_recent_place(recent_place_id: int, db: Session = Depends(get_session)):
+    """Delete a recent place object by ID"""
+    recent_place_object = (
+        db.query(RecentPlaces).filter(RecentPlaces.id == recent_place_id).first()
+    )
+    if not recent_place_object:
+        raise HTTPException(status_code=404, detail="Recent Place not found")
+
+    db.delete(recent_place_object)
+    db.commit()
+
+    return JSONResponse(
+        status_code=status.HTTP_200_OK,
+        content={"message": "Recent Place deleted successfully"},
+    )
 
 
 @app.get(
@@ -194,6 +352,61 @@ async def get_work_and_education_by_person_id(
     return work_and_education
 
 
+@app.post("/work_and_education/", status_code=status.HTTP_201_CREATED)
+async def create_work_and_education(
+    person_id: int,
+    work_education: WorkAndEducationSchema,
+    db: Session = Depends(get_session),
+):
+    """Create a work and education object for the specified person ID"""
+    person_object = db.query(Person).filter(Person.id == person_id).first()
+    if not person_object:
+        raise HTTPException(status_code=404, detail="Person not found")
+
+    work_and_education_object = (
+        db.query(WorkAndEducation)
+        .filter(
+            WorkAndEducation.person_id == person_id,
+            WorkAndEducation.name == work_education.name,
+        )
+        .first()
+    )
+    if work_and_education_object:
+        raise HTTPException(status_code=400, detail="Work and Education already exist")
+
+    db_work_education = WorkAndEducation(**work_education.dict())
+    db.add(db_work_education)
+    db.commit()
+    db.refresh(db_work_education)
+
+    return JSONResponse(
+        status_code=status.HTTP_201_CREATED,
+        content={"message": "Work and Education created successfully"},
+    )
+
+
+@app.delete("/work_and_education/", status_code=status.HTTP_200_OK)
+async def delete_work_and_education(
+    work_education_id: int, db: Session = Depends(get_session)
+):
+    """Delete a work and education object by ID"""
+    work_education_object = (
+        db.query(WorkAndEducation)
+        .filter(WorkAndEducation.id == work_education_id)
+        .first()
+    )
+    if not work_education_object:
+        raise HTTPException(status_code=404, detail="Work and Education not found")
+
+    db.delete(work_education_object)
+    db.commit()
+
+    return JSONResponse(
+        status_code=status.HTTP_200_OK,
+        content={"message": "Work and Education deleted successfully"},
+    )
+
+
 @app.get("/person/place/{person_id}", response_model=List[PlacesSchema])
 async def get_places_by_person_id(
     person_id: int, session: Session = Depends(get_session)
@@ -205,6 +418,54 @@ async def get_places_by_person_id(
     return places
 
 
+@app.post("/place/", status_code=status.HTTP_201_CREATED)
+async def create_place(
+    person_id: int, place: PlacesSchema, db: Session = Depends(get_session)
+):
+    """Create a place object for the specified person ID"""
+    person_object = db.query(Person).filter(Person.id == person_id).first()
+    if not person_object:
+        raise HTTPException(status_code=404, detail="Person not found")
+
+    place_object = (
+        db.query(Places)
+        .filter(
+            Places.person_id == person_id,
+            Places.name == places.name,
+            Places.date == places.date,
+        )
+        .first()
+    )
+    if place_object:
+        raise HTTPException(status_code=400, detail="Place already exist")
+
+    db_place = Places(**place.dict())
+    db.add(db_place)
+    db.commit()
+    db.refresh(db_place)
+
+    return JSONResponse(
+        status_code=status.HTTP_201_CREATED,
+        content={"message": "Place created successfully"},
+    )
+
+
+@app.delete("/place/", status_code=status.HTTP_200_OK)
+async def delete_place(place_id: int, db: Session = Depends(get_session)):
+    """Delete a place object by ID"""
+    place_object = db.query(Places).filter(Places.id == place_id).first()
+    if not place_object:
+        raise HTTPException(status_code=404, detail="Place not found")
+
+    db.delete(place_object)
+    db.commit()
+
+    return JSONResponse(
+        status_code=status.HTTP_200_OK,
+        content={"message": "Place deleted successfully"},
+    )
+
+
 @app.get("/person/friend/{person_id}", response_model=List[FriendsSchema])
 async def get_friends_by_person_id(
     person_id: int, session: Session = Depends(get_session)
@@ -214,6 +475,54 @@ async def get_friends_by_person_id(
     if not friends:
         raise HTTPException(status_code=404, detail="Friends not found")
     return friends
+
+
+@app.post("/friend/", status_code=status.HTTP_201_CREATED)
+async def create_friend(
+    person_id: int, friend: FriendsSchema, db: Session = Depends(get_session)
+):
+    """Create a friend object for the specified person ID"""
+    person_object = db.query(Person).filter(Person.id == person_id).first()
+    if not person_object:
+        raise HTTPException(status_code=404, detail="Person not found")
+
+    friend_object = (
+        db.query(Friends)
+        .filter(
+            Friends.person_id == friend.person_id,
+            Friens.full_name == friend.full_name,
+            Friends.url == friend.url,
+        )
+        .first()
+    )
+    if friend_object:
+        raise HTTPException(status_code=400, detail="Friend already exist")
+
+    db_friend = Friends(**friend.dict())
+    db.add(db_friend)
+    db.commit()
+    db.refresh(db_friend)
+
+    return JSONResponse(
+        status_code=status.HTTP_201_CREATED,
+        content={"message": "Friend created successfully"},
+    )
+
+
+@app.delete("/friend/", status_code=status.HTTP_200_OK)
+async def delete_friend(friend_id: int, db: Session = Depends(get_session)):
+    """Delete a friend object by ID"""
+    friend_object = db.query(Friends).filter(Friends.id == friend_id).first()
+    if not friend_object:
+        raise HTTPException(status_code=404, detail="Friend not found")
+
+    db.delete(friend_object)
+    db.commit()
+
+    return JSONResponse(
+        status_code=status.HTTP_200_OK,
+        content={"message": "Friend deleted successfully"},
+    )
 
 
 @app.get("/person/image/{person_id}", response_model=List[ImageSchema])
@@ -252,6 +561,59 @@ async def get_family_member_by_person_id(
     if not family_members:
         raise HTTPException(status_code=404, detail="Family Members not found")
     return family_members
+
+
+@app.post("/family_member/", status_code=status.HTTP_201_CREATED)
+async def create_family_member(
+    person_id: int,
+    family_member: FamilyMemberSchema,
+    db: Session = Depends(get_session),
+):
+    """Create a family member object for the specified person ID"""
+    person_object = db.query(Person).filter(Person.id == person_id).first()
+    if not person_object:
+        raise HTTPException(status_code=404, detail="Person not found")
+
+    family_member_object = (
+        db.query(FamilyMember)
+        .filter(
+            FamilyMember.person_id == family_member.person_id,
+            FamilyMember.full_name == family_member.full_name,
+        )
+        .first()
+    )
+    if family_member_object:
+        raise HTTPException(status_code=400, detail="Family Member already exist")
+
+    db_family_member = FamilyMember(**family_member.dict())
+    db.add(db_family_member)
+    db.commit()
+    db.refresh(db_family_member)
+
+    return JSONResponse(
+        status_code=status.HTTP_201_CREATED,
+        content={"message": "Family Member created successfully"},
+    )
+
+
+@app.delete("/family_member/", status_code=status.HTTP_200_OK)
+async def delete_family_member(
+    family_member_id: int, db: Session = Depends(get_session)
+):
+    """Delete a family member object by ID"""
+    family_member_object = (
+        db.query(FamilyMember).filter(FamilyMember.id == family_member_id).first()
+    )
+    if not family_member_object:
+        raise HTTPException(status_code=404, detail="Family Member not found")
+
+    db.delete(family_member_object)
+    db.commit()
+
+    return JSONResponse(
+        status_code=status.HTTP_200_OK,
+        content={"message": "Family Member deleted successfully"},
+    )
 
 
 @app.post("/person/note/{person_id}", response_model=NoteSchema)
