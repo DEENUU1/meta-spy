@@ -282,24 +282,27 @@ class AccountScraper(BaseFacebookScraper):
             rprint(family_members)
 
             for member in family_members:
-                create_family_member(
-                    member["name"],
-                    member["relationship"],
-                    member["url"],
-                    person_id,
-                )
+                if not family_member_exists(person_id, member["name"]):
+                    create_family_member(
+                        member["name"],
+                        member["relationship"],
+                        member["url"],
+                        person_id,
+                    )
 
             rprint("[bold]Step 5 of 6 - Extract localization data[/bold]")
             places = self.extract_places()
             rprint(places)
             for place in places:
-                create_places(place["name"], place["date"], person_id)
+                if not places_exists(place["name"], place["date"], person_id):
+                    create_places(place["name"], place["date"], person_id)
 
             rprint("[bold]Step 6 of 6 - Extract work and education data[/bold]")
             work_and_education = self.extract_work_and_education()
             rprint(work_and_education)
             for data in work_and_education:
-                create_work_and_education(data["name"], person_id)
+                if not work_and_education_exists(data["name"], person_id):
+                    create_work_and_education(data["name"], person_id)
 
             self._driver.quit()
             self.success = True
