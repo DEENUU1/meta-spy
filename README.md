@@ -102,10 +102,13 @@ After that you can browse scraped data, add notes, search more detail in google 
   - likes
   - contact data and basic info
   - posts
+- Display new scraped data in local web app 
+- Add endpoints to create and delete data 
+- Models 
 
 ### vX.X (ideas)
 - Scrape groups
-- Scrape posts 
+- Scrape single post  
 - Search for connections between Person objects 
 
 <!-- GETTING STARTED -->
