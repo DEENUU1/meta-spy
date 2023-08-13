@@ -274,6 +274,40 @@ async def get_work_and_education_by_person_id(
     return work_and_education
 
 
+@app.post("/work_and_education/", status_code=status.HTTP_201_CREATED)
+async def create_work_and_education(
+    person_id: int,
+    work_education: WorkAndEducationSchema,
+    db: Session = Depends(get_session),
+):
+    """Create a work and education object for the specified person ID"""
+    person_object = db.query(Person).filter(Person.id == person_id).first()
+    if not person_object:
+        raise HTTPException(status_code=404, detail="Person not found")
+
+    db_work_education = WorkAndEducation(**work_education.dict(), person_id=person_id)
+    db.add(db_work_education)
+    db.commit()
+    db.refresh(db_work_education)
+
+
+@app.delete("/work_and_education/", status_code=status.HTTP_200_OK)
+async def delete_work_and_education(
+    work_education_id: int, db: Session = Depends(get_session)
+):
+    """Delete a work and education object by ID"""
+    work_education_object = (
+        db.query(WorkAndEducation)
+        .filter(WorkAndEducation.id == work_education_id)
+        .first()
+    )
+    if not work_education_object:
+        raise HTTPException(status_code=404, detail="Work and Education not found")
+
+    db.delete(work_education_object)
+    db.commit()
+
+
 @app.get("/person/place/{person_id}", response_model=List[PlacesSchema])
 async def get_places_by_person_id(
     person_id: int, session: Session = Depends(get_session)
