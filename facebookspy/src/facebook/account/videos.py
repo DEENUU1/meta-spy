@@ -4,7 +4,13 @@ from typing import List
 from ...config import Config
 from selenium.webdriver.common.by import By
 from ..facebook_base import BaseFacebookScraper
-from ...repository import create_person, get_person, person_exists, create_videos
+from ...repository import (
+    create_person,
+    get_person,
+    person_exists,
+    create_videos,
+    video_exists,
+)
 from ...logs import Logs
 from rich import print as rprint
 
@@ -97,7 +103,8 @@ class FacebookVideoScraper(BaseFacebookScraper):
 
             person_id = get_person(self._user_id).id
             for video in videos:
-                create_videos(video, person_id)
+                if not video_exists(video, person_id):
+                    create_videos(video, person_id)
 
             self._driver.quit()
             self.success = True
