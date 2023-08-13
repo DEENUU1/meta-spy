@@ -420,6 +420,38 @@ async def get_family_member_by_person_id(
     return family_members
 
 
+@app.post("/family_member/", status_code=status.HTTP_201_CREATED)
+async def create_family_member(
+    person_id: int,
+    family_member: FamilyMemberSchema,
+    db: Session = Depends(get_session),
+):
+    """Create a family member object for the specified person ID"""
+    person_object = db.query(Person).filter(Person.id == person_id).first()
+    if not person_object:
+        raise HTTPException(status_code=404, detail="Person not found")
+
+    db_family_member = FamilyMember(**family_member.dict(), person_id=person_id)
+    db.add(db_family_member)
+    db.commit()
+    db.refresh(db_family_member)
+
+
+@app.delete("/family_member/", status_code=status.HTTP_200_OK)
+async def delete_family_member(
+    family_member_id: int, db: Session = Depends(get_session)
+):
+    """Delete a family member object by ID"""
+    family_member_object = (
+        db.query(FamilyMember).filter(FamilyMember.id == family_member_id).first()
+    )
+    if not family_member_object:
+        raise HTTPException(status_code=404, detail="Family Member not found")
+
+    db.delete(family_member_object)
+    db.commit()
+
+
 @app.post("/person/note/{person_id}", response_model=NoteSchema)
 def create_note_for_person(
     person_id: int, note: NoteCreateSchema, db: Session = Depends(get_session)
