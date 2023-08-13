@@ -73,7 +73,7 @@ async def get_person_by_facebook_id(
     return person
 
 
-@app.post("/person/", response_model=PersonSchema)
+@app.post("/person/", status_code=status.HTTP_201_CREATED)
 async def create_person(
     facebook_id: str, person: PersonSchema, db: Session = Depends(get_session)
 ):
@@ -85,12 +85,9 @@ async def create_person(
     db.add(db_person)
     db.commit()
     db.refresh(db_person)
-    return JSONResponse(
-        status_code=status.HTTP_201_CREATED, content="Person object created"
-    )
 
 
-@app.delete("/person/", response_model=PersonSchema)
+@app.delete("/person/", status_code=status.HTTP_200_OK)
 async def delete_person(person_id: int, db: Session = Depends(get_session)):
     """Delete a Person object"""
     person_object = db.query(Person).filter(Person.id == person_id).first()
@@ -114,7 +111,7 @@ async def get_reviews_by_person_id(
     return reviews
 
 
-@app.post("/review/", response_model=ReviewsSchema)
+@app.post("/review/", status_code=status.HTTP_201_CREATED)
 async def create_review(
     person_id: int, review: ReviewsSchema, db: Session = Depends(get_session)
 ):
@@ -132,7 +129,7 @@ async def create_review(
     )
 
 
-@app.delete("/review/", response_model=ReviewsSchema)
+@app.delete("/review/", status_code=status.HTTP_200_OK)
 async def delete_review(review_id: int, db: Session = Depends(get_session)):
     """Delete a review object"""
     review_object = db.query(Reviews).filter(Reviews.id == review_id).first()
