@@ -319,6 +319,32 @@ async def get_places_by_person_id(
     return places
 
 
+@app.post("/place/", status_code=status.HTTP_201_CREATED)
+async def create_place(
+    person_id: int, place: PlacesSchema, db: Session = Depends(get_session)
+):
+    """Create a place object for the specified person ID"""
+    person_object = db.query(Person).filter(Person.id == person_id).first()
+    if not person_object:
+        raise HTTPException(status_code=404, detail="Person not found")
+
+    db_place = Places(**place.dict(), person_id=person_id)
+    db.add(db_place)
+    db.commit()
+    db.refresh(db_place)
+
+
+@app.delete("/place/", status_code=status.HTTP_200_OK)
+async def delete_place(place_id: int, db: Session = Depends(get_session)):
+    """Delete a place object by ID"""
+    place_object = db.query(Places).filter(Places.id == place_id).first()
+    if not place_object:
+        raise HTTPException(status_code=404, detail="Place not found")
+
+    db.delete(place_object)
+    db.commit()
+
+
 @app.get("/person/friend/{person_id}", response_model=List[FriendsSchema])
 async def get_friends_by_person_id(
     person_id: int, session: Session = Depends(get_session)
