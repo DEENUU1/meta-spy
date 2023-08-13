@@ -9,6 +9,9 @@ from ...repository import (
     create_work_and_education,
     create_family_member,
     get_person,
+    work_and_education_exists,
+    places_exists,
+    family_member_exists,
 )
 from ...logs import Logs
 from rich import print as rprint
@@ -150,7 +153,8 @@ class AccountScraper(BaseFacebookScraper):
             rprint(work_and_education)
 
             for data in work_and_education:
-                create_work_and_education(data["name"], person_id)
+                if not work_and_education_exists(data["name"], person_id):
+                    create_work_and_education(data["name"], person_id)
 
             self._driver.quit()
             self.success = True
@@ -182,7 +186,8 @@ class AccountScraper(BaseFacebookScraper):
             rprint(places)
 
             for place in places:
-                create_places(place["name"], place["date"], person_id)
+                if not places_exists(place["name"], place["date"], person_id):
+                    create_places(place["name"], place["date"], person_id)
 
             self._driver.quit()
             self.success = True

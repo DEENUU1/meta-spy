@@ -123,9 +123,13 @@ def get_image(image_id: int) -> Image:
     return session.query(Image).filter_by(id=image_id).first()
 
 
-def places_exists(name: str, person_id: int) -> bool:
+def places_exists(name: str, data: str, person_id: int) -> bool:
     session = get_session()
-    places = session.query(Places).filter_by(name=name, person_id=person_id).first()
+    places = (
+        session.query(Places)
+        .filter_by(name=name, date=data, person_id=person_id)
+        .first()
+    )
     return places is not None
 
 
