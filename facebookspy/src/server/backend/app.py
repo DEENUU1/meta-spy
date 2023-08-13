@@ -31,6 +31,7 @@ from ...models import (
     FamilyMember,
     Notes,
 )
+
 from ...database import Session, get_session
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
@@ -80,7 +81,7 @@ async def create_person(
     """Create a Person object"""
     person_object = db.query(Person).filter(Person.facebook_id == facebook_id).first()
     if person_object:
-        raise HTTPException(status_code=404, detail="Person already exist")
+        raise HTTPException(status_code=400, detail="Person already exist")
     db_person = Person(**person.dict())
     db.add(db_person)
     db.commit()
@@ -127,6 +128,18 @@ async def create_review(
     if not person_object:
         raise HTTPException(status_code=404, detail="Person object not found")
 
+    review_object = (
+        db.query(Reviews)
+        .filter(
+            Reviews.facebook_id == facebook_id,
+            Reviews.company == review.company,
+            Reviews.review == review.review,
+        )
+        .first()
+    )
+    if review_object:
+        raise HTTPException(status_code=400, detail="Review already exist")
+
     db_review = Reviews(**review.dict())
     db.add(db_review)
     db.commit()
@@ -172,6 +185,14 @@ async def create_video(
     person_object = db.query(Person).filter(Person.id == person_id).first()
     if not person_object:
         raise HTTPException(status_code=404, detail="Person not found")
+
+    video_object = (
+        db.query(Videos)
+        .filter(Videos.person_id == person_id, Videos.url == video.url)
+        .first()
+    )
+    if video_object:
+        raise HTTPException(status_code=400, detail="Video already exist")
 
     db_video = Videos(**video.dict())
     db.add(db_video)
@@ -220,6 +241,14 @@ async def create_reel(
     if not person_object:
         raise HTTPException(status_code=404, detail="Person not found")
 
+    reel_object = (
+        db.query(Reels)
+        .filter(Reels.person_id == person_id, Reels.url == reel.url)
+        .first()
+    )
+    if reel_object:
+        raise HTTPException(status_code=400, detail="Reel already exist")
+
     db_reel = Reels(**reel.dict())
     db.add(db_reel)
     db.commit()
@@ -265,6 +294,18 @@ async def create_recent_place(
     person_object = db.query(Person).filter(Person.id == person_id).first()
     if not person_object:
         raise HTTPException(status_code=404, detail="Person not found")
+
+    recent_place_object = (
+        db.query(RecentPlaces)
+        .filter(
+            RecentPlaces.person_id == person_id,
+            RecentPlaces.localization == recent_place.localization,
+            RecentPlaces.date == recent_place.date,
+        )
+        .first()
+    )
+    if recent_place_object:
+        raise HTTPException(status_code=400, detail="Recent Place already exist")
 
     db_recent_place = RecentPlaces(**recent_place.dict())
     db.add(db_recent_place)
@@ -322,6 +363,17 @@ async def create_work_and_education(
     if not person_object:
         raise HTTPException(status_code=404, detail="Person not found")
 
+    work_and_education_object = (
+        db.query(WorkAndEducation)
+        .filter(
+            WorkAndEducation.person_id == person_id,
+            WorkAndEducation.name == work_education.name,
+        )
+        .first()
+    )
+    if work_and_education_object:
+        raise HTTPException(status_code=400, detail="Work and Education already exist")
+
     db_work_education = WorkAndEducation(**work_education.dict())
     db.add(db_work_education)
     db.commit()
@@ -375,6 +427,18 @@ async def create_place(
     if not person_object:
         raise HTTPException(status_code=404, detail="Person not found")
 
+    place_object = (
+        db.query(Places)
+        .filter(
+            Places.person_id == person_id,
+            Places.name == places.name,
+            Places.date == places.date,
+        )
+        .first()
+    )
+    if place_object:
+        raise HTTPException(status_code=400, detail="Place already exist")
+
     db_place = Places(**place.dict())
     db.add(db_place)
     db.commit()
@@ -421,6 +485,18 @@ async def create_friend(
     person_object = db.query(Person).filter(Person.id == person_id).first()
     if not person_object:
         raise HTTPException(status_code=404, detail="Person not found")
+
+    friend_object = (
+        db.query(Friends)
+        .filter(
+            Friends.person_id == friend.person_id,
+            Friens.full_name == friend.full_name,
+            Friends.url == friend.url,
+        )
+        .first()
+    )
+    if friend_object:
+        raise HTTPException(status_code=400, detail="Friend already exist")
 
     db_friend = Friends(**friend.dict())
     db.add(db_friend)
@@ -497,6 +573,17 @@ async def create_family_member(
     person_object = db.query(Person).filter(Person.id == person_id).first()
     if not person_object:
         raise HTTPException(status_code=404, detail="Person not found")
+
+    family_member_object = (
+        db.query(FamilyMember)
+        .filter(
+            FamilyMember.person_id == family_member.person_id,
+            FamilyMember.full_name == family_member.full_name,
+        )
+        .first()
+    )
+    if family_member_object:
+        raise HTTPException(status_code=400, detail="Person already exist")
 
     db_family_member = FamilyMember(**family_member.dict())
     db.add(db_family_member)
