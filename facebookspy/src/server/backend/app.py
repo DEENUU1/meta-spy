@@ -583,7 +583,7 @@ async def create_family_member(
         .first()
     )
     if family_member_object:
-        raise HTTPException(status_code=400, detail="Person already exist")
+        raise HTTPException(status_code=400, detail="Family Member already exist")
 
     db_family_member = FamilyMember(**family_member.dict())
     db.add(db_family_member)
