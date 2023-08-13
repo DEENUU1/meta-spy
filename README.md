@@ -106,10 +106,27 @@ After that you can browse scraped data, add notes, search more detail in google 
 - Add endpoints to create and delete data 
 - Models 
 
-### vX.X (ideas)
-- Scrape groups
-- Scrape single post  
+### v0.8 (ideas)
 - Search for connections between Person objects 
+  - Tree of connections between Person object and their information 
+  - Searching for mentions
+
+### v0.9 (ideas)
+- Add langchain to create summaries of the scraped data 
+  - Summary of the Person object (save to database to avoid many OpenAI API call)
+  - Chatbot in local web app to discuss with AI about scraped data 
+
+### v1.0 (ideas)
+- Scrape single post 
+  - comments, author, content of the post etc 
+
+### v1.1 (ideas)
+- Scrape groups 
+  - members, posts
+
+### vX.X (ideas)
+- xxx
+
 
 <!-- GETTING STARTED -->
 ## Getting Started
