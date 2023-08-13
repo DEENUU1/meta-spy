@@ -193,6 +193,32 @@ async def get_reels_by_person_id(
     return reels
 
 
+@app.post("/reel/", status_code=status.HTTP_201_CREATED)
+async def create_reel(
+    person_id: int, reel: ReelsSchema, db: Session = Depends(get_session)
+):
+    """Create a reel object for the specified person ID"""
+    person_object = db.query(Person).filter(Person.id == person_id).first()
+    if not person_object:
+        raise HTTPException(status_code=404, detail="Person not found")
+
+    db_reel = Reels(**reel.dict(), person_id=person_id)
+    db.add(db_reel)
+    db.commit()
+    db.refresh(db_reel)
+
+
+@app.delete("/reel/", status_code=status.HTTP_200_OK)
+async def delete_reel(reel_id: int, db: Session = Depends(get_session)):
+    """Delete a reel object by ID"""
+    reel_object = db.query(Reels).filter(Reels.id == reel_id).first()
+    if not reel_object:
+        raise HTTPException(status_code=404, detail="Reel not found")
+
+    db.delete(reel_object)
+    db.commit()
+
+
 @app.get("/person/recent_place/{person_id}", response_model=List[RecentPlacesSchema])
 async def get_recent_places_by_person_id(
     person_id: int, session: Session = Depends(get_session)
