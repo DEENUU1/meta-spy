@@ -156,6 +156,32 @@ async def get_videos_by_person_id(
     return videos
 
 
+@app.post("/video/", status_code=status.HTTP_201_CREATED)
+async def create_video(
+    person_id: int, video: VideosSchema, db: Session = Depends(get_session)
+):
+    """Create a video object for the specified person ID"""
+    person_object = db.query(Person).filter(Person.id == person_id).first()
+    if not person_object:
+        raise HTTPException(status_code=404, detail="Person not found")
+
+    db_video = Videos(**video.dict(), person_id=person_id)
+    db.add(db_video)
+    db.commit()
+    db.refresh(db_video)
+
+
+@app.delete("/video/", status_code=status.HTTP_200_OK)
+async def delete_video(video_id: int, db: Session = Depends(get_session)):
+    """Delete a video object by ID"""
+    video_object = db.query(Videos).filter(Videos.id == video_id).first()
+    if not video_object:
+        raise HTTPException(status_code=404, detail="Video not found")
+
+    db.delete(video_object)
+    db.commit()
+
+
 @app.get("/person/reel/{person_id}", response_model=List[ReelsSchema])
 async def get_reels_by_person_id(
     person_id: int, session: Session = Depends(get_session)
