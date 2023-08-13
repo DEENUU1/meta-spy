@@ -69,11 +69,11 @@ def get_family_member(family_member_id: int) -> FamilyMember:
     return family_member
 
 
-def friend_exists(person_id: int, full_name: str) -> bool:
+def friend_exists(person_id: int, full_name: str, url: str) -> bool:
     session = get_session()
     friend = (
         session.query(Friends)
-        .filter_by(person_id=person_id, full_name=full_name)
+        .filter_by(person_id=person_id, full_name=full_name, url=url)
         .first()
     )
     return friend is not None
