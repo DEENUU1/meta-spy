@@ -217,12 +217,13 @@ class AccountScraper(BaseFacebookScraper):
             rprint(family_members)
 
             for member in family_members:
-                create_family_member(
-                    member["name"],
-                    member["relationship"],
-                    member["url"],
-                    person_id,
-                )
+                if not family_member_exists(person_id, member["name"]):
+                    create_family_member(
+                        member["name"],
+                        member["relationship"],
+                        member["url"],
+                        person_id,
+                    )
 
             self._driver.quit()
             self.success = True
