@@ -86,6 +86,11 @@ async def create_person(
     db.commit()
     db.refresh(db_person)
 
+    return JSONResponse(
+        status_code=status.HTTP_201_CREATED,
+        content={"message": "Person created successfully"},
+    )
+
 
 @app.delete("/person/", status_code=status.HTTP_200_OK)
 async def delete_person(person_id: int, db: Session = Depends(get_session)):
@@ -95,8 +100,10 @@ async def delete_person(person_id: int, db: Session = Depends(get_session)):
         raise HTTPException(status_code=404, detail="Person not found")
     db.delete(person_object)
     db.commit()
+
     return JSONResponse(
-        status_code=status.HTTP_200_OK, content=f"Person {person_id} deleted"
+        status_code=status.HTTP_200_OK,
+        content={"message": "Person deleted successfully"},
     )
 
 
@@ -124,8 +131,10 @@ async def create_review(
     db.add(db_review)
     db.commit()
     db.refresh(db_review)
+
     return JSONResponse(
-        status_code=status.HTTP_201_CREATED, content="Review object created"
+        status_code=status.HTTP_201_CREATED,
+        content={"message": "Review created successfully"},
     )
 
 
@@ -137,8 +146,10 @@ async def delete_review(review_id: int, db: Session = Depends(get_session)):
         raise HTTPException(status_code=404, detail="Review not found")
     db.delete(review_object)
     db.commit()
+
     return JSONResponse(
-        status_code=status.HTTP_200_OK, content=f"Review {review_id} deleted"
+        status_code=status.HTTP_200_OK,
+        content={"message": "Review deleted successfully"},
     )
 
 
@@ -167,6 +178,11 @@ async def create_video(
     db.commit()
     db.refresh(db_video)
 
+    return JSONResponse(
+        status_code=status.HTTP_200_OK,
+        content={"message": "Video created successfully"},
+    )
+
 
 @app.delete("/video/", status_code=status.HTTP_200_OK)
 async def delete_video(video_id: int, db: Session = Depends(get_session)):
@@ -177,6 +193,11 @@ async def delete_video(video_id: int, db: Session = Depends(get_session)):
 
     db.delete(video_object)
     db.commit()
+
+    return JSONResponse(
+        status_code=status.HTTP_200_OK,
+        content={"message": "Video deleted successfully"},
+    )
 
 
 @app.get("/person/reel/{person_id}", response_model=List[ReelsSchema])
@@ -204,6 +225,11 @@ async def create_reel(
     db.commit()
     db.refresh(db_reel)
 
+    return JSONResponse(
+        status_code=status.HTTP_201_CREATED,
+        content={"message": "Reel created successfully"},
+    )
+
 
 @app.delete("/reel/", status_code=status.HTTP_200_OK)
 async def delete_reel(reel_id: int, db: Session = Depends(get_session)):
@@ -214,6 +240,10 @@ async def delete_reel(reel_id: int, db: Session = Depends(get_session)):
 
     db.delete(reel_object)
     db.commit()
+
+    return JSONResponse(
+        status_code=status.HTTP_200_OK, content={"message": "Reel deleted successfully"}
+    )
 
 
 @app.get("/person/recent_place/{person_id}", response_model=List[RecentPlacesSchema])
@@ -241,6 +271,11 @@ async def create_recent_place(
     db.commit()
     db.refresh(db_recent_place)
 
+    return JSONResponse(
+        status_code=status.HTTP_201_CREATED,
+        content={"message": "Recent Place created successfully"},
+    )
+
 
 @app.delete("/recent_place/", status_code=status.HTTP_200_OK)
 async def delete_recent_place(recent_place_id: int, db: Session = Depends(get_session)):
@@ -253,6 +288,11 @@ async def delete_recent_place(recent_place_id: int, db: Session = Depends(get_se
 
     db.delete(recent_place_object)
     db.commit()
+
+    return JSONResponse(
+        status_code=status.HTTP_200_OK,
+        content={"message": "Recent Place deleted successfully"},
+    )
 
 
 @app.get(
@@ -287,6 +327,11 @@ async def create_work_and_education(
     db.commit()
     db.refresh(db_work_education)
 
+    return JSONResponse(
+        status_code=status.HTTP_201_CREATED,
+        content={"message": "Work and Education created successfully"},
+    )
+
 
 @app.delete("/work_and_education/", status_code=status.HTTP_200_OK)
 async def delete_work_and_education(
@@ -303,6 +348,11 @@ async def delete_work_and_education(
 
     db.delete(work_education_object)
     db.commit()
+
+    return JSONResponse(
+        status_code=status.HTTP_200_OK,
+        content={"message": "Work and Education deleted successfully"},
+    )
 
 
 @app.get("/person/place/{person_id}", response_model=List[PlacesSchema])
@@ -330,6 +380,11 @@ async def create_place(
     db.commit()
     db.refresh(db_place)
 
+    return JSONResponse(
+        status_code=status.HTTP_201_CREATED,
+        content={"message": "Place created successfully"},
+    )
+
 
 @app.delete("/place/", status_code=status.HTTP_200_OK)
 async def delete_place(place_id: int, db: Session = Depends(get_session)):
@@ -340,6 +395,11 @@ async def delete_place(place_id: int, db: Session = Depends(get_session)):
 
     db.delete(place_object)
     db.commit()
+
+    return JSONResponse(
+        status_code=status.HTTP_200_OK,
+        content={"message": "Place deleted successfully"},
+    )
 
 
 @app.get("/person/friend/{person_id}", response_model=List[FriendsSchema])
@@ -367,6 +427,11 @@ async def create_friend(
     db.commit()
     db.refresh(db_friend)
 
+    return JSONResponse(
+        status_code=status.HTTP_201_CREATED,
+        content={"message": "Friend created successfully"},
+    )
+
 
 @app.delete("/friend/", status_code=status.HTTP_200_OK)
 async def delete_friend(friend_id: int, db: Session = Depends(get_session)):
@@ -377,6 +442,11 @@ async def delete_friend(friend_id: int, db: Session = Depends(get_session)):
 
     db.delete(friend_object)
     db.commit()
+
+    return JSONResponse(
+        status_code=status.HTTP_200_OK,
+        content={"message": "Friend deleted successfully"},
+    )
 
 
 @app.get("/person/image/{person_id}", response_model=List[ImageSchema])
@@ -433,6 +503,11 @@ async def create_family_member(
     db.commit()
     db.refresh(db_family_member)
 
+    return JSONResponse(
+        status_code=status.HTTP_201_CREATED,
+        content={"message": "Family Member created successfully"},
+    )
+
 
 @app.delete("/family_member/", status_code=status.HTTP_200_OK)
 async def delete_family_member(
@@ -447,6 +522,11 @@ async def delete_family_member(
 
     db.delete(family_member_object)
     db.commit()
+
+    return JSONResponse(
+        status_code=status.HTTP_200_OK,
+        content={"message": "Family Member deleted successfully"},
+    )
 
 
 @app.post("/person/note/{person_id}", response_model=NoteSchema)
