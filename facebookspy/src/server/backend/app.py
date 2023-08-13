@@ -230,6 +230,34 @@ async def get_recent_places_by_person_id(
     return recent_places
 
 
+@app.post("/recent_place/", status_code=status.HTTP_201_CREATED)
+async def create_recent_place(
+    person_id: int, recent_place: RecentPlacesSchema, db: Session = Depends(get_session)
+):
+    """Create a recent place object for the specified person ID"""
+    person_object = db.query(Person).filter(Person.id == person_id).first()
+    if not person_object:
+        raise HTTPException(status_code=404, detail="Person not found")
+
+    db_recent_place = RecentPlaces(**recent_place.dict(), person_id=person_id)
+    db.add(db_recent_place)
+    db.commit()
+    db.refresh(db_recent_place)
+
+
+@app.delete("/recent_place/", status_code=status.HTTP_200_OK)
+async def delete_recent_place(recent_place_id: int, db: Session = Depends(get_session)):
+    """Delete a recent place object by ID"""
+    recent_place_object = (
+        db.query(RecentPlaces).filter(RecentPlaces.id == recent_place_id).first()
+    )
+    if not recent_place_object:
+        raise HTTPException(status_code=404, detail="Recent Place not found")
+
+    db.delete(recent_place_object)
+    db.commit()
+
+
 @app.get(
     "/person/work_and_education/{person_id}",
     response_model=List[WorkAndEducationSchema],
