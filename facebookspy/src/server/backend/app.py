@@ -356,6 +356,32 @@ async def get_friends_by_person_id(
     return friends
 
 
+@app.post("/friend/", status_code=status.HTTP_201_CREATED)
+async def create_friend(
+    person_id: int, friend: FriendsSchema, db: Session = Depends(get_session)
+):
+    """Create a friend object for the specified person ID"""
+    person_object = db.query(Person).filter(Person.id == person_id).first()
+    if not person_object:
+        raise HTTPException(status_code=404, detail="Person not found")
+
+    db_friend = Friends(**friend.dict(), person_id=person_id)
+    db.add(db_friend)
+    db.commit()
+    db.refresh(db_friend)
+
+
+@app.delete("/friend/", status_code=status.HTTP_200_OK)
+async def delete_friend(friend_id: int, db: Session = Depends(get_session)):
+    """Delete a friend object by ID"""
+    friend_object = db.query(Friends).filter(Friends.id == friend_id).first()
+    if not friend_object:
+        raise HTTPException(status_code=404, detail="Friend not found")
+
+    db.delete(friend_object)
+    db.commit()
+
+
 @app.get("/person/image/{person_id}", response_model=List[ImageSchema])
 async def get_images_by_person_id(
     person_id: int, session: Session = Depends(get_session)
