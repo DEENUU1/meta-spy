@@ -164,7 +164,7 @@ class Post(Base):
     number_of_shares = Column(Integer, nullable=True)
     number_of_comments = Column(Integer, nullable=True)
     scraped = Column(Boolean, default=False)
-    source = Column(EnumColumn(PostSource))
+    source = Column(EnumColumn(PostSource), default=PostSource.ACCOUNT)
 
     # Relationship
     person = relationship("Person", back_populates="posts")

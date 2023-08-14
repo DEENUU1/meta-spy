@@ -118,3 +118,18 @@ class NoteSchema(NoteBaseSchema):
 
     class Config:
         orm_mode = True
+
+
+class PostSchema(BaseModel):
+    id: int
+    url: str
+    person_id: int
+    content: Optional[str]
+    number_of_likes: Optional[int]
+    number_of_shares: Optional[int]
+    number_of_comments: Optional[int]
+    scraped: bool = False
+    source: str
+
+    class Config:
+        orm_mode = True
