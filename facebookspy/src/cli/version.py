@@ -1,7 +1,7 @@
 from rich import print as rprint
 
 
-VERSION = "0.6"
+VERSION = "0.7"
 
 
 def return_version_info():

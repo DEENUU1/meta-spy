@@ -31,7 +31,7 @@ def display_start_menu() -> None:
     )
 
     main_content = Panel(
-        renderable="[bold green]1.[/bold green] Log in with/without 2-step verification\n[bold green]2.[/bold green] Scrape basic information from facebook account (fullname, list of friends, places, work and education, family members) \n[bold green]3.[/bold green] Scraping and downloading images from facebook account\n[bold green]4.[/bold green] Extracting urls to reels and videos from facebook account\n[bold green]5.[/bold green] Saving all scraped data to database (sqlite)\n[bold green]6.[/bold green] FastAPI server to browse scraped data\n[bold green]7.[/bold green] React app to browse scraped data\n[bold green]8.[/bold green] Adding notes for specified person object using local web app.\n[bold green]9.[/bold green] Downloading scraped videos.",
+        renderable="[bold green]1.[/bold green] Log in with/without 2-step verification\n[bold green]2.[/bold green] Scrape basic information from facebook account (fullname, list of friends, places, work and education, family members) \n[bold green]3.[/bold green] Scraping and downloading images from facebook account\n[bold green]4.[/bold green] Extracting urls to reels and videos from facebook account\n[bold green]5.[/bold green] Saving all scraped data to database (sqlite)\n[bold green]6.[/bold green] FastAPI server to browse scraped data\n[bold green]7.[/bold green] React app to browse scraped data\n[bold green]8.[/bold green] Adding notes for specified person object using local web app.\n[bold green]9.[/bold green] Downloading scraped videos.\n[bold green]10.[/bold green] Scrape urls of posts from facebook account.",
         title="[reverse]FEATURES[/reverse]",
         title_align="center",
         border_style="bold blue",
