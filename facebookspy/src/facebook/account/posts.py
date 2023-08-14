@@ -1,5 +1,6 @@
 from time import sleep
 from typing import List, Dict
+from selenium.webdriver.common.action_chains import ActionChains
 
 from ...config import Config
 from selenium.webdriver.common.by import By
@@ -25,20 +26,38 @@ class PostScraper(BaseFacebookScraper):
         """
         Return a list urls for posts from facebook account
         """
-        extracted_elements = []
+        extracted_urls = []
         try:
             elements = self._driver.find_elements(
                 By.CSS_SELECTOR,
                 "a.x1i10hfl.xjbqb8w.x6umtig.x1b1mbwd.xaqea5y.xav7gou.x9f619.x1ypdohk.xt0psk2.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x16tdsg8.x1hl2dhg.xggy1nq.x1a2a7pz.x1heor9g.xt0b8zv.xo1l8bm",
             )
             for element in elements:
-                url = element.find_element(By.XPATH, "..").get_attribute("href")
-                extracted_elements.append(url)
+                self._perform_hover_action(element)
+
+                actual_url = element.get_attribute("href")
+                extracted_urls.append(actual_url)
+
+                self._move_cursor_away()
 
         except Exception as e:
-            logs.log_error(f"Error extracting friends data: {e}")
+            logs.log_error(f"Error extracting post URLs: {e}")
 
-        return extracted_elements
+        return extracted_urls
+
+    def _perform_hover_action(self, element) -> None:
+        """
+        Perform a hover action on the given element
+        """
+        actions = ActionChains(self._driver)
+        actions.move_to_element(element).perform()
+
+    def _move_cursor_away(self) -> None:
+        """
+        Move the cursor away from any element
+        """
+        actions = ActionChains(self._driver)
+        actions.move_by_offset(0, 0).perform()
 
     def scroll_page(self) -> None:
         """
@@ -87,7 +106,7 @@ class PostScraper(BaseFacebookScraper):
             self.scroll_page()
 
             # rprint("[bold]Step 4 of 4 - Extracting friends data[/bold]")
-            extracted_data = self.extract_friends_data()
+            extracted_data = self.extract_post_urls()
             rprint(extracted_data)
 
             # if not person.person_exists(self._user_id):
