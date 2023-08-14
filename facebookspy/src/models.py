@@ -62,6 +62,7 @@ class Person(Base):
     videos = relationship("Videos", uselist=False, back_populates="person")
     reviews = relationship("Reviews", uselist=False, back_populates="person")
     note = relationship("Notes", uselist=False, back_populates="person")
+    post = relationship("Posts", uselist=False, back_populates="person")
 
 
 class Places(Base):
@@ -144,3 +145,19 @@ class Notes(Base):
 
     # Relationship
     person = relationship("Person", back_populates="note")
+
+
+class Post(Base):
+    __tablename__ = "posts"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    url = Column(String, nullable=False)
+    person_id = Column(Integer, ForeignKey("persons.id"))
+    content = Column(String, nullable=True)
+    number_of_likes = Column(Integer, nullable=True)
+    number_of_shares = Column(Integer, nullable=True)
+    number_of_comments = Column(Integer, nullable=True)
+    scraped = Column(Boolean, default=False)
+
+    # Relationship
+    person = relationship("Person", back_populates="posts")
