@@ -79,7 +79,6 @@ After that you can browse scraped data, add notes, search more detail in google 
 ## Upcoming versions
 
 ### v0.6 (In develop)
-- Add Create, Delete and Update endpoints and add that endpoints in react app 
 - ~~Add bool field to Video and Reel models~~ 
 - ~~Update class to scrape Video and Reels to move current code to download files after success saving scraped data do database~~
 - ~~Fix saving data to database to avoid creating duplicates~~ 
@@ -90,42 +89,37 @@ After that you can browse scraped data, add notes, search more detail in google 
 - ~~Change structure of backend files~~
 - Refactor repository module 
 - Make all endpoints async 
+- Fix creating Person object 
+- FIx repository 
 
 ### v0.7 (ideas)
-- Scrape:
+- Scrape links to Posts from the facebook account
+- Scrape single Post 
+
+### v0.8 (ideas)
+- Command to run all scrapers
+- Scrape person:
   - groups
   - music
   - sport
-  - movies
+  - movie
   - tv
   - books
   - likes
   - contact data and basic info
-  - posts
-- Display new scraped data in local web app 
-- Add endpoints to create and delete data 
-- Models 
-
-### v0.8 (ideas)
-- Search for connections between Person objects 
-  - Tree of connections between Person object and their information 
-  - Searching for mentions
-
+  
 ### v0.9 (ideas)
-- Add langchain to create summaries of the scraped data 
-  - Summary of the Person object (save to database to avoid many OpenAI API call)
-  - Chatbot in local web app to discuss with AI about scraped data 
+- Search for the connections and mentions between Person objects 
+- Display 1 big graph of connections in web app
+- Display mentions for Person object in web app
 
 ### v1.0 (ideas)
-- Scrape single post 
-  - comments, author, content of the post etc 
+- Command to generate report of the specified person object 
+- Langchain to make it easy to view the data 
 
 ### v1.1 (ideas)
-- Scrape groups 
-  - members, posts
-
-### vX.X (ideas)
-- xxx
+- Display logs in web app
+- Add date_created, date_updated fields to all models 
 
 
 <!-- GETTING STARTED -->
