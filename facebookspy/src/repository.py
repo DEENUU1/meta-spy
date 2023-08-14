@@ -28,10 +28,17 @@ def get_person(facebook_id: str) -> Optional[Person]:
 
 def create_person(facebook_id: str, full_name=None) -> Person:
     session = get_session()
-    url = f"https://www.facebook.com/{facebook_id}/"
-    person = Person(full_name=full_name, url=url, facebook_id=facebook_id)
-    session.add(person)
-    session.commit()
+    person = get_person(facebook_id)
+
+    if person is None:
+        url = f"https://www.facebook.com/{facebook_id}/"
+        person = Person(full_name=full_name, url=url, facebook_id=facebook_id)
+        session.add(person)
+        session.commit()
+    elif full_name is not None and person.full_name is None:
+        person.full_name = full_name
+        session.commit()
+
     return person
 
 
