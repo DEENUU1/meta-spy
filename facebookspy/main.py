@@ -21,6 +21,7 @@ from src.commands import (
     download_all_person_videos,
     download_new_person_videos,
     download_video,
+    scrape_posts,
 )
 
 load_dotenv()
@@ -45,6 +46,7 @@ app.command()(server_backend)
 app.command()(download_all_person_videos)
 app.command()(download_video)
 app.command()(download_new_person_videos)
+app.command()(scrape_posts)
 
 if __name__ == "__main__":
     app()

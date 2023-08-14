@@ -223,6 +223,9 @@ python main.py download-new-person-videos --name <facebook_id>
 python main.py download_video --url <url_to_facebook_video>
 # Download video from facebook based on the URL 
 
+python main.py scrape-posts --name <facebook_id> 
+# Scrape urls of posts from facebook profile 
+ 
 ```
 
 <!-- LICENSE -->
