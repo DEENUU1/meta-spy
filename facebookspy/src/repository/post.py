@@ -53,7 +53,7 @@ def create_post(
         return post
 
 
-def mark_post_as_scraped(post_id: int) -> bool:
+def mark_post_as_scraped(post_id: int) -> None:
     """Mark a post as scraped by updating the 'scraped' field to True"""
     session = get_session()
     post = session.query(Posts).filter_by(id=post_id).first()
