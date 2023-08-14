@@ -51,3 +51,12 @@ def create_post(
         session.add(post)
         session.commit()
         return post
+
+
+def mark_post_as_scraped(post_id: int) -> bool:
+    """Mark a post as scraped by updating the 'scraped' field to True"""
+    session = get_session()
+    post = session.query(Posts).filter_by(id=post_id).first()
+    if post:
+        post.scraped = True
+        session.commit()
