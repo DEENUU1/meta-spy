@@ -8,6 +8,7 @@ from .facebook.account.reels import FacebookReelsScraper
 from .facebook.account.videos import FacebookVideoScraper
 from .facebook.account.reviews import FacebookReviewsScraper
 from .facebook.downloader import Downloader
+from .facebook.account.posts import PostScraper
 from typing import Optional
 import typer
 from src.cli.home import display_start_menu
@@ -294,6 +295,22 @@ def download_video(url: Optional[str] = None):
     rprint(f"Start downloading video")
     scraper = Downloader()
     scraper.download_single_video_pipeline(url)
+
+    if scraper.is_pipeline_successful:
+        rprint("✅Scraping successful✅")
+    else:
+        rprint("❌Scraping failed❌")
+
+
+""" Posts """
+
+
+def scrape_posts(name: Optional[str] = None):
+    """Scrape urls for posts from facebook account"""
+
+    rprint(f"Start scraping posts for {name}")
+    scraper = PostScraper(name)
+    scraper.pipeline()
 
     if scraper.is_pipeline_successful:
         rprint("✅Scraping successful✅")
