@@ -57,7 +57,7 @@ After that you can browse scraped data, add notes, search more detail in google 
   - reels
   - list of friends
   - images
-    - downlaod images
+    - download images
   - reviews
 - Save scraped data to database
 - Local web app (FastAPI + React):
@@ -78,7 +78,7 @@ After that you can browse scraped data, add notes, search more detail in google 
 
 ## Upcoming versions
 
-### v0.7 (ideas)
+### v0.7 (In Develop)
 - Scrape links to Posts from the facebook account
 - Scrape single Post 
 
