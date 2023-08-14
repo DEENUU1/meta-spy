@@ -63,7 +63,7 @@ class Person(Base):
     videos = relationship("Videos", uselist=False, back_populates="person")
     reviews = relationship("Reviews", uselist=False, back_populates="person")
     note = relationship("Notes", uselist=False, back_populates="person")
-    post = relationship("Posts", uselist=False, back_populates="person")
+    posts = relationship("Posts", uselist=False, back_populates="person")
 
 
 class Places(Base):
@@ -153,7 +153,7 @@ class PostSource(Enum):
     ACCOUNT = "ACCOUNT"
 
 
-class Post(Base):
+class Posts(Base):
     __tablename__ = "posts"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
