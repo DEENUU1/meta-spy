@@ -11,7 +11,7 @@ def display_start_menu() -> None:
     print_banner(console)
     layout = Layout()
     header_content = Panel(
-        renderable="🕵️ [gold1 bold]Facebook spy[/gold1 bold] allows you to log in and scrape information from facebook accounts just with a few clicks. Data are saved to database and then you can easly browse them from your local web application. \n\n🖥️ I am still working on developing more functions and making easy to use application. ",
+        renderable="🕵️ [gold1 bold]Facebook spy[/gold1 bold] allows you to log in and scrape information from facebook accounts just with a few commands. Data are saved to database and then you can easly browse them from your local web application. \n\n🖥️ I am still working on developing more functions and making easy to use application. \n\n📝 If you want to check what new I am gonna add check README file below",
         title="[reverse]ABOUT Facebook Spy[/reverse]",
         title_align="center",
         border_style="bold green",
