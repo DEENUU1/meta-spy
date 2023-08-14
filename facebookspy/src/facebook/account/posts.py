@@ -36,6 +36,7 @@ class PostScraper(BaseFacebookScraper):
                 self._perform_hover_action(element)
 
                 actual_url = element.get_attribute("href")
+
                 extracted_urls.append(actual_url)
 
                 self._move_cursor_away()
@@ -98,25 +99,25 @@ class PostScraper(BaseFacebookScraper):
         Pipeline to run the scraper
         """
         try:
-            # rprint("[bold]Step 1 of 4 - Load cookies[/bold]")
+            rprint("[bold]Step 1 of 4 - Load cookies[/bold]")
             self._load_cookies()
-            # rprint("[bold]Step 2 of 3 - Refresh driver[/bold]")
+            rprint("[bold]Step 2 of 3 - Refresh driver[/bold]")
             self._driver.refresh()
-            # rprint("[bold]Step 3 of 4 - Scrolling page[/bold]")
+            rprint("[bold]Step 3 of 4 - Scrolling page[/bold]")
             self.scroll_page()
 
-            # rprint("[bold]Step 4 of 4 - Extracting friends data[/bold]")
+            rprint("[bold]Step 4 of 4 - Extracting post urls[/bold]")
             extracted_data = self.extract_post_urls()
             rprint(extracted_data)
 
-            # if not person.person_exists(self._user_id):
-            #     person.create_person(self._user_id)
+            if not person.person_exists(self._user_id):
+                person.create_person(self._user_id)
 
-            # person_object = person.get_person(self._user_id).id
+            person_id = person.get_person(self._user_id).id
 
-            # for data in extracted_data:
-            #     if not friend.friend_exists(person_id, data["username"], data["url"]):
-            #         friend.create_friends(data["username"], data["url"], person_object)
+            for data in extracted_data:
+                if not post.post_exists(data):
+                    post.create_post(data, person_id)
 
             self._driver.quit()
             self.success = True
