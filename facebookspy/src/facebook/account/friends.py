@@ -3,13 +3,7 @@ from typing import List, Dict
 
 from ...config import Config
 from selenium.webdriver.common.by import By
-from ...repository import (
-    person_exists,
-    get_person,
-    create_friends,
-    create_person,
-    friend_exists,
-)
+from ...repository import person, friend
 from ..facebook_base import BaseFacebookScraper
 from ...logs import Logs
 from rich import print as rprint
@@ -99,14 +93,14 @@ class FriendListScraper(BaseFacebookScraper):
             extracted_data = self.extract_friends_data()
             rprint(extracted_data)
 
-            if not person_exists(self._user_id):
-                create_person(self._user_id)
+            if not person.person_exists(self._user_id):
+                person.create_person(self._user_id)
 
-            person = get_person(self._user_id).id
+            person_object = person.get_person(self._user_id).id
 
             for data in extracted_data:
-                if not friend_exists(person_id, data["username"], data["url"]):
-                    create_friends(data["username"], data["url"], person)
+                if not friend.friend_exists(person_id, data["username"], data["url"]):
+                    friend.create_friends(data["username"], data["url"], person_object)
 
             self._driver.quit()
             self.success = True

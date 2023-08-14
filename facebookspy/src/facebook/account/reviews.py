@@ -4,13 +4,7 @@ from typing import List, Dict
 from ...config import Config
 from selenium.webdriver.common.by import By
 from ..facebook_base import BaseFacebookScraper
-from ...repository import (
-    create_person,
-    get_person,
-    person_exists,
-    create_reviews,
-    review_exists,
-)
+from ...repository import person, review
 from ...logs import Logs
 from rich import print as rprint
 
@@ -112,15 +106,15 @@ class FacebookReviewsScraper(BaseFacebookScraper):
             reviews = self.extract_reviews()
             rprint(reviews)
 
-            if not person_exists(self._user_id):
-                create_person(self._user_id)
+            if not person.person_exists(self._user_id):
+                person.create_person(self._user_id)
 
-            person_id = get_person(self._user_id).id
+            person_id = person.get_person(self._user_id).id
 
-            for review in reviews:
-                opinion = "".join([data for data in review["opinions"]])
-                if not review_exists(review["company"], opinion, person_id):
-                    create_reviews(review["company"], opinion, person_id)
+            for review_data in reviews:
+                opinion = "".join([data for data in review_data["opinions"]])
+                if not review.review_exists(review_data["company"], opinion, person_id):
+                    create_reviews(review_data["company"], opinion, person_id)
 
             self._driver.quit()
             self.success = True

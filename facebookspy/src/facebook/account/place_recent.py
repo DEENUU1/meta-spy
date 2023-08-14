@@ -4,13 +4,7 @@ from typing import List, Dict
 from ..facebook_base import BaseFacebookScraper
 from ...config import Config
 from selenium.webdriver.common.by import By
-from ...repository import (
-    create_person,
-    get_person,
-    person_exists,
-    create_recent_places,
-    recent_places_exists,
-)
+from ...repository import person, recent_place
 from ...logs import Logs
 from rich import print as rprint
 
@@ -111,13 +105,13 @@ class FacebookRecentPlaces(BaseFacebookScraper):
             recent_places = self.extract_recent_places()
             rprint(recent_places)
 
-            if not person_exists(self._user_id):
-                create_person(self._user_id)
+            if not person.person_exists(self._user_id):
+                person.create_person(self._user_id)
 
-            person_id = get_person(self._user_id).id
+            person_id = person.get_person(self._user_id).id
 
             for place in recent_places:
-                if not recent_places_exists(
+                if not recent_place.recent_places_exists(
                     place["localization"], place["date"], person_id
                 ):
                     create_recent_places(

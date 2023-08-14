@@ -11,7 +11,7 @@ from io import BytesIO
 import random
 import string
 from ..facebook_base import BaseFacebookScraper
-from ...repository import person_exists, get_person, create_image, create_person
+from ...repository import person, image
 from ...logs import Logs
 from rich import print as rprint
 
@@ -174,12 +174,12 @@ class FacebookImageScraper(BaseFacebookScraper):
             image_paths = self.save_images(image_urls)
             rprint(image_paths)
 
-            if not person_exists(self._user_id):
-                create_person(self._user_id)
+            if not person.person_exists(self._user_id):
+                person.create_person(self._user_id)
 
-            person = get_person(self._user_id).id
+            person_object = person.get_person(self._user_id).id
             for image_path in image_paths:
-                create_image(image_path, person)
+                image.create_image(image_path, person_object)
 
             self._driver.quit()
             self.success = True
