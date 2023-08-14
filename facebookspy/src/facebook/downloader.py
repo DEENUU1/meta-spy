@@ -4,12 +4,7 @@ import os
 import random
 import string
 from ..logs import Logs
-from ..repository import (
-    get_videos,
-    get_person,
-    get_new_videos,
-    update_videos_downloaded,
-)
+from ..repository import video, person
 from rich.progress import Progress
 
 
@@ -78,21 +73,21 @@ class Downloader:
         """Download videos from specified facebook account based on the urls from the database
         This command download all videos and may create duplicates"""
 
-        person = get_person(self.person_facebook_id)
-        videos = get_videos(person.id)
+        person_object = person.get_person(self.person_facebook_id)
+        videos = video.get_videos(person_object.id)
         try:
             with Progress() as progress:
                 task = progress.add_task("[cyan]Downloading...", total=len(videos))
 
-                for idx, video in enumerate(videos, 1):
-                    self.save_person_video(video.url)
+                for idx, data in enumerate(videos, 1):
+                    self.save_person_video(data.url)
 
                     progress.update(
                         task,
                         advance=1,
                         description=f"[cyan]Downloading... {idx}/{len(videos)}",
                     )
-                    update_videos_downloaded(video.id)
+                    video.update_videos_downloaded(data.id)
 
             self.success = True
 
@@ -104,21 +99,21 @@ class Downloader:
     def download_new_person_videos_pipeline(self) -> None:
         """Download videos from specified facebook account based on the urls from the database
         This command downloads only new not downloaded yet videos"""
-        person = get_person(self.person_facebook_id)
-        videos = get_new_videos(person.id)
+        person_object = person.get_person(self.person_facebook_id)
+        videos = video.get_new_videos(person_object.id)
         try:
             with Progress() as progress:
                 task = progress.add_task("[cyan]Downloading...", total=len(videos))
 
-                for idx, video in enumerate(videos, 1):
-                    self.save_person_video(video.url)
+                for idx, data in enumerate(videos, 1):
+                    self.save_person_video(data.url)
 
                     progress.update(
                         task,
                         advance=1,
                         description=f"[cyan]Downloading... {idx}/{len(videos)}",
                     )
-                    update_videos_downloaded(video.id)
+                    video.update_videos_downloaded(data.id)
 
             self.success = True
 

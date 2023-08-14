@@ -5,11 +5,8 @@ from ...config import Config
 from selenium.webdriver.common.by import By
 from ..facebook_base import BaseFacebookScraper
 from ...repository import (
-    create_person,
-    get_person,
-    person_exists,
-    create_videos,
-    video_exists,
+    person,
+    video,
 )
 from ...logs import Logs
 from rich import print as rprint
@@ -98,13 +95,13 @@ class FacebookVideoScraper(BaseFacebookScraper):
             videos = self.extract_videos_urls()
             rprint(videos)
 
-            if not person_exists(self._user_id):
-                create_person(self._user_id)
+            if not person.person_exists(self._user_id):
+                person.create_person(self._user_id)
 
-            person_id = get_person(self._user_id).id
-            for video in videos:
-                if not video_exists(video, person_id):
-                    create_videos(video, person_id)
+            person_id = person.get_person(self._user_id).id
+            for data in videos:
+                if not video.video_exists(data, person_id):
+                    video.create_videos(data, person_id)
 
             self._driver.quit()
             self.success = True

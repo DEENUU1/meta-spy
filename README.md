@@ -78,20 +78,6 @@ After that you can browse scraped data, add notes, search more detail in google 
 
 ## Upcoming versions
 
-### v0.6 (In develop)
-- ~~Add bool field to Video and Reel models~~ 
-- ~~Update class to scrape Video and Reels to move current code to download files after success saving scraped data do database~~
-- ~~Fix saving data to database to avoid creating duplicates~~ 
-- Display errors in react app (currently only in console)
-- ~~Fix Image class to save only Photos~~
-- ~~Fix Video & Reels class to save only videos & reels~~
-- ~~Add Logs class and display errors in CLI app~~ 
-- ~~Change structure of backend files~~
-- Refactor repository module 
-- Make all endpoints async 
-- Fix creating Person object 
-- FIx repository 
-
 ### v0.7 (ideas)
 - Scrape links to Posts from the facebook account
 - Scrape single Post 
@@ -120,7 +106,8 @@ After that you can browse scraped data, add notes, search more detail in google 
 ### v1.1 (ideas)
 - Display logs in web app
 - Add date_created, date_updated fields to all models 
-
+- Display errors in react app (currently only in console)
+- Delete Session from the inside of the repository function, add this as a argument
 
 <!-- GETTING STARTED -->
 ## Getting Started
