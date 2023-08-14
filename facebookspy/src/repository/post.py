@@ -14,23 +14,40 @@ def post_exists(url: str) -> bool:
 def create_post(
     url: str,
     person_id: int,
-    content: str,
-    number_of_likes: int,
-    number_of_shares: int,
-    number_of_comments: int,
-    source: PostSource,
+    content: str = None,
+    number_of_likes: int = None,
+    number_of_shares: int = None,
+    number_of_comments: int = None,
+    source: PostSource = None,
 ) -> Posts:
-    """Create Post object"""
+    """Create or update Post object"""
     session = get_session()
-    post = Posts(
-        url=url,
-        person_id=person_id,
-        content=content,
-        number_of_likes=number_of_likes,
-        number_of_shares=number_of_shares,
-        number_of_comments=number_of_comments,
-        source=source,
-    )
-    session.add(post)
-    session.commit()
-    return post
+
+    existing_post = session.query(Posts).filter_by(url=url).first()
+
+    if existing_post:
+        if content is not None:
+            existing_post.content = content
+        if number_of_likes is not None:
+            existing_post.number_of_likes = number_of_likes
+        if number_of_shares is not None:
+            existing_post.number_of_shares = number_of_shares
+        if number_of_comments is not None:
+            existing_post.number_of_comments = number_of_comments
+        if source is not None:
+            existing_post.source = source
+        session.commit()
+        return existing_post
+    else:
+        post = Posts(
+            url=url,
+            person_id=person_id,
+            content=content,
+            number_of_likes=number_of_likes,
+            number_of_shares=number_of_shares,
+            number_of_comments=number_of_comments,
+            source=source,
+        )
+        session.add(post)
+        session.commit()
+        return post
