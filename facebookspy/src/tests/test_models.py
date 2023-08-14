@@ -10,6 +10,8 @@ from facebookspy.src.models import (
     Videos,
     Reviews,
     Notes,
+    Posts,
+    PostSource,
 )
 from .conftest import session
 
@@ -182,3 +184,26 @@ def test_note_model_successfully_create_object(session):
     assert note.id is not None
     assert note.content == "Test note"
     assert note.person == person
+
+
+def test_post_model_successfully_create_object(session):
+    person = Person(full_name="Note Person", url="https://example.com/note_person")
+    post = Posts(
+        url="https://example.com/post/1",
+        content="Test post",
+        person=person,
+        number_of_likes=2,
+        number_of_shares=4,
+        number_of_comments=1,
+    )
+    session.add(post)
+    session.commit()
+
+    assert post.id is not None
+    assert post.url == "https://example.com/post/1"
+    assert post.content == "Test post"
+    assert post.person == person
+    assert post.number_of_likes == 2
+    assert post.number_of_shares == 4
+    assert post.number_of_comments == 1
+    assert post.source == PostSource.ACCOUNT
