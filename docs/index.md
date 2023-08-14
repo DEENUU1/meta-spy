@@ -1,4 +1,4 @@
-# Welcome to Facebook-Spy
+# Home
 
 ![CLI Home](https://github.com/DEENUU1/facebook-spy/blob/main/assets/home.png?raw=true)
 
