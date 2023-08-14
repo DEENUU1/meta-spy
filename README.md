@@ -197,7 +197,7 @@ python main.py scrape-recent-places --name <facebook_id>
 # Scrape recent places from facebook account
 
 python main.py scrape-videos-urls --name <facebook_id>
-# Scrape and save to database video urls 
+# Scrape video urls 
 
 python main.py scrape-and-download-videos --name <facebook_id>
 # Scrape, save urls to database and download videos 
@@ -211,6 +211,17 @@ python main.py scrape-reviews --name <facebook_id>
 python main.py start-fastapi-server
 # Run fastapi server, allows to browse scraped data 
 
+python main.py start-server-backend
+# Run only fastapi server 
+
+python main.py download-all-person-videos --name <facebook_id>
+# Download all videos from the specified facebook account
+
+python main.py download-new-person-videos --name <facebook_id>
+# Download only not downloaded yet videos from the specified facebook account
+
+python main.py download_video --url <url_to_facebook_video>
+# Download video from facebook based on the URL 
 
 ```
 
