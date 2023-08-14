@@ -195,7 +195,7 @@ async def get_family_member_by_person_id(
 
 
 @app.post("/person/note/{person_id}", response_model=NoteSchema)
-def create_note_for_person(
+async def create_note_for_person(
     person_id: int, note: NoteCreateSchema, db: Session = Depends(get_session)
 ):
     """Create note object for specified person"""
@@ -204,13 +204,13 @@ def create_note_for_person(
         raise HTTPException(status_code=404, detail="Person not found")
     db_note = Notes(**note.dict())
     db.add(db_note)
-    db.commit()
-    db.refresh(db_note)
+    await db.commit()
+    await db.refresh(db_note)
     return db_note
 
 
 @app.put("/person/note/{person_id}", response_model=NoteSchema)
-def update_note_for_person(
+async def update_note_for_person(
     person_id: int, note: NoteUpdateSchema, db: Session = Depends(get_session)
 ):
     """Update note object for specified person"""
@@ -218,13 +218,13 @@ def update_note_for_person(
     if not db_note:
         raise HTTPException(status_code=404, detail="Note not found")
     db_note.content = note.content
-    db.commit()
-    db.refresh(db_note)
+    await db.commit()
+    await db.refresh(db_note)
     return db_note
 
 
 @app.get("/person/note/{person_id}", response_model=NoteSchema)
-def get_note_for_person(person_id: int, db: Session = Depends(get_session)):
+async def get_note_for_person(person_id: int, db: Session = Depends(get_session)):
     """Return note object for specified person"""
     db_note = db.query(Notes).filter(Notes.person_id == person_id).first()
     if not db_note:
@@ -233,7 +233,7 @@ def get_note_for_person(person_id: int, db: Session = Depends(get_session)):
 
 
 @app.get("/note/", response_model=List[NoteSchema])
-def get_all_notes(db: Session = Depends(get_session)):
+async def get_all_notes(db: Session = Depends(get_session)):
     """Return a list of notes"""
     db_note = db.query(Notes).all()
     if not db_note:
@@ -242,7 +242,7 @@ def get_all_notes(db: Session = Depends(get_session)):
 
 
 @app.get("/friends/search/", response_model=List[FriendsSchema])
-def search_friends(search_term: str, db: Session = Depends(get_session)):
+async def search_friends(search_term: str, db: Session = Depends(get_session)):
     """Search Friend objects"""
     friends = (
         db.query(Friends).filter(Friends.full_name.ilike(f"%{search_term}%")).all()
@@ -253,7 +253,7 @@ def search_friends(search_term: str, db: Session = Depends(get_session)):
 
 
 @app.get("/person/search/", response_model=List[PersonSchema])
-def search_person(search_term: str, db: Session = Depends(get_session)):
+async def search_person(search_term: str, db: Session = Depends(get_session)):
     """Search Person objects"""
     person = (
         db.query(Person)
