@@ -79,8 +79,13 @@ After that you can browse scraped data, add notes, search more detail in google 
 ## Upcoming versions
 
 ### v0.7 (In Develop)
-- Scrape links to Posts from the facebook account
+- ~~Scrape links to Posts from the facebook account~~
 - Scrape single Post 
+- Timer to display time that was taken to finish pipeline 
+- Fix modules name
+- Display posts in React app + fastapi endpoints 
+- Display information in CLI app about saving data 
+- Docs page using Github pages 
 
 ### v0.8 (ideas)
 - Command to run all scrapers
