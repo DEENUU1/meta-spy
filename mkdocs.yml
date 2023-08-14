@@ -30,9 +30,9 @@ theme:
 markdown_extensions:
   - attr_list
   - md_in_html
-
-plugins:
-  - glightbox
+#
+#plugins:
+#  - glightbox
 
 copyright: |
   &copy; 2023 <a href="https://github.com/DEENUU1"  target="_blank" rel="noopener">Kacper Włodarczyk</a>
