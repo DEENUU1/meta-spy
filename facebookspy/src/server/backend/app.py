@@ -204,8 +204,8 @@ async def create_note_for_person(
         raise HTTPException(status_code=404, detail="Person not found")
     db_note = Notes(**note.dict())
     db.add(db_note)
-    await db.commit()
-    await db.refresh(db_note)
+    db.commit()
+    db.refresh(db_note)
     return db_note
 
 
@@ -218,8 +218,8 @@ async def update_note_for_person(
     if not db_note:
         raise HTTPException(status_code=404, detail="Note not found")
     db_note.content = note.content
-    await db.commit()
-    await db.refresh(db_note)
+    db.commit()
+    db.refresh(db_note)
     return db_note
 
 
