@@ -9,6 +9,7 @@ from .facebook.account.videos import FacebookVideoScraper
 from .facebook.account.reviews import FacebookReviewsScraper
 from .facebook.downloader import Downloader
 from .facebook.account.posts import PostScraper
+from .facebook.post import PostDetailScraper
 from typing import Optional
 import typer
 from src.cli.home import display_start_menu
@@ -310,6 +311,19 @@ def scrape_posts(name: Optional[str] = None):
 
     rprint(f"Start scraping posts for {name}")
     scraper = PostScraper(name)
+    scraper.pipeline()
+
+    if scraper.is_pipeline_successful:
+        rprint("✅Scraping successful✅")
+    else:
+        rprint("❌Scraping failed❌")
+
+
+def scrape_post_details(name: Optional[str] = None):
+    """Scrape detail of user's posts"""
+
+    rprint(f"Start scraping posts detail for {name}")
+    scraper = PostDetailScraper(name)
     scraper.pipeline()
 
     if scraper.is_pipeline_successful:
