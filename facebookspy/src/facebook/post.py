@@ -44,9 +44,13 @@ class PostDetailScraper(Scraper):
     def scrape_post_data(self, url: str):
         try:
             self._driver.get(url)
+            self._load_cookies()
+            self._driver.refresh()
+
             number_of_likes = self._driver.find_element(
                 By.CSS_SELECTOR, "span.xt0b8zv.x1e558r4"
-            )
+            ).text
+
             return number_of_likes
 
         except Exception as e:
@@ -62,9 +66,6 @@ class PostDetailScraper(Scraper):
         """
         try:
             # rprint("[bold]Step 1 of 4 - Load cookies[/bold]")
-            self._load_cookies()
-            # rprint("[bold]Step 2 of 3 - Refresh driver[/bold]")
-            self._driver.refresh()
 
             person_object = person.get_person(self._user_id)
             posts = post.get_posts(person_object.id)
