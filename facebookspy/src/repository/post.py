@@ -11,7 +11,7 @@ def post_exists(url: str) -> bool:
     return posts is not None
 
 
-def get_post(person_id: int) -> List[Posts]:
+def get_posts(person_id: int) -> List[Posts]:
     """Return all posts for a person"""
     session = get_session()
     posts = session.query(Posts).filter_by(person_id=person_id).all()

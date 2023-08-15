@@ -19,7 +19,7 @@ class PostDetailScraper(Scraper):
     Scrape detail of Post
     """
 
-    def __init__(self, user_id: int) -> None:
+    def __init__(self, user_id: str) -> None:
         super().__init__()
         self._driver = webdriver.Chrome(options=self._chrome_driver_configuration())
         self._user_id = user_id
@@ -44,6 +44,10 @@ class PostDetailScraper(Scraper):
     def scrape_post_data(self, url: str):
         try:
             self._driver.get(url)
+            number_of_likes = self._driver.find_element(
+                By.CSS_SELECTOR, "span.xt0b8zv.x1e558r4"
+            )
+            return number_of_likes
 
         except Exception as e:
             logs.log_error(f"Error occurred while loading post detail page: {e}")
@@ -62,8 +66,12 @@ class PostDetailScraper(Scraper):
             # rprint("[bold]Step 2 of 3 - Refresh driver[/bold]")
             self._driver.refresh()
 
-            extracted_data = self.scrape_post_data()
-            rprint(extracted_data)
+            person_object = person.get_person(self._user_id)
+            posts = post.get_posts(person_object.id)
+
+            for data in posts:
+                extracted_data = self.scrape_post_data(data.url)
+                rprint(extracted_data)
 
             self._driver.quit()
             self.success = True
