@@ -4,7 +4,7 @@ import os
 import random
 import string
 from ..logs import Logs
-from ..repository import video, person
+from ..repository import video_repository, person_repository
 from rich.progress import Progress
 
 

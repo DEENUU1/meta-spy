@@ -1,10 +1,10 @@
 from time import sleep
-from typing import List
+from typing import List, Dict
 
+from ..facebook_base import BaseFacebookScraper
 from ...config import Config
 from selenium.webdriver.common.by import By
-from ..facebook_base import BaseFacebookScraper
-from ...repository import person, reel
+from ...repository import person_repository, recent_place_repository
 from ...logs import Logs
 from rich import print as rprint
 
@@ -12,13 +12,15 @@ from rich import print as rprint
 logs = Logs()
 
 
-class FacebookReelsScraper(BaseFacebookScraper):
+class AccountRecentPlaces(BaseFacebookScraper):
     """
     Scrape user's pictures
     """
 
     def __init__(self, user_id) -> None:
-        super().__init__(user_id, base_url=f"https://www.facebook.com/{user_id}/reels")
+        super().__init__(
+            user_id, base_url=f"https://www.facebook.com/{user_id}/places_recent"
+        )
         self.success = False
 
     def scroll_page(self) -> None:
@@ -51,28 +53,38 @@ class FacebookReelsScraper(BaseFacebookScraper):
         except Exception as e:
             logs.log_error(f"Error occurred while scrolling: {e}")
 
-    def extract_reels_urls(self) -> List[str]:
+    def extract_recent_places(self) -> List[Dict[str, str]]:
         """
-        Return a list of all the image urls
+        Return data about recent places
         """
-        extracted_reels_urls = []
+        extracted_image_urls = []
         try:
+            data = {}
             div_element = self._driver.find_element(
-                By.CLASS_NAME, "xyamay9.x1pi30zi.x1l90r2v.x1swvt13"
-            )
-            reels_elements = div_element.find_elements(
                 By.CSS_SELECTOR,
-                "a.x1i10hfl.x1qjc9v5.xjbqb8w.xjqpnuy.xa49m3k.xqeqjp1.x2hbi6w.x13fuv20.xu3j5b3.x1q0q8m5.x26u7qi.x972fbf.xcfux6l.x1qhh985.xm0m39n.x9f619.x1ypdohk.xdl72j9.x2lah0s.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.x2lwn1j.xeuugli.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x16tdsg8.x1hl2dhg.xggy1nq.x1ja2u2z.x1t137rt.x1q0g3np.x87ps6o.x1lku1pv.x1a2a7pz.x1lq5wgf.xgqcy7u.x30kzoy.x9jhf4c.x1lliihq.xqitzto.x1n2onr6.xh8yej3",
+                "div.xyamay9.x1pi30zi.x1l90r2v.x1swvt13",
             )
-            for reel_element in reels_elements:
-                src_attribute = reel_element.get_attribute("href")
-                if src_attribute:
-                    extracted_reels_urls.append(src_attribute)
+            span_elements = div_element.find_elements(
+                By.CSS_SELECTOR,
+                "span.x193iq5w.xeuugli.x13faqbe.x1vvkbs.x1xmvt09.x1lliihq.x1s928wv.xhkezso.x1gmr53x.x1cpjm7i.x1fgarty.x1943h6x.xudqn12.x676frb.x1lkfr7t.x1lbecb7.x1s688f.xzsf02u",
+            )
 
+            div_inside_elements = div_element.find_elements(
+                By.CSS_SELECTOR, "div.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.x1vvkbs"
+            )
+
+            for i in range(len(span_elements)):
+                data = {}
+                data["localization"] = span_elements[i].text
+                data["date"] = div_inside_elements[i].text
+
+                extracted_image_urls.append(data)
+
+            extracted_image_urls.append(data)
         except Exception as e:
-            logs.log_error(f"Error extracting reels URLs: {e}")
+            logs.log_error(f"Error extracting image URLs: {e}")
 
-        return extracted_reels_urls
+        return extracted_image_urls
 
     @property
     def is_pipeline_successful(self) -> bool:
@@ -89,18 +101,22 @@ class FacebookReelsScraper(BaseFacebookScraper):
             self._driver.refresh()
             rprint("[bold]Step 3 of 4 - Scrolling page[/bold]")
             self.scroll_page()
-            rprint("[bold]Step 4 of 4 - Extract reels urls[/bold]")
-            reels = self.extract_reels_urls()
-            rprint(reels)
+            rprint("[bold]Step 4 of 4 - Extracting recent places[/bold]")
+            recent_places = self.extract_recent_places()
+            rprint(recent_places)
 
             if not person.person_exists(self._user_id):
                 person.create_person(self._user_id)
 
             person_id = person.get_person(self._user_id).id
 
-            for data in reels:
-                if not reel.reels_exists(data, person_id):
-                    reel.create_reels(data, person_id)
+            for place in recent_places:
+                if not recent_place.recent_places_exists(
+                    place["localization"], place["date"], person_id
+                ):
+                    create_recent_places(
+                        place["localization"], place["date"], person_id
+                    )
 
             self._driver.quit()
             self.success = True

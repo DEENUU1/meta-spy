@@ -4,7 +4,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 
 from ...config import Config
 from selenium.webdriver.common.by import By
-from ...repository import person, post
+from ...repository import person_repository, post_repository
 from ..facebook_base import BaseFacebookScraper
 from ...logs import Logs
 from rich import print as rprint
@@ -13,7 +13,7 @@ from rich import print as rprint
 logs = Logs()
 
 
-class PostScraper(BaseFacebookScraper):
+class AccountPost(BaseFacebookScraper):
     """
     Scrape user's friends list
     """

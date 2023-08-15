@@ -5,7 +5,7 @@ from selenium import webdriver
 
 from ..config import Config
 from selenium.webdriver.common.by import By
-from ..repository import person, post
+from ..repository import person_repository, post_repository
 from ..logs import Logs
 from rich import print as rprint
 from .scraper import Scraper
@@ -14,7 +14,7 @@ import pickle
 logs = Logs()
 
 
-class PostDetailScraper(Scraper):
+class PostDetail(Scraper):
     """
     Scrape detail of Post
     """

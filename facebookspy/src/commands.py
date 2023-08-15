@@ -1,15 +1,15 @@
 from dotenv import load_dotenv
 from .facebook.login import FacebookLogIn
-from .facebook.account.account import AccountScraper
-from .facebook.account.friends import FriendListScraper
-from .facebook.account.place_recent import FacebookRecentPlaces
-from .facebook.account.image import FacebookImageScraper
-from .facebook.account.reels import FacebookReelsScraper
-from .facebook.account.videos import FacebookVideoScraper
-from .facebook.account.reviews import FacebookReviewsScraper
+from .facebook.account.account_basic import AccountBasic
+from .facebook.account.account_friend import AccountFriend
+from .facebook.account.account_recentplace import AccountRecentPlaces
+from .facebook.account.account_image import AccountImage
+from .facebook.account.account_reel import AccountReel
+from .facebook.account.account_videos import AccountVideo
+from .facebook.account.account_review import AccountReview
 from .facebook.downloader import Downloader
-from .facebook.account.posts import PostScraper
-from .facebook.post import PostDetailScraper
+from .facebook.account.account_post import AccountPost
+from .facebook.post_detail import PostDetail
 from typing import Optional
 import typer
 from src.cli.home import display_start_menu
@@ -103,7 +103,7 @@ def scrape_full_account(name: Optional[str] = None):
     """
 
     rprint(f"Start scraping all data from {name} account")
-    scraper = AccountScraper(name)
+    scraper = AccountBasic(name)
     scraper.pipeline()
 
     if scraper.is_pipeline_successful:
@@ -116,7 +116,7 @@ def scrape_work_and_education(name: Optional[str] = None):
     """Scrape work and education history data"""
 
     rprint(f"Start scraping work and education data from {name} account")
-    scraper = AccountScraper(name)
+    scraper = AccountBasic(name)
     scraper.work_and_education_pipeline()
 
     if scraper.is_pipeline_successful:
@@ -129,7 +129,7 @@ def scrape_localization(name: Optional[str] = None):
     """Scrape visited places"""
 
     rprint(f"Start scraping localization data from {name} account")
-    scraper = AccountScraper(name)
+    scraper = AccountBasic(name)
     scraper.localization_pipeline()
 
     if scraper.is_pipeline_successful:
@@ -142,7 +142,7 @@ def scrape_family_member(name: Optional[str] = None):
     """Scrape family member data"""
 
     rprint(f"Start scraping family member data from {name} account")
-    scraper = AccountScraper(name)
+    scraper = AccountBasic(name)
     scraper.family_member_pipeline()
 
     if scraper.is_pipeline_successful:
@@ -155,7 +155,7 @@ def scrape_full_name(name: Optional[str] = None):
     """Scrape full name from facebook account"""
 
     rprint(f"Start scraping full name data from {name} account")
-    scraper = AccountScraper(name)
+    scraper = AccountBasic(name)
     scraper.full_name_pipeline()
 
     if scraper.is_pipeline_successful:
@@ -171,7 +171,7 @@ def scrape_friend_list(name: Optional[str] = None):
     """Scrape friend list from facebook account"""
 
     rprint(f"Start scraping friend list for {name}")
-    scraper = FriendListScraper(name)
+    scraper = AccountFriend(name)
     scraper.pipeline()
 
     if scraper.is_pipeline_successful:
@@ -187,7 +187,7 @@ def scrape_images(name: Optional[str] = None):
     """Scrape images from facebook account"""
 
     rprint(f"Start scraping images for {name}")
-    scraper = FacebookImageScraper(name)
+    scraper = AccountImage(name)
     scraper.pipeline()
 
     if scraper.is_pipeline_successful:
@@ -203,7 +203,7 @@ def scrape_recent_places(name: Optional[str] = None):
     """Scrape recent places from facebook account"""
 
     rprint(f"Start scraping recent places for {name}")
-    scraper = FacebookRecentPlaces(name)
+    scraper = AccountRecentPlaces(name)
     scraper.pipeline()
 
     if scraper.is_pipeline_successful:
@@ -219,7 +219,7 @@ def scrape_reels(name: Optional[str] = None):
     """Scrape reels urls from facebook account"""
 
     rprint(f"Start scraping reels for {name}")
-    scraper = FacebookReelsScraper(name)
+    scraper = AccountReel(name)
     scraper.pipeline()
 
     if scraper.is_pipeline_successful:
@@ -235,7 +235,7 @@ def scrape_reviews(name: Optional[str] = None):
     """Scrape written reviews from facebook account"""
 
     rprint(f"Start scraping reviews for {name}")
-    scraper = FacebookReviewsScraper(name)
+    scraper = AccountReview(name)
     scraper.pipeline()
 
     if scraper.is_pipeline_successful:
@@ -251,7 +251,7 @@ def scrape_videos_urls(name: Optional[str] = None):
     """Scrape videos urls from facebook account"""
 
     rprint(f"Start scraping videos urls for {name}")
-    scraper = FacebookVideoScraper(name)
+    scraper = AccountVideo(name)
     scraper.save_video_urls_to_database_pipeline()
 
     if scraper.is_pipeline_successful:
@@ -310,7 +310,7 @@ def scrape_posts(name: Optional[str] = None):
     """Scrape urls for posts from facebook account"""
 
     rprint(f"Start scraping posts for {name}")
-    scraper = PostScraper(name)
+    scraper = AccountPost(name)
     scraper.pipeline()
 
     if scraper.is_pipeline_successful:
@@ -323,7 +323,7 @@ def scrape_post_details(name: Optional[str] = None):
     """Scrape detail of user's posts"""
 
     rprint(f"Start scraping posts detail for {name}")
-    scraper = PostDetailScraper(name)
+    scraper = PostDetail(name)
     scraper.pipeline()
 
     if scraper.is_pipeline_successful:

@@ -11,7 +11,7 @@ from io import BytesIO
 import random
 import string
 from ..facebook_base import BaseFacebookScraper
-from ...repository import person, image
+from ...repository import person_repository, image_repository
 from ...logs import Logs
 from rich import print as rprint
 
@@ -19,7 +19,7 @@ from rich import print as rprint
 logs = Logs()
 
 
-class FacebookImageScraper(BaseFacebookScraper):
+class AccountImage(BaseFacebookScraper):
     """
     Scrape user's pictures
     """

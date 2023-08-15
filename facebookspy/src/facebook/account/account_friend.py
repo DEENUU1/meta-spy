@@ -3,7 +3,7 @@ from typing import List, Dict
 
 from ...config import Config
 from selenium.webdriver.common.by import By
-from ...repository import person, friend
+from ...repository import person_repository, friend_repository
 from ..facebook_base import BaseFacebookScraper
 from ...logs import Logs
 from rich import print as rprint
@@ -12,7 +12,7 @@ from rich import print as rprint
 logs = Logs()
 
 
-class FriendListScraper(BaseFacebookScraper):
+class AccountFriend(BaseFacebookScraper):
     """
     Scrape user's friends list
     """
