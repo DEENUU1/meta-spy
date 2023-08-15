@@ -112,7 +112,7 @@ def scrape_full_account(name: Optional[str] = None):
         rprint("❌Scraping failed❌")
 
 
-def scrape_work_and_education(name: Optional[str] = None):
+def scrape_work_education(name: Optional[str] = None):
     """Scrape work and education history data"""
 
     rprint(f"Start scraping work and education data from {name} account")
@@ -247,8 +247,8 @@ def scrape_reviews(name: Optional[str] = None):
 """ Videos scraper commands """
 
 
-def scrape_videos_urls(name: Optional[str] = None):
-    """Scrape videos urls from facebook account"""
+def scrape_video_urls(name: Optional[str] = None):
+    """Scrape video urls from facebook account"""
 
     rprint(f"Start scraping videos urls for {name}")
     scraper = AccountVideo(name)
@@ -306,7 +306,7 @@ def download_video(url: Optional[str] = None):
 """ Posts """
 
 
-def scrape_posts(name: Optional[str] = None):
+def scrape_person_posts(name: Optional[str] = None):
     """Scrape urls for posts from facebook account"""
 
     rprint(f"Start scraping posts for {name}")
@@ -319,7 +319,7 @@ def scrape_posts(name: Optional[str] = None):
         rprint("❌Scraping failed❌")
 
 
-def scrape_post_details(name: Optional[str] = None):
+def scrape_person_post_details(name: Optional[str] = None):
     """Scrape detail of user's posts"""
 
     rprint(f"Start scraping posts detail for {name}")
