@@ -5,8 +5,8 @@ from ...config import Config
 from selenium.webdriver.common.by import By
 from ..facebook_base import BaseFacebookScraper
 from ...repository import (
-    person,
-    video,
+    person_repository,
+    video_repository,
 )
 from ...logs import Logs
 from rich import print as rprint
@@ -15,7 +15,7 @@ from rich import print as rprint
 logs = Logs()
 
 
-class FacebookVideoScraper(BaseFacebookScraper):
+class AccountVideo(BaseFacebookScraper):
     """
     Scrape user's pictures
     """

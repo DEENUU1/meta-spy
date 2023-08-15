@@ -4,7 +4,7 @@ from typing import List, Dict
 from ...config import Config
 from selenium.webdriver.common.by import By
 from ..facebook_base import BaseFacebookScraper
-from ...repository import person, review
+from ...repository import person_repository, review_repository
 from ...logs import Logs
 from rich import print as rprint
 
@@ -12,7 +12,7 @@ from rich import print as rprint
 logs = Logs()
 
 
-class FacebookReviewsScraper(BaseFacebookScraper):
+class AccountReview(BaseFacebookScraper):
     """
     Scrape user's pictures
     """

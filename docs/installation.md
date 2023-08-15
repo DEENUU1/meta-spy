@@ -11,7 +11,7 @@ git clone https://github.com/DEENUU1/facebook-link-tree.git
 Create dotenv file and add required data 
 ```bash
 cp .env_example .env 
-````
+```
 Install all requirements
 ```bash
 pip install -r requirements.txt

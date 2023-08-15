@@ -3,10 +3,10 @@ from ...config import Config
 from selenium.webdriver.common.by import By
 from ..facebook_base import BaseFacebookScraper
 from ...repository import (
-    person,
-    work_and_education,
-    family_member,
-    place,
+    person_repository,
+    work_education_repository,
+    family_member_repository,
+    place_repository,
 )
 
 from ...logs import Logs
@@ -16,7 +16,7 @@ from rich import print as rprint
 logs = Logs()
 
 
-class AccountScraper(BaseFacebookScraper):
+class AccountBasic(BaseFacebookScraper):
     """
     Scrape user's personal information
     """
