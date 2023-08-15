@@ -77,11 +77,16 @@ class PostDetailScraper(Scraper):
                 "span.x193iq5w.xeuugli.x13faqbe.x1vvkbs.x1xmvt09.x1lliihq.x1s928wv.xhkezso.x1gmr53x.x1cpjm7i.x1fgarty.x1943h6x.xudqn12.x3x7a5m.x6prxxf.xvq8zen.xo1l8bm.xi81zsa",
             ).text
 
-            if not self._check_number_is_int(number_of_comments):
-                number_of_comments_int = self._extract_number(number_of_comments)
-                return number_of_comments_int
+            text_div = self._driver.find_element(
+                By.CSS_SELECTOR,
+                "div.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.x1vvkbs.x126k92a",
+            ).text
 
-            return number_of_comments
+            # if not self._check_number_is_int(number_of_comments):
+            #     number_of_comments_int = self._extract_number(number_of_comments)
+            #     return number_of_comments_int
+
+            return text_div
 
         except Exception as e:
             logs.log_error(f"Error occurred while loading post detail page: {e}")
