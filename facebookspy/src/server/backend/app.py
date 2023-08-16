@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi import FastAPI, Depends, HTTPException
 from typing import List
 
 from sqlalchemy import or_
@@ -17,6 +17,7 @@ from ...schemas import (
     NoteCreateSchema,
     NoteUpdateSchema,
     NoteSchema,
+    PostSchema,
 )
 from ...models import (
     Person,
@@ -30,6 +31,7 @@ from ...models import (
     Image,
     FamilyMember,
     Notes,
+    Posts,
 )
 
 from ...database import Session, get_session
@@ -37,7 +39,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from pathlib import Path
 from ...config import Config
-from fastapi.responses import JSONResponse
 
 app = FastAPI()
 
@@ -268,3 +269,16 @@ async def search_person(search_term: str, db: Session = Depends(get_session)):
     if not person:
         raise HTTPException(status_code=404, detail="Person not found")
     return person
+
+
+@app.get("/person/post/{person_id}", response_model=List[PostSchema])
+async def get_posts_by_person_id(
+    person_id: int, session: Session = Depends(get_session)
+):
+    """Return a list of posts for specified person object"""
+    posts = session.query(Posts).filter_by(person_id=person_id).all()
+    if not posts:
+        raise HTTPException(status_code=404, detail="Family Members not found")
+
+    print(posts)
+    return posts
