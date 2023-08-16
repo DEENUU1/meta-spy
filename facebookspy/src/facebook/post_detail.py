@@ -1,6 +1,4 @@
-from time import sleep
 from typing import List, Dict
-from selenium.webdriver.common.action_chains import ActionChains
 from selenium import webdriver
 
 from ..config import Config
@@ -26,6 +24,7 @@ class PostDetail(Scraper):
         self.success = False
 
     def _load_cookies(self) -> None:
+        """Load cookies with log in session"""
         try:
             self._driver.delete_all_cookies()
             with open(Config.COOKIES_FILE_PATH, "rb") as file:
@@ -43,6 +42,10 @@ class PostDetail(Scraper):
 
     @staticmethod
     def _extract_number(text: str) -> int | None:
+        """Extract number from string
+        2 comments -> 2
+        102 shares -> 102
+        """
         parts = text.split(" ", 1)
         if len(parts) > 0 and parts[0].isdigit():
             return int(parts[0])
@@ -51,6 +54,7 @@ class PostDetail(Scraper):
 
     @staticmethod
     def _check_number_is_int(text) -> bool:
+        """Check if number is integer"""
         try:
             int(text)
             return True
@@ -58,6 +62,9 @@ class PostDetail(Scraper):
             return False
 
     def scrape_post_data(self, url: str):
+        """Scrape data from post
+        Content, url, number of likes, comments and shares
+        """
         data = []
         try:
             self._driver.get(url)
@@ -113,6 +120,7 @@ class PostDetail(Scraper):
 
     @property
     def is_pipeline_successful(self) -> bool:
+        """Check if pipeline is success"""
         return self.success
 
     def pipeline(self) -> None:
@@ -126,6 +134,8 @@ class PostDetail(Scraper):
             for data in posts:
                 scraped_data = self.scrape_post_data(data.url)
                 rprint(scraped_data)
+
+                post_repository.mark_post_as_scraped(data.id)
 
                 for scraped_item in scraped_data:
                     post_repository.create_post(
