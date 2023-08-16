@@ -1,6 +1,4 @@
-from time import sleep
 from typing import List, Dict
-from selenium.webdriver.common.action_chains import ActionChains
 from selenium import webdriver
 
 from ..config import Config
@@ -26,6 +24,7 @@ class PostDetail(Scraper):
         self.success = False
 
     def _load_cookies(self) -> None:
+        """Load cookies with log in session"""
         try:
             self._driver.delete_all_cookies()
             with open(Config.COOKIES_FILE_PATH, "rb") as file:
@@ -43,6 +42,10 @@ class PostDetail(Scraper):
 
     @staticmethod
     def _extract_number(text: str) -> int | None:
+        """Extract number from string
+        2 comments -> 2
+        102 shares -> 102
+        """
         parts = text.split(" ", 1)
         if len(parts) > 0 and parts[0].isdigit():
             return int(parts[0])
@@ -51,6 +54,7 @@ class PostDetail(Scraper):
 
     @staticmethod
     def _check_number_is_int(text) -> bool:
+        """Check if number is integer"""
         try:
             int(text)
             return True
@@ -58,6 +62,9 @@ class PostDetail(Scraper):
             return False
 
     def scrape_post_data(self, url: str):
+        """Scrape data from post
+        Content, url, number of likes, comments and shares
+        """
         data = []
         try:
             self._driver.get(url)
@@ -89,15 +96,21 @@ class PostDetail(Scraper):
                 "div.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.x1vvkbs.x126k92a",
             ).text
 
-            img_element = self._driver.find_element(By.CSS_SELECTOR, "img.x1ey2m1c")
+            img_element = self._driver.find_element(
+                By.CSS_SELECTOR,
+                "img.x1ey2m1c.xds687c.x5yr21d.x10l6tqk.x17qophe.x13vifvy.xh8yej3.xl1xv1r",
+            )
             img_url = img_element.get_attribute("src")
+
+            number_of_comments = comment_shares[0] if len(comment_shares) > 0 else 0
+            number_of_shares = comment_shares[1] if len(comment_shares) > 1 else 0
 
             data.append(
                 {
                     "number_of_likes": int(number_of_likes),
-                    "content": text_div,
-                    "img_url": img_url,
-                    "comment_shares": comment_shares,
+                    "content": f"{text_div}\n{img_url}",
+                    "number_of_shares": number_of_shares,
+                    "number_of_comments": number_of_comments,
                 }
             )
         except Exception as e:
@@ -107,6 +120,7 @@ class PostDetail(Scraper):
 
     @property
     def is_pipeline_successful(self) -> bool:
+        """Check if pipeline is success"""
         return self.success
 
     def pipeline(self) -> None:
@@ -120,6 +134,8 @@ class PostDetail(Scraper):
             for data in posts:
                 scraped_data = self.scrape_post_data(data.url)
                 rprint(scraped_data)
+
+                post_repository.mark_post_as_scraped(data.id)
 
                 for scraped_item in scraped_data:
                     post_repository.create_post(
