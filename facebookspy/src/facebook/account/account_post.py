@@ -110,14 +110,14 @@ class AccountPost(BaseFacebookScraper):
             extracted_data = self.extract_post_urls()
             rprint(extracted_data)
 
-            if not person.person_exists(self._user_id):
-                person.create_person(self._user_id)
+            if not person_repository.person_exists(self._user_id):
+                person_repository.create_person(self._user_id)
 
-            person_id = person.get_person(self._user_id).id
+            person_id = person_repository.get_person(self._user_id).id
 
             for data in extracted_data:
-                if not post.post_exists(data):
-                    post.create_post(data, person_id)
+                if not post_repository.post_exists(data):
+                    post_repository.create_post(data, person_id)
 
             self._driver.quit()
             self.success = True

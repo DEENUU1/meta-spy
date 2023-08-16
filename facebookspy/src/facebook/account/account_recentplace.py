@@ -105,16 +105,16 @@ class AccountRecentPlaces(BaseFacebookScraper):
             recent_places = self.extract_recent_places()
             rprint(recent_places)
 
-            if not person.person_exists(self._user_id):
-                person.create_person(self._user_id)
+            if not person_repository.person_exists(self._user_id):
+                person_repository.create_person(self._user_id)
 
-            person_id = person.get_person(self._user_id).id
+            person_id = person_repository.get_person(self._user_id).id
 
             for place in recent_places:
-                if not recent_place.recent_places_exists(
+                if not recent_place_repository.recent_places_exists(
                     place["localization"], place["date"], person_id
                 ):
-                    create_recent_places(
+                    recent_place_repository.create_recent_places(
                         place["localization"], place["date"], person_id
                     )
 

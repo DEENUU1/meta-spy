@@ -139,20 +139,20 @@ class AccountBasic(BaseFacebookScraper):
             rprint("[bold]Step 2 of 3 - Refresh driver[/bold]")
             self._driver.refresh()
 
-            if not person.person_exists(self._user_id):
-                person.create_person(self._user_id)
+            if not person_repository.person_exists(self._user_id):
+                person_repository.create_person(self._user_id)
 
-            person_id = person.get_person(self._user_id).id
+            person_id = person_repository.get_person(self._user_id).id
 
             rprint("[bold]Step 3 of 3 - Extract work and education data[/bold]")
             scraped_data = self.extract_work_and_education()
             rprint(scraped_data)
 
             for data in scraped_data:
-                if not work_and_education.work_and_education_exists(
+                if not work_education_repository.work_and_education_exists(
                     data["name"], person_id
                 ):
-                    work_and_education.create_work_and_education(
+                    work_education_repository.create_work_and_education(
                         data["name"], person_id
                     )
 
@@ -176,18 +176,22 @@ class AccountBasic(BaseFacebookScraper):
 
             rprint("[bold]Step 3 of 4 - Extract full name[/bold]")
 
-            if not person.person_exists(self._user_id):
-                person.create_person(self._user_id)
+            if not person_repository.person_exists(self._user_id):
+                person_repository.create_person(self._user_id)
 
-            person_id = person.get_person(self._user_id).id
+            person_id = person_repository.get_person(self._user_id).id
 
             rprint("[bold]Step 4 of 4 - Extract localization data[/bold]")
             places = self.extract_places()
             rprint(places)
 
             for data in places:
-                if not place.places_exists(data["name"], data["date"], person_id):
-                    place.create_places(data["name"], data["date"], person_id)
+                if not place_repository.places_exists(
+                    data["name"], data["date"], person_id
+                ):
+                    place_repository.create_places(
+                        data["name"], data["date"], person_id
+                    )
 
             self._driver.quit()
             self.success = True
@@ -207,18 +211,20 @@ class AccountBasic(BaseFacebookScraper):
             rprint("[bold]Step 2 of 3 - Refresh driver[/bold]")
             self._driver.refresh()
 
-            if not person.person_exists(self._user_id):
-                person.create_person(self._user_id)
+            if not person_repository.person_exists(self._user_id):
+                person_repository.create_person(self._user_id)
 
-            person_id = person.get_person(self._user_id).id
+            person_id = person_repository.get_person(self._user_id).id
 
             rprint("[bold]Step 3 of 3 - Extract family members[/bold]")
             family_members = self.extract_family()
             rprint(family_members)
 
             for member in family_members:
-                if not family_member.family_member_exists(person_id, member["name"]):
-                    family_member.create_family_member(
+                if not family_member_repository.family_member_exists(
+                    person_id, member["name"]
+                ):
+                    family_member_repository.create_family_member(
                         member["name"],
                         member["relationship"],
                         member["url"],
@@ -247,8 +253,8 @@ class AccountBasic(BaseFacebookScraper):
             full_name = self.extract_full_name()
             rprint(full_name)
 
-            if not person.person_exists(self._user_id):
-                person.create_person(self._user_id, full_name)
+            if not person_repository.person_exists(self._user_id):
+                person_repository.create_person(self._user_id, full_name)
 
             self._driver.quit()
             self.success = True
@@ -272,18 +278,20 @@ class AccountBasic(BaseFacebookScraper):
             full_name = self.extract_full_name()
             rprint(full_name)
 
-            if not person.person_exists(self._user_id):
-                person.create_person(self._user_id, full_name)
+            if not person_repository.person_exists(self._user_id):
+                person_repository.create_person(self._user_id, full_name)
 
-            person_id = person.get_person(self._user_id).id
+            person_id = person_repository.get_person(self._user_id).id
 
             rprint("[bold]Step 4 of 6 - Extract family members[/bold]")
             family_members = self.extract_family()
             rprint(family_members)
 
             for member in family_members:
-                if not family_member.family_member_exists(person_id, member["name"]):
-                    family_member.create_family_member(
+                if not family_member_repository.family_member_exists(
+                    person_id, member["name"]
+                ):
+                    family_member_repository.create_family_member(
                         member["name"],
                         member["relationship"],
                         member["url"],
@@ -294,17 +302,21 @@ class AccountBasic(BaseFacebookScraper):
             places = self.extract_places()
             rprint(places)
             for data in places:
-                if not place.places_exists(data["name"], data["date"], person_id):
-                    place.create_places(data["name"], data["date"], person_id)
+                if not place_repository.places_exists(
+                    data["name"], data["date"], person_id
+                ):
+                    place_repository.create_places(
+                        data["name"], data["date"], person_id
+                    )
 
             rprint("[bold]Step 6 of 6 - Extract work and education data[/bold]")
             scraped_data = self.extract_work_and_education()
             rprint(scraped_data)
             for data in scraped_data:
-                if not work_and_education.work_and_education_exists(
+                if not work_education_repository.work_and_education_exists(
                     data["name"], person_id
                 ):
-                    work_and_education.create_work_and_education(
+                    work_education_repository.create_work_and_education(
                         data["name"], person_id
                     )
 

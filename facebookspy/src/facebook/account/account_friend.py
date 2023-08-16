@@ -93,14 +93,18 @@ class AccountFriend(BaseFacebookScraper):
             extracted_data = self.extract_friends_data()
             rprint(extracted_data)
 
-            if not person.person_exists(self._user_id):
-                person.create_person(self._user_id)
+            if not person_repository.person_exists(self._user_id):
+                person_repository.create_person(self._user_id)
 
-            person_object = person.get_person(self._user_id).id
+            person_id = person_repository.get_person(self._user_id).id
 
             for data in extracted_data:
-                if not friend.friend_exists(person_id, data["username"], data["url"]):
-                    friend.create_friends(data["username"], data["url"], person_object)
+                if not friend_repository.friend_exists(
+                    person_id, data["username"], data["url"]
+                ):
+                    friend_repository.create_friends(
+                        data["username"], data["url"], person_id
+                    )
 
             self._driver.quit()
             self.success = True

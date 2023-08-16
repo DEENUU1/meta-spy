@@ -73,8 +73,8 @@ class Downloader:
         """Download videos from specified facebook account based on the urls from the database
         This command download all videos and may create duplicates"""
 
-        person_object = person.get_person(self.person_facebook_id)
-        videos = video.get_videos(person_object.id)
+        person_object = person_repository.get_person(self.person_facebook_id)
+        videos = video_repository.get_videos(person_object.id)
         try:
             with Progress() as progress:
                 task = progress.add_task("[cyan]Downloading...", total=len(videos))
@@ -87,7 +87,7 @@ class Downloader:
                         advance=1,
                         description=f"[cyan]Downloading... {idx}/{len(videos)}",
                     )
-                    video.update_videos_downloaded(data.id)
+                    video_repository.update_videos_downloaded(data.id)
 
             self.success = True
 
@@ -99,8 +99,8 @@ class Downloader:
     def download_new_person_videos_pipeline(self) -> None:
         """Download videos from specified facebook account based on the urls from the database
         This command downloads only new not downloaded yet videos"""
-        person_object = person.get_person(self.person_facebook_id)
-        videos = video.get_new_videos(person_object.id)
+        person_object = person_repository.get_person(self.person_facebook_id)
+        videos = video_repository.get_new_videos(person_object.id)
         try:
             with Progress() as progress:
                 task = progress.add_task("[cyan]Downloading...", total=len(videos))
@@ -113,7 +113,7 @@ class Downloader:
                         advance=1,
                         description=f"[cyan]Downloading... {idx}/{len(videos)}",
                     )
-                    video.update_videos_downloaded(data.id)
+                    video_repository.update_videos_downloaded(data.id)
 
             self.success = True
 

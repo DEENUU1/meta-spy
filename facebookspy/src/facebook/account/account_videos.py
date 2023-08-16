@@ -95,13 +95,13 @@ class AccountVideo(BaseFacebookScraper):
             videos = self.extract_videos_urls()
             rprint(videos)
 
-            if not person.person_exists(self._user_id):
-                person.create_person(self._user_id)
+            if not person_repository.person_exists(self._user_id):
+                person_repository.create_person(self._user_id)
 
-            person_id = person.get_person(self._user_id).id
+            person_id = person_repository.get_person(self._user_id).id
             for data in videos:
-                if not video.video_exists(data, person_id):
-                    video.create_videos(data, person_id)
+                if not video_repository.video_exists(data, person_id):
+                    video_repository.create_videos(data, person_id)
 
             self._driver.quit()
             self.success = True

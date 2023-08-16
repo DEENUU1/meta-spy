@@ -174,12 +174,12 @@ class AccountImage(BaseFacebookScraper):
             image_paths = self.save_images(image_urls)
             rprint(image_paths)
 
-            if not person.person_exists(self._user_id):
-                person.create_person(self._user_id)
+            if not person_repository.person_exists(self._user_id):
+                person_repository.create_person(self._user_id)
 
-            person_object = person.get_person(self._user_id).id
+            person_object = person_repository.get_person(self._user_id).id
             for image_path in image_paths:
-                image.create_image(image_path, person_object)
+                image_repository.create_image(image_path, person_object)
 
             self._driver.quit()
             self.success = True

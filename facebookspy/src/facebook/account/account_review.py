@@ -106,15 +106,19 @@ class AccountReview(BaseFacebookScraper):
             reviews = self.extract_reviews()
             rprint(reviews)
 
-            if not person.person_exists(self._user_id):
-                person.create_person(self._user_id)
+            if not person_repository.person_exists(self._user_id):
+                person_repository.create_person(self._user_id)
 
-            person_id = person.get_person(self._user_id).id
+            person_id = person_repository.get_person(self._user_id).id
 
             for review_data in reviews:
                 opinion = "".join([data for data in review_data["opinions"]])
-                if not review.review_exists(review_data["company"], opinion, person_id):
-                    create_reviews(review_data["company"], opinion, person_id)
+                if not review_repository.review_exists(
+                    review_data["company"], opinion, person_id
+                ):
+                    review_repository.create_reviews(
+                        review_data["company"], opinion, person_id
+                    )
 
             self._driver.quit()
             self.success = True

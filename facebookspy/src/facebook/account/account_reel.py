@@ -93,14 +93,14 @@ class AccountReel(BaseFacebookScraper):
             reels = self.extract_reels_urls()
             rprint(reels)
 
-            if not person.person_exists(self._user_id):
-                person.create_person(self._user_id)
+            if not person_repository.person_exists(self._user_id):
+                person_repository.create_person(self._user_id)
 
-            person_id = person.get_person(self._user_id).id
+            person_id = person_repository.get_person(self._user_id).id
 
             for data in reels:
-                if not reel.reels_exists(data, person_id):
-                    reel.create_reels(data, person_id)
+                if not reel_repository.reels_exists(data, person_id):
+                    reel_repository.create_reels(data, person_id)
 
             self._driver.quit()
             self.success = True
