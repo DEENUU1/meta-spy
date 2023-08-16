@@ -89,15 +89,21 @@ class PostDetail(Scraper):
                 "div.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.x1vvkbs.x126k92a",
             ).text
 
-            img_element = self._driver.find_element(By.CSS_SELECTOR, "img.x1ey2m1c")
+            img_element = self._driver.find_element(
+                By.CSS_SELECTOR,
+                "img.x1ey2m1c.xds687c.x5yr21d.x10l6tqk.x17qophe.x13vifvy.xh8yej3.xl1xv1r",
+            )
             img_url = img_element.get_attribute("src")
+
+            number_of_comments = comment_shares[0] if len(comment_shares) > 0 else 0
+            number_of_shares = comment_shares[1] if len(comment_shares) > 1 else 0
 
             data.append(
                 {
                     "number_of_likes": int(number_of_likes),
-                    "content": text_div,
-                    "img_url": img_url,
-                    "comment_shares": comment_shares,
+                    "content": f"{text_div}\n{img_url}",
+                    "number_of_shares": number_of_shares,
+                    "number_of_comments": number_of_comments,
                 }
             )
         except Exception as e:
