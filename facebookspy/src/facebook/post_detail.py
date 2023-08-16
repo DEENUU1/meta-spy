@@ -58,12 +58,11 @@ class PostDetail(Scraper):
             return False
 
     def scrape_post_data(self, url: str):
+        data = []
         try:
             self._driver.get(url)
             self._load_cookies()
             self._driver.refresh()
-
-            print("=====POST=====")
 
             stats_div = self._driver.find_element(
                 By.CSS_SELECTOR,
@@ -74,31 +73,37 @@ class PostDetail(Scraper):
                 By.CSS_SELECTOR, "span.xt0b8zv.x1e558r4"
             ).text
 
-            print(number_of_likes)
-
             comment_share_elements = stats_div.find_elements(
                 By.CSS_SELECTOR,
                 "span.x193iq5w.xeuugli.x13faqbe.x1vvkbs.x1xmvt09.x1lliihq.x1s928wv.xhkezso.x1gmr53x.x1cpjm7i.x1fgarty.x1943h6x.xudqn12.x3x7a5m.x6prxxf.xvq8zen.xo1l8bm.xi81zsa",
             )
 
+            comment_shares = []
             for element in comment_share_elements:
                 if not self._check_number_is_int(element.text):
                     value = self._extract_number(element.text)
-                    print(value)
+                    comment_shares.append(value)
 
             text_div = self._driver.find_element(
                 By.CSS_SELECTOR,
                 "div.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.x1vvkbs.x126k92a",
             ).text
 
-            print(text_div)
-
             img_element = self._driver.find_element(By.CSS_SELECTOR, "img.x1ey2m1c")
             img_url = img_element.get_attribute("src")
-            print("Image URL:", img_url)
 
+            data.append(
+                {
+                    "number_of_likes": int(number_of_likes),
+                    "content": text_div,
+                    "img_url": img_url,
+                    "comment_shares": comment_shares,
+                }
+            )
         except Exception as e:
             logs.log_error(f"Error occurred while loading post detail page: {e}")
+
+        return data
 
     @property
     def is_pipeline_successful(self) -> bool:
@@ -109,14 +114,22 @@ class PostDetail(Scraper):
         Pipeline to run the scraper
         """
         try:
-            # rprint("[bold]Step 1 of 4 - Load cookies[/bold]")
-
-            person_object = person.get_person(self._user_id)
-            posts = post.get_posts(person_object.id)
+            person_object = person_repository.get_person(self._user_id)
+            posts = post_repository.get_posts(person_object.id)
 
             for data in posts:
-                self.scrape_post_data(data.url)
-                # rprint(extracted_data)
+                scraped_data = self.scrape_post_data(data.url)
+                rprint(scraped_data)
+
+                for scraped_item in scraped_data:
+                    post_repository.create_post(
+                        person_id=person_object.id,
+                        url=data.url,
+                        number_of_likes=scraped_item.get("number_of_likes", 0),
+                        number_of_shares=scraped_item.get("number_of_shares", 0),
+                        number_of_comments=scraped_item.get("number_of_comments", 0),
+                        content=scraped_item.get("content", ""),
+                    )
 
             self._driver.quit()
             self.success = True
