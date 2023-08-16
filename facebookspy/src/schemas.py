@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 
 from typing import Optional
+from .models import PostSource
 
 
 class FamilyMemberSchema(BaseModel):
@@ -128,8 +129,8 @@ class PostSchema(BaseModel):
     number_of_likes: Optional[int]
     number_of_shares: Optional[int]
     number_of_comments: Optional[int]
-    scraped: bool = False
-    source: str
+    scraped: bool
+    source: PostSource
 
     class Config:
         orm_mode = True
