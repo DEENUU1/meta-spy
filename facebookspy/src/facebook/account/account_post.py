@@ -36,8 +36,8 @@ class AccountPost(BaseFacebookScraper):
                 self._perform_hover_action(element)
 
                 actual_url = element.get_attribute("href")
-
-                extracted_urls.append(actual_url)
+                parsed_url = self.exctract_url_prefix(actual_url)
+                extracted_urls.append(parsed_url)
 
                 self._move_cursor_away()
 
@@ -45,6 +45,14 @@ class AccountPost(BaseFacebookScraper):
             logs.log_error(f"Error extracting post URLs: {e}")
 
         return extracted_urls
+
+    @staticmethod
+    def exctract_url_prefix(url: str) -> str:
+        """Return only the first part of url to avoid creating duplicates"""
+        index = url.find("[0]")
+        if index != -1:
+            return url[:index]
+        return url
 
     def _perform_hover_action(self, element) -> None:
         """
