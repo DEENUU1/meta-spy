@@ -2,7 +2,7 @@ from ..models import (
     RecentPlaces,
 )
 from ..database import get_session
-from typing import List, Optional
+from typing import List
 
 
 def recent_places_exists(localization: str, date: str, person_id: int) -> bool:

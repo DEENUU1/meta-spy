@@ -2,7 +2,6 @@ from ..models import (
     Reviews,
 )
 from ..database import get_session
-from typing import List, Optional
 
 
 def review_exists(company: str, review: str, person_id: int) -> bool:

@@ -61,7 +61,7 @@ class PostDetail(Scraper):
         except ValueError:
             return False
 
-    def scrape_post_data(self, url: str):
+    def scrape_post_data(self, url: str) -> List[Dict]:
         """Scrape data from post
         Content, url, number of likes, comments and shares
         """

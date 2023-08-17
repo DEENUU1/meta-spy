@@ -3,6 +3,8 @@ from .config import Config
 
 
 class Logs(logging.Logger):
+    """Logs class"""
+
     def __init__(self, name="logger", level=logging.ERROR):
         super().__init__(name, level=level)
         file_handler = logging.FileHandler(Config.LOG_FILE_PATH)
@@ -13,4 +15,5 @@ class Logs(logging.Logger):
         self.addHandler(file_handler)
 
     def log_error(self, message):
+        """Logs error message"""
         self.error(message)

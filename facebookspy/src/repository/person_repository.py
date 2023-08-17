@@ -2,7 +2,7 @@ from ..models import (
     Person,
 )
 from ..database import get_session
-from typing import List, Optional
+from typing import Optional
 
 
 def person_exists(facebook_id: str) -> bool:

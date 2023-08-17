@@ -1,5 +1,5 @@
 from time import sleep
-from typing import List, Dict
+from typing import List
 from selenium.webdriver.common.action_chains import ActionChains
 
 from ...config import Config

@@ -2,7 +2,7 @@ from ..models import (
     WorkAndEducation,
 )
 from ..database import get_session
-from typing import List, Optional
+from typing import List
 
 
 def work_and_education_exists(name: str, person_id: int) -> bool:

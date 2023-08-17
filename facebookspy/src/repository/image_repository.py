@@ -2,7 +2,7 @@ from ..models import (
     Image,
 )
 from ..database import get_session
-from typing import List, Optional
+from typing import List
 
 
 def image_exists(path: str, person_id: int) -> bool:

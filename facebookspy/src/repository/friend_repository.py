@@ -2,7 +2,7 @@ from ..models import (
     Friends,
 )
 from ..database import get_session
-from typing import List, Optional
+from typing import List
 
 
 def friend_exists(person_id: int, full_name: str, url: str) -> bool:
