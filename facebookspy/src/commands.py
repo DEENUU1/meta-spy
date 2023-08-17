@@ -19,6 +19,7 @@ from .logs import Logs
 from rich import print as rprint
 from .server.backend.app import app as fastapi_app
 from time import time
+import os
 
 load_dotenv()
 
@@ -53,6 +54,25 @@ def server_backend():
     import uvicorn
 
     uvicorn.run(fastapi_app, host="127.0.0.1", port=8000)
+
+
+@app.command()
+def server_react():
+    os.chdir("..")
+    current_path = os.getcwd()
+    script_path = os.path.join(
+        current_path, "config/react/startapp.sh".replace("/", os.sep)
+    )
+
+    if os.path.exists(script_path):
+        try:
+            subprocess.run(["bash", script_path], check=True)
+        except subprocess.CalledProcessError as e:
+            logs.log_error(f"An error occurred while starting local server {e}")
+            rprint(f"An error occurred {e}")
+    else:
+        logs.log_error(f"Script to run React app not foudn")
+        rprint(f"Script to run React app not foudn")
 
 
 """ Project commands """
