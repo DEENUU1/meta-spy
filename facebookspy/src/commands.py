@@ -29,6 +29,7 @@ app = typer.Typer()
 """ Fastapi """
 
 
+@app.command()
 def server():
     """Run local server to browse scraped data"""
     try:
@@ -43,6 +44,7 @@ def server():
         rprint(f"An error occurred {e}")
 
 
+@app.command()
 def server_backend():
     """Run only backend (fastapi) local app"""
     import uvicorn
@@ -53,12 +55,14 @@ def server_backend():
 """ Project commands """
 
 
+@app.command()
 def home():
     """Display basic information about the project"""
 
     display_start_menu()
 
 
+@app.command()
 def version():
     """Display data about the project version"""
 
@@ -68,6 +72,7 @@ def version():
 """ Log In commands """
 
 
+@app.command()
 def login_2_step():
     """Log in to facebook account with 2-step authentication"""
 
@@ -83,6 +88,7 @@ def login_2_step():
         rprint(f"❌Logging failed after {time_end - time_start} seconds ❌")
 
 
+@app.command()
 def login():
     """Log in to facebook account without 2-step authentication"""
 
@@ -101,6 +107,7 @@ def login():
 """ Account basic data commands """
 
 
+@app.command()
 def scrape_full_account(name: Optional[str] = None):
     """Scrape data from facebook account:
     - full name
@@ -122,6 +129,7 @@ def scrape_full_account(name: Optional[str] = None):
         rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
 
 
+@app.command()
 def scrape_work_education(name: Optional[str] = None):
     """Scrape work and education history data"""
 
@@ -138,6 +146,7 @@ def scrape_work_education(name: Optional[str] = None):
         rprint("❌Scraping failed after {time_end - time_start} seconds ❌")
 
 
+@app.command()
 def scrape_localization(name: Optional[str] = None):
     """Scrape visited places"""
 
@@ -154,6 +163,7 @@ def scrape_localization(name: Optional[str] = None):
         rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
 
 
+@app.command()
 def scrape_family_member(name: Optional[str] = None):
     """Scrape family member data"""
 
@@ -170,6 +180,7 @@ def scrape_family_member(name: Optional[str] = None):
         rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
 
 
+@app.command()
 def scrape_full_name(name: Optional[str] = None):
     """Scrape full name from facebook account"""
 
@@ -189,6 +200,7 @@ def scrape_full_name(name: Optional[str] = None):
 """ Friend list commands """
 
 
+@app.command()
 def scrape_friend_list(name: Optional[str] = None):
     """Scrape friend list from facebook account"""
 
@@ -208,6 +220,7 @@ def scrape_friend_list(name: Optional[str] = None):
 """ Image scraper commands """
 
 
+@app.command()
 def scrape_images(name: Optional[str] = None):
     """Scrape images from facebook account"""
 
@@ -227,6 +240,7 @@ def scrape_images(name: Optional[str] = None):
 """ Recent place scraper commands """
 
 
+@app.command()
 def scrape_recent_places(name: Optional[str] = None):
     """Scrape recent places from facebook account"""
 
@@ -246,6 +260,7 @@ def scrape_recent_places(name: Optional[str] = None):
 """ Reels scraper commands """
 
 
+@app.command()
 def scrape_reels(name: Optional[str] = None):
     """Scrape reels urls from facebook account"""
 
@@ -265,6 +280,7 @@ def scrape_reels(name: Optional[str] = None):
 """ Reviews scraper commands """
 
 
+@app.command()
 def scrape_reviews(name: Optional[str] = None):
     """Scrape written reviews from facebook account"""
 
@@ -284,6 +300,7 @@ def scrape_reviews(name: Optional[str] = None):
 """ Videos scraper commands """
 
 
+@app.command()
 def scrape_video_urls(name: Optional[str] = None):
     """Scrape video urls from facebook account"""
 
@@ -303,6 +320,7 @@ def scrape_video_urls(name: Optional[str] = None):
 """ Downloader commands """
 
 
+@app.command()
 def download_all_person_videos(name: Optional[str] = None):
     """Download all reels for specified facebook account based on the scraped URLs"""
 
@@ -319,6 +337,7 @@ def download_all_person_videos(name: Optional[str] = None):
         rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
 
 
+@app.command()
 def download_new_person_videos(name: Optional[str] = None):
     """Download all videos with 'downloaded' field with value False for specified
     facebook account based on the scraped URLs"""
@@ -336,6 +355,7 @@ def download_new_person_videos(name: Optional[str] = None):
         rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
 
 
+@app.command()
 def download_video(url: Optional[str] = None):
     """Download single video"""
 
@@ -355,6 +375,7 @@ def download_video(url: Optional[str] = None):
 """ Posts """
 
 
+@app.command()
 def scrape_person_posts(name: Optional[str] = None):
     """Scrape urls for posts from facebook account"""
 
@@ -371,6 +392,7 @@ def scrape_person_posts(name: Optional[str] = None):
         rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
 
 
+@app.command()
 def scrape_person_post_details(name: Optional[str] = None):
     """Scrape detail of user's posts"""
 
@@ -385,3 +407,7 @@ def scrape_person_post_details(name: Optional[str] = None):
         rprint(f"✅Scraping successful after {time_end - time_start} seconds ✅")
     else:
         rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
+
+
+if __name__ == "__main__":
+    app()
