@@ -25,7 +25,7 @@ load_dotenv()
 logs = Logs()
 
 app = typer.Typer(
-    pretty_exceptions_enable=False,
+    pretty_exceptions_enable=False,  # Default Error message without Rich effect
 )
 
 
