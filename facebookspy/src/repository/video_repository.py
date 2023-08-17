@@ -2,16 +2,34 @@ from ..models import (
     Videos,
 )
 from ..database import get_session
-from typing import List, Optional
+from typing import List
 
 
 def video_exists(url: str, person_id: int) -> bool:
+    """Check if Video object exists
+
+    Args:
+        url (str): Video URL
+        person_id (int): Person ID
+
+    Returns:
+        bool: True if exists, False otherwise.
+    """
     session = get_session()
     video = session.query(Videos).filter_by(url=url, person_id=person_id).first()
     return video is not None
 
 
 def create_videos(url: str, person_id: int) -> Videos:
+    """Create Videos object
+
+    Args:
+        url (str): Video URL
+        person_id (int): Person ID
+
+    Returns:
+        Videos: Videos object
+    """
     session = get_session()
     videos = Videos(url=url, person_id=person_id)
     session.add(videos)
