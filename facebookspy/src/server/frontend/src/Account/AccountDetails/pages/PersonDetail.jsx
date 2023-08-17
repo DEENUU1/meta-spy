@@ -77,7 +77,8 @@ const PersonDetail = () => {
               <Link to={`/person/${id}/video`}>Videos & Reels</Link> <br/>
               <Link to={`/person/${id}/image`}>Images</Link> <br/>
               <Link to={`/person/${id}/friend`}>Friends</Link> <br/>
-              <Link to={`/person/${id}/place`}>Recent Places</Link>
+              <Link to={`/person/${id}/place`}>Recent Places</Link> <br/>
+              <Link to={`/person/${id}/post`}>Posts</Link> <br/>
             </div>
 
             <div className='card-container'>

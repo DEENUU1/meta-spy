@@ -27,7 +27,12 @@ const PostCard = ({ personId }) => {
         <ul>
           {posts.map(item => (
             <li key={item.id}>
-              <strong>{item.name}</strong> - {item.date}
+              <a href={item.url}>Url</a>  
+              <p>{item.content}</p>
+              <strong>Likes {item.number_of_likes}</strong>
+              <strong>Shares {item.number_of_shares}</strong>
+              <strong>Comments {item.number_of_comments}</strong>
+              <strong>Source {item.source}</strong>
             </li>
           ))}
         </ul>
