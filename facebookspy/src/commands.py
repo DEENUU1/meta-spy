@@ -17,9 +17,11 @@ from src.cli.version import return_version_info
 import subprocess
 from .logs import Logs
 from rich import print as rprint
-from .server.backend.app import app as fastapi_app
 from time import time
-import os
+import threading
+from .runfastapi import run_fastapi
+from .runreact import run_react
+
 
 load_dotenv()
 
@@ -30,52 +32,37 @@ app = typer.Typer(
 )
 
 
-""" Fastapi """
-
-
 @app.command()
-def server():
+def server(
+    d: Annotated[
+        bool, typer.Option(help="Run local server using Docker or with standard way")
+    ] = False
+):
     """Run local server to browse scraped data"""
-    try:
-        build_command = ["docker-compose", "build"]
-        subprocess.run(build_command, check=True)
 
-        run_command = ["docker-compose", "up", "-d"]
-        subprocess.run(run_command, check=True)
+    # Run local server using Docker
+    if d:
+        try:
+            build_command = ["docker-compose", "build"]
+            subprocess.run(build_command, check=True)
 
-    except subprocess.CalledProcessError as e:
-        logs.log_error(f"An error occurred while starting local server {e}")
-        rprint(f"An error occurred {e}")
+            run_command = ["docker-compose", "up", "-d"]
+            subprocess.run(run_command, check=True)
 
+        except subprocess.CalledProcessError as e:
+            logs.log_error(f"An error occurred while starting local server {e}")
+            rprint(f"An error occurred {e}")
 
-@app.command()
-def server_backend():
-    """Run only backend (fastapi) local app"""
-    import uvicorn
+    # Run local server without Docker
+    else:
+        thread_react = threading.Thread(target=run_react)
+        thread_fastapi = threading.Thread(target=run_fastapi)
 
-    uvicorn.run(fastapi_app, host="127.0.0.1", port=8000)
+        thread_react.start()
+        thread_fastapi.start()
 
-
-@app.command()
-def server_react():
-    os.chdir("..")  # Change to main directory
-    current_path = os.getcwd()  # Get current working directory
-    script_path = os.path.join(
-        current_path, "config", "react"
-    )  # Get a path of a directory with shell script
-    os.chdir(script_path)  # Change directory to shell script directory
-
-    try:
-        subprocess.run(["bash", "./startapp.sh"], check=True, shell=True)
-    except subprocess.CalledProcessError as e:
-        logs.log_error(f"An error occurred while starting react local server {e}")
-        rprint(f"An error occurred while starting react local server {e}")
-    except Exception as e:
-        logs.log_error(f"An error occurred while starting react local server {e}")
-        rprint(f"An error occurred while starting react local server {e}")
-
-
-""" Project commands """
+        thread_react.join()
+        thread_fastapi.join()
 
 
 @app.command()
@@ -90,9 +77,6 @@ def version():
     """Display data about the project version"""
 
     return_version_info()
-
-
-""" Log In commands """
 
 
 @app.command()
@@ -125,9 +109,6 @@ def login():
         rprint(f"✅Logging successful after {time_end - time_start} seconds ✅")
     else:
         rprint(f"❌Logging failed after {time_end - time_start} seconds ❌")
-
-
-""" Account basic data commands """
 
 
 @app.command()
@@ -222,9 +203,6 @@ def scrape_full_name(name: Annotated[str, typer.Argument(help="Facebook user id"
         rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
 
 
-""" Friend list commands """
-
-
 @app.command()
 def scrape_friend_list(name: Annotated[str, typer.Argument(help="Facebook user id")]):
     """Scrape friend list from facebook account"""
@@ -240,9 +218,6 @@ def scrape_friend_list(name: Annotated[str, typer.Argument(help="Facebook user i
         rprint(f"✅Scraping successful after {time_end - time_start} seconds ✅")
     else:
         rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
-
-
-""" Image scraper commands """
 
 
 @app.command()
@@ -262,9 +237,6 @@ def scrape_images(name: Annotated[str, typer.Argument(help="Facebook user id")])
         rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
 
 
-""" Recent place scraper commands """
-
-
 @app.command()
 def scrape_recent_places(name: Annotated[str, typer.Argument(help="Facebook user id")]):
     """Scrape recent places from facebook account"""
@@ -280,9 +252,6 @@ def scrape_recent_places(name: Annotated[str, typer.Argument(help="Facebook user
         rprint(f"✅Scraping successful after {time_end - time_start} seconds ✅")
     else:
         rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
-
-
-""" Reels scraper commands """
 
 
 @app.command()
@@ -302,9 +271,6 @@ def scrape_reels(name: Annotated[str, typer.Argument(help="Facebook user id")]):
         rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
 
 
-""" Reviews scraper commands """
-
-
 @app.command()
 def scrape_reviews(name: Annotated[str, typer.Argument(help="Facebook user id")]):
     """Scrape written reviews from facebook account"""
@@ -322,9 +288,6 @@ def scrape_reviews(name: Annotated[str, typer.Argument(help="Facebook user id")]
         rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
 
 
-""" Videos scraper commands """
-
-
 @app.command()
 def scrape_video_urls(name: Annotated[str, typer.Argument(help="Facebook user id")]):
     """Scrape video urls from facebook account"""
@@ -340,9 +303,6 @@ def scrape_video_urls(name: Annotated[str, typer.Argument(help="Facebook user id
         rprint(f"✅Scraping successful after {time_end - time_start} seconds ✅")
     else:
         rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
-
-
-""" Downloader commands """
 
 
 @app.command()
@@ -399,9 +359,6 @@ def download_video(url: Annotated[str, typer.Argument(help="Facebook video url")
         rprint(f"✅Scraping successful after {time_end - time_start} seconds ✅")
     else:
         rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
-
-
-""" Posts """
 
 
 @app.command()
