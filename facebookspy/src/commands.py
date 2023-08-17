@@ -149,7 +149,7 @@ def scrape_work_education(
     if scraper.is_pipeline_successful:
         rprint(f"✅Scraping successful after {time_end - time_start} seconds ✅")
     else:
-        rprint("❌Scraping failed after {time_end - time_start} seconds ❌")
+        rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
 
 
 @app.command()
