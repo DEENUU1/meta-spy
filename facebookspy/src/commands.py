@@ -10,7 +10,7 @@ from .facebook.account.account_review import AccountReview
 from .facebook.downloader import Downloader
 from .facebook.account.account_post import AccountPost
 from .facebook.post_detail import PostDetail
-from typing import Optional, Annotated
+from typing import Annotated
 import typer
 from src.cli.home import display_start_menu
 from src.cli.version import return_version_info
@@ -20,10 +20,13 @@ from rich import print as rprint
 from .server.backend.app import app as fastapi_app
 from time import time
 
+load_dotenv()
+
 logs = Logs()
 
-load_dotenv()
-app = typer.Typer()
+app = typer.Typer(
+    pretty_exceptions_enable=False,
+)
 
 
 """ Fastapi """
