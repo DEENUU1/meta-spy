@@ -58,21 +58,21 @@ def server_backend():
 
 @app.command()
 def server_react():
-    os.chdir("..")
-    current_path = os.getcwd()
+    os.chdir("..")  # Change to main directory
+    current_path = os.getcwd()  # Get current working directory
     script_path = os.path.join(
-        current_path, "config/react/startapp.sh".replace("/", os.sep)
-    )
+        current_path, "config", "react"
+    )  # Get a path of a directory with shell script
+    os.chdir(script_path)  # Change directory to shell script directory
 
-    if os.path.exists(script_path):
-        try:
-            subprocess.run(["bash", script_path], check=True)
-        except subprocess.CalledProcessError as e:
-            logs.log_error(f"An error occurred while starting local server {e}")
-            rprint(f"An error occurred {e}")
-    else:
-        logs.log_error(f"Script to run React app not foudn")
-        rprint(f"Script to run React app not foudn")
+    try:
+        subprocess.run(["bash", "./startapp.sh"], check=True, shell=True)
+    except subprocess.CalledProcessError as e:
+        logs.log_error(f"An error occurred while starting react local server {e}")
+        rprint(f"An error occurred while starting react local server {e}")
+    except Exception as e:
+        logs.log_error(f"An error occurred while starting react local server {e}")
+        rprint(f"An error occurred while starting react local server {e}")
 
 
 """ Project commands """
