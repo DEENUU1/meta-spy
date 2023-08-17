@@ -12,6 +12,7 @@ from ...repository import (
 from ...logs import Logs
 from rich import print as rprint
 
+
 logs = Logs()
 
 
@@ -147,6 +148,12 @@ class AccountBasic(BaseFacebookScraper):
             scraped_data = self.extract_work_and_education()
             rprint(scraped_data)
 
+            rprint(
+                rprint(
+                    "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
+                )
+            )
+
             for data in scraped_data:
                 if not work_education_repository.work_and_education_exists(
                     data["name"], person_id
@@ -184,6 +191,12 @@ class AccountBasic(BaseFacebookScraper):
             places = self.extract_places()
             rprint(places)
 
+            rprint(
+                rprint(
+                    "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
+                )
+            )
+
             for data in places:
                 if not place_repository.places_exists(
                     data["name"], data["date"], person_id
@@ -219,6 +232,12 @@ class AccountBasic(BaseFacebookScraper):
             family_members = self.extract_family()
             rprint(family_members)
 
+            rprint(
+                rprint(
+                    "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
+                )
+            )
+
             for member in family_members:
                 if not family_member_repository.family_member_exists(
                     person_id, member["name"]
@@ -252,6 +271,12 @@ class AccountBasic(BaseFacebookScraper):
             full_name = self.extract_full_name()
             rprint(full_name)
 
+            rprint(
+                rprint(
+                    "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
+                )
+            )
+
             if not person_repository.person_exists(self._user_id):
                 person_repository.create_person(self._user_id, full_name)
 
@@ -277,6 +302,12 @@ class AccountBasic(BaseFacebookScraper):
             full_name = self.extract_full_name()
             rprint(full_name)
 
+            rprint(
+                rprint(
+                    "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
+                )
+            )
+
             if not person_repository.person_exists(self._user_id):
                 person_repository.create_person(self._user_id, full_name)
 
@@ -285,6 +316,12 @@ class AccountBasic(BaseFacebookScraper):
             rprint("[bold]Step 4 of 6 - Extract family members[/bold]")
             family_members = self.extract_family()
             rprint(family_members)
+
+            rprint(
+                rprint(
+                    "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
+                )
+            )
 
             for member in family_members:
                 if not family_member_repository.family_member_exists(
@@ -300,6 +337,13 @@ class AccountBasic(BaseFacebookScraper):
             rprint("[bold]Step 5 of 6 - Extract localization data[/bold]")
             places = self.extract_places()
             rprint(places)
+
+            rprint(
+                rprint(
+                    "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
+                )
+            )
+
             for data in places:
                 if not place_repository.places_exists(
                     data["name"], data["date"], person_id
@@ -311,6 +355,13 @@ class AccountBasic(BaseFacebookScraper):
             rprint("[bold]Step 6 of 6 - Extract work and education data[/bold]")
             scraped_data = self.extract_work_and_education()
             rprint(scraped_data)
+
+            rprint(
+                rprint(
+                    "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
+                )
+            )
+
             for data in scraped_data:
                 if not work_education_repository.work_and_education_exists(
                     data["name"], person_id
