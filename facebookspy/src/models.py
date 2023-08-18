@@ -64,6 +64,7 @@ class Person(Base):
     reviews = relationship("Reviews", uselist=False, back_populates="person")
     note = relationship("Notes", uselist=False, back_populates="person")
     posts = relationship("Posts", uselist=False, back_populates="person")
+    likes = relationship("Likes", uselist=False, back_populates="person")
 
 
 class Places(Base):
@@ -168,3 +169,15 @@ class Posts(Base):
 
     # Relationship
     person = relationship("Person", back_populates="posts")
+
+
+class Likes(Base):
+    __tablename__ = "likes"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    url = Column(String, nullable=False)
+    name = Column(String, nullable=False)
+    person_id = Column(Integer, ForeignKey("persons.id"))
+
+    # Relationship
+    person = relationship("Person", back_populates="likes")
