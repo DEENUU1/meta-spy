@@ -12,6 +12,7 @@ from facebookspy.src.models import (
     Notes,
     Posts,
     PostSource,
+    Likes,
 )
 from .conftest import session
 
@@ -207,3 +208,19 @@ def test_post_model_successfully_create_object(session):
     assert post.number_of_shares == 4
     assert post.number_of_comments == 1
     assert post.source == PostSource.ACCOUNT
+
+
+def test_likes_model_successfully_create_object(session):
+    person_object = Person(full_name="XYZ", url="https://example.com/xyz")
+    like = Likes(
+        url="https://example.com/like/123",
+        name="Like 1",
+        person=person_object,
+    )
+    session.add(like)
+    session.commit()
+
+    assert like.id is not None
+    assert like.url == "https://example.com/like/123"
+    assert like.name == "Like 1"
+    assert like.person == person_object
