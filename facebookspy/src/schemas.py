@@ -134,3 +134,12 @@ class PostSchema(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class LikeSchema(BaseModel):
+    id: int
+    person_id: int
+    name: str
+
+    class Config:
+        orm_mode = True

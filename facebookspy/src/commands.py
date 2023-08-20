@@ -10,6 +10,7 @@ from .facebook.account.account_review import AccountReview
 from .facebook.downloader import Downloader
 from .facebook.account.account_post import AccountPost
 from .facebook.post_detail import PostDetail
+from .facebook.account.account_like import AccountLike
 from typing import Annotated
 import typer
 from src.cli.home import display_start_menu
@@ -386,6 +387,23 @@ def scrape_person_post_details(
 
     rprint(f"Start scraping posts detail for {name}")
     scraper = PostDetail(name)
+
+    time_start = time()
+    scraper.pipeline()
+    time_end = time()
+
+    if scraper.is_pipeline_successful:
+        rprint(f"✅Scraping successful after {time_end - time_start} seconds ✅")
+    else:
+        rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
+
+
+@app.command()
+def scrape_person_likes(name: Annotated[str, typer.Argument(help="Facebook user id")]):
+    """Scrape user's likes"""
+
+    rprint(f"Start scraping likes for {name}")
+    scraper = AccountLike(name)
 
     time_start = time()
     scraper.pipeline()

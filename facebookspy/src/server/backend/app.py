@@ -18,6 +18,7 @@ from ...schemas import (
     NoteUpdateSchema,
     NoteSchema,
     PostSchema,
+    LikeSchema,
 )
 from ...models import (
     Person,
@@ -32,6 +33,7 @@ from ...models import (
     FamilyMember,
     Notes,
     Posts,
+    Likes,
 )
 
 from ...database import Session, get_session
@@ -279,6 +281,15 @@ async def get_posts_by_person_id(
     posts = session.query(Posts).filter_by(person_id=person_id).all()
     if not posts:
         raise HTTPException(status_code=404, detail="Family Members not found")
-
-    print(posts)
     return posts
+
+
+@app.get("/person/like/{person_id}", response_model=List[LikeSchema])
+async def get_likes_by_person_id(
+    person_id: int, session: Session = Depends(get_session)
+):
+    """Return a list of likes for specified person object"""
+    likes = session.query(Likes).filter_by(person_id=person_id).all()
+    if not likes:
+        raise HTTPException(status_code=404, detail="Likes not found")
+    return likes
