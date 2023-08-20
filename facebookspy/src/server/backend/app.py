@@ -19,6 +19,7 @@ from ...schemas import (
     NoteSchema,
     PostSchema,
     LikeSchema,
+    GroupSchema,
 )
 from ...models import (
     Person,
@@ -34,6 +35,7 @@ from ...models import (
     Notes,
     Posts,
     Likes,
+    Groups,
 )
 
 from ...database import Session, get_session
@@ -293,3 +295,14 @@ async def get_likes_by_person_id(
     if not likes:
         raise HTTPException(status_code=404, detail="Likes not found")
     return likes
+
+
+@app.get("/person/group/{person_id}", response_model=List[GroupSchema])
+async def get_groups_by_person_id(
+    person_id: int, session: Session = Depends(get_session)
+):
+    """Return a list of groups for specified person object"""
+    groups = session.query(Groups).filter_by(person_id=person_id).all()
+    if not groups:
+        raise HTTPException(status_code=404, details="Groups not found")
+    return groups
