@@ -7,6 +7,7 @@ from selenium.webdriver.common.by import By
 from ...repository import person_repository, recent_place_repository
 from ...logs import Logs
 from rich import print as rprint
+from ..scroll import scroll_page
 
 
 logs = Logs()
@@ -22,36 +23,6 @@ class AccountRecentPlaces(BaseFacebookScraper):
             user_id, base_url=f"https://www.facebook.com/{user_id}/places_recent"
         )
         self.success = False
-
-    def scroll_page(self) -> None:
-        """
-        Scrolls the page to load more friends from a list
-        """
-        try:
-            last_height = self._driver.execute_script(
-                "return document.body.scrollHeight"
-            )
-            consecutive_scrolls = 0
-
-            while consecutive_scrolls < Config.MAX_CONSECUTIVE_SCROLLS:
-                self._driver.execute_script(
-                    "window.scrollTo(0, document.body.scrollHeight);"
-                )
-
-                sleep(Config.SCROLL_PAUSE_TIME)
-                new_height = self._driver.execute_script(
-                    "return document.body.scrollHeight"
-                )
-
-                if new_height == last_height:
-                    consecutive_scrolls += 1
-                else:
-                    consecutive_scrolls = 0
-
-                last_height = new_height
-
-        except Exception as e:
-            logs.log_error(f"Error occurred while scrolling: {e}")
 
     def extract_recent_places(self) -> List[Dict[str, str]]:
         """
@@ -100,15 +71,13 @@ class AccountRecentPlaces(BaseFacebookScraper):
             rprint("[bold]Step 2 of 4 - Refresh driver[/bold]")
             self._driver.refresh()
             rprint("[bold]Step 3 of 4 - Scrolling page[/bold]")
-            self.scroll_page()
+            scroll_page(self._driver)
             rprint("[bold]Step 4 of 4 - Extracting recent places[/bold]")
             recent_places = self.extract_recent_places()
             rprint(recent_places)
 
             rprint(
-                rprint(
-                    "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
-                )
+                "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
             )
 
             if not person_repository.person_exists(self._user_id):

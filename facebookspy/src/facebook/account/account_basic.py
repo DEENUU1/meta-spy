@@ -149,9 +149,7 @@ class AccountBasic(BaseFacebookScraper):
             rprint(scraped_data)
 
             rprint(
-                rprint(
-                    "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
-                )
+                "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
             )
 
             for data in scraped_data:
@@ -192,9 +190,7 @@ class AccountBasic(BaseFacebookScraper):
             rprint(places)
 
             rprint(
-                rprint(
-                    "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
-                )
+                "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
             )
 
             for data in places:
@@ -233,9 +229,7 @@ class AccountBasic(BaseFacebookScraper):
             rprint(family_members)
 
             rprint(
-                rprint(
-                    "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
-                )
+                "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
             )
 
             for member in family_members:
@@ -318,9 +312,7 @@ class AccountBasic(BaseFacebookScraper):
             rprint(family_members)
 
             rprint(
-                rprint(
-                    "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
-                )
+                "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
             )
 
             for member in family_members:
@@ -339,9 +331,7 @@ class AccountBasic(BaseFacebookScraper):
             rprint(places)
 
             rprint(
-                rprint(
-                    "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
-                )
+                "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
             )
 
             for data in places:
@@ -357,9 +347,7 @@ class AccountBasic(BaseFacebookScraper):
             rprint(scraped_data)
 
             rprint(
-                rprint(
-                    "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
-                )
+                "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
             )
 
             for data in scraped_data:

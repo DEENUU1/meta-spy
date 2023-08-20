@@ -7,6 +7,7 @@ from ...repository import person_repository, group_repository
 from ..facebook_base import BaseFacebookScraper
 from ...logs import Logs
 from rich import print as rprint
+from ..scroll import scroll_page
 
 
 logs = Logs()
@@ -89,7 +90,7 @@ class AccountGroup(BaseFacebookScraper):
             rprint("[bold]Step 2 of 3 - Refresh driver[/bold]")
             self._driver.refresh()
             rprint("[bold]Step 3 of 4 - Scrolling page[/bold]")
-            self.scroll_page()
+            scroll_page(self._driver)
 
             rprint("[bold]Step 4 of 4 - Extracting likes data[/bold]")
             extracted_data = self.extract_groups_data()
