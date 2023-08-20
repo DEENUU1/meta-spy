@@ -1,5 +1,5 @@
 from time import sleep
-from typing import List, Dict
+from typing import List
 
 from ...config import Config
 from selenium.webdriver.common.by import By
@@ -14,14 +14,14 @@ logs = Logs()
 
 class AccountLike(BaseFacebookScraper):
     """
-    Scrape user's friends list
+    Scrape user's likes
     """
 
     def __init__(self, user_id) -> None:
         super().__init__(user_id, base_url=f"https://www.facebook.com/{user_id}/likes")
         self.success = False
 
-    def extract_likes_data(self) -> List[Dict]:
+    def extract_likes_data(self) -> List[str]:
         extracted_elements = []
         try:
             div_element = self._driver.find_element(
