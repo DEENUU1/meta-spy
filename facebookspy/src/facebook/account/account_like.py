@@ -90,18 +90,19 @@ class AccountLike(BaseFacebookScraper):
             extracted_data = self.extract_likes_data()
             rprint(extracted_data)
 
-            # rprint(
-            #     rprint(
-            #         "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
-            #     )
-            # )
+            rprint(
+                rprint(
+                    "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
+                )
+            )
 
-            # if not person_repository.person_exists(self._user_id):
-            #     person_repository.create_person(self._user_id)
+            if not person_repository.person_exists(self._user_id):
+                person_repository.create_person(self._user_id)
 
-            # person_id = person_repository.get_person(self._user_id).id
+            person_id = person_repository.get_person(self._user_id).id
 
-            # for data in extracted_data:
+            for data in extracted_data:
+                pass
             #     if not friend_repository.friend_exists(
             #         person_id, data["username"], data["url"]
             #     ):
