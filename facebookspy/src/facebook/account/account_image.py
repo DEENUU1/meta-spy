@@ -175,9 +175,7 @@ class AccountImage(BaseFacebookScraper):
             rprint(image_paths)
 
             rprint(
-                rprint(
-                    "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
-                )
+                "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
             )
 
             if not person_repository.person_exists(self._user_id):
