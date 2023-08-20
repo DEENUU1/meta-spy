@@ -19,24 +19,27 @@ def group_exists(name: str) -> bool:
     return person is not None
 
 
-def create_like(person_id: int, name: str, url: str = None) -> Groups:
-    """Create Groups object
+def create_group(person_id: int, name: str, url: str = None) -> Groups:
+    """
+    Create or update a Groups object.
+
     Args:
-        person_id (str): Person ID
+        person_id (int): Person ID
         name (str): Name
         url (str): URL
+
     Returns:
-        Groups: Groups object.
+        Groups: Created or updated Groups object.
     """
     session = get_session()
 
-    like_exist = like_exist(name)
-    if like_exist:
-        if url is not None:
-            like_exist.url = url
+    existing_like = group_exists(name)
 
+    if existing_like:
+        if url is not None:
+            existing_like.url = url
         session.commit()
-        return like_exist
+        return existing_like
     else:
         like = Groups(person_id=person_id, name=name, url=url)
         session.add(like)

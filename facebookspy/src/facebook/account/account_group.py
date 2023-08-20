@@ -3,7 +3,7 @@ from typing import List, Dict
 
 from ...config import Config
 from selenium.webdriver.common.by import By
-from ...repository import person_repository
+from ...repository import person_repository, group_repository
 from ..facebook_base import BaseFacebookScraper
 from ...logs import Logs
 from rich import print as rprint
@@ -105,9 +105,8 @@ class AccountGroup(BaseFacebookScraper):
             person_id = person_repository.get_person(self._user_id).id
 
             for data in extracted_data:
-                pass
-                # if not like_repository.like_exists(data):
-                # like_repository.create_like(person_id, data)
+                if not group_repository.group_exists(data["name"]):
+                    group_repository.create_group(person_id, data["name"], data["url"])
 
             self._driver.quit()
             self.success = True
