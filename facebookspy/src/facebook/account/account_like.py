@@ -21,18 +21,19 @@ class AccountLike(BaseFacebookScraper):
         super().__init__(user_id, base_url=f"https://www.facebook.com/{user_id}/likes")
         self.success = False
 
-    def extract_likes_data(self) -> List[Dict[str, str]]:
-        """ """
+    def extract_likes_data(self) -> List[str]:
         extracted_elements = []
         try:
-            elements = self._driver.find_elements(By.CSS_SELECTOR, "a.x1i10hfl span")
+            div_element = self._driver.find_element(
+                By.CSS_SELECTOR, "div.xyamay9.x1pi30zi.x1l90r2v.x1swvt13"
+            )
+            elements = div_element.find_elements(
+                By.CSS_SELECTOR,
+                "span.x193iq5w.xeuugli.x13faqbe.x1vvkbs.x1xmvt09.x1lliihq.x1s928wv.xhkezso.x1gmr53x.x1cpjm7i.x1fgarty.x1943h6x.xudqn12.x3x7a5m.x6prxxf.xvq8zen.x1s688f.xzsf02u.x1yc453h",
+            )
             for element in elements:
-                username = element.text.strip()
-                url = element.find_element(By.XPATH, "..").get_attribute("href")
-                if username == "":
-                    continue
-                element_data = {"username": username, "url": url}
-                extracted_elements.append(element_data)
+                like_name = element.text
+                extracted_elements.append(like_name)
 
         except Exception as e:
             logs.log_error(f"Error extracting friends data: {e}")
@@ -85,9 +86,9 @@ class AccountLike(BaseFacebookScraper):
             rprint("[bold]Step 3 of 4 - Scrolling page[/bold]")
             self.scroll_page()
 
-            # rprint("[bold]Step 4 of 4 - Extracting friends data[/bold]")
-            # extracted_data = self.extract_friends_data()
-            # rprint(extracted_data)
+            rprint("[bold]Step 4 of 4 - Extracting likes data[/bold]")
+            extracted_data = self.extract_friends_data()
+            rprint(extracted_data)
 
             # rprint(
             #     rprint(
