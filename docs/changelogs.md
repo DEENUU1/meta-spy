@@ -5,6 +5,13 @@
 
 ## Version history
 
+### V0.8 (in develop)
+- Scrape user's groups
+- Scrape user's likes
+- Scrape user's Events
+- Optimalized scrolling 
+
+
 ### V0.7
 - Scrape facebook posts urls from a facebook account
 - Scrape post details (number of likes;comments;shares, content etc.)
