@@ -20,6 +20,7 @@ from ...schemas import (
     PostSchema,
     LikeSchema,
     GroupSchema,
+    EventSchema,
 )
 from ...models import (
     Person,
@@ -36,6 +37,7 @@ from ...models import (
     Posts,
     Likes,
     Groups,
+    Events,
 )
 
 from ...database import Session, get_session
@@ -306,3 +308,14 @@ async def get_groups_by_person_id(
     if not groups:
         raise HTTPException(status_code=404, details="Groups not found")
     return groups
+
+
+@app.get("/person/event/{person_id}", response_model=List[EventSchema])
+async def get_events_by_person_id(
+    person_id: int, session: Session = Depends(get_session)
+):
+    """Return a list of events for specified person object"""
+    events = session.query(Events).filter_by(person_id=person_id).all()
+    if not events:
+        raise HTTPException(status_code=404, details="Events not found")
+    return events
