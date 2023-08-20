@@ -153,3 +153,13 @@ class GroupSchema(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class EventSchema(BaseModel):
+    id: int
+    person_id: int
+    name: str
+    url: str | None
+
+    class Config:
+        orm_mode = True
