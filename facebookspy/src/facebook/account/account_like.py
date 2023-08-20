@@ -53,7 +53,6 @@ class AccountLike(BaseFacebookScraper):
             rprint("[bold]Step 2 of 3 - Refresh driver[/bold]")
             self._driver.refresh()
             rprint("[bold]Step 3 of 4 - Scrolling page[/bold]")
-            # self.scroll_page()
             scroll_page(self._driver)
             rprint("[bold]Step 4 of 4 - Extracting likes data[/bold]")
             extracted_data = self.extract_likes_data()

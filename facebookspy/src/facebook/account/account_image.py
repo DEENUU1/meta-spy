@@ -14,6 +14,7 @@ from ..facebook_base import BaseFacebookScraper
 from ...repository import person_repository, image_repository
 from ...logs import Logs
 from rich import print as rprint
+from ..scroll import scroll_page
 
 
 logs = Logs()
@@ -27,36 +28,6 @@ class AccountImage(BaseFacebookScraper):
     def __init__(self, user_id) -> None:
         super().__init__(user_id, base_url=f"https://www.facebook.com/{user_id}/photos")
         self.success = False
-
-    def scroll_page(self) -> None:
-        """
-        Scrolls the page to load more friends from a list
-        """
-        try:
-            last_height = self._driver.execute_script(
-                "return document.body.scrollHeight"
-            )
-            consecutive_scrolls = 0
-
-            while consecutive_scrolls < Config.MAX_CONSECUTIVE_SCROLLS:
-                self._driver.execute_script(
-                    "window.scrollTo(0, document.body.scrollHeight);"
-                )
-
-                sleep(Config.SCROLL_PAUSE_TIME)
-                new_height = self._driver.execute_script(
-                    "return document.body.scrollHeight"
-                )
-
-                if new_height == last_height:
-                    consecutive_scrolls += 1
-                else:
-                    consecutive_scrolls = 0
-
-                last_height = new_height
-
-        except Exception as e:
-            logs.log_error(f"Error occurred while scrolling: {e}")
 
     def extract_image_urls(self) -> List[str]:
         """
@@ -167,7 +138,7 @@ class AccountImage(BaseFacebookScraper):
             rprint("[bold]Step 2 of 5 - Refresh driver[/bold]")
             self._driver.refresh()
             rprint("[bold]Step 3 of 5 - Scrolling page[/bold]")
-            self.scroll_page()
+            scroll_page(self._driver)
             rprint("[bold]Step 4 of 5 - Extract image urls[/bold]")
             image_urls = self.extract_image_urls()
             rprint("[bold]Step 5 of 5 - Downloading images[/bold]")
