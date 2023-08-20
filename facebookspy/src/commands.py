@@ -451,5 +451,58 @@ def scrape_person_events(name: Annotated[str, typer.Argument(help="Facebook user
         rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
 
 
+@app.command()
+def full_scrape(name: Annotated[str, typer.Argument(help="Facebook user id")]):
+    """Full scrape of user's data
+    - basic information (job and school history, full name etc)
+    - friends
+    - images (download)
+    - recent places
+    - reels
+    - reviews
+    - videos (download)
+    - posts (urls and details)
+    - likes
+    - groups
+    - events
+    """
+
+    basic_scraper = AccountBasic(name)
+    basic_scraper.pipeline()
+
+    friends_scraper = AccountFriend(name)
+    friends_scraper.pipeline()
+
+    images_scraper = AccountImage(name)
+    images_scraper.pipeline()
+
+    reels_scraper = AccountReel(name)
+    reels_scraper.pipeline()
+
+    reviews_scraper = AccountReel(name)
+    reviews_scraper.pipeline()
+
+    videos_scraper = AccountVideo(name)
+    videos_scraper.save_video_urls_to_database_pipeline()
+
+    video_downloader = Downloader(name)
+    video_downloader.download_all_person_videos_pipeline()
+
+    posts_scraper = AccountPost(name)
+    posts_scraper.pipeline()
+
+    post_detail_scraper = PostDetail(name)
+    post_detail_scraper.pipeline()
+
+    likes_scraper = AccountLike(name)
+    likes_scraper.pipeline()
+
+    groups_scraper = AccountGroup(name)
+    groups_scraper.pipeline()
+
+    events_scraper = AccountEvents(name)
+    events_scraper.pipeline()
+
+
 if __name__ == "__main__":
     app()
