@@ -1,9 +1,9 @@
 from time import sleep
-from typing import List
+from typing import List, Dict
 
 from ...config import Config
 from selenium.webdriver.common.by import By
-from ...repository import person_repository, like_repository
+from ...repository import person_repository, group_repository
 from ..facebook_base import BaseFacebookScraper
 from ...logs import Logs
 from rich import print as rprint
@@ -12,32 +12,38 @@ from rich import print as rprint
 logs = Logs()
 
 
-class AccountLike(BaseFacebookScraper):
+class AccountGroup(BaseFacebookScraper):
     """
-    Scrape user's likes
+    Scrape user's groups
     """
 
     def __init__(self, user_id) -> None:
-        super().__init__(user_id, base_url=f"https://www.facebook.com/{user_id}/likes")
+        super().__init__(user_id, base_url=f"https://www.facebook.com/{user_id}/groups")
         self.success = False
 
-    def extract_likes_data(self) -> List[str]:
-        extracted_elements = []
+    def extract_groups_data(self) -> List[Dict]:
+        extracted_data = []
         try:
             div_element = self._driver.find_element(
                 By.CSS_SELECTOR, "div.xyamay9.x1pi30zi.x1l90r2v.x1swvt13"
             )
-            elements = div_element.find_elements(
-                By.CSS_SELECTOR,
-                "span.x193iq5w.xeuugli.x13faqbe.x1vvkbs.x1xmvt09.x1lliihq.x1s928wv.xhkezso.x1gmr53x.x1cpjm7i.x1fgarty.x1943h6x.xudqn12.x3x7a5m.x6prxxf.xvq8zen.x1s688f.xzsf02u.x1yc453h",
+
+            group_elements = div_element.find_elements(
+                By.CSS_SELECTOR, "a.x1i10hfl span"
             )
-            for element in elements:
-                extracted_elements.append(element.text)
+
+            for element in group_elements:
+                name = element.text.strip()
+                url = element.find_element(By.XPATH, "..").get_attribute("href")
+                if name == "":
+                    continue
+
+                extracted_data.append({"name": name, "url": url})
 
         except Exception as e:
-            logs.log_error(f"Error extracting friends data: {e}")
+            logs.log_error(f"Error extracting data: {e}")
 
-        return extracted_elements
+        return extracted_data
 
     def scroll_page(self) -> None:
         """
@@ -55,7 +61,7 @@ class AccountLike(BaseFacebookScraper):
                 )
 
                 sleep(Config.SCROLL_PAUSE_TIME)
-                self.extract_likes_data()
+                self.extract_groups_data()
                 new_height = self._driver.execute_script(
                     "return document.body.scrollHeight"
                 )
@@ -86,13 +92,11 @@ class AccountLike(BaseFacebookScraper):
             self.scroll_page()
 
             rprint("[bold]Step 4 of 4 - Extracting likes data[/bold]")
-            extracted_data = self.extract_likes_data()
+            extracted_data = self.extract_groups_data()
             rprint(extracted_data)
 
             rprint(
-                rprint(
-                    "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
-                )
+                "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
             )
 
             if not person_repository.person_exists(self._user_id):
@@ -101,8 +105,8 @@ class AccountLike(BaseFacebookScraper):
             person_id = person_repository.get_person(self._user_id).id
 
             for data in extracted_data:
-                if not like_repository.like_exists(data):
-                    like_repository.create_like(person_id, data)
+                if not group_repository.group_exists(data["name"]):
+                    group_repository.create_group(person_id, data["name"], data["url"])
 
             self._driver.quit()
             self.success = True

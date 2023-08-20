@@ -143,3 +143,13 @@ class LikeSchema(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class GroupSchema(BaseModel):
+    id: int
+    person_id: int
+    name: str
+    url: str | None
+
+    class Config:
+        orm_mode = True
