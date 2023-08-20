@@ -1,9 +1,8 @@
 from time import sleep
 from typing import List, Dict
 
-from ...config import Config
 from selenium.webdriver.common.by import By
-from ...repository import person_repository
+from ...repository import person_repository, event_repository
 from ..facebook_base import BaseFacebookScraper
 from ...logs import Logs
 from rich import print as rprint
@@ -75,9 +74,9 @@ class AccountEvents(BaseFacebookScraper):
 
             person_id = person_repository.get_person(self._user_id).id
 
-            # for data in extracted_data:
-            #     if not group_repository.group_exists(data["name"]):
-            #         group_repository.create_group(person_id, data["name"], data["url"])
+            for data in extracted_data:
+                if not event_repository.event_exists(data["name"], person_id):
+                    event_repository.create_event(person_id, data["name"], data["url"])
 
             self._driver.quit()
             self.success = True
