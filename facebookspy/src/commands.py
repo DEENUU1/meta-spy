@@ -12,6 +12,7 @@ from .facebook.account.account_post import AccountPost
 from .facebook.post_detail import PostDetail
 from .facebook.account.account_like import AccountLike
 from .facebook.account.account_group import AccountGroup
+from .facebook.account.account_events import AccountEvents
 from typing import Annotated
 import typer
 from src.cli.home import display_start_menu
@@ -422,6 +423,23 @@ def scrape_person_groups(name: Annotated[str, typer.Argument(help="Facebook user
 
     rprint(f"Start scraping groups for {name}")
     scraper = AccountGroup(name)
+
+    time_start = time()
+    scraper.pipeline()
+    time_end = time()
+
+    if scraper.is_pipeline_successful:
+        rprint(f"✅Scraping successful after {time_end - time_start} seconds ✅")
+    else:
+        rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
+
+
+@app.command()
+def scrape_person_events(name: Annotated[str, typer.Argument(help="Facebook user id")]):
+    """Scrape user's events"""
+
+    rprint(f"Start scraping events for {name}")
+    scraper = AccountEvents(name)
 
     time_start = time()
     scraper.pipeline()
