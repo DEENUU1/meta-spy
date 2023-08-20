@@ -19,24 +19,16 @@ def like_exists(name: str) -> bool:
     return person is not None
 
 
-def create_like(person_id: int, name: str, url: str = None) -> Likes:
+def create_like(person_id: int, name: str) -> Likes:
     """Create Likes object
     Args:
         person_id (str): Person ID
         name (str): Nmae
-        url (str): Url of a like object
     Returns:
-        Person: Person object.
+        Likes: Likes object.
     """
     session = get_session()
-    like = like_exists(name)
-
-    if like:
-        if url is not None:
-            like.url = url
-    else:
-        like = Likes(person_id=person_id, name=name, url=url)
-        session.add(like)
-
+    like = Likes(person_id=person_id, name=name)
+    session.add(like)
     session.commit()
     return like

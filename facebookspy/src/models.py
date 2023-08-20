@@ -175,7 +175,6 @@ class Likes(Base):
     __tablename__ = "likes"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    url = Column(String, nullable=False)
     name = Column(String, nullable=False)
     person_id = Column(Integer, ForeignKey("persons.id"))
 
