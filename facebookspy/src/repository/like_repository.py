@@ -4,7 +4,7 @@ from ..models import (
 from ..database import get_session
 
 
-def like_exists(name: str) -> bool:
+def like_exists(name: str, person_id: int) -> bool:
     """
     Check if Likes object exists
 
@@ -15,7 +15,7 @@ def like_exists(name: str) -> bool:
         bool: True if exists, False otherwise.
     """
     session = get_session()
-    person = session.query(Likes).filter_by(name=name).first()
+    person = session.query(Likes).filter_by(name=name, person_id=person_id).first()
     return person is not None
 
 

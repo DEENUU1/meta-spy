@@ -68,7 +68,7 @@ class AccountLike(BaseFacebookScraper):
             person_id = person_repository.get_person(self._user_id).id
 
             for data in extracted_data:
-                if not like_repository.like_exists(data):
+                if not like_repository.like_exists(data, person_id):
                     like_repository.create_like(person_id, data)
 
             self._driver.quit()
