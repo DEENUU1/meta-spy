@@ -21,7 +21,7 @@ class AccountLike(BaseFacebookScraper):
         super().__init__(user_id, base_url=f"https://www.facebook.com/{user_id}/likes")
         self.success = False
 
-    def extract_likes_data(self) -> List[str]:
+    def extract_likes_data(self) -> List[Dict]:
         extracted_elements = []
         try:
             div_element = self._driver.find_element(
@@ -33,7 +33,8 @@ class AccountLike(BaseFacebookScraper):
             )
             for element in elements:
                 like_name = element.text
-                extracted_elements.append(like_name)
+                like_url = ""
+                extracted_elements.append({"name": like_name, "url": like_url})
 
         except Exception as e:
             logs.log_error(f"Error extracting friends data: {e}")
