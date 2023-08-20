@@ -56,7 +56,7 @@ class AccountLike(BaseFacebookScraper):
                 )
 
                 sleep(Config.SCROLL_PAUSE_TIME)
-                self.extract_friends_data()
+                self.extract_likes_data()
                 new_height = self._driver.execute_script(
                     "return document.body.scrollHeight"
                 )
@@ -87,7 +87,7 @@ class AccountLike(BaseFacebookScraper):
             self.scroll_page()
 
             rprint("[bold]Step 4 of 4 - Extracting likes data[/bold]")
-            extracted_data = self.extract_friends_data()
+            extracted_data = self.extract_likes_data()
             rprint(extracted_data)
 
             # rprint(
