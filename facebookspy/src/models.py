@@ -66,7 +66,7 @@ class Person(Base):
     posts = relationship("Posts", uselist=False, back_populates="person")
     likes = relationship("Likes", uselist=False, back_populates="person")
     groups = relationship("Groups", uselist=False, back_populates="person")
-    events = relationship("Events", userlist=False, back_populates="person")
+    events = relationship("Events", uselist=False, back_populates="person")
 
 
 class Places(Base):

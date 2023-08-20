@@ -13,6 +13,8 @@ from facebookspy.src.models import (
     Posts,
     PostSource,
     Likes,
+    Groups,
+    Events,
 )
 from .conftest import session
 
@@ -222,3 +224,30 @@ def test_likes_model_successfully_create_object(session):
     assert like.id is not None
     assert like.name == "Like 1"
     assert like.person == person_object
+
+
+def test_groups_model_successfully_create_object(session):
+    person_object = Person(full_name="XYZ", url="https://example.com/xyz")
+    group = Groups(
+        name="Group 1", person=person_object, url="https://example.com/group/1"
+    )
+    session.add(group)
+    session.commit()
+
+    assert group.id is not None
+    assert group.name == "Group 1"
+    assert group.url == "https://example.com/group/1"
+    assert group.person == person_object
+
+
+def test_events_model_successfully_create_object(session):
+    person_object = Person(full_name="XYZ", url="https://example.com/xyz")
+    event = Events(
+        name="Event 1", person=person_object, url="https://example.com/event/1"
+    )
+    session.add(event)
+    session.commit()
+
+    assert event.id is not None
+    assert event.name == "Event 1"
+    assert event.person == person_object
