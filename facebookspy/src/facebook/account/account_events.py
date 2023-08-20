@@ -3,7 +3,7 @@ from typing import List, Dict
 
 from ...config import Config
 from selenium.webdriver.common.by import By
-from ...repository import person_repository, group_repository
+from ...repository import person_repository
 from ..facebook_base import BaseFacebookScraper
 from ...logs import Logs
 from rich import print as rprint
@@ -13,16 +13,16 @@ from ..scroll import scroll_page
 logs = Logs()
 
 
-class AccountGroup(BaseFacebookScraper):
+class AccountEvents(BaseFacebookScraper):
     """
-    Scrape user's groups
+    Scrape user's events
     """
 
     def __init__(self, user_id) -> None:
-        super().__init__(user_id, base_url=f"https://www.facebook.com/{user_id}/groups")
+        super().__init__(user_id, base_url=f"https://www.facebook.com/{user_id}/events")
         self.success = False
 
-    def extract_groups_data(self) -> List[Dict]:
+    def extract_events_data(self) -> List[Dict]:
         extracted_data = []
         try:
             div_element = self._driver.find_element(
@@ -63,7 +63,7 @@ class AccountGroup(BaseFacebookScraper):
             scroll_page(self._driver)
 
             rprint("[bold]Step 4 of 4 - Extracting likes data[/bold]")
-            extracted_data = self.extract_groups_data()
+            extracted_data = self.extract_events_data()
             rprint(extracted_data)
 
             rprint(
@@ -75,9 +75,9 @@ class AccountGroup(BaseFacebookScraper):
 
             person_id = person_repository.get_person(self._user_id).id
 
-            for data in extracted_data:
-                if not group_repository.group_exists(data["name"]):
-                    group_repository.create_group(person_id, data["name"], data["url"])
+            # for data in extracted_data:
+            #     if not group_repository.group_exists(data["name"]):
+            #         group_repository.create_group(person_id, data["name"], data["url"])
 
             self._driver.quit()
             self.success = True
