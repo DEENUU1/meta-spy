@@ -458,18 +458,21 @@ def prompt_options():
             "options",
             message="Select options:",
             choices=[
-                "basic",
-                "friends",
-                "images",
-                "reels",
-                "reviews",
-                "videos",
-                "download videos",
-                "posts",
-                "post details",
-                "likes",
-                "groups",
-                "events",
+                (
+                    "Scrape basic information like full name, history of employement and school, localization etc.",
+                    "a",
+                ),
+                ("Scrape a list of user's friends", "b"),
+                ("Scrape and download images", "c"),
+                ("Scrape url for user's reels", "d"),
+                ("Scrape user's reviews", "e"),
+                ("Scrape user's videos urls", "f"),
+                ("Download videos based on scraped urls", "g"),
+                ("Scrape urls for user's posts", "h"),
+                ("Scrape post details based on scraped urls", "i"),
+                ("Scrape all user's likes", "j"),
+                ("Scrape all user's groups", "k"),
+                ("Scrape all user's events", "l"),
             ],
         )
     ]
@@ -479,67 +482,53 @@ def prompt_options():
 
 @app.command()
 def full_scrape(name: Annotated[str, typer.Argument(help="Facebook user id")]):
-    """Full scrape of user's data
-    - basic information (job and school history, full name etc)
-    - friends
-    - images (download)
-    - recent places
-    - reels
-    - reviews
-    - videos (download)
-    - posts (urls and details)
-    - likes
-    - groups
-    - events
-    """
-
+    """Full scrape of user's data- basic information (job and school history, full name etc)- friends- images (download)- recent places- reels- reviews- videos (download)- posts (urls and details)- likes- groups- events"""
     selected_options = prompt_options()
-
-    if "basic" in selected_options:
+    if "a" in selected_options:
         basic_scraper = AccountBasic(name)
         basic_scraper.pipeline()
 
-    if "friends" in selected_options:
+    if "b" in selected_options:
         friends_scraper = AccountFriend(name)
         friends_scraper.pipeline()
 
-    if "images" in selected_options:
+    if "c" in selected_options:
         images_scraper = AccountImage(name)
         images_scraper.pipeline()
 
-    if "reels" in selected_options:
+    if "d" in selected_options:
         reels_scraper = AccountReel(name)
         reels_scraper.pipeline()
 
-    if "reviews" in selected_options:
+    if "e" in selected_options:
         reviews_scraper = AccountReel(name)
         reviews_scraper.pipeline()
 
-    if "videos" in selected_options:
+    if "f" in selected_options:
         videos_scraper = AccountVideo(name)
         videos_scraper.save_video_urls_to_database_pipeline()
 
-    if "download videos" in selected_options:
+    if "g" in selected_options:
         video_downloader = Downloader(name)
         video_downloader.download_all_person_videos_pipeline()
 
-    if "posts" in selected_options:
+    if "h" in selected_options:
         posts_scraper = AccountPost(name)
         posts_scraper.pipeline()
 
-    if "post details" in selected_options:
+    if "i" in selected_options:
         post_detail_scraper = PostDetail(name)
         post_detail_scraper.pipeline()
 
-    if "likes" in selected_options:
+    if "j" in selected_options:
         likes_scraper = AccountLike(name)
         likes_scraper.pipeline()
 
-    if "groups" in selected_options:
+    if "k" in selected_options:
         groups_scraper = AccountGroup(name)
         groups_scraper.pipeline()
 
-    if "events" in selected_options:
+    if "l" in selected_options:
         events_scraper = AccountEvents(name)
         events_scraper.pipeline()
 
