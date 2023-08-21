@@ -482,7 +482,19 @@ def prompt_options():
 
 @app.command()
 def full_scrape(name: Annotated[str, typer.Argument(help="Facebook user id")]):
-    """Full scrape of user's data- basic information (job and school history, full name etc)- friends- images (download)- recent places- reels- reviews- videos (download)- posts (urls and details)- likes- groups- events"""
+    """Full scrape of user's data
+    - basic information (job and school history, full name etc)
+    - friends
+    - images (download)
+    - recent places
+    - reels
+    - reviews
+    - videos (download)
+    - posts (urls and details)
+    - likes
+    - groups
+    - events
+    """
     selected_options = prompt_options()
     if "a" in selected_options:
         basic_scraper = AccountBasic(name)
