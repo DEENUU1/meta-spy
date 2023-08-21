@@ -24,6 +24,7 @@ from time import time
 import threading
 from .runfastapi import run_fastapi
 from .runreact import run_react
+import inquirer
 
 
 load_dotenv()
@@ -451,6 +452,31 @@ def scrape_person_events(name: Annotated[str, typer.Argument(help="Facebook user
         rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
 
 
+def prompt_options():
+    questions = [
+        inquirer.Checkbox(
+            "options",
+            message="Select options:",
+            choices=[
+                "basic",
+                "friends",
+                "images",
+                "reels",
+                "reviews",
+                "videos",
+                "download videos",
+                "posts",
+                "post details",
+                "likes",
+                "groups",
+                "events",
+            ],
+        )
+    ]
+    answers = inquirer.prompt(questions)
+    return answers["options"]
+
+
 @app.command()
 def full_scrape(name: Annotated[str, typer.Argument(help="Facebook user id")]):
     """Full scrape of user's data
@@ -467,41 +493,55 @@ def full_scrape(name: Annotated[str, typer.Argument(help="Facebook user id")]):
     - events
     """
 
-    basic_scraper = AccountBasic(name)
-    basic_scraper.pipeline()
+    selected_options = prompt_options()
 
-    friends_scraper = AccountFriend(name)
-    friends_scraper.pipeline()
+    if "basic" in selected_options:
+        basic_scraper = AccountBasic(name)
+        basic_scraper.pipeline()
 
-    images_scraper = AccountImage(name)
-    images_scraper.pipeline()
+    if "friends" in selected_options:
+        friends_scraper = AccountFriend(name)
+        friends_scraper.pipeline()
 
-    reels_scraper = AccountReel(name)
-    reels_scraper.pipeline()
+    if "images" in selected_options:
+        images_scraper = AccountImage(name)
+        images_scraper.pipeline()
 
-    reviews_scraper = AccountReel(name)
-    reviews_scraper.pipeline()
+    if "reels" in selected_options:
+        reels_scraper = AccountReel(name)
+        reels_scraper.pipeline()
 
-    videos_scraper = AccountVideo(name)
-    videos_scraper.save_video_urls_to_database_pipeline()
+    if "reviews" in selected_options:
+        reviews_scraper = AccountReel(name)
+        reviews_scraper.pipeline()
 
-    video_downloader = Downloader(name)
-    video_downloader.download_all_person_videos_pipeline()
+    if "videos" in selected_options:
+        videos_scraper = AccountVideo(name)
+        videos_scraper.save_video_urls_to_database_pipeline()
 
-    posts_scraper = AccountPost(name)
-    posts_scraper.pipeline()
+    if "download videos" in selected_options:
+        video_downloader = Downloader(name)
+        video_downloader.download_all_person_videos_pipeline()
 
-    post_detail_scraper = PostDetail(name)
-    post_detail_scraper.pipeline()
+    if "posts" in selected_options:
+        posts_scraper = AccountPost(name)
+        posts_scraper.pipeline()
 
-    likes_scraper = AccountLike(name)
-    likes_scraper.pipeline()
+    if "post details" in selected_options:
+        post_detail_scraper = PostDetail(name)
+        post_detail_scraper.pipeline()
 
-    groups_scraper = AccountGroup(name)
-    groups_scraper.pipeline()
+    if "likes" in selected_options:
+        likes_scraper = AccountLike(name)
+        likes_scraper.pipeline()
 
-    events_scraper = AccountEvents(name)
-    events_scraper.pipeline()
+    if "groups" in selected_options:
+        groups_scraper = AccountGroup(name)
+        groups_scraper.pipeline()
+
+    if "events" in selected_options:
+        events_scraper = AccountEvents(name)
+        events_scraper.pipeline()
 
 
 if __name__ == "__main__":
