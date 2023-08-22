@@ -297,9 +297,31 @@ class AccountBasic(BaseFacebookScraper):
     def personal_pipeline(self) -> None:
         """
         Pipeline to extract phone number, email and date of birth
-
         """
-        pass
+        try:
+            rprint("[bold]Step 1 of 3 - Load cookies[/bold]")
+            self._load_cookies()
+
+            rprint("[bold]Step 2 of 3 - Refresh driver[/bold]")
+            self._driver.refresh()
+
+            rprint("[bold]Step 3 of 3 - Extract full name[/bold]")
+            data = self.extract_personal_data()
+            rprint(data)
+
+            rprint(
+                "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
+            )
+
+            # if not person_repository.person_exists(self._user_id):
+            #     person_repository.create_person(self._user_id, full_name)
+            #
+            self._driver.quit()
+            self.success = True
+
+        except Exception as e:
+            logs.log_error(f"Error running pipeline: {e}")
+            rprint(f"An error occurred {e}")
 
     def full_name_pipeline(self) -> None:
         """
