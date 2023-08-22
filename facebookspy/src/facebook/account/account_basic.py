@@ -11,7 +11,8 @@ from ...repository import (
 
 from ...logs import Logs
 from rich import print as rprint
-
+import re
+from dateutil.parser import parse
 
 logs = Logs()
 
@@ -94,6 +95,49 @@ class AccountBasic(BaseFacebookScraper):
             logs.log_error(f"Error extracting localization data: {e}")
 
         return places
+
+    def extract_personal_data(self) -> List[Dict[str, str]]:
+        """Return phone number, email address and date of birth"""
+        data = []
+        try:
+            self._driver.get(f"{self._base_url}/{Config.CONTACT_URL}")
+
+            main_div = self._driver.find_element(
+                By.CSS_SELECTOR, "div.xyamay9.xqmdsaz.x1gan7if.x1swvt13"
+            )
+            span_elements = main_div.find_elements(
+                By.CSS_SELECTOR,
+                "span.x193iq5w.xeuugli.x13faqbe.x1vvkbs.x1xmvt09.x1lliihq.x1s928wv.xhkezso.x1gmr53x.x1cpjm7i.x1fgarty.x1943h6x.xudqn12.x3x7a5m.x6prxxf.xvq8zen.xo1l8bm.xzsf02u.x1yc453h[dir='auto']",
+            )
+
+            for span_element in span_elements:
+                text = span_element.text
+
+                # Checking for phone number
+                phone_number_match = re.search(r"\b\d{3} \d{3} \d{3}\b", text)
+                if phone_number_match:
+                    data.append({"phone_number": phone_number_match.group()})
+
+                # Checking for email address
+                email_match = re.search(
+                    r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b", text
+                )
+                if email_match:
+                    data.append({"email": email_match.group()})
+
+                # Checking for date of birth
+                dob_match = re.search(r"\b\d{1,2} \w+\b", text)
+                if dob_match:
+                    try:
+                        parsed_date = parse(dob_match.group())
+                        data.append({"date_of_birth": parsed_date.strftime("%Y-%m-%d")})
+                    except ValueError:
+                        pass
+
+        except Exception as e:
+            logs.log_error(f"Error while extracting person data: {e}")
+
+        return data
 
     def extract_family(self) -> List[Dict[str, str]]:
         """Return family members"""
@@ -250,6 +294,13 @@ class AccountBasic(BaseFacebookScraper):
             logs.log_error(f"Error running pipeline: {e}")
             rprint(f"An Error occurred {e}")
 
+    def personal_pipeline(self) -> None:
+        """
+        Pipeline to extract phone number, email and date of birth
+
+        """
+        pass
+
     def full_name_pipeline(self) -> None:
         """
         Pipeline to extract full name data
@@ -266,9 +317,7 @@ class AccountBasic(BaseFacebookScraper):
             rprint(full_name)
 
             rprint(
-                rprint(
-                    "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
-                )
+                "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
             )
 
             if not person_repository.person_exists(self._user_id):
@@ -297,9 +346,7 @@ class AccountBasic(BaseFacebookScraper):
             rprint(full_name)
 
             rprint(
-                rprint(
-                    "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
-                )
+                "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
             )
 
             if not person_repository.person_exists(self._user_id):

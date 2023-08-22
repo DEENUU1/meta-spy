@@ -34,3 +34,4 @@ class Config:
     WORK_AND_EDUCATION_URL = "about_work_and_education"
     PLACES_URL = "about_places"
     FAMILY_URL = "about_family_and_relationships"
+    CONTACT_URL = "about_contact_and_basic_info"
