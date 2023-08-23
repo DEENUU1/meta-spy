@@ -1,13 +1,14 @@
-from typing import List, Dict
-from selenium import webdriver
-
-from ..config import Config
-from selenium.webdriver.common.by import By
-from ..repository import person_repository, post_repository
-from ..logs import Logs
-from rich import print as rprint
-from .scraper import Scraper
 import pickle
+from typing import List, Dict
+
+from rich import print as rprint
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+
+from .scraper import Scraper
+from ..config import Config
+from ..logs import Logs
+from ..repository import person_repository, post_repository
 
 logs = Logs()
 

@@ -1,8 +1,30 @@
-from fastapi import FastAPI, Depends, HTTPException
+from pathlib import Path
 from typing import List
 
+from fastapi import FastAPI, Depends, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from sqlalchemy import or_
 
+from ...config import Config
+from ...database import Session, get_session
+from ...models import (
+    Person,
+    Videos,
+    Reviews,
+    Reels,
+    RecentPlaces,
+    WorkAndEducation,
+    Places,
+    Friends,
+    Image,
+    FamilyMember,
+    Notes,
+    Posts,
+    Likes,
+    Groups,
+    Events,
+)
 from ...schemas import (
     PersonSchema,
     ReviewsSchema,
@@ -22,29 +44,6 @@ from ...schemas import (
     GroupSchema,
     EventSchema,
 )
-from ...models import (
-    Person,
-    Videos,
-    Reviews,
-    Reels,
-    RecentPlaces,
-    WorkAndEducation,
-    Places,
-    Friends,
-    Image,
-    FamilyMember,
-    Notes,
-    Posts,
-    Likes,
-    Groups,
-    Events,
-)
-
-from ...database import Session, get_session
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
-from pathlib import Path
-from ...config import Config
 
 app = FastAPI()
 

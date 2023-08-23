@@ -1,8 +1,9 @@
+from typing import List
+
+from ..database import get_session
 from ..models import (
     RecentPlaces,
 )
-from ..database import get_session
-from typing import List
 
 
 def recent_places_exists(localization: str, date: str, person_id: int) -> bool:

@@ -1,8 +1,9 @@
+from typing import List
+
+from ..database import get_session
 from ..models import (
     Videos,
 )
-from ..database import get_session
-from typing import List
 
 
 def video_exists(url: str, person_id: int) -> bool:

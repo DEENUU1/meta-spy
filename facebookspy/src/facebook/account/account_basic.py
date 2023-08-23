@@ -1,18 +1,18 @@
+import re
 from typing import List, Dict
-from ...config import Config
+
+from rich import print as rprint
 from selenium.webdriver.common.by import By
+
 from ..facebook_base import BaseFacebookScraper
+from ...config import Config
+from ...logs import Logs
 from ...repository import (
     person_repository,
     work_education_repository,
     family_member_repository,
     place_repository,
 )
-
-from ...logs import Logs
-from rich import print as rprint
-import re
-from dateutil.parser import parse
 
 logs = Logs()
 
@@ -25,6 +25,16 @@ class AccountBasic(BaseFacebookScraper):
     def __init__(self, user_id) -> None:
         super().__init__(user_id, base_url=f"https://www.facebook.com/{user_id}")
         self.success = False
+
+    @property
+    def is_pipeline_successful(self) -> bool:
+        """Check if pipeline is successful"""
+        return self.success
+
+    def _load_cookies_and_refresh_driver(self) -> None:
+        """Load cookies and refresh driver"""
+        self._load_cookies()
+        self._driver.refresh()
 
     def extract_full_name(self) -> str | None:
         """Extract full name from homepage"""
@@ -162,28 +172,20 @@ class AccountBasic(BaseFacebookScraper):
 
         return data
 
-    @property
-    def is_pipeline_successful(self) -> bool:
-        """Check if pipeline is successful"""
-        return self.success
-
     def work_and_education_pipeline(self) -> None:
         """
         Pipeline to run extract work and education data
         """
         try:
-            rprint("[bold]Step 1 of 3 - Load cookies[/bold]")
-            self._load_cookies()
-
-            rprint("[bold]Step 2 of 3 - Refresh driver[/bold]")
-            self._driver.refresh()
+            rprint("[bold]Step 1 of 2 - Load cookies[/bold]")
+            self._load_cookies_and_refresh_driver()
 
             if not person_repository.person_exists(self._user_id):
                 person_repository.create_person(self._user_id)
 
             person_id = person_repository.get_person(self._user_id).id
 
-            rprint("[bold]Step 3 of 3 - Extract work and education data[/bold]")
+            rprint("[bold]Step 2 of 2 - Extract work and education data[/bold]")
             scraped_data = self.extract_work_and_education()
             rprint(scraped_data)
 
@@ -211,20 +213,16 @@ class AccountBasic(BaseFacebookScraper):
         Pipeline to return localization data
         """
         try:
-            rprint("[bold]Step 1 of 4 - Load cookies[/bold]")
-            self._load_cookies()
+            rprint("[bold]Step 1 of 3 - Load cookies[/bold]")
+            self._load_cookies_and_refresh_driver()
 
-            rprint("[bold]Step 2 of 4 - Refresh driver[/bold]")
-            self._driver.refresh()
-
-            rprint("[bold]Step 3 of 4 - Extract full name[/bold]")
-
+            rprint("[bold]Step 2 of 3 - Extract full name[/bold]")
             if not person_repository.person_exists(self._user_id):
                 person_repository.create_person(self._user_id)
 
             person_id = person_repository.get_person(self._user_id).id
 
-            rprint("[bold]Step 4 of 4 - Extract localization data[/bold]")
+            rprint("[bold]Step 3 of 3 - Extract localization data[/bold]")
             places = self.extract_places()
             rprint(places)
 
@@ -252,18 +250,15 @@ class AccountBasic(BaseFacebookScraper):
         Pipeline to extract family members data
         """
         try:
-            rprint("[bold]Step 1 of 3 - Load cookies[/bold]")
-            self._load_cookies()
-
-            rprint("[bold]Step 2 of 3 - Refresh driver[/bold]")
-            self._driver.refresh()
+            rprint("[bold]Step 1 of 2 - Load cookies[/bold]")
+            self._load_cookies_and_refresh_driver()
 
             if not person_repository.person_exists(self._user_id):
                 person_repository.create_person(self._user_id)
 
             person_id = person_repository.get_person(self._user_id).id
 
-            rprint("[bold]Step 3 of 3 - Extract family members[/bold]")
+            rprint("[bold]Step 2 of 2 - Extract family members[/bold]")
             family_members = self.extract_family()
             rprint(family_members)
 
@@ -294,13 +289,10 @@ class AccountBasic(BaseFacebookScraper):
         Pipeline to extract phone number and email
         """
         try:
-            rprint("[bold]Step 1 of 3 - Load cookies[/bold]")
-            self._load_cookies()
+            rprint("[bold]Step 1 of 2 - Load cookies[/bold]")
+            self._load_cookies_and_refresh_driver()
 
-            rprint("[bold]Step 2 of 3 - Refresh driver[/bold]")
-            self._driver.refresh()
-
-            rprint("[bold]Step 3 of 3 - Extract contact data[/bold]")
+            rprint("[bold]Step 2 of 2 - Extract contact data[/bold]")
             scraped_data = self.extract_contact_data()
             rprint(scraped_data)
 
@@ -327,13 +319,10 @@ class AccountBasic(BaseFacebookScraper):
         Pipeline to extract full name data
         """
         try:
-            rprint("[bold]Step 1 of 3 - Load cookies[/bold]")
-            self._load_cookies()
+            rprint("[bold]Step 1 of 2 - Load cookies[/bold]")
+            self._load_cookies_and_refresh_driver()
 
-            rprint("[bold]Step 2 of 3 - Refresh driver[/bold]")
-            self._driver.refresh()
-
-            rprint("[bold]Step 3 of 3 - Extract full name[/bold]")
+            rprint("[bold]Step 2 of 2 - Extract full name[/bold]")
             full_name = self.extract_full_name()
             rprint(full_name)
 
@@ -355,13 +344,10 @@ class AccountBasic(BaseFacebookScraper):
         Pipeline to run full script
         """
         try:
-            rprint("[bold]Step 1 of 6 - Load cookies[/bold]")
-            self._load_cookies()
+            rprint("[bold]Step 1 of 5 - Load cookies[/bold]")
+            self._load_cookies_and_refresh_driver()
 
-            rprint("[bold]Step 2 of 6 - Refresh driver[/bold]")
-            self._driver.refresh()
-
-            rprint("[bold]Step 3 of 6 - Extract full name[/bold]")
+            rprint("[bold]Step 2 of 5 - Extract full name[/bold]")
             full_name = self.extract_full_name()
             rprint(full_name)
 
@@ -374,7 +360,7 @@ class AccountBasic(BaseFacebookScraper):
 
             person_id = person_repository.get_person(self._user_id).id
 
-            rprint("[bold]Step 4 of 6 - Extract family members[/bold]")
+            rprint("[bold]Step 3 of 5 - Extract family members[/bold]")
             family_members = self.extract_family()
             rprint(family_members)
 
@@ -393,7 +379,7 @@ class AccountBasic(BaseFacebookScraper):
                         person_id,
                     )
 
-            rprint("[bold]Step 5 of 6 - Extract localization data[/bold]")
+            rprint("[bold]Step 4 of 5 - Extract localization data[/bold]")
             places = self.extract_places()
             rprint(places)
 
@@ -409,7 +395,7 @@ class AccountBasic(BaseFacebookScraper):
                         data["name"], data["date"], person_id
                     )
 
-            rprint("[bold]Step 6 of 6 - Extract work and education data[/bold]")
+            rprint("[bold]Step 5 of 5 - Extract work and education data[/bold]")
             scraped_data = self.extract_work_and_education()
             rprint(scraped_data)
 

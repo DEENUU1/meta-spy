@@ -1,14 +1,12 @@
-from time import sleep
 from typing import List, Dict
 
-from ..facebook_base import BaseFacebookScraper
-from ...config import Config
-from selenium.webdriver.common.by import By
-from ...repository import person_repository, recent_place_repository
-from ...logs import Logs
 from rich import print as rprint
-from ..scroll import scroll_page
+from selenium.webdriver.common.by import By
 
+from ..facebook_base import BaseFacebookScraper
+from ..scroll import scroll_page
+from ...logs import Logs
+from ...repository import person_repository, recent_place_repository
 
 logs = Logs()
 
@@ -23,6 +21,15 @@ class AccountRecentPlaces(BaseFacebookScraper):
             user_id, base_url=f"https://www.facebook.com/{user_id}/places_recent"
         )
         self.success = False
+
+    def _load_cookies_and_refresh_driver(self) -> None:
+        """Load cookies and refresh driver"""
+        self._load_cookies()
+        self._driver.refresh()
+
+    @property
+    def is_pipeline_successful(self) -> bool:
+        return self.success
 
     def extract_recent_places(self) -> List[Dict[str, str]]:
         """
@@ -57,22 +64,18 @@ class AccountRecentPlaces(BaseFacebookScraper):
 
         return extracted_image_urls
 
-    @property
-    def is_pipeline_successful(self) -> bool:
-        return self.success
-
     def pipeline(self) -> None:
         """
         Pipeline to run the scraper
         """
         try:
-            rprint("[bold]Step 1 of 4 - Load cookies[/bold]")
-            self._load_cookies()
-            rprint("[bold]Step 2 of 4 - Refresh driver[/bold]")
-            self._driver.refresh()
-            rprint("[bold]Step 3 of 4 - Scrolling page[/bold]")
+            rprint("[bold]Step 1 of 3 - Load cookies[/bold]")
+            self._load_cookies_and_refresh_driver()
+
+            rprint("[bold]Step 2 of 3 - Scrolling page[/bold]")
             scroll_page(self._driver)
-            rprint("[bold]Step 4 of 4 - Extracting recent places[/bold]")
+
+            rprint("[bold]Step 3 of 3 - Extracting recent places[/bold]")
             recent_places = self.extract_recent_places()
             rprint(recent_places)
 

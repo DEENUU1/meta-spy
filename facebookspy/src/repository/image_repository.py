@@ -1,8 +1,9 @@
+from typing import List
+
+from ..database import get_session
 from ..models import (
     Image,
 )
-from ..database import get_session
-from typing import List
 
 
 def image_exists(path: str, person_id: int) -> bool:

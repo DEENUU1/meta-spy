@@ -1,6 +1,7 @@
 from rich import print as rprint
-from .baner import print_banner
 from rich.console import Console
+
+from .baner import print_banner
 
 VERSION = "0.8"
 

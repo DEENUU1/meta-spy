@@ -1,8 +1,9 @@
+from typing import List
+
+from ..database import get_session
 from ..models import (
     Places,
 )
-from ..database import get_session
-from typing import List
 
 
 def places_exists(name: str, data: str, person_id: int) -> bool:

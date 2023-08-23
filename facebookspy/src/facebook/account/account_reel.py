@@ -1,14 +1,12 @@
-from time import sleep
 from typing import List
 
-from ...config import Config
-from selenium.webdriver.common.by import By
-from ..facebook_base import BaseFacebookScraper
-from ...repository import person_repository, reel_repository
-from ...logs import Logs
 from rich import print as rprint
-from ..scroll import scroll_page
+from selenium.webdriver.common.by import By
 
+from ..facebook_base import BaseFacebookScraper
+from ..scroll import scroll_page
+from ...logs import Logs
+from ...repository import person_repository, reel_repository
 
 logs = Logs()
 
@@ -21,6 +19,15 @@ class AccountReel(BaseFacebookScraper):
     def __init__(self, user_id) -> None:
         super().__init__(user_id, base_url=f"https://www.facebook.com/{user_id}/reels")
         self.success = False
+
+    def _load_cookies_and_refresh_driver(self) -> None:
+        """Load cookies and refresh driver"""
+        self._load_cookies()
+        self._driver.refresh()
+
+    @property
+    def is_pipeline_successful(self) -> bool:
+        return self.success
 
     def extract_reels_urls(self) -> List[str]:
         """
@@ -45,22 +52,18 @@ class AccountReel(BaseFacebookScraper):
 
         return extracted_reels_urls
 
-    @property
-    def is_pipeline_successful(self) -> bool:
-        return self.success
-
     def pipeline(self) -> None:
         """
         Pipeline to run the scraper
         """
         try:
-            rprint("[bold]Step 1 of 4 - Load cookies[/bold]")
-            self._load_cookies()
-            rprint("[bold]Step 2 of 4 - Refresh driver[/bold]")
-            self._driver.refresh()
-            rprint("[bold]Step 3 of 4 - Scrolling page[/bold]")
+            rprint("[bold]Step 1 of 3 - Load cookies[/bold]")
+            self._load_cookies_and_refresh_driver()
+
+            rprint("[bold]Step 2 of 3 - Scrolling page[/bold]")
             scroll_page(self._driver)
-            rprint("[bold]Step 4 of 4 - Extract reels urls[/bold]")
+
+            rprint("[bold]Step 3 of 3 - Extract reels urls[/bold]")
             reels = self.extract_reels_urls()
             rprint(reels)
 

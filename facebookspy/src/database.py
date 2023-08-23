@@ -1,6 +1,8 @@
 import os
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+
 from .models import Base
 
 docker_container = os.environ.get("DOCKER_CONTAINER")

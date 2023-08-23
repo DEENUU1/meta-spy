@@ -1,7 +1,7 @@
+from ..database import get_session
 from ..models import (
     Events,
 )
-from ..database import get_session
 
 
 def event_exists(name: str, person_id: int) -> bool:

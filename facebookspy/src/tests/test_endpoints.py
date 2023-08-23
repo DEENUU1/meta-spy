@@ -1,6 +1,7 @@
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
+from .conftest import client
 from ..models import (
     Person,
     Videos,
@@ -14,7 +15,6 @@ from ..models import (
     Groups,
     Events,
 )
-from .conftest import client
 
 
 def test_get_people_list_empty(client) -> None:

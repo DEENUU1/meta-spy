@@ -1,21 +1,20 @@
-from time import sleep
-from typing import List
 import os
-
-from ...config import Config
-from selenium.webdriver.common.by import By
-from rich.progress import Progress
-import requests
-from PIL import Image
-from io import BytesIO
 import random
 import string
-from ..facebook_base import BaseFacebookScraper
-from ...repository import person_repository, image_repository
-from ...logs import Logs
-from rich import print as rprint
-from ..scroll import scroll_page
+from io import BytesIO
+from typing import List
 
+import requests
+from PIL import Image
+from rich import print as rprint
+from rich.progress import Progress
+from selenium.webdriver.common.by import By
+
+from ..facebook_base import BaseFacebookScraper
+from ..scroll import scroll_page
+from ...config import Config
+from ...logs import Logs
+from ...repository import person_repository, image_repository
 
 logs = Logs()
 
@@ -28,6 +27,35 @@ class AccountImage(BaseFacebookScraper):
     def __init__(self, user_id) -> None:
         super().__init__(user_id, base_url=f"https://www.facebook.com/{user_id}/photos")
         self.success = False
+
+    def _load_cookies_and_refresh_driver(self) -> None:
+        """Load cookies and refresh driver"""
+        self._load_cookies()
+        self._driver.refresh()
+
+    @property
+    def is_pipeline_successful(self) -> bool:
+        return self.success
+
+    @staticmethod
+    def generate_image_file_name() -> str:
+        """
+        Generate a random image file name
+        """
+        random_name = "".join(random.choice(string.ascii_letters) for _ in range(10))
+        return f"{random_name}.jpg"
+
+    @staticmethod
+    def check_image_type(image_content) -> bool:
+        """
+        Check if file is an image
+        """
+        try:
+            _ = Image.open(BytesIO(image_content))
+            return True
+        except Exception as e:
+            logs.log_error(f"Skipping image, Exception: {e}")
+            return False
 
     def extract_image_urls(self) -> List[str]:
         """
@@ -51,26 +79,6 @@ class AccountImage(BaseFacebookScraper):
             logs.log_error(f"Error extracting image URLs: {e}")
 
         return extracted_image_urls
-
-    @staticmethod
-    def generate_image_file_name() -> str:
-        """
-        Generate a random image file name
-        """
-        random_name = "".join(random.choice(string.ascii_letters) for _ in range(10))
-        return f"{random_name}.jpg"
-
-    @staticmethod
-    def check_image_type(image_content) -> bool:
-        """
-        Check if file is an image
-        """
-        try:
-            _ = Image.open(BytesIO(image_content))
-            return True
-        except Exception as e:
-            logs.log_error(f"Skipping image, Exception: {e}")
-            return False
 
     def save_images(self, image_urls: List[str]) -> List[str]:
         """
@@ -124,24 +132,18 @@ class AccountImage(BaseFacebookScraper):
 
         return downloaded_image_paths
 
-    @property
-    def is_pipeline_successful(self) -> bool:
-        return self.success
-
     def pipeline(self) -> None:
         """
         Pipeline to run the scraper
         """
         try:
-            rprint("[bold]Step 1 of 5 - Load cookies[/bold]")
-            self._load_cookies()
-            rprint("[bold]Step 2 of 5 - Refresh driver[/bold]")
-            self._driver.refresh()
-            rprint("[bold]Step 3 of 5 - Scrolling page[/bold]")
+            rprint("[bold]Step 1 of 4 - Load cookies[/bold]")
+            self._load_cookies_and_refresh_driver()
+            rprint("[bold]Step 2 of 4 - Scrolling page[/bold]")
             scroll_page(self._driver)
-            rprint("[bold]Step 4 of 5 - Extract image urls[/bold]")
+            rprint("[bold]Step 3 of 4 - Extract image urls[/bold]")
             image_urls = self.extract_image_urls()
-            rprint("[bold]Step 5 of 5 - Downloading images[/bold]")
+            rprint("[bold]Step 4 of 4 - Downloading images[/bold]")
             image_paths = self.save_images(image_urls)
             rprint(image_paths)
 

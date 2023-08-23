@@ -1,14 +1,12 @@
-from time import sleep
 from typing import List, Dict
 
-from ...config import Config
-from selenium.webdriver.common.by import By
-from ..facebook_base import BaseFacebookScraper
-from ...repository import person_repository, review_repository
-from ...logs import Logs
 from rich import print as rprint
-from ..scroll import scroll_page
+from selenium.webdriver.common.by import By
 
+from ..facebook_base import BaseFacebookScraper
+from ..scroll import scroll_page
+from ...logs import Logs
+from ...repository import person_repository, review_repository
 
 logs = Logs()
 
@@ -23,6 +21,15 @@ class AccountReview(BaseFacebookScraper):
             user_id, base_url=f"https://www.facebook.com/{user_id}/reviews_written"
         )
         self.success = False
+
+    def _load_cookies_and_refresh_driver(self) -> None:
+        """Load cookies and refresh driver"""
+        self._load_cookies()
+        self._driver.refresh()
+
+    @property
+    def is_pipeline_successful(self) -> bool:
+        return self.success
 
     def extract_reviews(self) -> List[Dict[str, str]]:
         """
@@ -58,22 +65,18 @@ class AccountReview(BaseFacebookScraper):
 
         return extracted_reviews
 
-    @property
-    def is_pipeline_successful(self) -> bool:
-        return self.success
-
     def pipeline(self) -> None:
         """
         Pipeline to run the scraper
         """
         try:
-            rprint("[bold]Step 1 of 4 - Load cookies[/bold]")
-            self._load_cookies()
-            rprint("[bold]Step 2 of 4 - Refresh driver[/bold]")
-            self._driver.refresh()
-            rprint("[bold]Step 3 of 4 - Scrolling page[/bold]")
+            rprint("[bold]Step 1 of 3 - Load cookies[/bold]")
+            self._load_cookies_and_refresh_driver()
+
+            rprint("[bold]Step 2 of 3 - Scrolling page[/bold]")
             scroll_page(self._driver)
-            rprint("[bold]Step 4 of 4 - Extract reviews[/bold]")
+
+            rprint("[bold]Step 3 of 3 - Extract reviews[/bold]")
             reviews = self.extract_reviews()
             rprint(reviews)
 
