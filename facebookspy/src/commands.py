@@ -306,43 +306,59 @@ def scrape_video_urls(name: Annotated[str, typer.Argument(help="Facebook user id
         rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
 
 
+def download_person_videos_options():
+    questions = [
+        inquirer.Checkbox(
+            "options",
+            message="Select options:",
+            choices=[
+                (
+                    "Download all videos for specified facebook account based on the scraped URLs",
+                    "a",
+                ),
+                (
+                    "Download all videos with 'downloaded' field with value False for specified facebook account based on the scraped URLs",
+                    "b",
+                ),
+            ],
+        )
+    ]
+    answers = inquirer.prompt(questions)
+    return answers["options"]
+
+
 @app.command()
-def download_all_person_videos(
+def download_person_videos(
     name: Annotated[str, typer.Argument(help="Facebook user id")]
 ):
-    """Download all reels for specified facebook account based on the scraped URLs"""
+    """Download videos for specified facebook account"""
+    selected_options = download_person_videos_options()
 
-    rprint(f"Start downloading all videos for {name}")
-    scraper = Downloader(name)
+    if "a" in selected_options:
+        rprint(f"Start downloading all videos for {name}")
+        scraper = Downloader(name)
 
-    time_start = time()
-    scraper.download_all_person_videos_pipeline()
-    time_end = time()
+        time_start = time()
+        scraper.download_all_person_videos_pipeline()
+        time_end = time()
 
-    if scraper.is_pipeline_successful:
-        rprint(f"✅Scraping successful after {time_end - time_start} seconds ✅")
-    else:
-        rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
+        if scraper.is_pipeline_successful:
+            rprint(f"✅Scraping successful after {time_end - time_start} seconds ✅")
+        else:
+            rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
 
+    if "b" in selected_options:
+        rprint(f"Start downloading all new videos for {name}")
+        scraper = Downloader(name)
 
-@app.command()
-def download_new_person_videos(
-    name: Annotated[str, typer.Argument(help="Facebook user id")]
-):
-    """Download all videos with 'downloaded' field with value False for specified
-    facebook account based on the scraped URLs"""
+        time_start = time()
+        scraper.download_new_person_videos_pipeline()
+        time_end = time()
 
-    rprint(f"Start downloading all new videos for {name}")
-    scraper = Downloader(name)
-
-    time_start = time()
-    scraper.download_new_person_videos_pipeline()
-    time_end = time()
-
-    if scraper.is_pipeline_successful:
-        rprint(f"✅Scraping successful after {time_end - time_start} seconds ✅")
-    else:
-        rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
+        if scraper.is_pipeline_successful:
+            rprint(f"✅Scraping successful after {time_end - time_start} seconds ✅")
+        else:
+            rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
 
 
 @app.command()
