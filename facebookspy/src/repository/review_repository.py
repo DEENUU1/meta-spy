@@ -1,7 +1,7 @@
+from ..database import get_session
 from ..models import (
     Reviews,
 )
-from ..database import get_session
 
 
 def review_exists(company: str, review: str, person_id: int) -> bool:

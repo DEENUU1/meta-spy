@@ -1,8 +1,9 @@
+from typing import List
+
+from ..database import get_session
 from ..models import (
     FamilyMember,
 )
-from ..database import get_session
-from typing import List
 
 
 def family_member_exists(person_id: int, full_name: str) -> bool:

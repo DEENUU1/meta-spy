@@ -1,7 +1,7 @@
-from ..models import Posts, PostSource
+from typing import List
 
 from ..database import get_session
-from typing import List
+from ..models import Posts, PostSource
 
 
 def post_exists(url: str) -> bool:

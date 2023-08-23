@@ -1,7 +1,7 @@
+from ..database import get_session
 from ..models import (
     Groups,
 )
-from ..database import get_session
 
 
 def group_exists(name: str, person_id: int) -> bool:

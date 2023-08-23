@@ -1,12 +1,13 @@
-from ..config import Config
-import youtube_dl
 import os
 import random
 import string
-from ..logs import Logs
-from ..repository import video_repository, person_repository
+
+import youtube_dl
 from rich.progress import Progress
 
+from ..config import Config
+from ..logs import Logs
+from ..repository import video_repository, person_repository
 
 logs = Logs()
 
@@ -21,14 +22,18 @@ class Downloader:
         self.video_path = Config.VIDEO_PATH
         self.success = False
 
+    @property
+    def is_pipeline_successful(self) -> bool:
+        return self.success
+
     @staticmethod
-    def generate_random_video_title() -> str:
+    def _generate_random_video_title() -> str:
         """Generate random video title"""
         chars = string.ascii_letters
         return "".join(random.choice(chars) for _ in range(12))
 
     @staticmethod
-    def download_video(path: str, video_url: str) -> None:
+    def _download_video(path: str, video_url: str) -> None:
         try:
             ydl_opts = {
                 "outtmpl": os.path.join(path, "%(title)s.%(ext)s"),
@@ -50,24 +55,20 @@ class Downloader:
         if not os.path.exists(person_video_path):
             os.makedirs(person_video_path)
 
-        video_filename = self.generate_random_video_title()
+        video_filename = self._generate_random_video_title()
         video_full_path = os.path.join(person_video_path, video_filename)
 
-        self.download_video(video_full_path, video_url)
+        self._download_video(video_full_path, video_url)
 
     def save_single_video(self, video_url: str) -> None:
         """Download single video just by passing url"""
         if not os.path.exists(self.video_path):
             os.makedirs(self.video_path)
 
-        video_filename = self.generate_random_video_title()
+        video_filename = self._generate_random_video_title()
         video_full_path = os.path.join(self.video_path, video_filename)
 
-        self.download_video(video_full_path, video_url)
-
-    @property
-    def is_pipeline_successful(self) -> bool:
-        return self.success
+        self._download_video(video_full_path, video_url)
 
     def download_all_person_videos_pipeline(self) -> None:
         """Download videos from specified facebook account based on the urls from the database

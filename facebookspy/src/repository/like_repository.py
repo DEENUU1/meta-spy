@@ -1,7 +1,7 @@
+from ..database import get_session
 from ..models import (
     Likes,
 )
-from ..database import get_session
 
 
 def like_exists(name: str, person_id: int) -> bool:

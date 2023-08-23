@@ -1,14 +1,13 @@
 import pytest
+from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+
 from facebookspy.src.models import (
     Base,
 )
-from ..server.backend.app import app
 from ..database import get_session
-import pytest
-
-from fastapi.testclient import TestClient
+from ..server.backend.app import app
 
 engine = create_engine("sqlite:///database_test.db")
 Session = sessionmaker(bind=engine)

@@ -1,12 +1,12 @@
 import pickle
 
-from ..config import Config
+from rich import print as rprint
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
-from .scraper import Scraper
-from ..logs import Logs
-from rich import print as rprint
 
+from .scraper import Scraper
+from ..config import Config
+from ..logs import Logs
 
 logs = Logs()
 

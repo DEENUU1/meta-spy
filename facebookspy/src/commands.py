@@ -1,30 +1,31 @@
-from dotenv import load_dotenv
-from .facebook.login import FacebookLogIn
-from .facebook.account.account_basic import AccountBasic
-from .facebook.account.account_friend import AccountFriend
-from .facebook.account.account_recentplace import AccountRecentPlaces
-from .facebook.account.account_image import AccountImage
-from .facebook.account.account_reel import AccountReel
-from .facebook.account.account_videos import AccountVideo
-from .facebook.account.account_review import AccountReview
-from .facebook.downloader import Downloader
-from .facebook.account.account_post import AccountPost
-from .facebook.post_detail import PostDetail
-from .facebook.account.account_like import AccountLike
-from .facebook.account.account_group import AccountGroup
-from .facebook.account.account_events import AccountEvents
-from typing import Annotated
-import typer
-from src.cli.version import return_version_info
 import subprocess
-from .logs import Logs
-from rich import print as rprint
-from time import time
 import threading
+from time import time
+from typing import Annotated
+
+import inquirer
+import typer
+from dotenv import load_dotenv
+from rich import print as rprint
+from src.cli.version import return_version_info
+
+from .facebook.account.account_basic import AccountBasic
+from .facebook.account.account_events import AccountEvents
+from .facebook.account.account_friend import AccountFriend
+from .facebook.account.account_group import AccountGroup
+from .facebook.account.account_image import AccountImage
+from .facebook.account.account_like import AccountLike
+from .facebook.account.account_post import AccountPost
+from .facebook.account.account_recentplace import AccountRecentPlaces
+from .facebook.account.account_reel import AccountReel
+from .facebook.account.account_review import AccountReview
+from .facebook.account.account_videos import AccountVideo
+from .facebook.downloader import Downloader
+from .facebook.login import FacebookLogIn
+from .facebook.post_detail import PostDetail
+from .logs import Logs
 from .runfastapi import run_fastapi
 from .runreact import run_react
-import inquirer
-
 
 load_dotenv()
 

@@ -1,14 +1,15 @@
 import pickle
+
+from rich import print as rprint
+from rich.prompt import Prompt
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from ..config import Config
-from .scraper import Scraper
-from rich.prompt import Prompt
-from rich import print as rprint
-from ..logs import Logs
+from selenium.webdriver.support.ui import WebDriverWait
 
+from .scraper import Scraper
+from ..config import Config
+from ..logs import Logs
 
 logs = Logs()
 

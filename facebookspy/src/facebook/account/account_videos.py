@@ -1,14 +1,15 @@
 from typing import List
+
+from rich import print as rprint
 from selenium.webdriver.common.by import By
+
 from ..facebook_base import BaseFacebookScraper
+from ..scroll import scroll_page
+from ...logs import Logs
 from ...repository import (
     person_repository,
     video_repository,
 )
-from ...logs import Logs
-from rich import print as rprint
-from ..scroll import scroll_page
-
 
 logs = Logs()
 

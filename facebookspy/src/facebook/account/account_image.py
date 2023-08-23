@@ -1,20 +1,20 @@
-from typing import List
 import os
-
-from ...config import Config
-from selenium.webdriver.common.by import By
-from rich.progress import Progress
-import requests
-from PIL import Image
-from io import BytesIO
 import random
 import string
-from ..facebook_base import BaseFacebookScraper
-from ...repository import person_repository, image_repository
-from ...logs import Logs
-from rich import print as rprint
-from ..scroll import scroll_page
+from io import BytesIO
+from typing import List
 
+import requests
+from PIL import Image
+from rich import print as rprint
+from rich.progress import Progress
+from selenium.webdriver.common.by import By
+
+from ..facebook_base import BaseFacebookScraper
+from ..scroll import scroll_page
+from ...config import Config
+from ...logs import Logs
+from ...repository import person_repository, image_repository
 
 logs = Logs()
 

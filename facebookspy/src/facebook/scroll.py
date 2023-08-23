@@ -1,6 +1,6 @@
 from time import sleep
+
 from ..config import Config
-from selenium.webdriver.common.by import By
 from ..logs import Logs
 
 logs = Logs()

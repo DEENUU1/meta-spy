@@ -1,11 +1,12 @@
 from typing import List
 
-from selenium.webdriver.common.by import By
-from ...repository import person_repository, like_repository
-from ..facebook_base import BaseFacebookScraper
-from ...logs import Logs
 from rich import print as rprint
+from selenium.webdriver.common.by import By
+
+from ..facebook_base import BaseFacebookScraper
 from ..scroll import scroll_page
+from ...logs import Logs
+from ...repository import person_repository, like_repository
 
 logs = Logs()
 

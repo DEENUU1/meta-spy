@@ -1,17 +1,18 @@
+import re
 from typing import List, Dict
-from ...config import Config
+
+from rich import print as rprint
 from selenium.webdriver.common.by import By
+
 from ..facebook_base import BaseFacebookScraper
+from ...config import Config
+from ...logs import Logs
 from ...repository import (
     person_repository,
     work_education_repository,
     family_member_repository,
     place_repository,
 )
-
-from ...logs import Logs
-from rich import print as rprint
-import re
 
 logs = Logs()
 
