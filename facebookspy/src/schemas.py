@@ -96,6 +96,8 @@ class PersonSchema(BaseModel):
     full_name: str | None
     url: str
     facebook_id: str
+    phone_number: str | None
+    email: str | None
 
     class Config:
         orm_mode = True
