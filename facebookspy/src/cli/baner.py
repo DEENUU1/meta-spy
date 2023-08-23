@@ -5,8 +5,6 @@ from rich.align import Align
 from rich.panel import Panel
 from rich.text import Text
 
-from .version import VERSION
-
 
 BANNER = """
         ███████╗ █████╗  ██████╗███████╗██████╗  ██████╗  ██████╗ ██╗  ██╗    ███████╗██████╗ ██╗   ██╗
@@ -48,6 +46,5 @@ def print_banner(console) -> None:
         ),
         width=width,
         height=height,
-        subtitle=f"[bold blue]v.{VERSION}[/bold blue]",
     )
     console.print(panel)

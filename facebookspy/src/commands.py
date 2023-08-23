@@ -15,7 +15,6 @@ from .facebook.account.account_group import AccountGroup
 from .facebook.account.account_events import AccountEvents
 from typing import Annotated
 import typer
-from src.cli.home import display_start_menu
 from src.cli.version import return_version_info
 import subprocess
 from .logs import Logs
@@ -67,13 +66,6 @@ def server(
 
         thread_react.join()
         thread_fastapi.join()
-
-
-@app.command()
-def home():
-    """Display basic information about the project"""
-
-    display_start_menu()
 
 
 @app.command()
