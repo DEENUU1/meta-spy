@@ -385,3 +385,26 @@ def test_get_likes_by_person_id(client: TestClient, session: Session) -> None:
             "name": "TestXYZ",
         }
     ]
+
+
+def test_get_groups_by_person_id(client: TestClient, session: Session) -> None:
+    person = Person(
+        full_name="John Doe", url="https://example.com/john-doe", facebook_id="abc"
+    )
+    group = Groups(person=person, name="TestXYZ", url="https://example.com/group")
+
+    session.add(person)
+
+    session.add(group)
+    session.commit()
+
+    response = client.get("/person/group/1")
+    assert response.status_code == 200
+    assert response.json() == [
+        {
+            "id": 1,
+            "person_id": 1,
+            "name": "TestXYZ",
+            "url": "https://example.com/group",
+        }
+    ]
