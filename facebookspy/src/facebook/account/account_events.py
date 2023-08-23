@@ -1,4 +1,3 @@
-from time import sleep
 from typing import List, Dict
 
 from selenium.webdriver.common.by import By

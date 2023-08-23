@@ -1,7 +1,5 @@
-from time import sleep
 from typing import List, Dict
 
-from ...config import Config
 from selenium.webdriver.common.by import By
 from ...repository import person_repository, group_repository
 from ..facebook_base import BaseFacebookScraper
@@ -21,6 +19,15 @@ class AccountGroup(BaseFacebookScraper):
     def __init__(self, user_id) -> None:
         super().__init__(user_id, base_url=f"https://www.facebook.com/{user_id}/groups")
         self.success = False
+
+    def _load_cookies_and_refresh_driver(self) -> None:
+        """Load cookies and refresh driver"""
+        self._load_cookies()
+        self._driver.refresh()
+
+    @property
+    def is_pipeline_successful(self) -> bool:
+        return self.success
 
     def extract_groups_data(self) -> List[Dict]:
         extracted_data = []
@@ -46,23 +53,18 @@ class AccountGroup(BaseFacebookScraper):
 
         return extracted_data
 
-    @property
-    def is_pipeline_successful(self) -> bool:
-        return self.success
-
     def pipeline(self) -> None:
         """
         Pipeline to run the scraper
         """
         try:
-            rprint("[bold]Step 1 of 4 - Load cookies[/bold]")
-            self._load_cookies()
-            rprint("[bold]Step 2 of 3 - Refresh driver[/bold]")
-            self._driver.refresh()
-            rprint("[bold]Step 3 of 4 - Scrolling page[/bold]")
+            rprint("[bold]Step 1 of 3 - Load cookies[/bold]")
+            self._load_cookies_and_refresh_driver()
+
+            rprint("[bold]Step 2 of 3 - Scrolling page[/bold]")
             scroll_page(self._driver)
 
-            rprint("[bold]Step 4 of 4 - Extracting likes data[/bold]")
+            rprint("[bold]Step 3 of 3 - Extracting likes data[/bold]")
             extracted_data = self.extract_groups_data()
             rprint(extracted_data)
 
