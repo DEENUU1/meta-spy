@@ -349,3 +349,85 @@ class AccountBasic(BaseFacebookScraper):
         except Exception as e:
             logs.log_error(f"Error running pipeline: {e}")
             rprint(f"An error occurred {e}")
+
+    def pipeline(self) -> None:
+        """
+        Pipeline to run full script
+        """
+        try:
+            rprint("[bold]Step 1 of 6 - Load cookies[/bold]")
+            self._load_cookies()
+
+            rprint("[bold]Step 2 of 6 - Refresh driver[/bold]")
+            self._driver.refresh()
+
+            rprint("[bold]Step 3 of 6 - Extract full name[/bold]")
+            full_name = self.extract_full_name()
+            rprint(full_name)
+
+            rprint(
+                "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
+            )
+
+            if not person_repository.person_exists(self._user_id):
+                person_repository.create_person(self._user_id, full_name)
+
+            person_id = person_repository.get_person(self._user_id).id
+
+            rprint("[bold]Step 4 of 6 - Extract family members[/bold]")
+            family_members = self.extract_family()
+            rprint(family_members)
+
+            rprint(
+                "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
+            )
+
+            for member in family_members:
+                if not family_member_repository.family_member_exists(
+                    person_id, member["name"]
+                ):
+                    family_member_repository.create_family_member(
+                        member["name"],
+                        member["relationship"],
+                        member["url"],
+                        person_id,
+                    )
+
+            rprint("[bold]Step 5 of 6 - Extract localization data[/bold]")
+            places = self.extract_places()
+            rprint(places)
+
+            rprint(
+                "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
+            )
+
+            for data in places:
+                if not place_repository.places_exists(
+                    data["name"], data["date"], person_id
+                ):
+                    place_repository.create_places(
+                        data["name"], data["date"], person_id
+                    )
+
+            rprint("[bold]Step 6 of 6 - Extract work and education data[/bold]")
+            scraped_data = self.extract_work_and_education()
+            rprint(scraped_data)
+
+            rprint(
+                "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
+            )
+
+            for data in scraped_data:
+                if not work_education_repository.work_and_education_exists(
+                    data["name"], person_id
+                ):
+                    work_education_repository.create_work_and_education(
+                        data["name"], person_id
+                    )
+
+            self._driver.quit()
+            self.success = True
+
+        except Exception as e:
+            logs.log_error(f"Error running pipeline: {e}")
+            rprint(f"An Error occurred {e}")
