@@ -31,6 +31,7 @@ class AccountBasic(BaseFacebookScraper):
         return self.success
 
     def _load_cookies_and_refresh_driver(self) -> None:
+        """Load cookies and refresh driver"""
         self._load_cookies()
         self._driver.refresh()
 
