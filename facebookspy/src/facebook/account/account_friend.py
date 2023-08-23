@@ -24,6 +24,15 @@ class AccountFriend(BaseFacebookScraper):
         )
         self.success = False
 
+    def _load_cookies_and_refresh_driver(self) -> None:
+        """Load cookies and refresh driver"""
+        self._load_cookies()
+        self._driver.refresh()
+
+    @property
+    def is_pipeline_successful(self) -> bool:
+        return self.success
+
     def extract_friends_data(self) -> List[Dict[str, str]]:
         """
         Return a list of dictionaries with the usernames and the urls to the profile for every person in friends list
@@ -44,23 +53,18 @@ class AccountFriend(BaseFacebookScraper):
 
         return extracted_elements
 
-    @property
-    def is_pipeline_successful(self) -> bool:
-        return self.success
-
     def pipeline(self) -> None:
         """
         Pipeline to run the scraper
         """
         try:
-            rprint("[bold]Step 1 of 4 - Load cookies[/bold]")
-            self._load_cookies()
-            rprint("[bold]Step 2 of 3 - Refresh driver[/bold]")
-            self._driver.refresh()
-            rprint("[bold]Step 3 of 4 - Scrolling page[/bold]")
+            rprint("[bold]Step 1 of 3 - Load cookies[/bold]")
+            self._load_cookies_and_refresh_driver()
+
+            rprint("[bold]Step 2 of 3 - Scrolling page[/bold]")
             scroll_page(self._driver)
 
-            rprint("[bold]Step 4 of 4 - Extracting friends data[/bold]")
+            rprint("[bold]Step 3 of 3 - Extracting friends data[/bold]")
             extracted_data = self.extract_friends_data()
             rprint(extracted_data)
 
