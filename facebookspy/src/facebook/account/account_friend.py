@@ -90,6 +90,10 @@ class AccountFriend(BaseFacebookScraper):
             person_repository.update_number_of_friends(
                 person_id, number_of_person_friends
             )
+            if person_repository:
+                rprint("[bold green]Person table updated[/bold green]")
+            else:
+                rprint("[bold red]Person table not updated[/bold red]")
 
             self._driver.quit()
             self.success = True
