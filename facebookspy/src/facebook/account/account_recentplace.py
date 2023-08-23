@@ -22,6 +22,15 @@ class AccountRecentPlaces(BaseFacebookScraper):
         )
         self.success = False
 
+    def _load_cookies_and_refresh_driver(self) -> None:
+        """Load cookies and refresh driver"""
+        self._load_cookies()
+        self._driver.refresh()
+
+    @property
+    def is_pipeline_successful(self) -> bool:
+        return self.success
+
     def extract_recent_places(self) -> List[Dict[str, str]]:
         """
         Return data about recent places
@@ -55,22 +64,18 @@ class AccountRecentPlaces(BaseFacebookScraper):
 
         return extracted_image_urls
 
-    @property
-    def is_pipeline_successful(self) -> bool:
-        return self.success
-
     def pipeline(self) -> None:
         """
         Pipeline to run the scraper
         """
         try:
-            rprint("[bold]Step 1 of 4 - Load cookies[/bold]")
-            self._load_cookies()
-            rprint("[bold]Step 2 of 4 - Refresh driver[/bold]")
-            self._driver.refresh()
-            rprint("[bold]Step 3 of 4 - Scrolling page[/bold]")
+            rprint("[bold]Step 1 of 3 - Load cookies[/bold]")
+            self._load_cookies_and_refresh_driver()
+
+            rprint("[bold]Step 2 of 3 - Scrolling page[/bold]")
             scroll_page(self._driver)
-            rprint("[bold]Step 4 of 4 - Extracting recent places[/bold]")
+
+            rprint("[bold]Step 3 of 3 - Extracting recent places[/bold]")
             recent_places = self.extract_recent_places()
             rprint(recent_places)
 
