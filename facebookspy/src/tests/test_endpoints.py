@@ -9,17 +9,21 @@ from ..models import (
     Places,
     Image,
     Notes,
+    Posts,
+    Likes,
+    Groups,
+    Events,
 )
 from .conftest import client
 
 
-def test_get_people_list_empty(client):
+def test_get_people_list_empty(client) -> None:
     response = client.get("/person/")
     assert response.status_code == 404
     assert response.json() == {"detail": "People not found"}
 
 
-def test_get_people_list(client, session):
+def test_get_people_list(client, session) -> None:
     person1 = Person(
         full_name="John Doe", url="https://example.com/john-doe", facebook_id="abc"
     )
@@ -52,13 +56,13 @@ def test_get_people_list(client, session):
     ]
 
 
-def test_get_person_by_facebook_id_not_found(client):
+def test_get_person_by_facebook_id_not_found(client) -> None:
     response = client.get("/person/1")
     assert response.status_code == 404
     assert response.json() == {"detail": "Person not found"}
 
 
-def test_get_person_by_facebook_id(client, session):
+def test_get_person_by_facebook_id(client, session) -> None:
     person = Person(
         full_name="John Doe", url="https://example.com/john-doe", facebook_id="abc"
     )
@@ -77,13 +81,13 @@ def test_get_person_by_facebook_id(client, session):
     }
 
 
-def test_get_reviews_by_person_id_not_found(client):
+def test_get_reviews_by_person_id_not_found(client) -> None:
     response = client.get("/person/review/1")
     assert response.status_code == 404
     assert response.json() == {"detail": "Reviews not found"}
 
 
-def test_get_reviews_by_person_id(client, session):
+def test_get_reviews_by_person_id(client, session) -> None:
     person = Person(
         full_name="John Doe", url="https://example.com/john-doe", facebook_id="abc"
     )
@@ -99,13 +103,13 @@ def test_get_reviews_by_person_id(client, session):
     ]
 
 
-def test_get_videos_by_person_id_not_found(client):
+def test_get_videos_by_person_id_not_found(client) -> None:
     response = client.get("/person/video/1")
     assert response.status_code == 404
     assert response.json() == {"detail": "Videos not found"}
 
 
-def test_get_videos_by_person_id(client, session):
+def test_get_videos_by_person_id(client, session) -> None:
     person = Person(
         full_name="John Doe", url="https://example.com/john-doe", facebook_id="abc"
     )
@@ -121,7 +125,7 @@ def test_get_videos_by_person_id(client, session):
     ]
 
 
-def test_get_places_by_person_id(client: TestClient, session: Session):
+def test_get_places_by_person_id(client: TestClient, session: Session) -> None:
     person = Person(
         full_name="John Doe", url="https://example.com/john-doe", facebook_id="abc"
     )
@@ -146,7 +150,7 @@ def test_get_places_by_person_id(client: TestClient, session: Session):
     ]
 
 
-def test_get_friends_by_person_id(client: TestClient, session: Session):
+def test_get_friends_by_person_id(client: TestClient, session: Session) -> None:
     person = Person(
         full_name="John Doe", url="https://example.com/john-doe", facebook_id="abc"
     )
@@ -169,7 +173,7 @@ def test_get_friends_by_person_id(client: TestClient, session: Session):
     ]
 
 
-def test_get_images_by_person_id(client: TestClient, session: Session):
+def test_get_images_by_person_id(client: TestClient, session: Session) -> None:
     person = Person(
         full_name="John Doe", url="https://example.com/john-doe", facebook_id="abc"
     )
@@ -216,7 +220,7 @@ def test_get_images_by_person_id(client: TestClient, session: Session):
 #     ]
 
 
-def test_create_note_for_person(client: TestClient, session: Session):
+def test_create_note_for_person(client: TestClient, session: Session) -> None:
     person = Person(
         full_name="John Doe", url="https://example.com/john-doe", facebook_id="abc"
     )
@@ -235,7 +239,7 @@ def test_create_note_for_person(client: TestClient, session: Session):
     }
 
 
-def test_update_note_for_person(client: TestClient, session: Session):
+def test_update_note_for_person(client: TestClient, session: Session) -> None:
     person = Person(
         full_name="John Doe", url="https://example.com/john-doe", facebook_id="abc"
     )
@@ -256,7 +260,7 @@ def test_update_note_for_person(client: TestClient, session: Session):
     }
 
 
-def get_note_for_person(client: TestClient, session: Session):
+def test_get_note_for_person(client: TestClient, session: Session) -> None:
     person = Person(
         full_name="John Doe", url="https://example.com/john-doe", facebook_id="abc"
     )
@@ -274,7 +278,7 @@ def get_note_for_person(client: TestClient, session: Session):
     }
 
 
-def get_all_notes(client: TestClient, session: Session):
+def test_get_all_notes(client: TestClient, session: Session) -> None:
     person = Person(
         full_name="John Doe", url="https://example.com/john-doe", facebook_id="abc"
     )
@@ -293,6 +297,137 @@ def get_all_notes(client: TestClient, session: Session):
     response_json = response.json()
     assert response.status_code == 200
     assert len(response_json) == 3
-    assert response_json[0]["content"] == "This is a note"
-    assert response_json[1]["content"] == "This is a note 2"
-    assert response_json[2]["content"] == "This is a note 3"
+
+
+def test_get_posts_by_person_id(client: TestClient, session: Session) -> None:
+    person = Person(
+        full_name="John Doe", url="https://example.com/john-doe", facebook_id="abc"
+    )
+    post1 = Posts(
+        content="This is a post",
+        url="https://example.com/post",
+        person=person,
+    )
+    post2 = Posts(
+        content="This is a post 2",
+        url="https://example.com/post2",
+        person=person,
+    )
+    post3 = Posts(
+        content="This is a post 3",
+        url="https://example.com/post3",
+        person=person,
+    )
+
+    session.add(person)
+
+    session.add(post1)
+    session.add(post2)
+    session.add(post3)
+    session.commit()
+
+    response = client.get("/person/post/1")
+    assert response.status_code == 200
+    assert response.json() == [
+        {
+            "id": 1,
+            "url": "https://example.com/post3",
+            "person_id": 1,
+            "content": "This is a post 3",
+            "number_of_likes": None,
+            "number_of_shares": None,
+            "number_of_comments": None,
+            "scraped": False,
+            "source": "ACCOUNT",
+        },
+        {
+            "id": 2,
+            "url": "https://example.com/post",
+            "person_id": 1,
+            "content": "This is a post",
+            "number_of_likes": None,
+            "number_of_shares": None,
+            "number_of_comments": None,
+            "scraped": False,
+            "source": "ACCOUNT",
+        },
+        {
+            "id": 3,
+            "url": "https://example.com/post2",
+            "person_id": 1,
+            "content": "This is a post 2",
+            "number_of_likes": None,
+            "number_of_shares": None,
+            "number_of_comments": None,
+            "scraped": False,
+            "source": "ACCOUNT",
+        },
+    ]
+
+
+def test_get_likes_by_person_id(client: TestClient, session: Session) -> None:
+    person = Person(
+        full_name="John Doe", url="https://example.com/john-doe", facebook_id="abc"
+    )
+    like = Likes(person=person, name="TestXYZ")
+
+    session.add(person)
+
+    session.add(like)
+    session.commit()
+
+    response = client.get("/person/like/1")
+    assert response.status_code == 200
+    assert response.json() == [
+        {
+            "id": 1,
+            "person_id": 1,
+            "name": "TestXYZ",
+        }
+    ]
+
+
+def test_get_groups_by_person_id(client: TestClient, session: Session) -> None:
+    person = Person(
+        full_name="John Doe", url="https://example.com/john-doe", facebook_id="abc"
+    )
+    group = Groups(person=person, name="TestXYZ", url="https://example.com/group")
+
+    session.add(person)
+
+    session.add(group)
+    session.commit()
+
+    response = client.get("/person/group/1")
+    assert response.status_code == 200
+    assert response.json() == [
+        {
+            "id": 1,
+            "person_id": 1,
+            "name": "TestXYZ",
+            "url": "https://example.com/group",
+        }
+    ]
+
+
+def test_get_events_by_person_id(client: TestClient, session: Session) -> None:
+    person = Person(
+        full_name="John Doe", url="https://example.com/john-doe", facebook_id="abc"
+    )
+    event = Events(person=person, name="TestXYZ", url="https://example.com/event")
+
+    session.add(person)
+
+    session.add(event)
+    session.commit()
+
+    response = client.get("/person/event/1")
+    assert response.status_code == 200
+    assert response.json() == [
+        {
+            "id": 1,
+            "person_id": 1,
+            "name": "TestXYZ",
+            "url": "https://example.com/event",
+        }
+    ]

@@ -306,7 +306,7 @@ async def get_groups_by_person_id(
     """Return a list of groups for specified person object"""
     groups = session.query(Groups).filter_by(person_id=person_id).all()
     if not groups:
-        raise HTTPException(status_code=404, details="Groups not found")
+        raise HTTPException(status_code=404, detail="Groups not found")
     return groups
 
 
@@ -317,5 +317,5 @@ async def get_events_by_person_id(
     """Return a list of events for specified person object"""
     events = session.query(Events).filter_by(person_id=person_id).all()
     if not events:
-        raise HTTPException(status_code=404, details="Events not found")
+        raise HTTPException(status_code=404, detail="Events not found")
     return events
