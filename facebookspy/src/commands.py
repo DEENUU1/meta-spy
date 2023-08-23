@@ -310,7 +310,7 @@ def download_person_videos_options():
     questions = [
         inquirer.Checkbox(
             "options",
-            message="Select options:",
+            message="Select options",
             choices=[
                 (
                     "Download all videos for specified facebook account based on the scraped URLs",
@@ -469,7 +469,7 @@ def prompt_options():
     questions = [
         inquirer.Checkbox(
             "options",
-            message="Select options:",
+            message="Select options",
             choices=[
                 (
                     "Scrape basic information like full name, history of employement and school, localization etc.",
