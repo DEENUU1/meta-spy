@@ -1,8 +1,6 @@
-from time import sleep
 from typing import List, Dict
 
 from ..facebook_base import BaseFacebookScraper
-from ...config import Config
 from selenium.webdriver.common.by import By
 from ...repository import person_repository, recent_place_repository
 from ...logs import Logs
