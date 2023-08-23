@@ -49,6 +49,8 @@ class Person(Base):
     full_name = Column(String, nullable=True)
     url = Column(String, nullable=True)
     facebook_id = Column(String, nullable=True)
+    phone_number = Column(String, nullable=True)
+    email = Column(String, nullable=True)
 
     # Relationships (using backref for bidirectional relationship)
     friends = relationship("Friends", back_populates="person")
