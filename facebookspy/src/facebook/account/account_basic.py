@@ -96,8 +96,8 @@ class AccountBasic(BaseFacebookScraper):
 
         return places
 
-    def extract_personal_data(self) -> List[Dict[str, str]]:
-        """Return phone number, email address and date of birth"""
+    def extract_contact_data(self) -> List[Dict[str, str]]:
+        """Return phone number and email address"""
         data = []
         try:
             self._driver.get(f"{self._base_url}/{Config.CONTACT_URL}")
@@ -110,20 +110,24 @@ class AccountBasic(BaseFacebookScraper):
                 "span.x193iq5w.xeuugli.x13faqbe.x1vvkbs.x1xmvt09.x1lliihq.x1s928wv.xhkezso.x1gmr53x.x1cpjm7i.x1fgarty.x1943h6x.xudqn12.x3x7a5m.x6prxxf.xvq8zen.xo1l8bm.xzsf02u.x1yc453h[dir='auto']",
             )
 
+            scraped_data = {}
+
             for span_element in span_elements:
                 text = span_element.text
 
                 # Checking for phone number
                 phone_number_match = re.search(r"\b\d{3} \d{3} \d{3}\b", text)
                 if phone_number_match:
-                    data.append({"phone_number": phone_number_match.group()})
+                    scraped_data["phone_number"] = phone_number_match.group()
 
                 # Checking for email address
                 email_match = re.search(
                     r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b", text
                 )
                 if email_match:
-                    data.append({"email": email_match.group()})
+                    scraped_data["email"] = email_match.group()
+
+            data.append(scraped_data)
 
         except Exception as e:
             logs.log_error(f"Error while extracting person data: {e}")
@@ -285,9 +289,9 @@ class AccountBasic(BaseFacebookScraper):
             logs.log_error(f"Error running pipeline: {e}")
             rprint(f"An Error occurred {e}")
 
-    def personal_pipeline(self) -> None:
+    def contact_pipeline(self) -> None:
         """
-        Pipeline to extract phone number, email and date of birth
+        Pipeline to extract phone number and email
         """
         try:
             rprint("[bold]Step 1 of 3 - Load cookies[/bold]")
@@ -296,16 +300,20 @@ class AccountBasic(BaseFacebookScraper):
             rprint("[bold]Step 2 of 3 - Refresh driver[/bold]")
             self._driver.refresh()
 
-            rprint("[bold]Step 3 of 3 - Extract full name[/bold]")
-            data = self.extract_personal_data()
-            rprint(data)
+            rprint("[bold]Step 3 of 3 - Extract contact data[/bold]")
+            scraped_data = self.extract_contact_data()
+            rprint(scraped_data)
 
             rprint(
                 "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
             )
 
-            if not person_repository.person_exists(self._user_id):
-                person_repository.create_person(self._user_id, full_name)
+            for data in scraped_data:
+                person_repository.create_person(
+                    self._user_id,
+                    phone_number=data["phone_number"],
+                    email=data["email"],
+                )
 
             self._driver.quit()
             self.success = True
@@ -333,8 +341,7 @@ class AccountBasic(BaseFacebookScraper):
                 "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
             )
 
-            if not person_repository.person_exists(self._user_id):
-                person_repository.create_person(self._user_id, full_name)
+            person_repository.create_person(self._user_id, full_name)
 
             self._driver.quit()
             self.success = True

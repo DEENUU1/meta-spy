@@ -164,7 +164,7 @@ def scrape_personal_data(name: Annotated[str, typer.Argument(help="Facebook user
     scraper = AccountBasic(name)
 
     time_start = time()
-    scraper.personal_pipeline()
+    scraper.contact_pipeline()
     time_end = time()
 
     if scraper.is_pipeline_successful:

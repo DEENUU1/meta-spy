@@ -36,7 +36,7 @@ def get_person(facebook_id: str) -> Optional[Person]:
 
 
 def create_person(
-    facebook_id: str, full_name=None, phone_number=None, email=None
+    facebook_id: str, full_name: str = None, phone_number: str = None, email: str = None
 ) -> Person:
     """Create Person object
     Args:
@@ -59,9 +59,9 @@ def create_person(
     else:
         if full_name is not None and person.full_name is None:
             person.full_name = full_name
-        if phone_number is not None:
+        if phone_number is not None and person.phone_number is None:
             person.phone_number = phone_number
-        if email is not None:
+        if email is not None and person.email is None:
             person.email = email
         session.commit()
 
