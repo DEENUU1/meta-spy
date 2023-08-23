@@ -125,15 +125,6 @@ class AccountBasic(BaseFacebookScraper):
                 if email_match:
                     data.append({"email": email_match.group()})
 
-                # Checking for date of birth
-                dob_match = re.search(r"\b\d{1,2} \w+\b", text)
-                if dob_match:
-                    try:
-                        parsed_date = parse(dob_match.group())
-                        data.append({"date_of_birth": parsed_date.strftime("%Y-%m-%d")})
-                    except ValueError:
-                        pass
-
         except Exception as e:
             logs.log_error(f"Error while extracting person data: {e}")
 
@@ -313,9 +304,9 @@ class AccountBasic(BaseFacebookScraper):
                 "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
             )
 
-            # if not person_repository.person_exists(self._user_id):
-            #     person_repository.create_person(self._user_id, full_name)
-            #
+            if not person_repository.person_exists(self._user_id):
+                person_repository.create_person(self._user_id, full_name)
+
             self._driver.quit()
             self.success = True
 

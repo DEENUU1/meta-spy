@@ -157,6 +157,23 @@ def scrape_work_education(
 
 
 @app.command()
+def scrape_personal_data(name: Annotated[str, typer.Argument(help="Facebook user id")]):
+    """Scrape email, phone number and date of birth"""
+
+    rprint(f"Start scraping personal data from {name} account")
+    scraper = AccountBasic(name)
+
+    time_start = time()
+    scraper.personal_pipeline()
+    time_end = time()
+
+    if scraper.is_pipeline_successful:
+        rprint(f"✅Scraping successful after {time_end - time_start} seconds ✅")
+    else:
+        rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
+
+
+@app.command()
 def scrape_localization(name: Annotated[str, typer.Argument(help="Facebook user id")]):
     """Scrape visited places"""
 
