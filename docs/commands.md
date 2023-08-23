@@ -1,11 +1,6 @@
 # Commands
 
 ## Basic commands
-#### Home
-Display basic information about project
-```bash
-python main.py home 
-```
 
 #### Version
 Display current version of the project
@@ -16,7 +11,7 @@ python main.py version
 ## Log in
 #### 2-step verification
 ```bash
-python main.py login_2_step
+python main.py login-2-step
 ```
 #### Default log in
 ```bash
@@ -24,6 +19,32 @@ python main.py login
 ```
 
 ## Account scrapers
+
+#### Basic scraping 
+This command allows to scrape history of employment and education, full name, family members, contact data and visited places
+```bash
+python main.py scrape-basic-data <facebook_id>
+```
+After running this command use arrows keys to navigate through the list of possible scrapers <br>
+- Use Arrow Up/Arrow Down to go Up and Down 
+- Use Arrow Right to select scraper 
+- User Arrow Left to delete selected scraper
+
+![Basic Scraper Console](https://github.com/DEENUU1/facebook-spy/blob/main/assets/scrapebasicdataconsole.png?raw=true)
+
+#### Full scraping
+This command allows to choose all available commands to scrape facebook profile
+```bash
+python main.py full-scrape <facebook_id>
+```
+After running this command use arrows keys to navigate through the list of possible scrapers <br>
+- Use Arrow Up/Arrow Down to go Up and Down 
+- Use Arrow Right to select scraper 
+- User Arrow Left to delete selected scraper
+
+![Basic Scraper Console](https://github.com/DEENUU1/facebook-spy/blob/main/assets/fullscrapeconsole.png?raw=true)
+
+
 #### Friend list
 ```bash
 python main.py scrape-friend-list <facebook_id>
@@ -51,27 +72,7 @@ python main.py scrape-reels <facebook_id>
 ```bash
 python main.py scrape-reviews <facebook_id>
 ```
-#### Full name
-```bash
-python main.py scrape-full-name <facebook_id>
-```
-#### Full account
-Scrape full name, work and education, localization, family member
-```bash
-python main.py full-account <facebook_id>
-```
-#### Work and education
-```bash
-python main.py scrape-work-education <facebook_id>
-```
-#### Localization
-```bash
-python main.py scrape-localization <facebook_id>
-```
-#### Family member
-```bash
-python main.py scrape-family-member <facebook_id>
-```
+
 #### Posts
 Scrape post urls from user's facebook profile
 ```bash
@@ -82,6 +83,26 @@ Scrape post details (content, number of likes;comments;shares etc) based on prev
 ```bash
 python main.py scrape-person-post-details <facebook_id>
 ```
+
+#### Likes
+Scrape likes from facebook account 
+```bash
+python main.py scrape-person-likes <facebook_id> 
+```
+
+#### Groups
+Scrape groups from facebook account
+```bash
+python main.py scrape-person-groups <facebook_id>
+```
+
+#### Events
+Scrape events from facebook account
+```bash
+python main.py scrape-person-events <facebook_id>
+```
+
+
 
 ## Local Web Application
 #### Run FastAPI and React application 
@@ -97,18 +118,18 @@ python main.py server --d
 
 
 ## Video downloader
-#### All user's videos
-This command download all videos based on scraped urls
+Download Videos based on previously scraped urls from facebook profile 
 ```bash
-python main.py download-all-person-videos <facebook_id>
+python main.py download-person-videos <facebook_id>
 ```
-#### Only new videos
-This command download only not downloaded yet videos
+After running this command use arrows keys to navigate through the list of possible scrapers <br>
+- Use Arrow Up/Arrow Down to go Up and Down 
+- Use Arrow Right to select scraper 
+- User Arrow Left to delete selected scraper
+
+![Basic Scraper Console](https://github.com/DEENUU1/facebook-spy/blob/main/assets/downloadvideosconsole.png?raw=true)
+
+Download single video from facebook 
 ```bash
-python main.py download-new-person-videos <facebook_id>
-```
-#### Download single video
-This command download single video based on given url
-```bash
-python main.py download_video <facebook_video_url>
+python main.py download-video <facebook_video_url>
 ```
