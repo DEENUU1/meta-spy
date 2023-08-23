@@ -83,6 +83,14 @@ class AccountFriend(BaseFacebookScraper):
                         data["username"], data["url"], person_id
                     )
 
+            # Update the number of friends in the person table
+            number_of_person_friends = friend_repository.get_number_of_friends(
+                person_id
+            )
+            person_repository.update_number_of_friends(
+                person_id, number_of_person_friends
+            )
+
             self._driver.quit()
             self.success = True
 

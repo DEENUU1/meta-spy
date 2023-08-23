@@ -69,19 +69,19 @@ def create_person(
     return person
 
 
-def update_number_of_friends(facebook_id: str, new_number_of_friends: int) -> bool:
+def update_number_of_friends(person_id: int, new_number_of_friends: int) -> bool:
     """
     Update the number_of_friends field of a Person object.
 
     Args:
-        facebook_id (str): Facebook ID of the person.
+        person_id (int): Person ID.
         new_number_of_friends (int): New value for number_of_friends.
 
     Returns:
         bool: True if the update was successful, False if the person does not exist.
     """
     session = get_session()
-    person = session.query(Person).filter_by(facebook_id=facebook_id).first()
+    person = session.query(Person).filter_by(id=person_id).first()
 
     if person is None:
         return False
