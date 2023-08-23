@@ -115,113 +115,93 @@ def login():
         rprint(f"❌Logging failed after {time_end - time_start} seconds ❌")
 
 
-@app.command()
-def scrape_full_account(name: Annotated[str, typer.Argument(help="Facebook user id")]):
-    """Scrape data from facebook account:
-    - full name
-    - places
-    - family members
-    - work and education
-    """
-
-    rprint(f"Start scraping all data from {name} account")
-    scraper = AccountBasic(name)
-
-    time_start = time()
-    scraper.pipeline()
-    time_end = time()
-
-    if scraper.is_pipeline_successful:
-        rprint(f"✅Scraping successful after {time_end - time_start} seconds ✅")
-    else:
-        rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
+def prompt_account_options():
+    questions = [
+        inquirer.Checkbox(
+            "options",
+            message="Select what you want to scrape",
+            choices=[
+                ("Scrape work and education history data", "a"),
+                ("Scrape email and phone number", "b"),
+                ("Scrape visited places", "c"),
+                ("Scrape family member data", "d"),
+                ("Scrape full name from facebook account", "e"),
+            ],
+        )
+    ]
+    answers = inquirer.prompt(questions)
+    return answers["options"]
 
 
 @app.command()
-def scrape_work_education(
-    name: Annotated[str, typer.Argument(help="Facebook user id")]
-):
-    """Scrape work and education history data"""
+def scrape_basic_data(name: Annotated[str, typer.Argument(help="Facebook user id")]):
+    """Command to scrape work and education history, contact data, visited places, family member and full name"""
+    selected_options = prompt_account_options()
 
-    rprint(f"Start scraping work and education data from {name} account")
-    scraper = AccountBasic(name)
+    if "a" in selected_options:
+        rprint(f"Start scraping work and education data from {name} account")
+        scraper = AccountBasic(name)
 
-    time_start = time()
-    scraper.work_and_education_pipeline()
-    time_end = time()
+        time_start = time()
+        scraper.work_and_education_pipeline()
+        time_end = time()
 
-    if scraper.is_pipeline_successful:
-        rprint(f"✅Scraping successful after {time_end - time_start} seconds ✅")
-    else:
-        rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
+        if scraper.is_pipeline_successful:
+            rprint(f"✅Scraping successful after {time_end - time_start} seconds ✅")
+        else:
+            rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
 
+    if "b" in selected_options:
+        rprint(f"Start scraping personal data from {name} account")
+        scraper = AccountBasic(name)
 
-@app.command()
-def scrape_personal_data(name: Annotated[str, typer.Argument(help="Facebook user id")]):
-    """Scrape email, phone number and date of birth"""
+        time_start = time()
+        scraper.contact_pipeline()
+        time_end = time()
 
-    rprint(f"Start scraping personal data from {name} account")
-    scraper = AccountBasic(name)
+        if scraper.is_pipeline_successful:
+            rprint(f"✅Scraping successful after {time_end - time_start} seconds ✅")
+        else:
+            rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
 
-    time_start = time()
-    scraper.contact_pipeline()
-    time_end = time()
+    if "c" in selected_options:
+        rprint(f"Start scraping localization data from {name} account")
+        scraper = AccountBasic(name)
 
-    if scraper.is_pipeline_successful:
-        rprint(f"✅Scraping successful after {time_end - time_start} seconds ✅")
-    else:
-        rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
+        time_start = time()
+        scraper.localization_pipeline()
+        time_end = time()
 
+        if scraper.is_pipeline_successful:
+            rprint(f"✅Scraping successful after {time_end - time_start} seconds ✅")
+        else:
+            rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
 
-@app.command()
-def scrape_localization(name: Annotated[str, typer.Argument(help="Facebook user id")]):
-    """Scrape visited places"""
+    if "d" in selected_options:
+        rprint(f"Start scraping family member data from {name} account")
+        scraper = AccountBasic(name)
 
-    rprint(f"Start scraping localization data from {name} account")
-    scraper = AccountBasic(name)
+        time_start = time()
+        scraper.family_member_pipeline()
+        time_end = time()
 
-    time_start = time()
-    scraper.localization_pipeline()
-    time_end = time()
+        if scraper.is_pipeline_successful:
+            rprint(f"✅Scraping successful after {time_end - time_start} seconds ✅")
+        else:
+            rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
 
-    if scraper.is_pipeline_successful:
-        rprint(f"✅Scraping successful after {time_end - time_start} seconds ✅")
-    else:
-        rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
+    if "e" in selected_options:
+        rprint(f"Start scraping full name data from {name} account")
+        scraper = AccountBasic(name)
 
+        time_start = time()
+        scraper.full_name_pipeline()
+        time_end = time()
 
-@app.command()
-def scrape_family_member(name: Annotated[str, typer.Argument(help="Facebook user id")]):
-    """Scrape family member data"""
-
-    rprint(f"Start scraping family member data from {name} account")
-    scraper = AccountBasic(name)
-
-    time_start = time()
-    scraper.family_member_pipeline()
-    time_end = time()
-
-    if scraper.is_pipeline_successful:
-        rprint(f"✅Scraping successful after {time_end - time_start} seconds ✅")
-    else:
-        rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
-
-
-@app.command()
-def scrape_full_name(name: Annotated[str, typer.Argument(help="Facebook user id")]):
-    """Scrape full name from facebook account"""
-
-    rprint(f"Start scraping full name data from {name} account")
-    scraper = AccountBasic(name)
-
-    time_start = time()
-    scraper.full_name_pipeline()
-    time_end = time()
-
-    if scraper.is_pipeline_successful:
-        rprint(f"✅Scraping successful after {time_end - time_start} seconds ✅")
-    else:
-        rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
+        if scraper.is_pipeline_successful:
+            rprint(f"✅Scraping successful after {time_end - time_start} seconds ✅")
+        else:
+            rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
 
 
 @app.command()
