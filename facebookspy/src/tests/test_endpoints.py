@@ -38,12 +38,16 @@ def test_get_people_list(client, session):
             "full_name": "John Doe",
             "url": "https://example.com/john-doe",
             "facebook_id": "abc",
+            "phone_number": None,
+            "email": None,
         },
         {
             "id": 2,
             "full_name": "Jane Smith",
             "url": "https://example.com/jane-smith",
             "facebook_id": "abc1",
+            "phone_number": None,
+            "email": None,
         },
     ]
 
@@ -68,6 +72,8 @@ def test_get_person_by_facebook_id(client, session):
         "full_name": "John Doe",
         "url": "https://example.com/john-doe",
         "facebook_id": "abc",
+        "phone_number": None,
+        "email": None,
     }
 
 
