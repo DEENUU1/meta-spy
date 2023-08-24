@@ -59,13 +59,13 @@ def server(
 
     # Run local server without Docker
     else:
-        thread_react = threading.Thread(target=run_react)
+        # thread_react = threading.Thread(target=run_react)
         thread_fastapi = threading.Thread(target=run_fastapi)
 
-        thread_react.start()
+        # thread_react.start()
         thread_fastapi.start()
 
-        thread_react.join()
+        # thread_react.join()
         thread_fastapi.join()
 
 

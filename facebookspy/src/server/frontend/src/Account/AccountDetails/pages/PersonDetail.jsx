@@ -68,9 +68,9 @@ const PersonDetail = () => {
           <div className="person-details">
             <h1>{person.facebook_id} details</h1>
             <div className="detail-item">
-              {person.full_name}
-              {person.email}
-              {person.phone_number}
+              Full name: {person.full_name} <br></br>
+              Email address: {person.email} <br></br>
+              Phone number: {person.phone_number} <br></br><br></br>
 
               {noteExists ? ( 
                 <button onClick={handleViewNote}>View Note</button>
