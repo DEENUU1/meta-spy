@@ -4,10 +4,10 @@ import LoadingDots from '../../../Home/components/Loading';
 
 const GroupCard = ({ personId }) => {
   const [groups, setGroups] = useState([]);
-  const [loading, setLoading] = useState(true);
-  
+  const [loading, setLoading] = useState(true);  
+
   useEffect(() => {
-    axios.get(`http://localhost:8000/group/${personId}`)
+    axios.get(`http://localhost:8000/person/event/${personId}`)
       .then(response => {
         setGroups(response.data);
         setLoading(false);
@@ -18,19 +18,17 @@ const GroupCard = ({ personId }) => {
       });
   }, [personId]);
 
-  
   return (
-      <div className="group-card">
+    <div className="card groups-card">
       <h2>Groups</h2>
-      
       {loading ? (
         <LoadingDots />
       ) : (
-        <ul className="group-grid">
-          {(searchTerm ? searchResults : groups).map(item => (
-            <li className="group-card" key={item.id}> 
-              <strong>{item.name}</strong> <br />
-              <a href={item.url}>Facebook link</a>
+        <ul>
+          {groups.map(item => (
+            <li key={item.id}>
+              {item.name}
+              {item.url}
             </li>
           ))}
         </ul>

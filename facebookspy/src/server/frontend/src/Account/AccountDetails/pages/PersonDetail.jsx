@@ -93,7 +93,7 @@ const PersonDetail = () => {
               <WorkAndEducationCard personId={id} />
               <PlacesCard personId={id} />
               <ReviewsCard personId={id} />
-              {/* <GroupCard personId={id} />  */}
+              <GroupCard personId={id} /> 
               <EventCard personId={id} />
               {/* <LikeCard personId={id} /> */}
             </div>
