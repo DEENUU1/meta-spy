@@ -113,3 +113,15 @@ def update_phone_number(person_id: int, phone_number: str) -> bool:
     person.phone_number = phone_number
     session.commit()
     return True
+
+
+def update_email(person_id: int, email: str) -> bool:
+    session = get_session()
+    person = session.query(Person).filter_by(id=person_id).first()
+
+    if person is None:
+        return False
+
+    person.email = email
+    session.commit()
+    return True
