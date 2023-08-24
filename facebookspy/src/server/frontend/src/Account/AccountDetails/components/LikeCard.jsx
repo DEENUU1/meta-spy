@@ -7,7 +7,7 @@ const LikeCard = ({ personId }) => {
   const [loading, setLoading] = useState(true);  
 
   useEffect(() => {
-    axios.get(`http://localhost:8000/like/${personId}`)
+    axios.get(`http://localhost:8000/person/like/${personId}`)
       .then(response => {
         setLikes(response.data);
         setLoading(false);

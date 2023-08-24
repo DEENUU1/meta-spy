@@ -7,7 +7,7 @@ const EventCard = ({ personId }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(`http://localhost:8000/event/${personId}`)
+    axios.get(`http://localhost:8000/person/event/${personId}`)
       .then(response => {
         setEvents(response.data);
         setLoading(false);

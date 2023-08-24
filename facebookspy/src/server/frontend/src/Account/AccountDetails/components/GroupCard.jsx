@@ -7,7 +7,7 @@ const GroupCard = ({ personId }) => {
   const [loading, setLoading] = useState(true);  
 
   useEffect(() => {
-    axios.get(`http://localhost:8000/group/${personId}`)
+    axios.get(`http://localhost:8000/person/group/${personId}`)
       .then(response => {
         setGroups(response.data);
         setLoading(false);
