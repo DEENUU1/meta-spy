@@ -95,7 +95,7 @@ const PersonDetail = () => {
               <ReviewsCard personId={id} />
               <GroupCard personId={id} /> 
               <EventCard personId={id} />
-              {/* <LikeCard personId={id} /> */}
+              <LikeCard personId={id} />
             </div>
           </div>
         )}

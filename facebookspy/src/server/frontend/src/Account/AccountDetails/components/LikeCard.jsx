@@ -4,8 +4,8 @@ import LoadingDots from '../../../Home/components/Loading';
 
 const LikeCard = ({ personId }) => {
   const [likes, setLikes] = useState([]);
-  const [loading, setLoading] = useState(true);
-  
+  const [loading, setLoading] = useState(true);  
+
   useEffect(() => {
     axios.get(`http://localhost:8000/like/${personId}`)
       .then(response => {
@@ -18,18 +18,16 @@ const LikeCard = ({ personId }) => {
       });
   }, [personId]);
 
-  
   return (
-      <div className="like-card">
+    <div className="card likes-card">
       <h2>Likes</h2>
-      
       {loading ? (
         <LoadingDots />
       ) : (
-        <ul className="like-grid">
-          {(searchTerm ? searchResults : likes).map(item => (
-            <li className="like-card" key={item.id}> 
-              <strong>{item.name}</strong> <br />
+        <ul>
+          {likes.map(item => (
+            <li key={item.id}>
+              {item.name}
             </li>
           ))}
         </ul>
