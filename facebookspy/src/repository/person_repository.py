@@ -89,3 +89,15 @@ def update_number_of_friends(person_id: int, new_number_of_friends: int) -> bool
     person.number_of_friends = new_number_of_friends
     session.commit()
     return True
+
+
+def update_full_name(person_id: int, full_name: str) -> bool:
+    session = get_session()
+    person = session.query(Person).filter_by(id=person_id).first()
+
+    if person is None:
+        return False
+
+    person.full_name = full_name
+    session.commit()
+    return True
