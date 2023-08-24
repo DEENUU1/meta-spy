@@ -73,11 +73,20 @@ After that you can browse scraped data, add notes, search more detail in google 
 
 <img style="margin-bottom: 20px" src="assets/help.png" alt="home"> 
 
-<img style="margin-bottom: 20px" src="assets/scrapeimage.png" alt="home">
+<img style="margin-bottom: 20px" src="assets/scrapebasicdata.png" alt="home"> 
 
-<img style="margin-bottom: 20px" src="assets/fullaccount.png" alt="home">
+<img style="margin-bottom: 20px" src="assets/friendlist.png" alt="home"> 
 
-<img src="assets/scrapefullaccount.png" alt="home">
+<img style="margin-bottom: 20px" src="assets/scrapeimages.png" alt="home"> 
+
+<img style="margin-bottom: 20px" src="assets/recentplaces.png" alt="home"> 
+
+<img style="margin-bottom: 20px" src="assets/reviews.png" alt="home"> 
+
+<img style="margin-bottom: 20px" src="assets/downloadvideos.png" alt="home"> 
+
+<img style="margin-bottom: 20px" src="assets/fullscrape.png" alt="home"> 
+
 
 
 
