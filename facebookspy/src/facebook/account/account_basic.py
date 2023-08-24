@@ -216,7 +216,7 @@ class AccountBasic(BaseFacebookScraper):
             rprint("[bold]Step 1 of 3 - Load cookies[/bold]")
             self._load_cookies_and_refresh_driver()
 
-            rprint("[bold]Step 2 of 3 - Extract full name[/bold]")
+            rprint("[bold]Step 2 of 3 - Extract localization data[/bold]")
             if not person_repository.person_exists(self._user_id):
                 person_repository.create_person(self._user_id)
 
@@ -300,12 +300,29 @@ class AccountBasic(BaseFacebookScraper):
                 "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
             )
 
-            for data in scraped_data:
+            if not person_repository.person_exists(self._user_id):
                 person_repository.create_person(
                     self._user_id,
-                    phone_number=data["phone_number"],
-                    email=data["email"],
                 )
+
+            person = person_repository.get_person(self._user_id)
+
+            for data in scraped_data:
+                update_phone_number = person_repository.update_phone_number(
+                    person.id, data["phone_number"]
+                )
+
+                if update_phone_number:
+                    rprint("[bold green]Phone number successfully updated[/bold green]")
+                else:
+                    rprint("[bold red]Phone number not updated[/bold red]")
+
+                update_email = person_repository.update_email(person.id, data["email"])
+
+                if update_email:
+                    rprint("[bold green]Email successfully updated[/bold green]")
+                else:
+                    rprint("[bold red]Email not updated[/bold red]")
 
             self._driver.quit()
             self.success = True
@@ -330,7 +347,16 @@ class AccountBasic(BaseFacebookScraper):
                 "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
             )
 
-            person_repository.create_person(self._user_id, full_name)
+            if not person_repository.person_exists(self._user_id):
+                person_repository.create_person(self._user_id)
+
+            # Update full name field in Person object
+            person = person_repository.get_person(self._user_id)
+            update_full_name = person_repository.update_full_name(person.id, full_name)
+            if update_full_name:
+                rprint("[bold green]Full name successfully updated[/bold green]")
+            else:
+                rprint("[bold red]Full name not updated[/bold red]")
 
             self._driver.quit()
             self.success = True
@@ -344,10 +370,10 @@ class AccountBasic(BaseFacebookScraper):
         Pipeline to run full script
         """
         try:
-            rprint("[bold]Step 1 of 5 - Load cookies[/bold]")
+            rprint("[bold]Step 1 of 6 - Load cookies[/bold]")
             self._load_cookies_and_refresh_driver()
 
-            rprint("[bold]Step 2 of 5 - Extract full name[/bold]")
+            rprint("[bold]Step 2 of 6 - Extract full name[/bold]")
             full_name = self.extract_full_name()
             rprint(full_name)
 
@@ -356,11 +382,17 @@ class AccountBasic(BaseFacebookScraper):
             )
 
             if not person_repository.person_exists(self._user_id):
-                person_repository.create_person(self._user_id, full_name)
+                person_repository.create_person(self._user_id)
 
             person_id = person_repository.get_person(self._user_id).id
 
-            rprint("[bold]Step 3 of 5 - Extract family members[/bold]")
+            update_full_name = person_repository.update_full_name(person_id, full_name)
+            if update_full_name:
+                rprint("[bold green]Full name successfully updated[/bold green]")
+            else:
+                rprint("[bold red]Full name not updated[/bold red")
+
+            rprint("[bold]Step 3 of 6 - Extract family members[/bold]")
             family_members = self.extract_family()
             rprint(family_members)
 
@@ -379,7 +411,7 @@ class AccountBasic(BaseFacebookScraper):
                         person_id,
                     )
 
-            rprint("[bold]Step 4 of 5 - Extract localization data[/bold]")
+            rprint("[bold]Step 4 of 6 - Extract localization data[/bold]")
             places = self.extract_places()
             rprint(places)
 
@@ -395,7 +427,7 @@ class AccountBasic(BaseFacebookScraper):
                         data["name"], data["date"], person_id
                     )
 
-            rprint("[bold]Step 5 of 5 - Extract work and education data[/bold]")
+            rprint("[bold]Step 5 of 6 - Extract work and education data[/bold]")
             scraped_data = self.extract_work_and_education()
             rprint(scraped_data)
 
@@ -410,6 +442,31 @@ class AccountBasic(BaseFacebookScraper):
                     work_education_repository.create_work_and_education(
                         data["name"], person_id
                     )
+
+            rprint("[bold]Step 6 of 6 - Extract phone number and email[/bold]")
+            scraped_contact_data = self.extract_contact_data()
+            rprint(scraped_contact_data)
+
+            rprint(
+                "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
+            )
+
+            for data in scraped_contact_data:
+                update_phone_number = person_repository.update_phone_number(
+                    person_id, data["phone_number"]
+                )
+
+                if update_phone_number:
+                    rprint("[bold green]Phone number successfully updated[/bold green]")
+                else:
+                    rprint("[bold red]Phone number not updated[/bold red]")
+
+                update_email = person_repository.update_email(person_id, data["email"])
+
+                if update_email:
+                    rprint("[bold green]Email successfully updated[/bold green]")
+                else:
+                    rprint("[bold red]Email not updated[/bold red]")
 
             self._driver.quit()
             self.success = True
