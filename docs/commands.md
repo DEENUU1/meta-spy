@@ -1,5 +1,20 @@
 # Commands
 
+## Info!
+For user's with default account id in url (https://www.facebook.com/profile.php?id=100063142210972)
+some of the scrapers may not work 
+- work and education
+- contact data
+- visited place
+- family member 
+- recent places
+- reviews
+- likes 
+
+This issue doesn't occur while facebook account has a custom id in url (https://www.facebook.com/zuck)
+
+I am working on to fix this issue. 
+
 ## Basic commands
 
 #### Version
@@ -107,6 +122,17 @@ python main.py scrape-person-events <facebook_id>
 ## Local Web Application
 #### Run FastAPI and React application 
 App is available under this local url - http://localhost:5173/
+
+For now running React application without docker is not possible and you can only run FastAPI app with this command.
+To run React go to this directory 
+```bash
+facebookspy/src/server/frontend
+```
+And use this command 
+```bash
+npm run dev 
+```
+
 ```bash
 python main.py server
 ```
