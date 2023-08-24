@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import LoadingDots from '../../../Home/components/Loading';
 
-const GroupCard = ({ personId }) => {
-  const [groups, setGroups] = useState([]);
+const LikeCard = ({ personId }) => {
+  const [likes, setLikes] = useState([]);
   const [loading, setLoading] = useState(true);
   
   useEffect(() => {
-    axios.get(`http://localhost:8000/group/${personId}`)
+    axios.get(`http://localhost:8000/like/${personId}`)
       .then(response => {
-        setGroups(response.data);
+        setLikes(response.data);
         setLoading(false);
       })
       .catch(error => {
@@ -20,17 +20,16 @@ const GroupCard = ({ personId }) => {
 
   
   return (
-      <div className="group-card">
-      <h2>Groups</h2>
+      <div className="like-card">
+      <h2>Likes</h2>
       
       {loading ? (
         <LoadingDots />
       ) : (
-        <ul className="group-grid">
-          {(searchTerm ? searchResults : groups).map(item => (
-            <li className="group-card" key={item.id}> 
+        <ul className="like-grid">
+          {(searchTerm ? searchResults : likes).map(item => (
+            <li className="like-card" key={item.id}> 
               <strong>{item.name}</strong> <br />
-              <a href={item.url}>Facebook link</a>
             </li>
           ))}
         </ul>
@@ -39,4 +38,4 @@ const GroupCard = ({ personId }) => {
   );
 };
 
-export default GroupCard;
+export default LikeCard;
