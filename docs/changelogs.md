@@ -5,12 +5,18 @@
 
 ## Version history
 
-### V0.8 (in develop)
+### V0.8
 - Scrape user's groups
 - Scrape user's likes
 - Scrape user's Events
 - Optimalized scrolling 
-
+- Add number_of_friend field in Person model
+- Pytest for all FastAPI endpoints and models 
+- Add email and phone_number field to Person model 
+- Fix saving full_name field to Person model
+- Add scraper for Contact data
+- Refactor scrapers to make them simpler
+- Create a few commands (more details in commands page) with a drop down list to select which scrapers use
 
 ### V0.7
 - Scrape facebook posts urls from a facebook account
