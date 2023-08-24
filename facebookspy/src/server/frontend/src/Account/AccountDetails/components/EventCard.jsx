@@ -5,9 +5,9 @@ import LoadingDots from '../../../Home/components/Loading';
 const EventCard = ({ personId }) => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
-  
+
   useEffect(() => {
-    axios.get(`http://localhost:8000/event/${personId}`)
+    axios.get(`http://localhost:8000/person/event/${personId}`)
       .then(response => {
         setEvents(response.data);
         setLoading(false);
@@ -18,19 +18,17 @@ const EventCard = ({ personId }) => {
       });
   }, [personId]);
 
-  
   return (
-      <div className="event-card">
+    <div className="card events-card">
       <h2>Events</h2>
-      
       {loading ? (
         <LoadingDots />
       ) : (
-        <ul className="evnet-grid">
-          {(searchTerm ? searchResults : events).map(item => (
-            <li className="event-card" key={item.id}> 
-              <strong>{item.name}</strong> <br />
-              <a href={item.url}>Facebook link</a>
+        <ul>
+          {events.map(item => (
+            <li key={item.id}>
+              {item.name}
+              {item.url}
             </li>
           ))}
         </ul>

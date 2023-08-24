@@ -10,6 +10,10 @@ import PlacesCard from '../components/PlacesCard';
 import CreateNoteModal from '../components/CreateNoteModal';
 import ViewNoteModal from '../components/ViewNoteModal';
 import UpdateNoteModal from '../components/UpdateNoteModal';
+import GroupCard from '../components/GroupCard';
+import LikeCard from '../components/LikeCard';
+import EventCard from '../components/EventCard';
+
 
 const PersonDetail = () => {
   const { id } = useParams();
@@ -89,6 +93,9 @@ const PersonDetail = () => {
               <WorkAndEducationCard personId={id} />
               <PlacesCard personId={id} />
               <ReviewsCard personId={id} />
+              {/* <GroupCard personId={id} />  */}
+              <EventCard personId={id} />
+              {/* <LikeCard personId={id} /> */}
             </div>
           </div>
         )}
