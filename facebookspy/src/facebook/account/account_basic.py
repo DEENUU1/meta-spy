@@ -330,7 +330,16 @@ class AccountBasic(BaseFacebookScraper):
                 "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
             )
 
-            person_repository.create_person(self._user_id, full_name)
+            if not person_repository.person_exists(self._user_id):
+                person_repository.create_person(self._user_id)
+
+            # Update full name field in Person object
+            person = person_repository.get_person(self._user_id)
+            update_full_name = person_repository.update_full_name(person.id, full_name)
+            if update_full_name:
+                rprint("[bold green]Full name successfully updated[/bold green]")
+            else:
+                rprint("[bold red]Full name not updated[/bold red]")
 
             self._driver.quit()
             self.success = True
