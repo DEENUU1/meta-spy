@@ -101,3 +101,15 @@ def update_full_name(person_id: int, full_name: str) -> bool:
     person.full_name = full_name
     session.commit()
     return True
+
+
+def update_phone_number(person_id: int, phone_number: str) -> bool:
+    session = get_session()
+    person = session.query(Person).filter_by(id=person_id).first()
+
+    if person is None:
+        return False
+
+    person.phone_number = phone_number
+    session.commit()
+    return True
