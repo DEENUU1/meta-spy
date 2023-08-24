@@ -10,6 +10,10 @@ import PlacesCard from '../components/PlacesCard';
 import CreateNoteModal from '../components/CreateNoteModal';
 import ViewNoteModal from '../components/ViewNoteModal';
 import UpdateNoteModal from '../components/UpdateNoteModal';
+import GroupCard from '../components/GroupCard';
+import LikeCard from '../components/LikeCard';
+import EventCard from '../components/EventCard';
+
 
 const PersonDetail = () => {
   const { id } = useParams();
@@ -68,9 +72,9 @@ const PersonDetail = () => {
           <div className="person-details">
             <h1>{person.facebook_id} details</h1>
             <div className="detail-item">
-              {person.full_name}
-              {person.email}
-              {person.phone_number}
+              Full name: {person.full_name} <br></br>
+              Email address: {person.email} <br></br>
+              Phone number: {person.phone_number} <br></br><br></br>
 
               {noteExists ? ( 
                 <button onClick={handleViewNote}>View Note</button>
@@ -89,6 +93,9 @@ const PersonDetail = () => {
               <WorkAndEducationCard personId={id} />
               <PlacesCard personId={id} />
               <ReviewsCard personId={id} />
+              <GroupCard personId={id} /> 
+              <EventCard personId={id} />
+              <LikeCard personId={id} />
             </div>
           </div>
         )}
