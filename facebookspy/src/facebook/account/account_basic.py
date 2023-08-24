@@ -303,8 +303,6 @@ class AccountBasic(BaseFacebookScraper):
             if not person_repository.person_exists(self._user_id):
                 person_repository.create_person(
                     self._user_id,
-                    phone_number=data["phone_number"],
-                    email=data["email"],
                 )
 
             person = person_repository.get_person(self._user_id)
