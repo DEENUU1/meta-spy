@@ -16,10 +16,3 @@ def print_list(data: List) -> None:
 def print_no_data_info() -> None:
     message = "No data found"
     print(f"[bold red] {message} [/bold red]")
-
-
-def print_saving_data_info() -> None:
-    message1 = "Do not close the app!"
-    message2 = "Saving scraped data"
-
-    print(f"[bold red] {message1} [/bold red] {message2}")
