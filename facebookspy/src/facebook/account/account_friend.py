@@ -39,7 +39,10 @@ class AccountFriend(BaseFacebookScraper):
         """
         extracted_elements = []
         try:
-            elements = self._driver.find_elements(By.CSS_SELECTOR, "a.x1i10hfl span")
+            main_div = self._driver.find_element(
+                By.CSS_SELECTOR, "div.xyamay9.x1pi30zi.x1l90r2v.x1swvt13"
+            )
+            elements = main_div.find_elements(By.CSS_SELECTOR, "a.x1i10hfl span")
             for element in elements:
                 username = element.text.strip()
                 url = element.find_element(By.XPATH, "..").get_attribute("href")
