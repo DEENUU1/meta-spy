@@ -7,6 +7,7 @@ from ..facebook_base import BaseFacebookScraper
 from ..scroll import scroll_page
 from ...logs import Logs
 from ...repository import person_repository, group_repository
+from ...cli import output
 
 logs = Logs()
 
@@ -66,23 +67,29 @@ class AccountGroup(BaseFacebookScraper):
 
             rprint("[bold]Step 3 of 3 - Extracting likes data[/bold]")
             extracted_data = self.extract_groups_data()
-            rprint(extracted_data)
 
-            rprint(
-                "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
-            )
+            if not any(extracted_data):
+                output.print_no_data_info()
+                self._driver.quit()
+                self.success = False
+            else:
+                rprint(
+                    "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
+                )
 
-            if not person_repository.person_exists(self._user_id):
-                person_repository.create_person(self._user_id)
+                if not person_repository.person_exists(self._user_id):
+                    person_repository.create_person(self._user_id)
 
-            person_id = person_repository.get_person(self._user_id).id
+                person_id = person_repository.get_person(self._user_id).id
 
-            for data in extracted_data:
-                if not group_repository.group_exists(data["name"], person_id):
-                    group_repository.create_group(person_id, data["name"], data["url"])
+                for data in extracted_data:
+                    if not group_repository.group_exists(data["name"], person_id):
+                        group_repository.create_group(
+                            person_id, data["name"], data["url"]
+                        )
 
-            self._driver.quit()
-            self.success = True
+                self._driver.quit()
+                self.success = True
 
         except Exception as e:
             logs.log_error(f"An error occurred: {e}")
