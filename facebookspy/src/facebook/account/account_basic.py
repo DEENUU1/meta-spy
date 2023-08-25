@@ -194,23 +194,23 @@ class AccountBasic(BaseFacebookScraper):
                 output.print_no_data_info()
                 self._driver.quit()
                 self.success = False
+            else:
+                output.print_data_from_list_of_dict(scraped_data)
 
-            output.print_data_from_list_of_dict(scraped_data)
+                rprint(
+                    "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
+                )
 
-            rprint(
-                "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
-            )
-
-            for data in scraped_data:
-                if not work_education_repository.work_and_education_exists(
-                    data["name"], person_id
-                ):
-                    work_education_repository.create_work_and_education(
+                for data in scraped_data:
+                    if not work_education_repository.work_and_education_exists(
                         data["name"], person_id
-                    )
+                    ):
+                        work_education_repository.create_work_and_education(
+                            data["name"], person_id
+                        )
 
-            self._driver.quit()
-            self.success = True
+                self._driver.quit()
+                self.success = True
 
         except Exception as e:
             logs.log_error(f"Error running pipeline: {e}")
@@ -238,22 +238,23 @@ class AccountBasic(BaseFacebookScraper):
                 self._driver.quit()
                 self.success = False
 
-            output.print_data_from_list_of_dict(places)
+            else:
+                output.print_data_from_list_of_dict(places)
 
-            rprint(
-                "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
-            )
+                rprint(
+                    "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
+                )
 
-            for data in places:
-                if not place_repository.places_exists(
-                    data["name"], data["date"], person_id
-                ):
-                    place_repository.create_places(
+                for data in places:
+                    if not place_repository.places_exists(
                         data["name"], data["date"], person_id
-                    )
+                    ):
+                        place_repository.create_places(
+                            data["name"], data["date"], person_id
+                        )
 
-            self._driver.quit()
-            self.success = True
+                self._driver.quit()
+                self.success = True
 
         except Exception as e:
             logs.log_error(f"Error running pipeline: {e}")
@@ -280,25 +281,26 @@ class AccountBasic(BaseFacebookScraper):
                 self._driver.quit()
                 self.success = False
 
-            output.print_data_from_list_of_dict(family_members)
+            else:
+                output.print_data_from_list_of_dict(family_members)
 
-            rprint(
-                "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
-            )
+                rprint(
+                    "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
+                )
 
-            for member in family_members:
-                if not family_member_repository.family_member_exists(
-                    person_id, member["name"]
-                ):
-                    family_member_repository.create_family_member(
-                        member["name"],
-                        member["relationship"],
-                        member["url"],
-                        person_id,
-                    )
+                for member in family_members:
+                    if not family_member_repository.family_member_exists(
+                        person_id, member["name"]
+                    ):
+                        family_member_repository.create_family_member(
+                            member["name"],
+                            member["relationship"],
+                            member["url"],
+                            person_id,
+                        )
 
-            self._driver.quit()
-            self.success = True
+                self._driver.quit()
+                self.success = True
 
         except Exception as e:
             logs.log_error(f"Error running pipeline: {e}")
@@ -319,39 +321,43 @@ class AccountBasic(BaseFacebookScraper):
                 output.print_no_data_info()
                 self._driver.quit()
                 self.success = False
+            else:
+                output.print_data_from_list_of_dict(scraped_data)
 
-            output.print_data_from_list_of_dict(scraped_data)
-
-            rprint(
-                "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
-            )
-
-            if not person_repository.person_exists(self._user_id):
-                person_repository.create_person(
-                    self._user_id,
+                rprint(
+                    "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
                 )
 
-            person = person_repository.get_person(self._user_id)
+                if not person_repository.person_exists(self._user_id):
+                    person_repository.create_person(
+                        self._user_id,
+                    )
 
-            for data in scraped_data:
-                update_phone_number = person_repository.update_phone_number(
-                    person.id, data["phone_number"]
-                )
+                person = person_repository.get_person(self._user_id)
 
-                if update_phone_number:
-                    rprint("[bold green]Phone number successfully updated[/bold green]")
-                else:
-                    rprint("[bold red]Phone number not updated[/bold red]")
+                for data in scraped_data:
+                    update_phone_number = person_repository.update_phone_number(
+                        person.id, data["phone_number"]
+                    )
 
-                update_email = person_repository.update_email(person.id, data["email"])
+                    if update_phone_number:
+                        rprint(
+                            "[bold green]Phone number successfully updated[/bold green]"
+                        )
+                    else:
+                        rprint("[bold red]Phone number not updated[/bold red]")
 
-                if update_email:
-                    rprint("[bold green]Email successfully updated[/bold green]")
-                else:
-                    rprint("[bold red]Email not updated[/bold red]")
+                    update_email = person_repository.update_email(
+                        person.id, data["email"]
+                    )
 
-            self._driver.quit()
-            self.success = True
+                    if update_email:
+                        rprint("[bold green]Email successfully updated[/bold green]")
+                    else:
+                        rprint("[bold red]Email not updated[/bold red]")
+
+                self._driver.quit()
+                self.success = True
 
         except Exception as e:
             logs.log_error(f"Error running pipeline: {e}")
@@ -373,25 +379,28 @@ class AccountBasic(BaseFacebookScraper):
                 self._driver.quit()
                 self.success = False
 
-            output.print_string(full_name)
-
-            rprint(
-                "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
-            )
-
-            if not person_repository.person_exists(self._user_id):
-                person_repository.create_person(self._user_id)
-
-            # Update full name field in Person object
-            person = person_repository.get_person(self._user_id)
-            update_full_name = person_repository.update_full_name(person.id, full_name)
-            if update_full_name:
-                rprint("[bold green]Full name successfully updated[/bold green]")
             else:
-                rprint("[bold red]Full name not updated[/bold red]")
+                output.print_string(full_name)
 
-            self._driver.quit()
-            self.success = True
+                rprint(
+                    "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
+                )
+
+                if not person_repository.person_exists(self._user_id):
+                    person_repository.create_person(self._user_id)
+
+                # Update full name field in Person object
+                person = person_repository.get_person(self._user_id)
+                update_full_name = person_repository.update_full_name(
+                    person.id, full_name
+                )
+                if update_full_name:
+                    rprint("[bold green]Full name successfully updated[/bold green]")
+                else:
+                    rprint("[bold red]Full name not updated[/bold red]")
+
+                self._driver.quit()
+                self.success = True
 
         except Exception as e:
             logs.log_error(f"Error running pipeline: {e}")
