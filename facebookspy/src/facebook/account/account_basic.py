@@ -336,25 +336,19 @@ class AccountBasic(BaseFacebookScraper):
                 person = person_repository.get_person(self._user_id)
 
                 for data in scraped_data:
-                    update_phone_number = person_repository.update_phone_number(
-                        person.id, data["phone_number"]
-                    )
-
-                    if update_phone_number:
-                        rprint(
-                            "[bold green]Phone number successfully updated[/bold green]"
+                    if data["phone_number"]:
+                        person_repository.update_phone_number(
+                            person.id, data["phone_number"]
                         )
-                    else:
-                        rprint("[bold red]Phone number not updated[/bold red]")
 
-                    update_email = person_repository.update_email(
-                        person.id, data["email"]
-                    )
-
-                    if update_email:
-                        rprint("[bold green]Email successfully updated[/bold green]")
                     else:
-                        rprint("[bold red]Email not updated[/bold red]")
+                        rprint("[bold red]Phone number not found[/bold red]")
+
+                    if data["email"]:
+                        person_repository.update_email(person.id, data["email"])
+
+                    else:
+                        rprint("[bold red]Email not found[/bold red]")
 
                 self._driver.quit()
                 self.success = True
@@ -515,25 +509,19 @@ class AccountBasic(BaseFacebookScraper):
                 )
 
                 for data in scraped_contact_data:
-                    update_phone_number = person_repository.update_phone_number(
-                        person_id, data["phone_number"]
-                    )
-
-                    if update_phone_number:
-                        rprint(
-                            "[bold green]Phone number successfully updated[/bold green]"
+                    if data["phone_number"]:
+                        person_repository.update_phone_number(
+                            person_id, data["phone_number"]
                         )
-                    else:
-                        rprint("[bold red]Phone number not updated[/bold red]")
 
-                    update_email = person_repository.update_email(
-                        person_id, data["email"]
-                    )
-
-                    if update_email:
-                        rprint("[bold green]Email successfully updated[/bold green]")
                     else:
-                        rprint("[bold red]Email not updated[/bold red]")
+                        rprint("[bold red]Phone number not found[/bold red]")
+
+                    if data["email"]:
+                        person_repository.update_email(person_id, data["email"])
+
+                    else:
+                        rprint("[bold red]Email not found[/bold red]")
 
             self._driver.quit()
             self.success = True
