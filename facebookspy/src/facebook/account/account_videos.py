@@ -10,6 +10,7 @@ from ...repository import (
     person_repository,
     video_repository,
 )
+from ...cli import output
 
 logs = Logs()
 
@@ -67,22 +68,28 @@ class AccountVideo(BaseFacebookScraper):
 
             rprint("[bold]Step 3 of 3 - Extract videos urls[/bold]")
             videos = self.extract_videos_urls()
-            rprint(videos)
 
-            rprint(
-                "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
-            )
+            if not videos:
+                output.print_no_data_info()
+                self._driver.quit()
+                self.success = False
+            else:
+                output.print_list(videos)
 
-            if not person_repository.person_exists(self._user_id):
-                person_repository.create_person(self._user_id)
+                rprint(
+                    "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
+                )
 
-            person_id = person_repository.get_person(self._user_id).id
-            for data in videos:
-                if not video_repository.video_exists(data, person_id):
-                    video_repository.create_videos(data, person_id)
+                if not person_repository.person_exists(self._user_id):
+                    person_repository.create_person(self._user_id)
 
-            self._driver.quit()
-            self.success = True
+                person_id = person_repository.get_person(self._user_id).id
+                for data in videos:
+                    if not video_repository.video_exists(data, person_id):
+                        video_repository.create_videos(data, person_id)
+
+                self._driver.quit()
+                self.success = True
 
         except Exception as e:
             logs.log_error(f"An error occurred: {e}")
