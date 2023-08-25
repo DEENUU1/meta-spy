@@ -15,6 +15,8 @@ from ..scroll import scroll_page
 from ...config import Config
 from ...logs import Logs
 from ...repository import person_repository, image_repository
+from ...cli import output
+
 
 logs = Logs()
 
@@ -143,23 +145,30 @@ class AccountImage(BaseFacebookScraper):
             scroll_page(self._driver)
             rprint("[bold]Step 3 of 4 - Extract image urls[/bold]")
             image_urls = self.extract_image_urls()
-            rprint("[bold]Step 4 of 4 - Downloading images[/bold]")
-            image_paths = self.save_images(image_urls)
-            rprint(image_paths)
 
-            rprint(
-                "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
-            )
+            if not image_urls:
+                output.print_no_data_info()
+                self._driver.quit()
+                self.success = False
+            else:
+                rprint("[bold]Step 4 of 4 - Downloading images[/bold]")
+                image_paths = self.save_images(image_urls)
 
-            if not person_repository.person_exists(self._user_id):
-                person_repository.create_person(self._user_id)
+                output.print_list(image_paths)
 
-            person_object = person_repository.get_person(self._user_id).id
-            for image_path in image_paths:
-                image_repository.create_image(image_path, person_object)
+                rprint(
+                    "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
+                )
 
-            self._driver.quit()
-            self.success = True
+                if not person_repository.person_exists(self._user_id):
+                    person_repository.create_person(self._user_id)
+
+                person_object = person_repository.get_person(self._user_id).id
+                for image_path in image_paths:
+                    image_repository.create_image(image_path, person_object)
+
+                self._driver.quit()
+                self.success = True
 
         except Exception as e:
             logs.log_error(f"An error occurred: {e}")
