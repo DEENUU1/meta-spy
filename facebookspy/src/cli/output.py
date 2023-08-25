@@ -6,8 +6,7 @@ def print_data_from_list_of_dict(data: List[Dict]) -> None:
     rprint("[bold green] Scraped data: [/bold green]")
 
     for entry in data:
-        for key, value in entry.items():
-            rprint(f" - {key}: {value}")
+        rprint(f" - {entry}")
 
 
 def print_string(data: str) -> None:
