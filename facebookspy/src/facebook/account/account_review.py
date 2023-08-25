@@ -7,6 +7,7 @@ from ..facebook_base import BaseFacebookScraper
 from ..scroll import scroll_page
 from ...logs import Logs
 from ...repository import person_repository, review_repository
+from ...cli import output
 
 logs = Logs()
 
@@ -78,28 +79,34 @@ class AccountReview(BaseFacebookScraper):
 
             rprint("[bold]Step 3 of 3 - Extract reviews[/bold]")
             reviews = self.extract_reviews()
-            rprint(reviews)
 
-            rprint(
-                "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
-            )
+            if not any(reviews):
+                output.print_no_data_info()
+                self._driver.quit()
+                self.success = False
+            else:
+                output.print_data_from_list_of_dict(reviews)
 
-            if not person_repository.person_exists(self._user_id):
-                person_repository.create_person(self._user_id)
+                rprint(
+                    "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
+                )
 
-            person_id = person_repository.get_person(self._user_id).id
+                if not person_repository.person_exists(self._user_id):
+                    person_repository.create_person(self._user_id)
 
-            for review_data in reviews:
-                opinion = "".join([data for data in review_data["opinions"]])
-                if not review_repository.review_exists(
-                    review_data["company"], opinion, person_id
-                ):
-                    review_repository.create_reviews(
+                person_id = person_repository.get_person(self._user_id).id
+
+                for review_data in reviews:
+                    opinion = "".join([data for data in review_data["opinions"]])
+                    if not review_repository.review_exists(
                         review_data["company"], opinion, person_id
-                    )
+                    ):
+                        review_repository.create_reviews(
+                            review_data["company"], opinion, person_id
+                        )
 
-            self._driver.quit()
-            self.success = True
+                self._driver.quit()
+                self.success = True
 
         except Exception as e:
             logs.log_error(f"An error occurred: {e}")

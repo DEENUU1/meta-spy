@@ -7,6 +7,7 @@ from ..facebook_base import BaseFacebookScraper
 from ..scroll import scroll_page
 from ...logs import Logs
 from ...repository import person_repository, recent_place_repository
+from ...cli import output
 
 logs = Logs()
 
@@ -77,27 +78,33 @@ class AccountRecentPlaces(BaseFacebookScraper):
 
             rprint("[bold]Step 3 of 3 - Extracting recent places[/bold]")
             recent_places = self.extract_recent_places()
-            rprint(recent_places)
 
-            rprint(
-                "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
-            )
+            if not any(recent_places):
+                output.print_no_data_info()
+                self._driver.quit()
+                self.success = False
+            else:
+                output.print_data_from_list_of_dict(recent_places)
 
-            if not person_repository.person_exists(self._user_id):
-                person_repository.create_person(self._user_id)
+                rprint(
+                    "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
+                )
 
-            person_id = person_repository.get_person(self._user_id).id
+                if not person_repository.person_exists(self._user_id):
+                    person_repository.create_person(self._user_id)
 
-            for place in recent_places:
-                if not recent_place_repository.recent_places_exists(
-                    place["localization"], place["date"], person_id
-                ):
-                    recent_place_repository.create_recent_places(
+                person_id = person_repository.get_person(self._user_id).id
+
+                for place in recent_places:
+                    if not recent_place_repository.recent_places_exists(
                         place["localization"], place["date"], person_id
-                    )
+                    ):
+                        recent_place_repository.create_recent_places(
+                            place["localization"], place["date"], person_id
+                        )
 
-            self._driver.quit()
-            self.success = True
+                self._driver.quit()
+                self.success = True
 
         except Exception as e:
             logs.log_error(f"An error occurred: {e}")

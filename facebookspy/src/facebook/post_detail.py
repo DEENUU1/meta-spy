@@ -9,6 +9,7 @@ from .scraper import Scraper
 from ..config import Config
 from ..logs import Logs
 from ..repository import person_repository, post_repository
+from ..cli import output
 
 logs = Logs()
 
@@ -134,19 +135,27 @@ class PostDetail(Scraper):
 
             for data in posts:
                 scraped_data = self.scrape_post_data(data.url)
-                rprint(scraped_data)
 
-                post_repository.mark_post_as_scraped(data.id)
+                if not any(scraped_data):
+                    output.print_no_data_info()
+                    self._driver.quit()
+                    self.success = True
+                else:
+                    output.print_data_from_list_of_dict(scraped_data)
 
-                for scraped_item in scraped_data:
-                    post_repository.create_post(
-                        person_id=person_object.id,
-                        url=data.url,
-                        number_of_likes=scraped_item.get("number_of_likes", 0),
-                        number_of_shares=scraped_item.get("number_of_shares", 0),
-                        number_of_comments=scraped_item.get("number_of_comments", 0),
-                        content=scraped_item.get("content", ""),
-                    )
+                    post_repository.mark_post_as_scraped(data.id)
+
+                    for scraped_item in scraped_data:
+                        post_repository.create_post(
+                            person_id=person_object.id,
+                            url=data.url,
+                            number_of_likes=scraped_item.get("number_of_likes", 0),
+                            number_of_shares=scraped_item.get("number_of_shares", 0),
+                            number_of_comments=scraped_item.get(
+                                "number_of_comments", 0
+                            ),
+                            content=scraped_item.get("content", ""),
+                        )
 
             self._driver.quit()
             self.success = True
