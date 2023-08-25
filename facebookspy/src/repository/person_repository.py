@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 
 from ..database import get_session
 from ..models import (
@@ -115,3 +115,12 @@ def update_email(person_id: int, email: str) -> bool:
     person.email = email
     session.commit()
     return True
+
+
+def get_persons() -> List[Person]:
+    """
+    Return a list of Person objects
+    """
+    session = get_session()
+    persons = session.query(Person).all()
+    return persons
