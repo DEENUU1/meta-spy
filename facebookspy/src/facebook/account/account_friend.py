@@ -46,7 +46,7 @@ class AccountFriend(BaseFacebookScraper):
             for element in elements:
                 username = element.text.strip()
                 url = element.find_element(By.XPATH, "..").get_attribute("href")
-                if username == "":
+                if username == "" or url is None:
                     continue
                 element_data = {"username": username, "url": url}
                 extracted_elements.append(element_data)
