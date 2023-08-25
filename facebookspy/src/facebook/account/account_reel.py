@@ -7,6 +7,7 @@ from ..facebook_base import BaseFacebookScraper
 from ..scroll import scroll_page
 from ...logs import Logs
 from ...repository import person_repository, reel_repository
+from ...cli import output
 
 logs = Logs()
 
@@ -65,23 +66,29 @@ class AccountReel(BaseFacebookScraper):
 
             rprint("[bold]Step 3 of 3 - Extract reels urls[/bold]")
             reels = self.extract_reels_urls()
-            rprint(reels)
 
-            rprint(
-                "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
-            )
+            if not reels:
+                output.print_no_data_info()
+                self._driver.quit()
+                self.success = False
+            else:
+                output.print_list(reels)
 
-            if not person_repository.person_exists(self._user_id):
-                person_repository.create_person(self._user_id)
+                rprint(
+                    "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
+                )
 
-            person_id = person_repository.get_person(self._user_id).id
+                if not person_repository.person_exists(self._user_id):
+                    person_repository.create_person(self._user_id)
 
-            for data in reels:
-                if not reel_repository.reels_exists(data, person_id):
-                    reel_repository.create_reels(data, person_id)
+                person_id = person_repository.get_person(self._user_id).id
 
-            self._driver.quit()
-            self.success = True
+                for data in reels:
+                    if not reel_repository.reels_exists(data, person_id):
+                        reel_repository.create_reels(data, person_id)
+
+                self._driver.quit()
+                self.success = True
 
         except Exception as e:
             logs.log_error(f"An error occurred: {e}")
