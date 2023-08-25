@@ -11,7 +11,7 @@ def print_data_from_list_of_dict(data: List[Dict]) -> None:
 
 def print_string(data: str) -> None:
     print("[bold green] Scraped data: [/bold green]")
-    print(data)
+    print(f" - {data}")
 
 
 def print_list(data: List) -> None:

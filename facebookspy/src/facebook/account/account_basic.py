@@ -195,6 +195,8 @@ class AccountBasic(BaseFacebookScraper):
                 self._driver.quit()
                 self.success = False
 
+            output.print_data_from_list_of_dict(scraped_data)
+
             rprint(
                 "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
             )
@@ -236,6 +238,8 @@ class AccountBasic(BaseFacebookScraper):
                 self._driver.quit()
                 self.success = False
 
+            output.print_data_from_list_of_dict(places)
+
             rprint(
                 "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
             )
@@ -276,6 +280,8 @@ class AccountBasic(BaseFacebookScraper):
                 self._driver.quit()
                 self.success = False
 
+            output.print_data_from_list_of_dict(family_members)
+
             rprint(
                 "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
             )
@@ -313,6 +319,8 @@ class AccountBasic(BaseFacebookScraper):
                 output.print_no_data_info()
                 self._driver.quit()
                 self.success = False
+
+            output.print_data_from_list_of_dict(scraped_data)
 
             rprint(
                 "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
@@ -365,6 +373,8 @@ class AccountBasic(BaseFacebookScraper):
                 self._driver.quit()
                 self.success = False
 
+            output.print_string(full_name)
+
             rprint(
                 "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
             )
@@ -401,6 +411,8 @@ class AccountBasic(BaseFacebookScraper):
             if not full_name:
                 output.print_no_data_info()
             else:
+                output.print_string(full_name)
+
                 rprint(
                     "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
                 )
@@ -424,6 +436,8 @@ class AccountBasic(BaseFacebookScraper):
             if not any(family_members):
                 output.print_no_data_info()
             else:
+                output.print_data_from_list_of_dict(family_members)
+
                 rprint(
                     "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
                 )
@@ -439,9 +453,13 @@ class AccountBasic(BaseFacebookScraper):
                             person_id,
                         )
 
-                rprint("[bold]Step 4 of 6 - Extract localization data[/bold]")
-                places = self.extract_places()
-                rprint(places)
+            rprint("[bold]Step 4 of 6 - Extract localization data[/bold]")
+            places = self.extract_places()
+
+            if not any(places):
+                output.print_no_data_info()
+            else:
+                output.print_data_from_list_of_dict(places)
 
                 rprint(
                     "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
@@ -461,6 +479,8 @@ class AccountBasic(BaseFacebookScraper):
             if not any(scraped_data):
                 output.print_no_data_info()
             else:
+                output.print_data_from_list_of_dict(scraped_data)
+
                 rprint(
                     "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
                 )
@@ -479,6 +499,8 @@ class AccountBasic(BaseFacebookScraper):
             if not any(scraped_contact_data):
                 output.print_no_data_info()
             else:
+                output.print_data_from_list_of_dict(scraped_contact_data)
+
                 rprint(
                     "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
                 )
