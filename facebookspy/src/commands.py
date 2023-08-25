@@ -26,6 +26,7 @@ from .facebook.post_detail import PostDetail
 from .logs import Logs
 from .runfastapi import run_fastapi
 from .runreact import run_react
+from .graph import create_relationship_graph
 
 load_dotenv()
 
@@ -67,6 +68,13 @@ def server(
 
         # thread_react.join()
         thread_fastapi.join()
+
+
+@app.command()
+def graph():
+    """Create a graph of connections between Person accounts"""
+
+    create_relationship_graph()
 
 
 @app.command()
