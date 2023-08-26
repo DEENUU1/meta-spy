@@ -9,6 +9,7 @@ def group_exists(name: str, person_id: int) -> bool:
     Check if Groups object exists
 
     Args:
+        name (str): Group name
         person_id (int): Person ID
 
     Returns:
@@ -33,15 +34,15 @@ def create_group(person_id: int, name: str, url: str = None) -> Groups:
     """
     session = get_session()
 
-    existing_like = group_exists(name)
+    existing_group = group_exists(name, person_id)
 
-    if existing_like:
+    if existing_group:
         if url is not None:
-            existing_like.url = url
+            existing_group.url = url
         session.commit()
-        return existing_like
+        return existing_group
     else:
-        like = Groups(person_id=person_id, name=name, url=url)
-        session.add(like)
+        group = Groups(person_id=person_id, name=name, url=url)
+        session.add(group)
         session.commit()
-        return like
+        return group

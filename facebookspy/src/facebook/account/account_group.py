@@ -73,6 +73,8 @@ class AccountGroup(BaseFacebookScraper):
                 self._driver.quit()
                 self.success = False
             else:
+                output.print_data_from_list_of_dict(extracted_data)
+
                 rprint(
                     "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
                 )
