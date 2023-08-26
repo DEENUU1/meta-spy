@@ -44,4 +44,5 @@ class Scraper:
             "--enable-features=NetworkService,NetworkServiceInProcess"
         )
         chrome_options.add_argument("--profile-directory=Default")
+        chrome_options.add_experimental_option("excludeSwitches", ["enable-logging"])
         return chrome_options
