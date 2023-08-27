@@ -85,7 +85,10 @@ class AccountEvents(BaseFacebookScraper):
                 person_id = person_repository.get_person(self._user_id).id
 
                 for data in extracted_data:
-                    if not event_repository.event_exists(data["name"], person_id):
+                    if (
+                        not event_repository.event_exists(data["name"], person_id)
+                        and data["url"] != None
+                    ):
                         event_repository.create_event(
                             person_id, data["name"], data["url"]
                         )
