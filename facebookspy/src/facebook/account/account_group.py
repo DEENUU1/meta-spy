@@ -85,7 +85,10 @@ class AccountGroup(BaseFacebookScraper):
                 person_id = person_repository.get_person(self._user_id).id
 
                 for data in extracted_data:
-                    if not group_repository.group_exists(data["name"], person_id):
+                    if (
+                        not group_repository.group_exists(data["name"], person_id)
+                        and data["url"] != 0
+                    ):
                         group_repository.create_group(
                             person_id, data["name"], data["url"]
                         )
