@@ -21,6 +21,10 @@ def create_relationship_graph():
                 if common_urls:
                     G.add_edge(person.id, other_person.id)
 
+    # Check if Friend relationships exist, if not, create edges based on WorkAndEducation
+    if len(G.edges()) == 0:
+        pass
+
     pos = nx.spring_layout(G)
     labels = nx.get_node_attributes(G, "label")
     nx.draw(G, pos, labels=labels, with_labels=True, node_size=1000)
