@@ -127,17 +127,6 @@ def get_persons() -> List[Person]:
         session.query(Person)
         .options(
             joinedload(Person.friends),
-            joinedload(Person.places),
-            joinedload(Person.work_and_education),
-            joinedload(Person.recent_places),
-            joinedload(Person.groups),
-            joinedload(Person.events),
-            joinedload(Person.family_member),
-            joinedload(Person.videos),
-            joinedload(Person.reels),
-            joinedload(Person.reviews),
-            joinedload(Person.posts),
-            joinedload(Person.likes),
         )
         .all()
     )

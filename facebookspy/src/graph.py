@@ -7,6 +7,9 @@ persons = person_repository.get_persons()
 
 
 def create_relationship_graph():
+    """
+    Create a graph of connections between Person objects based on their Friends
+    """
     G = nx.DiGraph()
 
     for person in persons:
@@ -14,7 +17,6 @@ def create_relationship_graph():
 
     for person in persons:
         friend_urls = set(friend.url for friend in person.friends)
-
         for other_person in persons:
             if person != other_person:
                 other_friend_urls = set(friend.url for friend in other_person.friends)
