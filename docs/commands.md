@@ -159,3 +159,12 @@ Download single video from facebook
 ```bash
 python main.py download-video <facebook_video_url>
 ```
+
+
+## Analitics 
+#### Graph
+To create a graph of connections between Person objects based on their Friends use this command
+```bash
+python main.py graph 
+```
+![Basic Scraper Console](https://github.com/DEENUU1/facebook-spy/blob/main/assets/graph.png?raw=true)

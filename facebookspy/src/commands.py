@@ -72,7 +72,7 @@ def server(
 
 @app.command()
 def graph():
-    """Create a graph of connections between Person accounts"""
+    """Create a graph of connections between Person objects based on their Friends"""
 
     create_relationship_graph()
 
