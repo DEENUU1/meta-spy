@@ -67,3 +67,10 @@ def mark_post_as_scraped(post_id: int) -> None:
     if post:
         post.scraped = True
         session.commit()
+
+
+def get_posts_by_person(person_id: int) -> List[Posts]:
+    """Return all posts for a person"""
+    session = get_session()
+    posts = session.query(Posts).filter_by(person_id=person_id).all()
+    return posts

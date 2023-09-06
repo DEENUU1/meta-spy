@@ -2,6 +2,7 @@ from ..database import get_session
 from ..models import (
     Events,
 )
+from typing import List
 
 
 def event_exists(name: str, person_id: int) -> bool:
@@ -45,3 +46,17 @@ def create_event(person_id: int, name: str, url: str = None) -> Events:
         session.add(like)
         session.commit()
         return like
+
+
+def get_events_by_person(person_id: int) -> List[Events]:
+    """
+    Get Events object by person ID
+
+    Args:
+        person_id (int): Person ID
+
+    Returns:
+        Events: Events object
+    """
+    session = get_session()
+    return session.query(Events).filter_by(person_id=person_id).all()

@@ -2,6 +2,7 @@ from ..database import get_session
 from ..models import (
     Groups,
 )
+from typing import List
 
 
 def group_exists(name: str, person_id: int) -> bool:
@@ -46,3 +47,17 @@ def create_group(person_id: int, name: str, url: str = None) -> Groups:
         session.add(group)
         session.commit()
         return group
+
+
+def get_groups_by_person(person_id: int) -> List[Groups]:
+    """
+    Get Groups object by person ID
+
+    Args:
+        person_id (int): Person ID
+
+    Returns:
+        Groups: Groups object
+    """
+    session = get_session()
+    return session.query(Groups).filter_by(person_id=person_id).all()
