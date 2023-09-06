@@ -15,7 +15,20 @@ def ai_exists(person_id: int) -> bool:
     return session.query(Ai).filter_by(person_id=person_id).first() is not None
 
 
-def create_or_update_ai(person_id, person_summary=None, person_opinion=None) -> Ai:
+def get_ai(person_id: int) -> Ai:
+    """Get ai object from database
+
+    Args:
+        person_id (int): PersonId
+
+    Returns:
+        Ai: Ai object
+    """
+    session = get_session()
+    return session.query(Ai).filter_by(person_id=person_id).first()
+
+
+def create_or_update_ai(person_id: int, person_summary=None, person_opinion=None) -> Ai:
     """Create or update Ai object for specified Person object
 
     Args:
