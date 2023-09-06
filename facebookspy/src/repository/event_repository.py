@@ -45,3 +45,17 @@ def create_event(person_id: int, name: str, url: str = None) -> Events:
         session.add(like)
         session.commit()
         return like
+
+
+def get_event_by_person(person_id: int) -> Events:
+    """
+    Get Events object by person ID
+
+    Args:
+        person_id (int): Person ID
+
+    Returns:
+        Events: Events object
+    """
+    session = get_session()
+    return session.query(Events).filter_by(person_id=person_id).first()
