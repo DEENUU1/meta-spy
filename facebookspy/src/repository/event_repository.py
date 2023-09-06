@@ -58,4 +58,4 @@ def get_event_by_person(person_id: int) -> Events:
         Events: Events object
     """
     session = get_session()
-    return session.query(Events).filter_by(person_id=person_id).first()
+    return session.query(Events).filter_by(person_id=person_id).all()
