@@ -72,7 +72,6 @@ class Person(Base):
     likes = relationship("Likes", uselist=False, back_populates="person")
     groups = relationship("Groups", uselist=False, back_populates="person")
     events = relationship("Events", uselist=False, back_populates="person")
-    ai = relationship("Ai", uselist=False, back_populates="person")
 
 
 class Places(Base):
