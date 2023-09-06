@@ -99,15 +99,15 @@ def format_person_data(person_id: str) -> Tuple[List]:
 
     return (
         person,
-        events_data,
-        family_members_data,
-        groups_data,
-        likes_data,
-        places_data,
-        posts_data,
-        recent_places_data,
-        reviews_data,
-        work_and_education_data,
+        events_data.encode("unicode_escape").decode("utf-8"),
+        family_members_data.encode("unicode_escape").decode("utf-8"),
+        groups_data.encode("unicode_escape").decode("utf-8"),
+        likes_data.encode("unicode_escape").decode("utf-8"),
+        places_data.encode("unicode_escape").decode("utf-8"),
+        posts_data.encode("unicode_escape").decode("utf-8"),
+        recent_places_data.encode("unicode_escape").decode("utf-8"),
+        reviews_data.encode("unicode_escape").decode("utf-8"),
+        work_and_education_data.encode("unicode_escape").decode("utf-8"),
     )
 
 
