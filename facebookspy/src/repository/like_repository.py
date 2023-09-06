@@ -2,6 +2,7 @@ from ..database import get_session
 from ..models import (
     Likes,
 )
+from typing import List
 
 
 def like_exists(name: str, person_id: int) -> bool:
@@ -34,7 +35,7 @@ def create_like(person_id: int, name: str) -> Likes:
     return like
 
 
-def get_likes_by_person(person_id: int) -> Likes:
+def get_likes_by_person(person_id: int) -> List[Likes]:
     """Get Likes object by person ID
     Args:
         person_id (int): Person ID
