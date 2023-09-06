@@ -2,7 +2,6 @@ from langchain import PromptTemplate, HuggingFaceHub, LLMChain
 from dotenv import load_dotenv
 from .repository import (
     event_repository,
-    ai_repository,
     family_member_repository,
     group_repository,
     like_repository,

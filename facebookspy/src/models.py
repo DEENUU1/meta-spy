@@ -211,15 +211,3 @@ class Events(Base):
 
     # Relationships
     person = relationship("Person", back_populates="events")
-
-
-class Ai(Base):
-    __tablename__ = "ai"
-
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    person_summary = Column(String, nullable=True)
-    person_opinion = Column(String, nullable=True)
-    person_id = Column(Integer, ForeignKey("persons.id"))
-
-    # Relationships
-    person = relationship("Person", back_populates="ai")
