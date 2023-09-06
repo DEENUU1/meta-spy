@@ -32,3 +32,15 @@ def create_like(person_id: int, name: str) -> Likes:
     session.add(like)
     session.commit()
     return like
+
+
+def get_likes_by_person(person_id: int) -> Likes:
+    """Get Likes object by person ID
+    Args:
+        person_id (int): Person ID
+    Returns:
+        Likes: Likes object
+    """
+    session = get_session()
+    likes = session.query(Likes).filter_by(person_id=person_id).all()
+    return likes
