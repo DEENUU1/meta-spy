@@ -27,6 +27,7 @@ from .logs import Logs
 from .runfastapi import run_fastapi
 from .runreact import run_react
 from .graph import create_relationship_graph
+from .ai import get_person_summary
 
 load_dotenv()
 
@@ -75,6 +76,12 @@ def graph():
     """Create a graph of connections between Person objects based on their Friends"""
 
     create_relationship_graph()
+
+
+@app.command()
+def summary(name: Annotated[str, typer.Argument(help="Facebook user id")]):
+    """Create a summary of a specified person by using AI and scraped data"""
+    get_person_summary(name)
 
 
 @app.command()
