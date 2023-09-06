@@ -13,6 +13,7 @@ from .repository import (
     work_education_repository,
 )
 from typing import Tuple, List
+from rich import print as rprint
 
 load_dotenv()
 
@@ -111,6 +112,13 @@ def format_person_data(person_id: str) -> Tuple[List]:
 
 
 def get_person_summary(person_id: str) -> None:
+    """
+    Generate summary using AI model for specified Person object
+    """
+
+    rprint(f"[bold green]Start generating summary for person: {person_id}[/bold green]")
+    rprint("[bold]Step 1 of 3 - Extract data from models[/bold]")
+
     (
         person,
         events_data,
@@ -160,4 +168,9 @@ def get_person_summary(person_id: str) -> None:
 
     """
 
-    print(llm_chain.run(t))
+    rprint("[bold]Step 2 of 3 - Generate summary[/bold]")
+    summary = llm_chain.run(t)
+
+    rprint("[bold]Step 3 of 3 - Saving summary to Person object[/bold]")
+    person_repository.update_ai_summary(person.id, summary)
+    print(summary)
