@@ -53,6 +53,7 @@ class Person(Base):
     phone_number = Column(String, nullable=True)
     email = Column(String, nullable=True)
     number_of_friends = Column(Integer, default=0)
+    ai_summary = Column(String, nullable=True)
 
     # Relationships (using backref for bidirectional relationship)
     friends = relationship("Friends", back_populates="person")
@@ -71,7 +72,6 @@ class Person(Base):
     likes = relationship("Likes", uselist=False, back_populates="person")
     groups = relationship("Groups", uselist=False, back_populates="person")
     events = relationship("Events", uselist=False, back_populates="person")
-    ai = relationship("Ai", uselist=False, back_populates="person")
 
 
 class Places(Base):
@@ -211,15 +211,3 @@ class Events(Base):
 
     # Relationships
     person = relationship("Person", back_populates="events")
-
-
-class Ai(Base):
-    __tablename__ = "ai"
-
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    person_summary = Column(String, nullable=True)
-    person_opinion = Column(String, nullable=True)
-    person_id = Column(Integer, ForeignKey("persons.id"))
-
-    # Relationships
-    person = relationship("Person", back_populates="ai")
