@@ -15,6 +15,7 @@ from facebookspy.src.models import (
     Likes,
     Groups,
     Events,
+    Ai,
 )
 from .conftest import session
 
@@ -251,3 +252,19 @@ def test_events_model_successfully_create_object(session):
     assert event.id is not None
     assert event.name == "Event 1"
     assert event.person == person_object
+
+
+def test_ai_model_successfully_create_object(session):
+    person_object = Person(full_name="XYZ", url="https://example.com/xyz")
+    ai = Ai(
+        person=person_object,
+        person_summary="This person is really cool",
+        person_opinion="This person is really cool",
+    )
+    session.add(ai)
+    session.commit()
+
+    assert ai.id is not None
+    assert ai.person_summary == "This person is really cool"
+    assert ai.person_opinion == "This person is really cool"
+    assert ai.person == person_object
