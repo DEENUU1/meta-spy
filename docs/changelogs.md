@@ -1,9 +1,38 @@
 # Change log
 
 
-## Current version: 0.7
+## Current version: 0.9
 
 ## Version history
+
+### 0.9
+- Add repository functions to return all data for specified Person object
+- Implement LangChain and free Open Source LLM model to create summary for specified Person object based on scraped data
+- Add command to create summary
+- Add command to save all scraped data and summary to PDF file for specified Person object
+- Fix saving events and groups if there is no data
+- Disable displaying logs from Selenium in the console 
+- Add command to create graph of the connections between Person objects based on their friends 
+
+#### New commands
+
+To create a graph of connections between Person objects based on their Friends use this command
+```bash
+python main.py graph 
+```
+![Basic Scraper Console](https://github.com/DEENUU1/facebook-spy/blob/main/assets/graph.png?raw=true)
+
+
+Save scraped data for specified Person object to PDF file 
+```bash
+python main.py report <facebook_id> 
+```
+
+Use free open source LLM model to create a short summary for specified Person object based on scraped data 
+```bash
+python main.py summary <facebook_id>
+```
+
 
 ### V0.8
 - Scrape user's groups
