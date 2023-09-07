@@ -168,3 +168,16 @@ To create a graph of connections between Person objects based on their Friends u
 python main.py graph 
 ```
 ![Basic Scraper Console](https://github.com/DEENUU1/facebook-spy/blob/main/assets/graph.png?raw=true)
+
+
+#### Report
+Save scraped data for specified Person object to PDF file 
+```bash
+python main.py report <facebook_id> 
+```
+
+#### AI Summary
+Use free open source LLM model to create a short summary for specified Person object based on scraped data 
+```bash
+python main.py summary <facebook_id>
+```
