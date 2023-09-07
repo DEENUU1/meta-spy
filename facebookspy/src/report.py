@@ -30,14 +30,14 @@ def generate_pdf_report(person_id: str) -> None:
     heading_style = styles["Heading1"]
 
     person_personal_info = [
-        f"Full Name: {data[0].full_name}",
         f"AI Summary: {data[0].ai_summary}",
+        f"Full Name: {data[0].full_name}",
         f"Email: {data[0].email}",
         f"Phone Number: {data[0].phone_number}",
     ]
 
     rprint("[bold]Step 2 of 3 - Adding data to the PDF file [/bold]")
-    main_info_text = "\n".join(person_personal_info)
+    main_info_text = "<br/>".join(person_personal_info)
     story.append(Paragraph("Main User Information", heading_style))
     story.append(Spacer(1, 0.2 * inch))
     story.append(Paragraph(main_info_text, styles["Normal"]))
@@ -55,9 +55,12 @@ def generate_pdf_report(person_id: str) -> None:
         "Work and Education",
     ]
     for heading, content in zip(headings, data[1:]):
+        content_with_line_breaks = "<br/>".join(
+            content.split("\n")
+        )  # Zamiana \n na <br/> w treści
         story.append(Paragraph(heading, heading_style))
         story.append(Spacer(1, 0.2 * inch))
-        story.append(Paragraph(content, styles["Normal"]))
+        story.append(Paragraph(content_with_line_breaks, styles["Normal"]))
         story.append(PageBreak())
 
     rprint("[bold]Step 3 of 3 - Saving the PDF file[/bold]")
