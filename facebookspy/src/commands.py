@@ -28,6 +28,8 @@ from .runfastapi import run_fastapi
 from .runreact import run_react
 from .graph import create_relationship_graph
 from .ai import get_person_summary
+from .report import generate_pdf_report
+
 
 load_dotenv()
 
@@ -82,6 +84,14 @@ def graph():
 def summary(name: Annotated[str, typer.Argument(help="Facebook user id")]):
     """Create a summary of a specified person by using AI and scraped data"""
     get_person_summary(name)
+
+
+@app.command()
+def report(name: Annotated[str, typer.Argument(help="Facebook user id")]):
+    """
+    Generate and save PDF file with scraped data for specified person.
+    """
+    generate_pdf_report(name)
 
 
 @app.command()
