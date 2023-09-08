@@ -18,3 +18,16 @@ def create_crawler_queue(url: str) -> CrawlerQueue:
     session.add(crawler_queue)
     session.commit()
     return crawler_queue
+
+
+def update_crawler_queue_status(crawler_queue_id: int) -> None:
+    """
+    Update field 'status' in specified crawlerqueue object
+
+    Args:
+        crawler_queue_id (int): CrawlerQueue ID
+    """
+    session = get_session()
+    crawler_queue = session.query(CrawlerQueue).get(crawler_queue_id)
+    crawler_queue.status = True
+    session.commit()
