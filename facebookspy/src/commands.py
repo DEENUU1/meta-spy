@@ -29,6 +29,7 @@ from .runreact import run_react
 from .graph import create_relationship_graph
 from .ai import get_person_summary
 from .report import generate_pdf_report
+from .repository import crawlerqueue_repository
 
 
 load_dotenv()
@@ -76,6 +77,17 @@ def server(
 @app.command()
 def friend_crawler():
     pass
+
+
+@app.command()
+def clear_queue():
+    """
+    Clear the queue of crawler
+    """
+    delete = crawlerqueue_repository.delete_all()
+    if delete:
+        rprint("✅Queue cleared ✅")
+    rprint("❌Queue not cleared, please try again❌")
 
 
 @app.command()
