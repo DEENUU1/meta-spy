@@ -53,3 +53,16 @@ def delete_all() -> bool:
     session.commit()
 
     return True if session.query(CrawlerQueue).count() == 0 else False
+
+
+def delete_crawler_queue(crawler_queue_id: int) -> bool:
+    """
+    Delete specified crawlerqueue object
+    """
+    session = get_session()
+    crawler_queue = session.query(CrawlerQueue).filter_by(id=crawler_queue_id).first()
+    if not crawler_queue:
+        return False
+    session.delete(crawler_queue)
+    session.commit()
+    return True
