@@ -211,3 +211,11 @@ class Events(Base):
 
     # Relationships
     person = relationship("Person", back_populates="events")
+
+
+class CrawlerQueue(Base):
+    __tablename__ = "crawler_queue"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    url = Column(String, nullable=False)
+    status = Column(Boolean, default=False)
