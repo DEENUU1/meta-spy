@@ -31,6 +31,14 @@ def update_crawler_queue_status(crawler_queue_id: int) -> bool:
     crawler_queue = session.query(CrawlerQueue).filter_by(id=crawler_queue_id).first()
     if not crawler_queue:
         return False
-    crawler_queue.status = 1
+    crawler_queue.status = True
     session.commit()
     return True
+
+
+def get_crawler_queues_status_true() -> List[CrawlerQueue]:
+    """
+    Get crawlerqueue objects with status = True
+    """
+    session = get_session()
+    return session.query(CrawlerQueue).filter_by(status=True).all()
