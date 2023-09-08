@@ -42,3 +42,13 @@ def get_crawler_queues_status_true() -> List[CrawlerQueue]:
     """
     session = get_session()
     return session.query(CrawlerQueue).filter_by(status=True).all()
+
+
+def delete_all() -> bool:
+    """
+    Delete all objects from CrawlerQueue
+    """
+    session = get_session()
+    session.query(CrawlerQueue).delete()
+    session.commit()
+    return True
