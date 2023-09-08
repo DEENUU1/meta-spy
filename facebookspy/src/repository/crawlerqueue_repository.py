@@ -51,4 +51,5 @@ def delete_all() -> bool:
     session = get_session()
     session.query(CrawlerQueue).delete()
     session.commit()
-    return True
+
+    return True if session.query(CrawlerQueue).count() == 0 else False
