@@ -74,6 +74,11 @@ def server(
 
 
 @app.command()
+def friend_crawler():
+    pass
+
+
+@app.command()
 def graph():
     """Create a graph of connections between Person objects based on their Friends"""
 
