@@ -12,7 +12,7 @@ logs = Logs()
 
 
 class BaseFacebookScraper(Scraper):
-    def __init__(self, user_id, base_url) -> None:
+    def __init__(self, user_id: str, base_url: str) -> None:
         super().__init__()
         self._user_id = user_id
         self._base_url = base_url.format(self._user_id)

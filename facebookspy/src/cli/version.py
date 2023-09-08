@@ -6,7 +6,7 @@ from .baner import print_banner
 VERSION = "0.9"
 
 
-def return_version_info():
+def return_version_info() -> None:
     """
     Return the version of the package.
     """

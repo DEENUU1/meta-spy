@@ -17,7 +17,7 @@ class AccountRecentPlaces(BaseFacebookScraper):
     Scrape user's pictures
     """
 
-    def __init__(self, user_id) -> None:
+    def __init__(self, user_id: str) -> None:
         super().__init__(
             user_id, base_url=f"https://www.facebook.com/{user_id}/places_recent"
         )
