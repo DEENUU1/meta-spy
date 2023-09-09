@@ -84,7 +84,7 @@ def friend_crawler(
 
     rprint(f"Start crawler from {name}")
 
-    scraper = AccountFriend(name)
+    scraper = AccountFriend(name, crawler)
 
     if scraper.is_pipeline_successful:
         # Return a list of users from queue with status False
