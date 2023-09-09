@@ -75,8 +75,29 @@ def server(
 
 
 @app.command()
-def friend_crawler():
-    pass
+def friend_crawler(
+    name: Annotated[str, typer.Argument(help="Facebook user id")], crawler: bool = True
+) -> None:
+    # At first the function is scraping a list of friends for specified user
+    # Create Person and Friend objects just like in a standard friend scraper
+    # But also it create CrawlerQueue objects with url to friend facebook accounts
+
+    rprint(f"Start crawler from {name}")
+
+    scraper = AccountFriend(name)
+
+    if scraper.is_pipeline_successful:
+        # Return a list of users from queue with status False
+        # Which means this user wasn't scraped yet
+        users = crawlerqueue_repository.get_crawler_queues_status_false()
+        while len(users) > 0:
+            for user in users:
+                # Add function to extract account id from the url and then run scraper
+                pass
+
+    else:
+        rprint(f"❌Failed to scrape friends from the main user❌")
+    # After successfull scraping friends from the starting user it's gonna do the same for the scraped friends from the main user
 
 
 @app.command()

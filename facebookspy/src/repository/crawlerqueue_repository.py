@@ -36,12 +36,12 @@ def update_crawler_queue_status(crawler_queue_id: int) -> bool:
     return True
 
 
-def get_crawler_queues_status_true() -> List[CrawlerQueue]:
+def get_crawler_queues_status_false() -> List[CrawlerQueue]:
     """
     Get crawlerqueue objects with status = True
     """
     session = get_session()
-    return session.query(CrawlerQueue).filter_by(status=True).all()
+    return session.query(CrawlerQueue).filter_by(status=False).all()
 
 
 def delete_all() -> bool:
