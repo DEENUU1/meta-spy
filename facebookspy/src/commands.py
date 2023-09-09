@@ -30,6 +30,7 @@ from .graph import create_relationship_graph
 from .ai import get_person_summary
 from .report import generate_pdf_report
 from .repository import crawlerqueue_repository
+from .urlid import get_account_id
 
 
 load_dotenv()
@@ -85,6 +86,7 @@ def friend_crawler(
     rprint(f"Start crawler from {name}")
 
     scraper = AccountFriend(name, crawler)
+    scraper.pipeline()
 
     if scraper.is_pipeline_successful:
         # Return a list of users from queue with status False
@@ -92,12 +94,30 @@ def friend_crawler(
         users = crawlerqueue_repository.get_crawler_queues_status_false()
         while len(users) > 0:
             for user in users:
-                # Add function to extract account id from the url and then run scraper
-                pass
+                user_id = get_account_id(user.url)
+                scraper = AccountFriend(user_id, crawler)
+                scraper.pipeline()
 
     else:
         rprint(f"❌Failed to scrape friends from the main user❌")
     # After successfull scraping friends from the starting user it's gonna do the same for the scraped friends from the main user
+
+
+@app.command()
+def display_queue():
+    """
+    Display queue objects
+    """
+
+    queue_data = crawlerqueue_repository.get_crawler_queues_status_false()
+    if len(queue_data) == 0:
+        rprint("[bold] Queue is empty. [/bold]")
+    else:
+        rprint(
+            f"[bold] Found {len(queue_data)} queue objects with status False: [/bold]"
+        )
+        for idx, queue in enumerate(queue_data):
+            rprint(f"- [bold] {idx} [/bold] {queue.url}")
 
 
 @app.command()
