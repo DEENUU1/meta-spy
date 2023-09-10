@@ -123,23 +123,8 @@ python main.py scrape-person-events <facebook_id>
 #### Run FastAPI and React application 
 App is available under this local url - http://localhost:5173/
 
-For now running React application without docker is not possible and you can only run FastAPI app with this command.
-To run React go to this directory 
-```bash
-facebookspy/src/server/frontend
-```
-And use this command 
-```bash
-npm run dev 
-```
-
 ```bash
 python main.py server
-```
-
-#### Run Web Application using Docker 
-```bash
-python main.py server --d 
 ```
 
 
