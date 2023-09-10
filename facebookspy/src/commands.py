@@ -24,8 +24,6 @@ from .facebook.downloader import Downloader
 from .facebook.login import FacebookLogIn
 from .facebook.post_detail import PostDetail
 from .logs import Logs
-from .runfastapi import run_fastapi
-from .runreact import run_react
 from .graph import create_relationship_graph
 from .ai import get_person_summary
 from .report import generate_pdf_report
@@ -43,36 +41,19 @@ app = typer.Typer(
 
 
 @app.command()
-def server(
-    d: Annotated[
-        bool, typer.Option(help="Run local server using Docker or with standard way")
-    ] = False
-):
-    """Run local server to browse scraped data"""
+def server():
+    """Run local server using docker to browse scraped data"""
 
-    # Run local server using Docker
-    if d:
-        try:
-            build_command = ["docker-compose", "build"]
-            subprocess.run(build_command, check=True)
+    try:
+        build_command = ["docker-compose", "build"]
+        subprocess.run(build_command, check=True)
 
-            run_command = ["docker-compose", "up", "-d"]
-            subprocess.run(run_command, check=True)
+        run_command = ["docker-compose", "up", "-d"]
+        subprocess.run(run_command, check=True)
 
-        except subprocess.CalledProcessError as e:
-            logs.log_error(f"An error occurred while starting local server {e}")
-            rprint(f"An error occurred {e}")
-
-    # Run local server without Docker
-    else:
-        # thread_react = threading.Thread(target=run_react)
-        thread_fastapi = threading.Thread(target=run_fastapi)
-
-        # thread_react.start()
-        thread_fastapi.start()
-
-        # thread_react.join()
-        thread_fastapi.join()
+    except subprocess.CalledProcessError as e:
+        logs.log_error(f"An error occurred while starting local server {e}")
+        rprint(f"An error occurred {e}")
 
 
 @app.command()
