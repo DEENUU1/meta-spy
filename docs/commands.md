@@ -48,10 +48,20 @@ After running this command use arrows keys to navigate through the list of possi
 ![Basic Scraper Console](https://github.com/DEENUU1/facebook-spy/blob/main/assets/scrapebasicdataconsole.png?raw=true)
 
 #### Full scraping
-This command allows to choose all available commands to scrape facebook profile
+This command allows to choose all available commands to scrape facebook profiles
+
+Also you are able to add multiply facebook profile ids as a single argument 
+
+To scrape one account your command should looks likes this
 ```bash
 python main.py full-scrape <facebook_id>
 ```
+
+TO scrape multiply accounts user command should looks like this
+```bash
+python main.py full-scrape <facebook_id> <facebook_id> <facebook_id> ... 
+```
+
 After running this command use arrows keys to navigate through the list of possible scrapers <br>
 - Use Arrow Up/Arrow Down to go Up and Down 
 - Use Arrow Right to select scraper 
