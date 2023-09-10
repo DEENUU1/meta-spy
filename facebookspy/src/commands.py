@@ -590,7 +590,9 @@ def prompt_options() -> List[str]:
 
 
 @app.command()
-def full_scrape(name: Annotated[str, typer.Argument(help="Facebook user id")]) -> None:
+def full_scrape(
+    names: Annotated[List[str], typer.Argument(help="Facebook user id")]
+) -> None:
     """Full scrape of user's data
     - basic information (job and school history, full name etc)
     - friends
@@ -604,54 +606,58 @@ def full_scrape(name: Annotated[str, typer.Argument(help="Facebook user id")]) -
     - groups
     - events
     """
-    selected_options = prompt_options()
-    if "a" in selected_options:
-        basic_scraper = AccountBasic(name)
-        basic_scraper.pipeline()
+    rprint(f"Run scraper for {len(names)} users: {names}")
 
-    if "b" in selected_options:
-        friends_scraper = AccountFriend(name)
-        friends_scraper.pipeline()
+    for name in names:
+        rprint(f"Scraping data for user: {name}")
+        selected_options = prompt_options()
+        if "a" in selected_options:
+            basic_scraper = AccountBasic(name)
+            basic_scraper.pipeline()
 
-    if "c" in selected_options:
-        images_scraper = AccountImage(name)
-        images_scraper.pipeline()
+        if "b" in selected_options:
+            friends_scraper = AccountFriend(name)
+            friends_scraper.pipeline()
 
-    if "d" in selected_options:
-        reels_scraper = AccountReel(name)
-        reels_scraper.pipeline()
+        if "c" in selected_options:
+            images_scraper = AccountImage(name)
+            images_scraper.pipeline()
 
-    if "e" in selected_options:
-        reviews_scraper = AccountReel(name)
-        reviews_scraper.pipeline()
+        if "d" in selected_options:
+            reels_scraper = AccountReel(name)
+            reels_scraper.pipeline()
 
-    if "f" in selected_options:
-        videos_scraper = AccountVideo(name)
-        videos_scraper.save_video_urls_to_database_pipeline()
+        if "e" in selected_options:
+            reviews_scraper = AccountReel(name)
+            reviews_scraper.pipeline()
 
-    if "g" in selected_options:
-        video_downloader = Downloader(name)
-        video_downloader.download_all_person_videos_pipeline()
+        if "f" in selected_options:
+            videos_scraper = AccountVideo(name)
+            videos_scraper.save_video_urls_to_database_pipeline()
 
-    if "h" in selected_options:
-        posts_scraper = AccountPost(name)
-        posts_scraper.pipeline()
+        if "g" in selected_options:
+            video_downloader = Downloader(name)
+            video_downloader.download_all_person_videos_pipeline()
 
-    if "i" in selected_options:
-        post_detail_scraper = PostDetail(name)
-        post_detail_scraper.pipeline()
+        if "h" in selected_options:
+            posts_scraper = AccountPost(name)
+            posts_scraper.pipeline()
 
-    if "j" in selected_options:
-        likes_scraper = AccountLike(name)
-        likes_scraper.pipeline()
+        if "i" in selected_options:
+            post_detail_scraper = PostDetail(name)
+            post_detail_scraper.pipeline()
 
-    if "k" in selected_options:
-        groups_scraper = AccountGroup(name)
-        groups_scraper.pipeline()
+        if "j" in selected_options:
+            likes_scraper = AccountLike(name)
+            likes_scraper.pipeline()
 
-    if "l" in selected_options:
-        events_scraper = AccountEvents(name)
-        events_scraper.pipeline()
+        if "k" in selected_options:
+            groups_scraper = AccountGroup(name)
+            groups_scraper.pipeline()
+
+        if "l" in selected_options:
+            events_scraper = AccountEvents(name)
+            events_scraper.pipeline()
 
 
 if __name__ == "__main__":
