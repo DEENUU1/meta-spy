@@ -29,6 +29,7 @@ from .analytics.ai import get_person_summary
 from .analytics.report import generate_pdf_report
 from .repository import crawlerqueue_repository
 from .scripts.urlid import get_account_id
+from typing import List
 
 
 load_dotenv()
@@ -41,7 +42,7 @@ app = typer.Typer(
 
 
 @app.command()
-def server():
+def server() -> None:
     """Run local server using docker to browse scraped data"""
 
     try:
@@ -87,7 +88,7 @@ def friend_crawler(
 
 
 @app.command()
-def display_queue():
+def display_queue() -> None:
     """
     Display queue objects
     """
@@ -104,7 +105,9 @@ def display_queue():
 
 
 @app.command()
-def delete_queue_object(id: Annotated[int, typer.Argument(help="CrawlerQueue id")]):
+def delete_queue_object(
+    id: Annotated[int, typer.Argument(help="CrawlerQueue id")]
+) -> None:
     """
     Delete a specified queue object based on id from db
     """
@@ -116,7 +119,7 @@ def delete_queue_object(id: Annotated[int, typer.Argument(help="CrawlerQueue id"
 
 
 @app.command()
-def clear_queue():
+def clear_queue() -> None:
     """
     Clear the queue of crawler
     """
@@ -127,20 +130,20 @@ def clear_queue():
 
 
 @app.command()
-def graph():
+def graph() -> None:
     """Create a graph of connections between Person objects based on their Friends"""
 
     create_relationship_graph()
 
 
 @app.command()
-def summary(name: Annotated[str, typer.Argument(help="Facebook user id")]):
+def summary(name: Annotated[str, typer.Argument(help="Facebook user id")]) -> None:
     """Create a summary of a specified person by using AI and scraped data"""
     get_person_summary(name)
 
 
 @app.command()
-def report(name: Annotated[str, typer.Argument(help="Facebook user id")]):
+def report(name: Annotated[str, typer.Argument(help="Facebook user id")]) -> None:
     """
     Generate and save PDF file with scraped data for specified person.
     """
@@ -148,14 +151,14 @@ def report(name: Annotated[str, typer.Argument(help="Facebook user id")]):
 
 
 @app.command()
-def version():
+def version() -> None:
     """Display data about the project version"""
 
     return_version_info()
 
 
 @app.command()
-def login_2_step():
+def login_2_step() -> None:
     """Log in to facebook account with 2-step authentication"""
 
     facebook = FacebookLogIn()
@@ -171,7 +174,7 @@ def login_2_step():
 
 
 @app.command()
-def login():
+def login() -> None:
     """Log in to facebook account without 2-step authentication"""
 
     facebook = FacebookLogIn()
@@ -186,7 +189,7 @@ def login():
         rprint(f"❌Logging failed after {time_end - time_start} seconds ❌")
 
 
-def prompt_account_options():
+def prompt_account_options() -> List[str]:
     questions = [
         inquirer.Checkbox(
             "options",
@@ -205,7 +208,9 @@ def prompt_account_options():
 
 
 @app.command()
-def scrape_basic_data(name: Annotated[str, typer.Argument(help="Facebook user id")]):
+def scrape_basic_data(
+    name: Annotated[str, typer.Argument(help="Facebook user id")]
+) -> None:
     """Command to scrape work and education history, contact data, visited places, family member and full name"""
     selected_options = prompt_account_options()
 
@@ -276,7 +281,9 @@ def scrape_basic_data(name: Annotated[str, typer.Argument(help="Facebook user id
 
 
 @app.command()
-def scrape_friend_list(name: Annotated[str, typer.Argument(help="Facebook user id")]):
+def scrape_friend_list(
+    name: Annotated[str, typer.Argument(help="Facebook user id")]
+) -> None:
     """Scrape friend list from facebook account"""
 
     rprint(f"Start scraping friend list for {name}")
@@ -293,7 +300,9 @@ def scrape_friend_list(name: Annotated[str, typer.Argument(help="Facebook user i
 
 
 @app.command()
-def scrape_images(name: Annotated[str, typer.Argument(help="Facebook user id")]):
+def scrape_images(
+    name: Annotated[str, typer.Argument(help="Facebook user id")]
+) -> None:
     """Scrape images from facebook account"""
 
     rprint(f"Start scraping images for {name}")
@@ -310,7 +319,9 @@ def scrape_images(name: Annotated[str, typer.Argument(help="Facebook user id")])
 
 
 @app.command()
-def scrape_recent_places(name: Annotated[str, typer.Argument(help="Facebook user id")]):
+def scrape_recent_places(
+    name: Annotated[str, typer.Argument(help="Facebook user id")]
+) -> None:
     """Scrape recent places from facebook account"""
 
     rprint(f"Start scraping recent places for {name}")
@@ -327,7 +338,7 @@ def scrape_recent_places(name: Annotated[str, typer.Argument(help="Facebook user
 
 
 @app.command()
-def scrape_reels(name: Annotated[str, typer.Argument(help="Facebook user id")]):
+def scrape_reels(name: Annotated[str, typer.Argument(help="Facebook user id")]) -> None:
     """Scrape reels urls from facebook account"""
 
     rprint(f"Start scraping reels for {name}")
@@ -344,7 +355,9 @@ def scrape_reels(name: Annotated[str, typer.Argument(help="Facebook user id")]):
 
 
 @app.command()
-def scrape_reviews(name: Annotated[str, typer.Argument(help="Facebook user id")]):
+def scrape_reviews(
+    name: Annotated[str, typer.Argument(help="Facebook user id")]
+) -> None:
     """Scrape written reviews from facebook account"""
 
     rprint(f"Start scraping reviews for {name}")
@@ -361,7 +374,9 @@ def scrape_reviews(name: Annotated[str, typer.Argument(help="Facebook user id")]
 
 
 @app.command()
-def scrape_video_urls(name: Annotated[str, typer.Argument(help="Facebook user id")]):
+def scrape_video_urls(
+    name: Annotated[str, typer.Argument(help="Facebook user id")]
+) -> None:
     """Scrape video urls from facebook account"""
 
     rprint(f"Start scraping videos urls for {name}")
@@ -377,7 +392,7 @@ def scrape_video_urls(name: Annotated[str, typer.Argument(help="Facebook user id
         rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
 
 
-def download_person_videos_options():
+def download_person_videos_options() -> List[str]:
     questions = [
         inquirer.Checkbox(
             "options",
@@ -401,7 +416,7 @@ def download_person_videos_options():
 @app.command()
 def download_person_videos(
     name: Annotated[str, typer.Argument(help="Facebook user id")]
-):
+) -> None:
     """Download videos for specified facebook account"""
     selected_options = download_person_videos_options()
 
@@ -433,7 +448,9 @@ def download_person_videos(
 
 
 @app.command()
-def download_video(url: Annotated[str, typer.Argument(help="Facebook video url")]):
+def download_video(
+    url: Annotated[str, typer.Argument(help="Facebook video url")]
+) -> None:
     """Download single video"""
 
     rprint(f"Start downloading video")
@@ -450,7 +467,9 @@ def download_video(url: Annotated[str, typer.Argument(help="Facebook video url")
 
 
 @app.command()
-def scrape_person_posts(name: Annotated[str, typer.Argument(help="Facebook user id")]):
+def scrape_person_posts(
+    name: Annotated[str, typer.Argument(help="Facebook user id")]
+) -> None:
     """Scrape urls for posts from facebook account"""
 
     rprint(f"Start scraping posts for {name}")
@@ -469,7 +488,7 @@ def scrape_person_posts(name: Annotated[str, typer.Argument(help="Facebook user 
 @app.command()
 def scrape_person_post_details(
     name: Annotated[str, typer.Argument(help="Facebook user id")]
-):
+) -> None:
     """Scrape detail of user's posts"""
 
     rprint(f"Start scraping posts detail for {name}")
@@ -486,7 +505,9 @@ def scrape_person_post_details(
 
 
 @app.command()
-def scrape_person_likes(name: Annotated[str, typer.Argument(help="Facebook user id")]):
+def scrape_person_likes(
+    name: Annotated[str, typer.Argument(help="Facebook user id")]
+) -> None:
     """Scrape user's likes"""
 
     rprint(f"Start scraping likes for {name}")
@@ -503,7 +524,9 @@ def scrape_person_likes(name: Annotated[str, typer.Argument(help="Facebook user 
 
 
 @app.command()
-def scrape_person_groups(name: Annotated[str, typer.Argument(help="Facebook user id")]):
+def scrape_person_groups(
+    name: Annotated[str, typer.Argument(help="Facebook user id")]
+) -> None:
     """Scrape user's groups"""
 
     rprint(f"Start scraping groups for {name}")
@@ -520,7 +543,9 @@ def scrape_person_groups(name: Annotated[str, typer.Argument(help="Facebook user
 
 
 @app.command()
-def scrape_person_events(name: Annotated[str, typer.Argument(help="Facebook user id")]):
+def scrape_person_events(
+    name: Annotated[str, typer.Argument(help="Facebook user id")]
+) -> None:
     """Scrape user's events"""
 
     rprint(f"Start scraping events for {name}")
@@ -536,7 +561,7 @@ def scrape_person_events(name: Annotated[str, typer.Argument(help="Facebook user
         rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
 
 
-def prompt_options():
+def prompt_options() -> List[str]:
     questions = [
         inquirer.Checkbox(
             "options",
@@ -565,7 +590,7 @@ def prompt_options():
 
 
 @app.command()
-def full_scrape(name: Annotated[str, typer.Argument(help="Facebook user id")]):
+def full_scrape(name: Annotated[str, typer.Argument(help="Facebook user id")]) -> None:
     """Full scrape of user's data
     - basic information (job and school history, full name etc)
     - friends
