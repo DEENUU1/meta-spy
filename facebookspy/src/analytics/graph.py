@@ -1,5 +1,5 @@
 import networkx as nx
-from .repository import person_repository
+from ..repository import person_repository
 import matplotlib.pyplot as plt
 
 

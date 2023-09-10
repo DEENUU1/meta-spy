@@ -24,11 +24,11 @@ from .facebook.downloader import Downloader
 from .facebook.login import FacebookLogIn
 from .facebook.post_detail import PostDetail
 from .logs import Logs
-from .graph import create_relationship_graph
-from .ai import get_person_summary
-from .report import generate_pdf_report
+from .analytics.graph import create_relationship_graph
+from .analytics.ai import get_person_summary
+from .analytics.report import generate_pdf_report
 from .repository import crawlerqueue_repository
-from .urlid import get_account_id
+from .scripts.urlid import get_account_id
 
 
 load_dotenv()

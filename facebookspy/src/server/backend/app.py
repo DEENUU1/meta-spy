@@ -25,7 +25,7 @@ from ...models import (
     Groups,
     Events,
 )
-from ...schemas import (
+from .schemas import (
     PersonSchema,
     ReviewsSchema,
     VideosSchema,
