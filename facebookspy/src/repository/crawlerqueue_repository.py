@@ -66,3 +66,11 @@ def delete_crawler_queue(crawler_queue_id: int) -> bool:
     session.delete(crawler_queue)
     session.commit()
     return True
+
+
+def crawler_queue_exists(url: str) -> bool:
+    """
+    Check if crawlerqueue object with specified url exists
+    """
+    session = get_session()
+    return True if session.query(CrawlerQueue).filter_by(url=url).first() else False

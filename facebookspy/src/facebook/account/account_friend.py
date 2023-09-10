@@ -87,17 +87,21 @@ class AccountFriend(BaseFacebookScraper):
 
                 person_id = person_repository.get_person(self._user_id).id
 
+                # Iterate through extracted data and create objects for Friend and CrawlerQueue models
                 for data in extracted_data:
+                    # If crawler is set on True it's gonna save the urls of scraped friends to CrawlerQueue model
+                    print(f"Value of bool: {self.crawler}")
+                    if self.crawler:
+                        print(f"Creating crawler queue object")
+                        crawlerqueue_repository.create_crawler_queue(data["url"])
+
+                    # Create friend object
                     if not friend_repository.friend_exists(
                         person_id, data["username"], data["url"]
                     ):
                         friend_repository.create_friends(
                             data["username"], data["url"], person_id
                         )
-
-                        # If crawler is set on True it's gonna save the urls of scraped friends to CrawlerQueue model
-                        if self.crawler:
-                            crawlerqueue_repository.create_crawler_queue(data["url"])
 
                 # Update the number of friends in the person table
                 number_of_person_friends = friend_repository.get_number_of_friends(

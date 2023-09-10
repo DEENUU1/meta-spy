@@ -77,7 +77,7 @@ def server(
 
 @app.command()
 def friend_crawler(
-    name: Annotated[str, typer.Argument(help="Facebook user id")], crawler: bool = True
+    name: Annotated[str, typer.Argument(help="Facebook user id")]
 ) -> None:
     # At first the function is scraping a list of friends for specified user
     # Create Person and Friend objects just like in a standard friend scraper
@@ -85,7 +85,7 @@ def friend_crawler(
 
     rprint(f"Start crawler from {name}")
 
-    scraper = AccountFriend(name, crawler)
+    scraper = AccountFriend(name, crawler=True)
     scraper.pipeline()
 
     if scraper.is_pipeline_successful:
@@ -95,7 +95,7 @@ def friend_crawler(
         while len(users) > 0:
             for user in users:
                 user_id = get_account_id(user.url)
-                scraper = AccountFriend(user_id, crawler)
+                scraper = AccountFriend(user_id, crawler=True)
                 scraper.pipeline()
 
     else:
