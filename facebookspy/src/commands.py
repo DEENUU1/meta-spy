@@ -103,7 +103,6 @@ def friend_crawler(
 
     else:
         rprint(f"❌Failed to scrape friends from the main user❌")
-    # After successfull scraping friends from the starting user it's gonna do the same for the scraped friends from the main user
 
 
 @app.command()
@@ -119,8 +118,20 @@ def display_queue():
         rprint(
             f"[bold] Found {len(queue_data)} queue objects with status False: [/bold]"
         )
-        for idx, queue in enumerate(queue_data):
-            rprint(f"- [bold] {idx} [/bold] {queue.url}")
+        for queue in enumerate(queue_data):
+            rprint(f"- [bold] ID: {queue.id} [/bold] {queue.url}")
+
+
+@app.command()
+def delete_queue_object(id: Annotated[int, typer.Argument(help="CrawlerQueue id")]):
+    """
+    Delete a specified queue object based on id from db
+    """
+
+    if crawlerqueue_repository.delete_crawler_queue(id):
+        rprint("✅ Queue object deleted ✅")
+    else:
+        rprint("❌Faild to delete Queue object from database. Please try again.❌")
 
 
 @app.command()
