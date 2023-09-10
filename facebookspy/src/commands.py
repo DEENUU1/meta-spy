@@ -98,6 +98,9 @@ def friend_crawler(
                 scraper = AccountFriend(user_id, crawler=True)
                 scraper.pipeline()
 
+                if scraper.is_pipeline_successful:
+                    crawlerqueue_repository.delete_crawler_queue(user.id)
+
     else:
         rprint(f"❌Failed to scrape friends from the main user❌")
     # After successfull scraping friends from the starting user it's gonna do the same for the scraped friends from the main user
