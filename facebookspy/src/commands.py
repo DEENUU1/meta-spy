@@ -29,6 +29,8 @@ from .runreact import run_react
 from .graph import create_relationship_graph
 from .ai import get_person_summary
 from .report import generate_pdf_report
+from .repository import crawlerqueue_repository
+from .urlid import get_account_id
 
 
 load_dotenv()
@@ -71,6 +73,76 @@ def server(
 
         # thread_react.join()
         thread_fastapi.join()
+
+
+@app.command()
+def friend_crawler(
+    name: Annotated[str, typer.Argument(help="Facebook user id")]
+) -> None:
+    # At first the function is scraping a list of friends for specified user
+    # Create Person and Friend objects just like in a standard friend scraper
+    # But also it create CrawlerQueue objects with url to friend facebook accounts
+
+    rprint(f"Start crawler from {name}")
+
+    scraper = AccountFriend(name, crawler=True)
+    scraper.pipeline()
+
+    if scraper.is_pipeline_successful:
+        # Return a list of users from queue with status False
+        # Which means this user wasn't scraped yet
+        users = crawlerqueue_repository.get_crawler_queues_status_false()
+        while len(users) > 0:
+            for user in users:
+                user_id = get_account_id(user.url)
+                scraper = AccountFriend(user_id, crawler=True)
+                scraper.pipeline()
+
+                if scraper.is_pipeline_successful:
+                    crawlerqueue_repository.delete_crawler_queue(user.id)
+
+    else:
+        rprint(f"❌Failed to scrape friends from the main user❌")
+
+
+@app.command()
+def display_queue():
+    """
+    Display queue objects
+    """
+
+    queue_data = crawlerqueue_repository.get_crawler_queues_status_false()
+    if len(queue_data) == 0:
+        rprint("[bold] Queue is empty. [/bold]")
+    else:
+        rprint(
+            f"[bold] Found {len(queue_data)} queue objects with status False: [/bold]"
+        )
+        for queue in enumerate(queue_data):
+            rprint(f"- [bold] ID: {queue.id} [/bold] {queue.url}")
+
+
+@app.command()
+def delete_queue_object(id: Annotated[int, typer.Argument(help="CrawlerQueue id")]):
+    """
+    Delete a specified queue object based on id from db
+    """
+
+    if crawlerqueue_repository.delete_crawler_queue(id):
+        rprint("✅ Queue object deleted ✅")
+    else:
+        rprint("❌Faild to delete Queue object from database. Please try again.❌")
+
+
+@app.command()
+def clear_queue():
+    """
+    Clear the queue of crawler
+    """
+    delete = crawlerqueue_repository.delete_all()
+    if delete:
+        rprint("✅Queue cleared ✅")
+    rprint("❌Queue not cleared, please try again❌")
 
 
 @app.command()

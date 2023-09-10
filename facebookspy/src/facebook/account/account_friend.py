@@ -6,7 +6,7 @@ from selenium.webdriver.common.by import By
 from ..facebook_base import BaseFacebookScraper
 from ..scroll import scroll_page
 from ...logs import Logs
-from ...repository import person_repository, friend_repository
+from ...repository import person_repository, friend_repository, crawlerqueue_repository
 from ...cli import output
 
 
@@ -18,11 +18,12 @@ class AccountFriend(BaseFacebookScraper):
     Scrape user's friends list
     """
 
-    def __init__(self, user_id) -> None:
+    def __init__(self, user_id: str, crawler: bool = False) -> None:
         super().__init__(
             user_id, base_url=f"https://www.facebook.com/{user_id}/friends"
         )
         self.success = False
+        self.crawler = crawler
 
     def _load_cookies_and_refresh_driver(self) -> None:
         """Load cookies and refresh driver"""
@@ -87,6 +88,13 @@ class AccountFriend(BaseFacebookScraper):
                 person_id = person_repository.get_person(self._user_id).id
 
                 for data in extracted_data:
+                    if self.crawler:
+                        if not crawlerqueue_repository.crawler_queue_exists(
+                            data["url"]
+                        ):
+                            crawlerqueue_repository.create_crawler_queue(data["url"])
+
+                    # Create friend object
                     if not friend_repository.friend_exists(
                         person_id, data["username"], data["url"]
                     ):
