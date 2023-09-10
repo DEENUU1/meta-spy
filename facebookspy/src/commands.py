@@ -100,7 +100,7 @@ def display_queue() -> None:
         rprint(
             f"[bold] Found {len(queue_data)} queue objects with status False: [/bold]"
         )
-        for queue in enumerate(queue_data):
+        for queue in queue_data:
             rprint(f"- [bold] ID: {queue.id} [/bold] {queue.url}")
 
 

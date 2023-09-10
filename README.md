@@ -1,8 +1,13 @@
+<a name="readme-top"></a>
+
+
+
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
-
 
 
 
@@ -12,7 +17,7 @@
   <h3 align="center">Facebook Spy</h3>
 
   <p align="center">
-    Scrape user's profile on facebook using CLI app and browse data using local web app.
+    Facebook Spy is a versatile Python-based tool designed to scrape various data from Facebook profiles. Whether you need basic information or want to delve deep into a user's activity, Facebook Spy has you covered. 
     <br />
     <br />
     <a href="https://github.com/DEENUU1/facebook-spy/issues">Report Bug</a>
@@ -30,75 +35,163 @@ https://github.com/DEENUU1/facebook-spy/assets/111304236/19032a83-a0f0-4834-9d2c
 <h2><a href="https://deenuu1.github.io/facebook-spy/">Documentation is available here</a></h2>
 
 
+## Info
+
+If you're using a Facebook account with a custom ID in the URL (e.g., https://www.facebook.com/zuck), Facebook Spy will work smoothly. However, for accounts with default IDs in the URL, certain scrapers may not function as expected. These include scrapers for work and education, contact data, visited places, family members, recent places, reviews, and likes. Rest assured, we're actively working to resolve this issue
+
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-This project allows to log in using selenium to facebook account (even if you have 2-step verification), 
-scrape user information based on a given url address and save data to database and local files.
-After that you can browse scraped data, add notes, search more detail in google using local web application.
 
+The project, known as "Facebook Spy," is a powerful and versatile tool designed to gather information from Facebook profiles. 
 
-### Built With
-- Python
-  - Typer
-  - Selenium
-- FastAPI 
-- React
-  - Vite 
-- Sqlite
-- Docker & docker compose 
+Facebook Spy was created to provide users with the ability to access information from Facebook profiles. The project is under constant development to improve its functionality and address any issues that may arise.
+
+One notable limitation of the tool is that some scrapers may not work correctly for profiles with default account IDs in the URL, such as "https://www.facebook.com/profile.php?id=100063142210972." These scrapers include work and education history, contact data, visited places, family members, recent places, reviews, and likes. However, this issue does not occur for profiles with custom IDs in the URL, like "https://www.facebook.com/zuck.".
+
 
 ## Key Features
-- Log in with 2-step verification
-- Log in without 2-step verification
-- Save cookies to save log in session
-- Scrape information like:
-  - work and education
-  - places
-  - full name
-  - recent places 
-  - videos
-    - download videos
-  - reels
-  - list of friends
-  - images
-    - download images
-  - reviews
-- Save scraped data to database
-- Local web app (FastAPI + React):
-  - Browse scraped data
-  - Adding notes in local web app for specified person
-  - Automatically search scraped data in google
+- Login - Perform a secure two-step verification process to log in to Facebook account with enhanced security settings or log in to Facebook account using the default login method.
+- Scrape details like: friend list, images, recent places, videos, reels, reviews, posts, likes, groups, events etc.
+- Local web application - User is able to run a loval web application to browse scraped data, create notes for specified Person object and easly search details in web.
+- Video downloader - download all scraped videos from facebook account or just by add passed url.
+- Create a graphical representation of connections between different Facebook profiles based on their friendships.
+- Utilize a free open-source language model to generate a concise summary of a Facebook user's infromation based on the scraped data.
+- Initiate a friend crawler for a specified Facebook account. Gether data about friends and contunue the process for subsequent users in the queue.
+- Save scraped data for a specified Facebook user to PDF file for documentation and anylysis.
 
-## Screenshots
+### Built With
 
-<img style="margin-bottom: 20px" src="assets/help.png" alt="home"> 
-
-<img style="margin-bottom: 20px" src="assets/scrapebasicdata.png" alt="home"> 
-
-<img style="margin-bottom: 20px" src="assets/friendlist.png" alt="home"> 
-
-<img style="margin-bottom: 20px" src="assets/scrapeimages.png" alt="home"> 
-
-<img style="margin-bottom: 20px" src="assets/recentplaces.png" alt="home"> 
-
-<img style="margin-bottom: 20px" src="assets/reviews.png" alt="home"> 
-
-<img style="margin-bottom: 20px" src="assets/downloadvideos.png" alt="home"> 
-
-<img style="margin-bottom: 20px" src="assets/fullscrape.png" alt="home"> 
+- Python
+  - Typer 
+  - FastAPI
+  - Selenium
+- React
+  - Vite
+- Docker
+- SQLite 
 
 
+<!-- GETTING STARTED -->
+## Getting Started
 
+
+### Installation
+
+1. Clone git repository
+```bash
+git clone https://github.com/DEENUU1/facebook-spy.git
+```
+
+2. Create dotenv file and add required data
+```bash
+cp .env_example .env
+```
+
+3. Install all requirements
+```bash
+pip install -r requirements.txt
+```
+
+4. Change directory to facebookspy to run commands
+```bash
+cd facebookspy
+```
+
+### Tests
+
+To run pytests use this command
+```bash
+pytest
+```
+
+
+## Examples
+This is just a few examples of how you can use this tool. For more comments check <a href="https://deenuu1.github.io/facebook-spy/commands/>">Documentation</a>
+
+#### Version
+
+```bash
+python main.py version
+```
+
+<img src="assets/new/version.png" alt="Logo" >
+
+
+#### Login
+
+```bash
+python main.py login-2-step
+```
+
+OR
+
+```bash
+python main.py login
+```
+
+  <img src="assets/new/login.png" alt="Logo" >
+
+
+
+#### Scrape basic data
+
+```bash
+python main.py scrape-basic-data <facebook_id>
+```
+
+<img src="assets/new/scrapebasicdata.png" alt="Logo" >
+
+
+#### Full scraping
+This one works for multiply users
+```bash
+python main.py full-scrape <facebook_id> <facebook_id> ... <facebook_id>
+```
+
+<img src="assets/new/fullscrape1.png" alt="Logo" >
+
+
+#### Scrape images
+
+```bash
+python main.py scrape-images <facebook_id>
+```
+
+<img src="assets/new/scrapeimages.png" alt="Logo" >
+
+
+#### Scrape videos
+After successfull scrape you are able to download this videos
+```bash
+python main.py scrape-video-urls <facebook_id>
+```
+
+<img src="assets/new/scrapevideos1.png" alt="Logo" >
+
+
+#### Friend crawler
+This command works similarly to the command that scrapes data about a given user's friends list. The difference, however, is that after scraping and creating Friend objects, it also creates objects for the CrawlerQueue model and after successfully scraping friends for one user, it proceeds to scraping the list of friends for the next user in the queue.
+```bash
+python main.py friend-crawler <facebook_id>
+```
+
+<img src="assets/new/crawler1.png" alt="Logo" >
+<img src="assets/crawlerfriendscheama.png.png" alt="Logo" >
+
+
+#### Graph
+Graph of connections between Person objects based on ther friends.
+
+```bash
+python main.py graph
+```
+
+<img src="assets/graph.png" alt="Logo" >
 
 <!-- LICENSE -->
 ## License
 
-Distributed under the Apache-2.0 license. See `LICENSE.txt` for more information.
-
-
-## Author
-
-- [@DEENUU1](https://www.github.com/DEENUU1)
+See `LICENSE.txt` for more information.
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
@@ -112,6 +205,6 @@ Distributed under the Apache-2.0 license. See `LICENSE.txt` for more information
 [issues-shield]: https://img.shields.io/github/issues/DEENUU1/facebook-spy.svg?style=for-the-badge
 [issues-url]: https://github.com/DEENUU1/facebook-spy/issues
 [license-shield]: https://img.shields.io/github/license/DEENUU1/facebook-spy.svg?style=for-the-badge
-[license-url]: https://github.com/DEENUU1/facebook-link-tree/blob/main/LICENSE
+[license-url]: https://github.com/DEENUU1/facebook-spy/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://www.linkedin.com/in/kacper-wlodarczyk/
+[linkedin-url]: https://linkedin.com/in/kacper-wlodarczyk
