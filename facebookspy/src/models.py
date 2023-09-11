@@ -173,6 +173,7 @@ class Posts(Base):
     number_of_comments = Column(Integer, nullable=True)
     scraped = Column(Boolean, default=False)
     source = Column(EnumColumn(PostSource), default=PostSource.ACCOUNT)
+    classification = Column(Boolean, default=False)
 
     # Relationship
     person = relationship("Person", back_populates="posts")
