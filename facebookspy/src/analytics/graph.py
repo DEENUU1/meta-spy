@@ -13,7 +13,7 @@ def create_relationship_graph():
     G = nx.DiGraph()
 
     for person in persons:
-        G.add_node(person.id, label=person.full_name)
+        G.add_node(person.id, label=person.facebook_id)
 
     for person in persons:
         friend_urls = set(friend.url for friend in person.friends)
