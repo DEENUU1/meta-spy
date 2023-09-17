@@ -18,6 +18,34 @@ def get_posts(person_id: int) -> List[Posts]:
     return posts
 
 
+def get_all_posts() -> List[Posts]:
+    """Return all posts from database"""
+    session = get_session()
+    posts = session.query(Posts).all()
+    return posts
+
+
+def get_post(post_id: int) -> Posts:
+    """Return a post based on the ID"""
+    session = get_session()
+    post = session.query(Posts).filter_by(id=post_id).first()
+    return post
+
+
+def update_classification(post_id: int, label: bool, score: float) -> bool:
+    """Update classification for a post"""
+    session = get_session()
+    post = session.query(Posts).filter_by(id=post_id).first()
+    if post:
+        post.classification = label
+        post.score = score
+        session.commit()
+        return True
+
+    else:
+        return False
+
+
 def create_post(
     url: str,
     person_id: int,
