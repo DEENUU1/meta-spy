@@ -1,5 +1,4 @@
 import subprocess
-import threading
 from time import time
 from typing import Annotated
 
@@ -27,8 +26,9 @@ from .logs import Logs
 from .analytics.graph import create_relationship_graph
 from .analytics.ai import get_person_summary
 from .analytics.report import generate_pdf_report
-from .repository import crawlerqueue_repository
+from .repository import crawlerqueue_repository, post_repository
 from .scripts.urlid import get_account_id
+from .analytics import classification
 from typing import List
 
 
@@ -155,6 +155,22 @@ def version() -> None:
     """Display data about the project version"""
 
     return_version_info()
+
+
+@app.command()
+def posts() -> None:
+    """Return a list of all posts available in database"""
+
+    posts = post_repository.get_all_posts()
+    if len(posts) == 0:
+        rprint("[bold]No posts found[/bold]")
+    else:
+        rprint(f"[bold]Found {len(posts)} posts[/bold]")
+
+        for post in posts:
+            rprint(
+                f"ID: {post.id} Person ID: {post.person_id} Content: {post.content} Source: {post.source} Classification: {post.classification} Score: {post.score} Is scraped: {post.scraped} Number of likes/shares/comments: {post.number_of_likes} {post.number_of_shares} {post.number_of_comments}"
+            )
 
 
 @app.command()
