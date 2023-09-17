@@ -158,19 +158,77 @@ def version() -> None:
 
 
 @app.command()
-def posts() -> None:
+def posts(
+    all: Annotated[
+        bool, typer.Option(False, help="Display all posts from the database")
+    ],
+    id: Annotated[
+        int, typer.Option(None, help="Display a specified post from the database")
+    ],
+    person_id: Annotated[
+        str,
+        typer.Option(
+            None, help="Display posts for a specified person from the database"
+        ),
+    ],
+) -> None:
     """Return a list of all posts available in database"""
 
-    posts = post_repository.get_all_posts()
-    if len(posts) == 0:
-        rprint("[bold]No posts found[/bold]")
-    else:
-        rprint(f"[bold]Found {len(posts)} posts[/bold]")
+    if all:
+        posts = post_repository.get_all_posts()
+        if len(posts) == 0:
+            rprint("[bold]No posts found[/bold]")
+        else:
+            rprint(f"[bold]Found {len(posts)} posts[/bold]")
 
-        for post in posts:
-            rprint(
-                f"ID: {post.id} Person ID: {post.person_id} Content: {post.content} Source: {post.source} Classification: {post.classification} Score: {post.score} Is scraped: {post.scraped} Number of likes/shares/comments: {post.number_of_likes} {post.number_of_shares} {post.number_of_comments}"
-            )
+            for post in posts:
+                rprint(
+                    f"ID: {post.id} Person ID: {post.person_id} Content: {post.content} Source: {post.source} Classification: {post.classification} Score: {post.score} Is scraped: {post.scraped} Number of likes/shares/comments: {post.number_of_likes} {post.number_of_shares} {post.number_of_comments}"
+                )
+
+    if id:
+        posts = post_repository.get_post(id)
+        rprint(
+            f"ID: {post.id} Person ID: {post.person_id} Content: {post.content} Source: {post.source} Classification: {post.classification} Score: {post.score} Is scraped: {post.scraped} Number of likes/shares/comments: {post.number_of_likes} {post.number_of_shares} {post.number_of_comments}"
+        )
+
+    if person_id:
+        posts = post_repository.get_posts(person_id)
+        if len(posts) == 0:
+            rprint("[bold]No posts found[/bold]")
+        else:
+            rprint(f"[bold]Found {len(posts)} posts[/bold]")
+
+            for post in posts:
+                rprint(
+                    f"ID: {post.id} Person ID: {post.person_id} Content: {post.content} Source: {post.source} Classification: {post.classification} Score: {post.score} Is scraped: {post.scraped} Number of likes/shares/comments: {post.number_of_likes} {post.number_of_shares} {post.number_of_comments}"
+                )
+
+
+@app.command()
+def post_classifier(
+    all: Annotated[
+        bool,
+        typer.Option(
+            False, help="Run post classification for all posts from the database"
+        ),
+    ],
+    id: Annotated[
+        int, typer.Option(None, help="Run post classification for a specified post id")
+    ],
+    person_id: Annotated[
+        str,
+        typer.Option(None, help="Run post classification for a specified person id"),
+    ],
+) -> None:
+    if all:
+        pass
+
+    if id:
+        pass
+
+    if person_id:
+        pass
 
 
 @app.command()
