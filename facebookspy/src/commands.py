@@ -237,6 +237,8 @@ def post_classifier(
                 if post.content != "" or post.content != None:
                     status, score = classification.text_classifier(post.content)
                     post_repository.update_classification(post.id, status, score)
+                else:
+                    rprint(f"[bold]Post {post.id} has no content[/bold]")
     if id:
         post = post_repository.get_post(id)
         if post is None:
@@ -245,6 +247,8 @@ def post_classifier(
             if post.content != "" or post.content != None:
                 status, score = classification.text_classifier(post.content)
                 post_repository.update_classification(post.id, status, score)
+            else:
+                rprint(f"[bold]Post {post.id} has no content[/bold]")
 
     if person_id:
         posts = post_repository.get_posts(person_id)
@@ -257,6 +261,8 @@ def post_classifier(
                 if post.content != "" or post.content != None:
                     status, score = classification.text_classifier(post.content)
                     post_repository.update_classification(post.id, status, score)
+                else:
+                    rprint(f"[bold]Post {post.id} has no content[/bold]")
 
 
 @app.command()
