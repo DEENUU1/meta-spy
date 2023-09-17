@@ -107,6 +107,7 @@ regex==2023.8.8
 reportlab==4.0.4
 requests==2.31.0
 rich==13.4.2
+safetensors==0.3.3
 selenium==4.11.2
 shellingham==1.5.0.post1
 six==1.16.0
@@ -116,8 +117,10 @@ soupsieve==2.4.1
 SQLAlchemy==2.0.19
 starlette==0.27.0
 tenacity==8.2.3
+tokenizers==0.13.3
 tomlkit==0.11.8
 tqdm==4.66.1
+transformers==4.33.1
 trio==0.22.2
 trio-websocket==0.10.3
 typer==0.9.0

@@ -1,6 +1,14 @@
 from enum import Enum
 
-from sqlalchemy import Column, String, Integer, ForeignKey, Boolean, Enum as EnumColumn
+from sqlalchemy import (
+    Column,
+    String,
+    Integer,
+    ForeignKey,
+    Boolean,
+    Float,
+    Enum as EnumColumn,
+)
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
@@ -174,6 +182,7 @@ class Posts(Base):
     scraped = Column(Boolean, default=False)
     source = Column(EnumColumn(PostSource), default=PostSource.ACCOUNT)
     classification = Column(Boolean, default=False)
+    score = Column(Float, nullable=True)
 
     # Relationship
     person = relationship("Person", back_populates="posts")
