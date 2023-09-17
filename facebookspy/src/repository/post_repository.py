@@ -26,6 +26,8 @@ def create_post(
     number_of_shares: int = None,
     number_of_comments: int = None,
     source: PostSource = None,
+    label: bool = False,
+    score: float = None,
 ) -> Posts:
     """Create or update Post object"""
     session = get_session()
@@ -43,6 +45,10 @@ def create_post(
             existing_post.number_of_comments = number_of_comments
         if source is not None:
             existing_post.source = source
+        if label is not None:
+            existing_post.classification = label
+        if score is not None:
+            existing_post.score = score
         session.commit()
         return existing_post
     else:
