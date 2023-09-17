@@ -32,6 +32,20 @@ def get_post(post_id: int) -> Posts:
     return post
 
 
+def update_classification(post_id: int, label: bool, score: float) -> bool:
+    """Update classification for a post"""
+    session = get_session()
+    post = session.query(Posts).filter_by(id=post_id).first()
+    if post:
+        post.classification = label
+        post.score = score
+        session.commit()
+        return True
+
+    else:
+        return False
+
+
 def create_post(
     url: str,
     person_id: int,
