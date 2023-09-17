@@ -125,7 +125,7 @@ def clear_queue() -> None:
     """
     delete = crawlerqueue_repository.delete_all()
     if delete:
-        rprint("✅Queue cleared ✅")
+        rprint("✅ Queue cleared ✅")
     else:
         rprint("❌Queue not cleared, please try again❌")
 
@@ -133,7 +133,6 @@ def clear_queue() -> None:
 @app.command()
 def graph() -> None:
     """Create a graph of connections between Person objects based on their Friends"""
-
     create_relationship_graph()
 
 
@@ -154,7 +153,6 @@ def report(name: Annotated[str, typer.Argument(help="Facebook user id")]) -> Non
 @app.command()
 def version() -> None:
     """Display data about the project version"""
-
     return_version_info()
 
 
