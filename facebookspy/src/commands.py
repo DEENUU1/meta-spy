@@ -159,22 +159,19 @@ def version() -> None:
 
 @app.command()
 def posts(
-    all: Annotated[
-        bool, typer.Option(False, help="Display all posts from the database")
-    ],
+    display_all: Annotated[
+        bool, typer.Option(help="Display all posts from the database")
+    ] = False,
     id: Annotated[
-        int, typer.Option(None, help="Display a specified post from the database")
-    ],
+        int, typer.Option(help="Display a specified post from the database")
+    ] = None,
     person_id: Annotated[
-        str,
-        typer.Option(
-            None, help="Display posts for a specified person from the database"
-        ),
-    ],
+        str, typer.Option(help="Display posts for a specified person from the database")
+    ] = None,
 ) -> None:
-    """Return a list of all posts available in database"""
+    """Print a list of all posts in database, all post for specified user or specified post"""
 
-    if all:
+    if display_all:
         posts = post_repository.get_all_posts()
         if len(posts) == 0:
             rprint("[bold]No posts found[/bold]")
@@ -187,10 +184,13 @@ def posts(
                 )
 
     if id:
-        posts = post_repository.get_post(id)
-        rprint(
-            f"ID: {post.id} Person ID: {post.person_id} Content: {post.content} Source: {post.source} Classification: {post.classification} Score: {post.score} Is scraped: {post.scraped} Number of likes/shares/comments: {post.number_of_likes} {post.number_of_shares} {post.number_of_comments}"
-        )
+        post = post_repository.get_post(id)
+        if post is None:
+            rprint("[bold]Post not found[/bold]")
+        else:
+            rprint(
+                f"ID: {post.id} Person ID: {post.person_id} Content: {post.content} Source: {post.source} Classification: {post.classification} Score: {post.score} Is scraped: {post.scraped} Number of likes/shares/comments: {post.number_of_likes} {post.number_of_shares} {post.number_of_comments}"
+            )
 
     if person_id:
         posts = post_repository.get_posts(person_id)
@@ -207,28 +207,56 @@ def posts(
 
 @app.command()
 def post_classifier(
-    all: Annotated[
+    all_posts: Annotated[
         bool,
-        typer.Option(
-            False, help="Run post classification for all posts from the database"
-        ),
-    ],
+        typer.Option(help="Run post classification for all posts from the database"),
+    ] = False,
     id: Annotated[
-        int, typer.Option(None, help="Run post classification for a specified post id")
-    ],
+        int,
+        typer.Option(
+            help="Run post classification for specified post from the database"
+        ),
+    ] = None,
     person_id: Annotated[
         str,
-        typer.Option(None, help="Run post classification for a specified person id"),
-    ],
+        typer.Option(
+            help="Run post classification for a specified person from the database"
+        ),
+    ] = None,
 ) -> None:
-    if all:
-        pass
+    """Run post classification for all posts from the database, all posts for specified user or specified post"""
 
+    if all_posts:
+        posts = post_repository.get_all_posts()
+        if len(posts) == 0:
+            rprint("[bold]No posts found[/bold]")
+        else:
+            rprint(f"[bold]Found {len(posts)} posts[/bold]")
+
+            for post in posts:
+                if post.content != "" or post.content != None:
+                    status, score = classification.text_classifier(post.content)
+                    post_repository.update_classification(post.id, status, score)
     if id:
-        pass
+        post = post_repository.get_post(id)
+        if post is None:
+            rprint("[bold]Post not found[/bold]")
+        else:
+            if post.content != "" or post.content != None:
+                status, score = classification.text_classifier(post.content)
+                post_repository.update_classification(post.id, status, score)
 
     if person_id:
-        pass
+        posts = post_repository.get_posts(person_id)
+        if len(posts) == 0:
+            rprint("[bold]No posts found[/bold]")
+        else:
+            rprint(f"[bold]Found {len(posts)} posts[/bold]")
+
+            for post in posts:
+                if post.content != "" or post.content != None:
+                    status, score = classification.text_classifier(post.content)
+                    post_repository.update_classification(post.id, status, score)
 
 
 @app.command()
