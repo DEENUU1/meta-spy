@@ -207,3 +207,27 @@ Delete all objects from the queue
 ```bash
 python main.py clear-queue
 ```
+
+
+## Post classification using transformer 
+
+### Display Posts in CLI application
+```bash
+python main.py posts <option>
+
+Options:
+--display-all  // Display all posts from the database
+--id // Display a specified post from the database
+--person-id //  Display posts for a specified person from the database
+
+```
+
+### Run posts classfication 
+```bash
+python post-classifier <option>
+
+Options:
+--all-posts // Run post classification for all posts from the database
+--id // Run post classification for specified post from the database
+--person-id // Run post classification for a specified person from the database
+```

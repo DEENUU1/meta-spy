@@ -1,9 +1,58 @@
 # Change log
 
 
-## Current version: 0.9
+## Current version: 1.0
 
 ## Version history
+
+### 1.0
+- Delete command to run web application without docker 
+- Post classification using transformers to check if post content is possitive or negative and save those data to database
+
+```bash
+python post-classifier <option>
+
+Options:
+--all-posts // Run post classification for all posts from the database
+--id // Run post classification for specified post from the database
+--person-id // Run post classification for a specified person from the database
+```
+
+- Add missing typehints 
+- Change the structure of a project 
+- Friend crawler (This command works similarly to the command that scrapes data about a given user's friends list. The difference, however, is that after scraping and creating Friend objects, it also creates objects for the CrawlerQueue model and after successfully scraping friends for one user, it proceeds to scraping the list of friends for the next user in the queue.)
+
+#### Run crawler
+Start crawler for specified facebook account 
+```bash
+python main.py friend-crawler <facebook_id>
+```
+
+#### Display queue
+Display all objects available in the queue
+```bash
+python main.py display-queue
+```
+
+#### Delete queue object
+Delete specified queue object 
+```bash
+python main.py delete-queue-object <id>
+```
+
+#### Clear queue
+Delete all objects from the queue 
+```bash
+python main.py clear-queue
+```
+
+- Option to scrape multiply users in full-scrape command 
+
+```bash
+python main.py full-scrape <facebook_id> <facebook_id> <facebook_id>
+
+
+```
 
 ### 0.9
 - Add repository functions to return all data for specified Person object
