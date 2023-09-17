@@ -142,7 +142,6 @@ class PostDetail(Scraper):
                     self.success = True
                 else:
                     output.print_data_from_list_of_dict(scraped_data)
-
                     post_repository.mark_post_as_scraped(data.id)
 
                     for scraped_item in scraped_data:

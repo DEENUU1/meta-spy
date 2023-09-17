@@ -18,6 +18,20 @@ def get_posts(person_id: int) -> List[Posts]:
     return posts
 
 
+def get_all_posts() -> List[Posts]:
+    """Return all posts from database"""
+    session = get_session()
+    posts = session.query(Posts).all()
+    return posts
+
+
+def get_post(post_id: int) -> Posts:
+    """Return a post based on the ID"""
+    session = get_session()
+    post = session.query(Posts).filter_by(id=post_id).first()
+    return post
+
+
 def create_post(
     url: str,
     person_id: int,
@@ -26,8 +40,6 @@ def create_post(
     number_of_shares: int = None,
     number_of_comments: int = None,
     source: PostSource = None,
-    label: bool = False,
-    score: float = None,
 ) -> Posts:
     """Create or update Post object"""
     session = get_session()
@@ -45,10 +57,6 @@ def create_post(
             existing_post.number_of_comments = number_of_comments
         if source is not None:
             existing_post.source = source
-        if label is not None:
-            existing_post.classification = label
-        if score is not None:
-            existing_post.score = score
         session.commit()
         return existing_post
     else:
