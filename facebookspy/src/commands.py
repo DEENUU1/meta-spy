@@ -6,7 +6,7 @@ import inquirer
 import typer
 from dotenv import load_dotenv
 from rich import print as rprint
-from src.cli.version import return_version_info
+from .cli.version import return_version_info
 
 from .facebook.account.account_basic import AccountBasic
 from .facebook.account.account_events import AccountEvents
@@ -26,7 +26,7 @@ from .logs import Logs
 from .analytics.graph import create_relationship_graph
 from .analytics.ai import get_person_summary
 from .analytics.report import generate_pdf_report
-from .repository import crawlerqueue_repository, post_repository
+from .repository import crawlerqueue_repository, post_repository, person_repository
 from .scripts.urlid import get_account_id
 from .analytics import classification
 from typing import List
@@ -115,7 +115,7 @@ def delete_queue_object(
     if crawlerqueue_repository.delete_crawler_queue(id):
         rprint("✅ Queue object deleted ✅")
     else:
-        rprint("❌Faild to delete Queue object from database. Please try again.❌")
+        rprint("❌Failed to delete Queue object from database. Please try again.❌")
 
 
 @app.command()
@@ -126,7 +126,8 @@ def clear_queue() -> None:
     delete = crawlerqueue_repository.delete_all()
     if delete:
         rprint("✅Queue cleared ✅")
-    rprint("❌Queue not cleared, please try again❌")
+    else:
+        rprint("❌Queue not cleared, please try again❌")
 
 
 @app.command()
@@ -180,7 +181,11 @@ def posts(
 
             for post in posts:
                 rprint(
-                    f"ID: {post.id} Person ID: {post.person_id} Content: {post.content} Source: {post.source} Classification: {post.classification} Score: {post.score} Is scraped: {post.scraped} Number of likes/shares/comments: {post.number_of_likes} {post.number_of_shares} {post.number_of_comments}"
+                    f"""ID: {post.id} Person ID: {post.person_id} Content: {post.content} Source: {post.source} 
+                    Classification: {post.classification} Score: {post.score} Is scraped: {post.scraped} 
+                    Number of likes/shares/comments: {post.number_of_likes} {post.number_of_shares} 
+                    {post.number_of_comments}
+                    """
                 )
 
     if id:
@@ -189,11 +194,15 @@ def posts(
             rprint("[bold]Post not found[/bold]")
         else:
             rprint(
-                f"ID: {post.id} Person ID: {post.person_id} Content: {post.content} Source: {post.source} Classification: {post.classification} Score: {post.score} Is scraped: {post.scraped} Number of likes/shares/comments: {post.number_of_likes} {post.number_of_shares} {post.number_of_comments}"
+                f"""ID: {post.id} Person ID: {post.person_id} Content: {post.content} Source: {post.source} 
+                Classification: {post.classification} Score: {post.score} Is scraped: {post.scraped} 
+                Number of likes/shares/comments: {post.number_of_likes} {post.number_of_shares} 
+                {post.number_of_comments}"""
             )
 
     if person_id:
-        posts = post_repository.get_posts(person_id)
+        person_object = person_repository.get_person(person_id)
+        posts = post_repository.get_posts(person_object.id)
         if len(posts) == 0:
             rprint("[bold]No posts found[/bold]")
         else:
@@ -201,7 +210,10 @@ def posts(
 
             for post in posts:
                 rprint(
-                    f"ID: {post.id} Person ID: {post.person_id} Content: {post.content} Source: {post.source} Classification: {post.classification} Score: {post.score} Is scraped: {post.scraped} Number of likes/shares/comments: {post.number_of_likes} {post.number_of_shares} {post.number_of_comments}"
+                    f"""ID: {post.id} Person ID: {post.person_id} Content: {post.content} 
+                    Source: {post.source} Classification: {post.classification} Score: {post.score} 
+                    Is scraped: {post.scraped} Number of likes/shares/comments: {post.number_of_likes} 
+                    {post.number_of_shares} {post.number_of_comments}"""
                 )
 
 
@@ -234,7 +246,7 @@ def post_classifier(
             rprint(f"[bold]Found {len(posts)} posts[/bold]")
 
             for post in posts:
-                if post.content != "" or post.content != None:
+                if post.content != "":
                     status, score = classification.text_classifier(post.content)
                     post_repository.update_classification(post.id, status, score)
                 else:
@@ -244,21 +256,22 @@ def post_classifier(
         if post is None:
             rprint("[bold]Post not found[/bold]")
         else:
-            if post.content != "" or post.content != None:
+            if post.content != "":
                 status, score = classification.text_classifier(post.content)
                 post_repository.update_classification(post.id, status, score)
             else:
                 rprint(f"[bold]Post {post.id} has no content[/bold]")
 
     if person_id:
-        posts = post_repository.get_posts(person_id)
+        person_object = person_repository.get_person(person_id)
+        posts = post_repository.get_posts(person_object.id)
         if len(posts) == 0:
             rprint("[bold]No posts found[/bold]")
         else:
             rprint(f"[bold]Found {len(posts)} posts[/bold]")
 
             for post in posts:
-                if post.content != "" or post.content != None:
+                if post.content != "":
                     status, score = classification.text_classifier(post.content)
                     post_repository.update_classification(post.id, status, score)
                 else:
@@ -511,7 +524,8 @@ def download_person_videos_options() -> List[str]:
                     "a",
                 ),
                 (
-                    "Download all videos with 'downloaded' field with value False for specified facebook account based on the scraped URLs",
+                    "Download all videos with 'downloaded' field with value False for specified facebook account based "
+                    "on the scraped URLs",
                     "b",
                 ),
             ],
@@ -676,7 +690,7 @@ def prompt_options() -> List[str]:
             message="Select options",
             choices=[
                 (
-                    "Scrape basic information like full name, history of employement and school, localization etc.",
+                    "Scrape basic information like full name, history of employment and school, localization etc.",
                     "a",
                 ),
                 ("Scrape a list of user's friends", "b"),
@@ -702,7 +716,7 @@ def full_scrape(
     names: Annotated[List[str], typer.Argument(help="Facebook user id")]
 ) -> None:
     """Full scrape of user's data
-    - basic information (job and school history, full name etc)
+    - basic information (job and school history, full name etc.)
     - friends
     - images (download)
     - recent places
