@@ -20,7 +20,7 @@ class Config:
     COOKIES_FILE_PATH = "cookies.json"
 
     # logs
-    LOG_FILE_PATH = "logs.json"
+    LOG_FILE_PATH = "logs.log"
 
     # images
     IMAGE_PATH = "images/"
