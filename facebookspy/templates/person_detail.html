@@ -9,15 +9,21 @@
       <a href="{{ person.url }}" class="btn btn-primary">Facebook account</a>
     </div>
     <div class="card-body">
+      {% if person.phone_number %}
       <p><strong>Phone Number:</strong> {{ person.phone_number }}</p>
+      {% endif %}
+      {% if person.email %}
       <p><strong>Email:</strong> {{ person.email }}</p>
+      {% endif %}
       <p><strong>Facebook ID:</strong> {{ person.facebook_id }}</p>
-      <p><strong>Number of Friends:</strong> {{ person.number_of_friends }}</p>
+      {% if person.ai_summary %}
       <p><strong>AI Summary:</strong> {{ person.ai_summary }}</p>
+      {% endif %}
     </div>
   </div>
 
-  <div class="row mt-4">
+<div class="row mt-4" >
+  {% if person.family_member %}
     <div class="col-md-6 mb-4">
       <div class="card">
         <div class="card-body">
@@ -30,6 +36,8 @@
         </div>
       </div>
     </div>
+  {% endif %}
+  {% if person.places %}
     <div class="col-md-6 mb-4">
       <div class="card">
         <div class="card-body">
@@ -42,9 +50,10 @@
         </div>
       </div>
     </div>
-  </div>
+  {% endif %}
 
-  <div class="row">
+
+  {% if person.work_and_education %}
     <div class="col-md-6 mb-4">
       <div class="card">
         <div class="card-body">
@@ -57,6 +66,8 @@
         </div>
       </div>
     </div>
+  {% endif %}
+  {% if person.recent_places %}
     <div class="col-md-6 mb-4">
       <div class="card">
         <div class="card-body">
@@ -69,48 +80,24 @@
         </div>
       </div>
     </div>
-  </div>
+    {% endif %}
 
-  <div class="row">
-    <div class="col-md-6 mb-4">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Reels</h5>
-          <ul>
-            {% for reel in person.reels %}
-              <li>{{ reel.url }}</li>
-            {% endfor %}
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-6 mb-4">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Videos</h5>
-          <ul>
-            {% for video in person.videos %}
-              <li>{{ video.url }}</li>
-            {% endfor %}
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <div class="row">
+  {% if person.likes %}
     <div class="col-md-6 mb-4">
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">Likes</h5>
           <ul>
             {% for like in person.likes %}
-              <li>{{ like.name }}</li>
+              <li> {{ like.name }}</li>
             {% endfor %}
           </ul>
         </div>
       </div>
     </div>
+  {% endif %}
+  {% if person.groups %}
     <div class="col-md-6 mb-4">
       <div class="card">
         <div class="card-body">
@@ -123,9 +110,10 @@
         </div>
       </div>
     </div>
-  </div>
+  {% endif %}
 
-  <div class="row">
+
+  {% if person.reviews %}
     <div class="col-md-6 mb-4">
       <div class="card">
         <div class="card-body">
@@ -138,6 +126,8 @@
         </div>
       </div>
     </div>
+  {% endif %}
+  {% if person.events %}
     <div class="col-md-6 mb-4">
       <div class="card">
         <div class="card-body">
@@ -150,7 +140,8 @@
         </div>
       </div>
     </div>
-  </div>
+  {% endif %}
+</div>
 
 
   <p class="d-inline-flex gap-1">
@@ -162,6 +153,12 @@
       </a>
       <a class="btn btn-primary" data-bs-toggle="collapse" href="#images" role="button" aria-expanded="false" aria-controls="collapseExample">
           Images
+      </a>
+      <a class="btn btn-primary" data-bs-toggle="collapse" href="#reels" role="button" aria-expanded="false" aria-controls="collapseExample">
+          Reels
+      </a>
+      <a class="btn btn-primary" data-bs-toggle="collapse" href="#videos" role="button" aria-expanded="false" aria-controls="collapseExample">
+          Videos
       </a>
   </p>
 
@@ -177,6 +174,29 @@
   </div>
 </div>
 
+  <div class="collapse" id="reels">
+  <div class="card card-body">
+    <div class="row">
+        {% for reel in person.reels %}
+          <div class="col-md-4 mb-3">
+            <li><a href="{{ video.url }}">{{ reel.url }}</a></li>
+          </div>
+        {% endfor %}
+    </div>
+  </div>
+</div>
+
+  <div class="collapse" id="videos">
+  <div class="card card-body">
+    <div class="row">
+        {% for video in person.videos %}
+          <div class="col-md-4 mb-3">
+            <li><a href="{{ video.url }}">{{ video.url }}</a></li>
+          </div>
+        {% endfor %}
+    </div>
+  </div>
+</div>
 
    <div class="collapse" id="posts">
       <div class="card card-body">
