@@ -66,20 +66,20 @@ class Person(Base):
     # Relationships (using backref for bidirectional relationship)
     friends = relationship("Friends", back_populates="person")
     images = relationship("Image", back_populates="person")
-    places = relationship("Places", uselist=False, back_populates="person")
+    places = relationship("Places", uselist=True, back_populates="person")
     work_and_education = relationship(
-        "WorkAndEducation", uselist=False, back_populates="person"
+        "WorkAndEducation", uselist=True, back_populates="person"
     )
-    family_member = relationship("FamilyMember", uselist=False, back_populates="person")
-    recent_places = relationship("RecentPlaces", uselist=False, back_populates="person")
-    reels = relationship("Reels", uselist=False, back_populates="person")
-    videos = relationship("Videos", uselist=False, back_populates="person")
-    reviews = relationship("Reviews", uselist=False, back_populates="person")
-    note = relationship("Notes", uselist=False, back_populates="person")
-    posts = relationship("Posts", uselist=False, back_populates="person")
-    likes = relationship("Likes", uselist=False, back_populates="person")
-    groups = relationship("Groups", uselist=False, back_populates="person")
-    events = relationship("Events", uselist=False, back_populates="person")
+    family_member = relationship("FamilyMember", uselist=True, back_populates="person")
+    recent_places = relationship("RecentPlaces", uselist=True, back_populates="person")
+    reels = relationship("Reels", uselist=True, back_populates="person")
+    videos = relationship("Videos", uselist=True, back_populates="person")
+    reviews = relationship("Reviews", uselist=True, back_populates="person")
+    note = relationship("Notes", uselist=True, back_populates="person")
+    posts = relationship("Posts", uselist=True, back_populates="person")
+    likes = relationship("Likes", uselist=True, back_populates="person")
+    groups = relationship("Groups", uselist=True, back_populates="person")
+    events = relationship("Events", uselist=True, back_populates="person")
 
 
 class Places(Base):

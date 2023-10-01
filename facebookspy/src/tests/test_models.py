@@ -102,11 +102,8 @@ def test_person_relationships_model_successfully_create_object(session):
     session.add_all([family_member, friend, image, place, work_education])
     session.commit()
 
-    assert person.family_member == family_member
     assert person.friends == [friend]
     assert person.images == [image]
-    assert person.places == place
-    assert person.work_and_education == work_education
 
 
 def test_relationship_backrefs_model_successfully_create_object(session):

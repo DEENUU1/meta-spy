@@ -27,10 +27,11 @@
 
   <a href="https://github.com/DEENUU1/">
     <img src="assets/home.png" alt="Logo" >
+    <img src="assets/homepage.png" alt="Logo" >
+    <img src="assets/detailpage.png" alt="Logo" >
   </a>
 </div>
 
-https://github.com/DEENUU1/facebook-spy/assets/111304236/19032a83-a0f0-4834-9d2c-cb89e504673a
 
 <h2><a href="https://deenuu1.github.io/facebook-spy/">Documentation is available here</a></h2>
 
@@ -65,11 +66,8 @@ One notable limitation of the tool is that some scrapers may not work correctly 
   - Typer 
   - FastAPI
   - Selenium
-- React
-  - Vite
-- Docker
 - SQLite 
-
+- HTML / CSS / Bootstrap5
 
 <!-- GETTING STARTED -->
 ## Getting Started
