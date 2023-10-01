@@ -7,7 +7,7 @@ from facebookspy.src.models import (
     Base,
 )
 from ..database import get_session
-from ..server.backend.app import app
+from facebookspy.src.server.app import app
 
 engine = create_engine("sqlite:///database_test.db")
 Session = sessionmaker(bind=engine)

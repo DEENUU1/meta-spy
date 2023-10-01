@@ -12,13 +12,3 @@ services:
       - PYTHONPATH=/app
       - DOCKER_CONTAINER=true
     command: ["uvicorn", "facebookspy.src.server.backend.app:app", "--host", "0.0.0.0", "--port", "8000"]
-
-  react-app:
-    build:
-      context: .
-      dockerfile: config/react/Dockerfile
-    ports:
-      - "3000:80"
-    volumes:
-      - ./facebook-link-tree:/app/facebook-link-tree
-    command: ["nginx", "-g", "daemon off;"]

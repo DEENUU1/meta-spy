@@ -43,15 +43,13 @@ app = typer.Typer(
 
 @app.command()
 def server() -> None:
+    import uvicorn
+    from .server.app import app
+
     """Run local server using docker to browse scraped data"""
 
     try:
-        build_command = ["docker-compose", "build"]
-        subprocess.run(build_command, check=True)
-
-        run_command = ["docker-compose", "up", "-d"]
-        subprocess.run(run_command, check=True)
-
+        uvicorn.run(app, host="0.0.0.0", port=8000)
     except subprocess.CalledProcessError as e:
         logs.log_error(f"An error occurred while starting local server {e}")
         rprint(f"An error occurred {e}")

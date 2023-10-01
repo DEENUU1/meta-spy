@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="{{ url_for('static', path='/index.css') }}" rel="stylesheet">
+</head>
+<body>
+<h1>Person List</h1>
+    <ul>
+        {% for person in persons %}
+        <li>
+            <strong>ID:</strong> {{ person.id }}<br>
+            <strong>Name:</strong> {{ person.full_name }}<br>
+            <strong>URL:</strong> {{ person.url }}<br>
+            <strong>Facebook ID:</strong> {{person.facebook_id}}<br>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
