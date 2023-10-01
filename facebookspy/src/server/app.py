@@ -8,9 +8,13 @@ from .schemas import (
 )
 from ..models import Person
 from ..database import get_session, Session
+import os
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
+if "create_image" in os.environ:
+    if not os.path.exists("images"):
+        os.makedirs("images")
 app.mount("/images", StaticFiles(directory="images"), name="images")
 templates = Jinja2Templates(directory="templates")
 
