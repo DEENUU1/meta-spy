@@ -5,6 +5,111 @@
     <title>Title</title>
 </head>
 <body>
+    <h1>Person Details</h1>
+    <p><strong>ID:</strong> {{ person.id }}</p>
+    <p><strong>Full Name:</strong> {{ person.full_name }}</p>
+    <p><strong>URL:</strong> {{ person.url }}</p>
+    <p><strong>Facebook ID:</strong> {{ person.facebook_id }}</p>
+    <p><strong>Phone Number:</strong> {{ person.phone_number }}</p>
+    <p><strong>Email:</strong> {{ person.email }}</p>
+    <p><strong>Number of Friends:</strong> {{ person.number_of_friends }}</p>
+    <p><strong>AI Summary:</strong> {{ person.ai_summary }}</p>
 
+    <h2>Family Members</h2>
+    <ul>
+        {% for family_member in person.family_member %}
+        <li> <a href="{{family_member.url}} ">{{ family_member.full_name }} </a> | {{family_member.role}}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Images</h2>
+    <ul>
+        {% for image in person.images %}
+        <li><img src="{{ url_for('images', path=image.path) }}" alt="{{ image.path }}"></li>
+        {% endfor %}
+    </ul>
+
+    <h2>Places</h2>
+    <ul>
+        {% for place in person.places %}
+        <li>{{place.name}} | {{place.date}}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Work and education</h2>
+    <ul>
+        {% for wae in person.work_and_education %}
+        <li>{{wae.name}}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Recent places</h2>
+    <ul>
+        {% for rp in person.recent_places %}
+        <li>{{rp.localization}} | {{rp.date}}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Reels</h2>
+    <ul>
+        {% for reel in person.reels %}
+        <li>{{reel.url}}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Videos</h2>
+    <ul>
+        {% for video in person.videos %}
+        <li>{{video.url}}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Reviews</h2>
+    <ul>
+        {% for review in person.reviews%}
+        <li>{{review.company}} | {{review.review}}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Posts</h2>
+    <ul>
+        {% for post in person.posts %}
+        <li>{{post.url}}</li>
+        <li>{{post.content}}</li>
+        <li>{{post.number_of_likes}}</li>
+        <li>{{post.number_of_shares}}</li>
+        <li>{{post.number_of_comments}}</li>
+        <li>{{post.classification}}</li>
+        <li>{{post.score}}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Likes</h2>
+    <ul>
+        {% for like in person.likes %}
+        <li>{{like.name}}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Groups</h2>
+    <ul>
+        {% for group in person.groups %}
+        <li> <a href="{{group.url}}" >{{group.name}}</a> </li>
+        {% endfor %}
+    </ul>
+
+    <h2>Events</h2>
+    <ul>
+        {% for event in person.events %}
+        <li> <a href="{{event.url}}"> {{event.name}}</a></li>
+        {% endfor %}
+    </ul>
+
+    <h2>Friends</h2>
+    <ul>
+        {% for friend in person.friends %}
+            <li>{{ friend.full_name }}</li>
+        {% endfor %}
+    </ul>
 </body>
 </html>

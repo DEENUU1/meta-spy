@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 from pydantic import BaseModel
 from ..models import PostSource
 
@@ -8,17 +8,6 @@ class PersonListSchema(BaseModel):
     full_name: Optional[str] = None
     url: Optional[str] = None
     facebook_id: Optional[str] = None
-
-
-class PersonDetailSchema(BaseModel):
-    id: int
-    full_name: Optional[str] = None
-    url: Optional[str] = None
-    facebook_id: Optional[str] = None
-    phone_number: Optional[str] = None
-    email: Optional[str] = None
-    number_of_friends: Optional[int] = None
-    ai_summary: Optional[str] = None
 
 
 class FamilyMemberSchema(BaseModel):
@@ -83,7 +72,7 @@ class ReviewsSchema(BaseModel):
     person_id: int
 
 
-class PostsSchema(BaseModel):
+class PostSchema(BaseModel):
     id: int
     url: str
     person_id: int
@@ -121,3 +110,27 @@ class CrawlerQueueSchema(BaseModel):
     id: int
     url: str
     status: bool = False
+
+
+class PersonDetailSchema(BaseModel):
+    id: int
+    full_name: Optional[str] = None
+    url: Optional[str] = None
+    facebook_id: Optional[str] = None
+    phone_number: Optional[str] = None
+    email: Optional[str] = None
+    number_of_friends: Optional[int] = None
+    ai_summary: Optional[str] = None
+    family_member: Optional[List[FamilyMemberSchema]] = None
+    friends: Optional[List[FriendsSchema]] = None
+    images: Optional[List[ImageSchema]] = None
+    places: Optional[List[PlacesSchema]] = None
+    work_and_education: Optional[List[WorkAndEducationSchema]] = None
+    recent_places: Optional[List[RecentPlacesSchema]] = None
+    reels: Optional[List[ReelsSchema]] = None
+    videos: Optional[List[VideosSchema]] = None
+    reviews: Optional[List[ReviewsSchema]] = None
+    posts: Optional[List[PostSchema]] = None
+    likes: Optional[List[LikesSchema]] = None
+    groups: Optional[List[GroupsSchema]] = None
+    events: Optional[List[EventsSchema]] = None
