@@ -65,11 +65,8 @@ One notable limitation of the tool is that some scrapers may not work correctly 
   - Typer 
   - FastAPI
   - Selenium
-- React
-  - Vite
-- Docker
 - SQLite 
-
+- HTML / CSS / Bootstrap5
 
 <!-- GETTING STARTED -->
 ## Getting Started

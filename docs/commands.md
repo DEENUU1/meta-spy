@@ -130,8 +130,8 @@ python main.py scrape-person-events <facebook_id>
 
 
 ## Local Web Application
-#### Run FastAPI and React application 
-App is available under this local url - http://localhost:5173/
+#### Run FastAPI application 
+App is available under this local url - http://localhost:8000/
 
 ```bash
 python main.py server

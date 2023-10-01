@@ -182,7 +182,7 @@
       <div class="card card-body">
           <ul>
             {% for post in person.posts %}
-              <li>{{ post.url }}</li>
+              <a href="{{post.url}}">Original Content</a>
               <li>{{ post.content }}</li>
               <li>{{ post.number_of_likes }}</li>
               <li>{{ post.number_of_shares }}</li>

@@ -1,9 +1,21 @@
 # Change log
 
 
-## Current version: 1.0
+## Current version: 1.1
 
 ## Version history
+
+### 1.1
+- Improve local web application 
+  - Delete React application
+  - Add templates for fastAPI 
+  - Display all information about specified Person on a single page
+  - Delete docker and docker-compose files 
+
+```bash
+python main.py server 
+```
+
 
 ### 1.0
 - Delete command to run web application without docker 
