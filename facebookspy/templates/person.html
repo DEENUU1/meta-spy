@@ -11,7 +11,7 @@
         {% for person in persons %}
         <li>
             <strong>ID:</strong> {{ person.id }}<br>
-            <strong>Name:</strong> {{ person.full_name }}<br>
+            <strong>Name:</strong> <a href="{{ url_for('person_detail', person_id=person.id) }}"> {{ person.full_name }}</a><br>
             <strong>URL:</strong> {{ person.url }}<br>
             <strong>Facebook ID:</strong> {{person.facebook_id}}<br>
         </li>
