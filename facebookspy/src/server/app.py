@@ -16,11 +16,6 @@ templates = Jinja2Templates(directory="templates")
 
 
 @app.get("/", response_class=HTMLResponse)
-async def root(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
-
-
-@app.get("/person/", response_class=HTMLResponse)
 async def person(request: Request, db: Session = Depends(get_session)):
     persons = db.query(Person).all()
 
