@@ -15,11 +15,13 @@
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', path='/spy_96975.ico') }}">
 </head>
 <body>
+    {% include "navigation_bar.html" %}
 
     {% block content %}
 
     {% endblock %}
 
+    {% include "footer.html" %}
 
 </body>
 </html>
