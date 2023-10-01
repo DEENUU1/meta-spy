@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block meta_title %} FacebookSpy | {{person.facebook_id}} {% endblock %}
+
+{% block content %}
+
     <h1>Person Details</h1>
     <p><strong>ID:</strong> {{ person.id }}</p>
     <p><strong>Full Name:</strong> {{ person.full_name }}</p>
@@ -22,12 +20,7 @@
         {% endfor %}
     </ul>
 
-    <h2>Images</h2>
-    <ul>
-        {% for image in person.images %}
-        <li><img src="{{ url_for('images', path=image.path) }}" alt="{{ image.path }}"></li>
-        {% endfor %}
-    </ul>
+
 
     <h2>Places</h2>
     <ul>
@@ -50,6 +43,20 @@
         {% endfor %}
     </ul>
 
+     <h2>Images</h2>
+    <ul>
+        {% for image in person.images %}
+        <li><img src="{{ url_for('images', path=image.path) }}" alt="{{ image.path }}"></li>
+        {% endfor %}
+    </ul>
+
+    <h2>Reviews</h2>
+    <ul>
+        {% for review in person.reviews%}
+        <li>{{review.company}} | {{review.review}}</li>
+        {% endfor %}
+    </ul>
+
     <h2>Reels</h2>
     <ul>
         {% for reel in person.reels %}
@@ -61,13 +68,6 @@
     <ul>
         {% for video in person.videos %}
         <li>{{video.url}}</li>
-        {% endfor %}
-    </ul>
-
-    <h2>Reviews</h2>
-    <ul>
-        {% for review in person.reviews%}
-        <li>{{review.company}} | {{review.review}}</li>
         {% endfor %}
     </ul>
 
@@ -111,5 +111,5 @@
             <li>{{ friend.full_name }}</li>
         {% endfor %}
     </ul>
-</body>
-</html>
+
+{% endblock %}

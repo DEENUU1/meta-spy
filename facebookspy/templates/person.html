@@ -1,11 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link href="{{ url_for('static', path='/index.css') }}" rel="stylesheet">
-</head>
-<body>
+{% extends 'base.html' %}
+{% block meta_title %} FacebookSpy | Person list {% endblock %}
+
+{% block content %}
 <h1>Person List</h1>
     <ul>
         {% for person in persons %}
@@ -17,5 +13,5 @@
         </li>
         {% endfor %}
     </ul>
-</body>
-</html>
+
+{% endblock %}
