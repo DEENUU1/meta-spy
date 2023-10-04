@@ -1,5 +1,5 @@
 import pickle
-from typing import List, Dict
+from typing import List, Dict, Tuple
 
 from rich import print as rprint
 from selenium import webdriver
@@ -10,6 +10,8 @@ from ..config import Config
 from ..logs import Logs
 from ..repository import person_repository, post_repository
 from ..cli import output
+from selenium.webdriver.support.ui import WebDriverWait
+
 
 logs = Logs()
 
@@ -63,58 +65,89 @@ class PostDetail(Scraper):
         except ValueError:
             return False
 
+    def scrape_number_of_likes_from_image(self, selector) -> int | None:
+        stats_div = self._driver.find_element(By.CSS_SELECTOR, selector)
+        number_of_likes = stats_div.find_element(
+            By.CSS_SELECTOR, "span.xt0b8zv.x1e558r4"
+        ).text
+        if number_of_likes is None:
+            try:
+                number_of_likes = stats_div.find_element(
+                    By.CSS_SELECTOR, "span.x1e558r4"
+                ).text
+                print(number_of_likes)
+            except Exception as e:
+                logs.log_error(f"Error occurred while getting number of likes {e}")
+                rprint(f"Error occurred while getting number of likes {e}")
+                number_of_likes = 0
+
+        elif number_of_likes is None:
+            try:
+                number_of_likes = stats_div.find_element(
+                    By.CSS_SELECTOR, "span.xt0b8zv x1e558r4"
+                ).text
+                print(number_of_likes)
+            except Exception as e:
+                logs.log_error(f"Error occurred while getting number of likes {e}")
+                rprint(f"Error occurred while getting number of likes {e}")
+                number_of_likes = 0
+
+        return number_of_likes
+
+    def scrape_author_from_image(self, selector) -> str:
+        author_div = self._driver.find_element(By.CSS_SELECTOR, selector)
+        author = author_div.text
+        return author
+
+    def scrape_image_from_image(self, selector) -> str:
+        img_element = self._driver.find_element(By.CSS_SELECTOR, selector)
+        img_url = img_element.get_attribute("src")
+        return img_url
+
+    def scrape_content_from_image(self, selector) -> str:
+        text_div = self._driver.find_elements(By.CSS_SELECTOR, selector)
+        return text_div[1].text
+
     def scrape_post_data(self, url: str) -> List[Dict]:
         """Scrape data from post
         Content, url, number of likes, comments and shares
         """
         data = []
+        number_of_likes = 0
+        image_url = ""
+        content = ""
+        author = ""
+
         try:
             self._driver.get(url)
             self._load_cookies()
             self._driver.refresh()
 
-            stats_div = self._driver.find_element(
-                By.CSS_SELECTOR,
-                "div.x6s0dn4.xi81zsa.x78zum5.x6prxxf.x13a6bvl.xvq8zen.xdj266r.xktsk01.xat24cr.x1d52u69.x889kno.x4uap5.x1a8lsjc.xkhd6sd.xdppsyt",
-            )
-
-            number_of_likes = stats_div.find_element(
-                By.CSS_SELECTOR, "span.xt0b8zv.x1e558r4"
-            ).text
-
-            comment_share_elements = stats_div.find_elements(
-                By.CSS_SELECTOR,
-                "span.x193iq5w.xeuugli.x13faqbe.x1vvkbs.x1xmvt09.x1lliihq.x1s928wv.xhkezso.x1gmr53x.x1cpjm7i.x1fgarty.x1943h6x.xudqn12.x3x7a5m.x6prxxf.xvq8zen.xo1l8bm.xi81zsa",
-            )
-
-            comment_shares = []
-            for element in comment_share_elements:
-                if not self._check_number_is_int(element.text):
-                    value = self._extract_number(element.text)
-                    comment_shares.append(value)
-
-            text_div = self._driver.find_element(
-                By.CSS_SELECTOR,
-                "div.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.x1vvkbs.x126k92a",
-            ).text
-
-            img_element = self._driver.find_element(
-                By.CSS_SELECTOR,
-                "img.x1ey2m1c.xds687c.x5yr21d.x10l6tqk.x17qophe.x13vifvy.xh8yej3.xl1xv1r",
-            )
-            img_url = img_element.get_attribute("src")
-
-            number_of_comments = comment_shares[0] if len(comment_shares) > 0 else 0
-            number_of_shares = comment_shares[1] if len(comment_shares) > 1 else 0
+            if "photo" in url:
+                image_url = self.scrape_image_from_image(
+                    "img.x85a59c.x193iq5w.x4fas0m.x19kjcj4"
+                )
+                content = self.scrape_content_from_image(
+                    "span.x193iq5w.xeuugli.x13faqbe.x1vvkbs.x1xmvt09.x1lliihq.x1s928wv.xhkezso.x1gmr53x.x1cpjm7i.x1fgarty.x1943h6x.xudqn12.x3x7a5m.x6prxxf.xvq8zen.xo1l8bm.xzsf02u"
+                )
+                number_of_likes = self.scrape_number_of_likes_from_image(
+                    "div.x6s0dn4.xi81zsa.x78zum5.x6prxxf.x13a6bvl.xvq8zen.xdj266r.xktsk01.xat24cr.x1d52u69.x889kno.x4uap5.x1a8lsjc.xkhd6sd.xdppsyt"
+                )
+                author = self.scrape_author_from_image(
+                    "span.x193iq5w.xeuugli.x13faqbe.x1vvkbs.x1xmvt09.x1lliihq.x1s928wv.xhkezso.x1gmr53x.x1cpjm7i.x1fgarty.x1943h6x.xudqn12.x3x7a5m.x6prxxf.xvq8zen.xo1l8bm.xzsf02u"
+                )
+            elif "post" in url:
+                pass
 
             data.append(
                 {
                     "number_of_likes": int(number_of_likes),
-                    "content": f"{text_div}\n{img_url}",
-                    "number_of_shares": number_of_shares,
-                    "number_of_comments": number_of_comments,
+                    "content": f"{content}",
+                    "image_url": image_url,
+                    "author": author,
                 }
             )
+
         except Exception as e:
             logs.log_error(f"Error occurred while loading post detail page: {e}")
 
@@ -130,31 +163,31 @@ class PostDetail(Scraper):
         Pipeline to run the scraper
         """
         try:
-            person_object = person_repository.get_person(self._user_id)
-            posts = post_repository.get_posts(person_object.id)
+            # person_object = person_repository.get_person(self._user_id)
+            # posts = post_repository.get_posts(person_object.id)
 
-            for data in posts:
-                scraped_data = self.scrape_post_data(data.url)
+            # for data in posts:
+            scraped_data = self.scrape_post_data("")
+            print(scraped_data)
+            # if not any(scraped_data):
+            #     output.print_no_data_info()
+            #     self._driver.quit()
+            #     self.success = True
+            # else:
+            #     output.print_data_from_list_of_dict(scraped_data)
+            # post_repository.mark_post_as_scraped(data.id)
 
-                if not any(scraped_data):
-                    output.print_no_data_info()
-                    self._driver.quit()
-                    self.success = True
-                else:
-                    output.print_data_from_list_of_dict(scraped_data)
-                    post_repository.mark_post_as_scraped(data.id)
-
-                    for scraped_item in scraped_data:
-                        post_repository.create_post(
-                            person_id=person_object.id,
-                            url=data.url,
-                            number_of_likes=scraped_item.get("number_of_likes", 0),
-                            number_of_shares=scraped_item.get("number_of_shares", 0),
-                            number_of_comments=scraped_item.get(
-                                "number_of_comments", 0
-                            ),
-                            content=scraped_item.get("content", ""),
-                        )
+            # for scraped_item in scraped_data:
+            #     post_repository.create_post(
+            #         person_id=person_object.id,
+            #         url="", #data.url,
+            #         number_of_likes=scraped_item.get("number_of_likes", 0),
+            #         number_of_shares=scraped_item.get("number_of_shares", 0),
+            #         number_of_comments=scraped_item.get(
+            #             "number_of_comments", 0
+            #         ),
+            #         content=scraped_item.get("content", ""),
+            #     )
 
             self._driver.quit()
             self.success = True
