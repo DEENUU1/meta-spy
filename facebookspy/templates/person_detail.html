@@ -203,12 +203,24 @@
           <ul>
             {% for post in person.posts %}
               <a href="{{post.url}}">Original Content</a>
-              <li>{{ post.content }}</li>
-              <li>{{ post.number_of_likes }}</li>
-              <li>{{ post.number_of_shares }}</li>
-              <li>{{ post.number_of_comments }}</li>
-              <li>{{ post.classification }}</li>
-              <li>{{ post.score }}</li>
+              {% if post.content %}
+              <li>Content: {{ post.content }}</li>
+              {% endif %}
+              {% if post.number_of_likes %}
+              <li>Number of likes: {{ post.number_of_likes }}</li>
+              {% endif %}
+              {% if post.author %}
+              <li>Author: {{ post.author}} </li>
+              {% endif %}
+              {% if post.image_url %}
+              <li>Images: {{ post.image_url }}</li>
+              {% endif %}
+              {% if post.classification %}
+              <li>AI classification: {{ post.classification }}</li>
+              {% endif %}
+              {% if post.score %}
+              <li>AI classification score: {{ post.score }}</li>
+              {% endif %}
             {% endfor %}
           </ul>
       </div>

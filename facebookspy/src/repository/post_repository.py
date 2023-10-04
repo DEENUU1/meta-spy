@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Dict
 
 from ..database import get_session
 from ..models import Posts, PostSource
@@ -16,6 +16,13 @@ def get_posts(person_id: int) -> List[Posts]:
     session = get_session()
     posts = session.query(Posts).filter_by(person_id=person_id).all()
     return posts
+
+
+def get_post_by_url(url: str) -> Posts:
+    """Return a post based on the URL"""
+    session = get_session()
+    post = session.query(Posts).filter_by(url=url).first()
+    return post
 
 
 def get_all_posts() -> List[Posts]:
@@ -51,8 +58,8 @@ def create_post(
     person_id: int,
     content: str = None,
     number_of_likes: int = None,
-    number_of_shares: int = None,
-    number_of_comments: int = None,
+    image_urls: Dict[int, str] = None,
+    author: str = None,
     source: PostSource = None,
 ) -> Posts:
     """Create or update Post object"""
@@ -65,12 +72,12 @@ def create_post(
             existing_post.content = content
         if number_of_likes is not None:
             existing_post.number_of_likes = number_of_likes
-        if number_of_shares is not None:
-            existing_post.number_of_shares = number_of_shares
-        if number_of_comments is not None:
-            existing_post.number_of_comments = number_of_comments
         if source is not None:
             existing_post.source = source
+        if image_urls is not None:
+            existing_post.image_urls = image_urls
+        if author is not None:
+            existing_post.author = author
         session.commit()
         return existing_post
     else:
@@ -79,8 +86,7 @@ def create_post(
             person_id=person_id,
             content=content,
             number_of_likes=number_of_likes,
-            number_of_shares=number_of_shares,
-            number_of_comments=number_of_comments,
+            image_urls=image_urls,
             source=source,
         )
         session.add(post)
