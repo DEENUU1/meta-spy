@@ -33,7 +33,16 @@ class AccountVideo(BaseFacebookScraper):
     def is_pipeline_successful(self) -> bool:
         return self.success
 
-    def extract_videos_urls(self) -> List[str]:
+    @staticmethod
+    def extract_urls(video_elements) -> List[str]:
+        extracted_videos_urls = []
+        for video_element in video_elements:
+            src_attribute = video_element.get_attribute("href")
+            if src_attribute:
+                extracted_videos_urls.append(src_attribute)
+        return extracted_videos_urls
+
+    def scrape_video_urls(self) -> List[str]:
         """
         Return a list of all the image urls
         """
@@ -47,13 +56,22 @@ class AccountVideo(BaseFacebookScraper):
                 By.CSS_SELECTOR,
                 "a.x1i10hfl.xjbqb8w.x6umtig.x1b1mbwd.xaqea5y.xav7gou.x9f619.x1ypdohk.xt0psk2.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x16tdsg8.x1hl2dhg.xggy1nq.x1a2a7pz.x1heor9g.xt0b8zv",
             )
-            for video_element in videos_elements:
-                src_attribute = video_element.get_attribute("href")
-                if src_attribute:
-                    extracted_videos_urls.append(src_attribute)
-
+            extracted_videos_urls = self.extract_urls(videos_elements)
         except Exception as e:
             logs.log_error(f"An Error extracting while extracting video URL: {e}")
+
+        if not extracted_videos_urls:
+            try:
+                div_element = self._driver.find_element(
+                    By.CLASS_NAME, "xyamay9.x1pi30zi.x1l90r2v.x1swvt13"
+                )
+                videos_elements = div_element.find_elements(
+                    By.CSS_SELECTOR,
+                    "a.x1i10hfl.xjbqb8w.x6umtig.x1b1mbwd.xaqea5y.xav7gou.x9f619.x1ypdohk.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x16tdsg8.x1hl2dhg.xggy1nq.x1a2a7pz.x1heor9g.xt0b8zv.x1lliihq.x5yr21d.x1n2onr6.xh8yej3",
+                )
+                extracted_videos_urls = self.extract_urls(videos_elements)
+            except Exception as e:
+                logs.log_error(f"An Error extracting while extracting video URL: {e}")
 
         return extracted_videos_urls
 
@@ -67,7 +85,7 @@ class AccountVideo(BaseFacebookScraper):
             scroll_page(self._driver)
 
             rprint("[bold]Step 3 of 3 - Extract videos urls[/bold]")
-            videos = self.extract_videos_urls()
+            videos = self.scrape_video_urls()
 
             if not videos:
                 output.print_no_data_info()
