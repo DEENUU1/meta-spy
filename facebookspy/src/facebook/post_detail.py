@@ -27,6 +27,11 @@ class PostDetail(Scraper):
         self._user_id = user_id
         self.success = False
 
+    @property
+    def is_pipeline_successful(self) -> bool:
+        """Check if pipeline is success"""
+        return self.success
+
     def _load_cookies(self) -> None:
         """Load cookies with log in session"""
         try:
@@ -108,6 +113,38 @@ class PostDetail(Scraper):
         text_div = self._driver.find_elements(By.CSS_SELECTOR, selector)
         return text_div[1].text
 
+    def scrape_number_of_likes_from_post(self, selector) -> int | None:
+        likes_container = self._driver.find_element(
+            By.CSS_SELECTOR, "span.xt0b8zv.x2bj2ny.xrbpyxo.xl423tq"
+        )
+        try:
+            number_of_likes = likes_container.find_element(
+                By.CSS_SELECTOR, selector
+            ).text
+        except Exception as e:
+            logs.log_error(f"Error occurred while getting number of likes {e}")
+            rprint(f"Error occurred while getting number of likes {e}")
+            number_of_likes = 0
+
+        return number_of_likes
+
+    def scrape_images_from_post(self, selector) -> List[str]:
+        images = self._driver.find_elements(By.CSS_SELECTOR, selector)
+        images_urls = []
+        for image in images:
+            images_urls.append(image.get_attribute("src"))
+
+        return images_urls
+
+    def scrape_content_from_post(self, selector) -> str:
+        content = self._driver.find_element(By.CSS_SELECTOR, selector).text
+        return content
+
+    def scrape_author_from_post(self, selector) -> str:
+        url_element = self._driver.find_element(By.CSS_SELECTOR, selector)
+        author = url_element.find_element(By.TAG_NAME, "span")
+        return author.text
+
     def scrape_post_data(self, url: str) -> List[Dict]:
         """Scrape data from post
         Content, url, number of likes, comments and shares
@@ -137,7 +174,19 @@ class PostDetail(Scraper):
                     "span.x193iq5w.xeuugli.x13faqbe.x1vvkbs.x1xmvt09.x1lliihq.x1s928wv.xhkezso.x1gmr53x.x1cpjm7i.x1fgarty.x1943h6x.xudqn12.x3x7a5m.x6prxxf.xvq8zen.xo1l8bm.xzsf02u"
                 )
             elif "post" in url:
-                pass
+                number_of_likes = self.scrape_number_of_likes_from_post("span.x1e558r4")
+                images = self.scrape_images_from_post(
+                    "img.x1ey2m1c.xds687c.x5yr21d.x10l6tqk.x17qophe.x13vifvy.xh8yej3"
+                )
+                print(images)
+                content = self.scrape_content_from_post(
+                    "div.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.x1vvkbs.x126k92a"
+                )
+                print(content)
+                author = self.scrape_author_from_post(
+                    "a.x1i10hfl.xjbqb8w.x6umtig.x1b1mbwd.xaqea5y.xav7gou.x9f619.x1ypdohk.xt0psk2.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x16tdsg8.x1hl2dhg.xggy1nq.x1a2a7pz.xt0b8zv.xzsf02u.x1s688f"
+                )
+                print(author)
 
             data.append(
                 {
@@ -152,11 +201,6 @@ class PostDetail(Scraper):
             logs.log_error(f"Error occurred while loading post detail page: {e}")
 
         return data
-
-    @property
-    def is_pipeline_successful(self) -> bool:
-        """Check if pipeline is success"""
-        return self.success
 
     def pipeline(self) -> None:
         """
