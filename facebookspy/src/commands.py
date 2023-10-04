@@ -6,6 +6,8 @@ import inquirer
 import typer
 from dotenv import load_dotenv
 from rich import print as rprint
+from rich.prompt import Prompt
+
 from .cli.version import return_version_info
 
 from .facebook.account.account_basic import AccountBasic
@@ -504,7 +506,32 @@ def scrape_video_urls(
     time_end = time()
 
     if scraper.is_pipeline_successful:
-        rprint(f"✅Scraping successful after {time_end - time_start} seconds ✅")
+        while True:
+            user_decision = Prompt.ask(
+                "Do you want to download videos❔ (Y/n)  (q - exit) "
+            )
+            if user_decision == "Y":
+                rprint(f"Start downloading all videos for {name}")
+                scraper = Downloader(name)
+
+                time_start = time()
+                scraper.download_all_person_videos_pipeline()
+                time_end = time()
+
+                if scraper.is_pipeline_successful:
+                    rprint(
+                        f"✅Scraping successful after {time_end - time_start} seconds ✅"
+                    )
+                else:
+                    rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
+
+            elif user_decision == "n":
+                rprint(f"✅Scraping successful after {time_end - time_start} seconds ✅")
+            elif user_decision == "q":
+                break
+            else:
+                rprint("Invalid input")
+
     else:
         rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
 
