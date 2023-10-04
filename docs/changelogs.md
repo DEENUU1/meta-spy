@@ -11,9 +11,17 @@
   - Add templates for fastAPI 
   - Display all information about specified Person on a single page
   - Delete docker and docker-compose files 
+- Fix scraping URLS of a posts from user's profile 
+- Improve scraping details of a post 
+  - Number of likes
+  - Content (text)
+  - Image urls
+  - Author
+  - Post url 
 
+#### New commands:
 ```bash
-python main.py server 
+python main.py scrape-person-post-details <facebook_id>
 ```
 
 

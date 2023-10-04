@@ -109,6 +109,13 @@ Scrape post details (content, number of likes;comments;shares etc) based on prev
 python main.py scrape-person-post-details <facebook_id>
 ```
 
+Scrape post details based on post URL 
+- In database Posts scraped based on a given URL are in relation with object Person with ID - "Anonymous"
+```bash
+python main.py scrape-post-details "<post_url>"
+```
+I recommend to paste post url inside " " to avoid errors 
+
 #### Likes
 Scrape likes from facebook account 
 ```bash
