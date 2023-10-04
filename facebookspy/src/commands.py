@@ -21,7 +21,7 @@ from .facebook.account.account_review import AccountReview
 from .facebook.account.account_videos import AccountVideo
 from .facebook.downloader import Downloader
 from .facebook.login import FacebookLogIn
-from .facebook.post_detail import PostDetail
+from .facebook.post_detail import PostDetail, pipeline
 from .logs import Logs
 from .analytics.graph import create_relationship_graph
 from .analytics.ai import get_person_summary
@@ -610,16 +610,33 @@ def scrape_person_post_details(
     """Scrape detail of user's posts"""
 
     rprint(f"Start scraping posts detail for {name}")
-    scraper = PostDetail(name)
 
     time_start = time()
-    scraper.pipeline()
+
+    scraper_pipeline = pipeline(name=name)
+    print(scraper_pipeline)
+
     time_end = time()
 
-    if scraper.is_pipeline_successful:
-        rprint(f"✅Scraping successful after {time_end - time_start} seconds ✅")
-    else:
-        rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
+    rprint(f"Scraping finished after {time_end - time_start} seconds")
+
+
+@app.command()
+def scrape_post_details(
+    url: Annotated[str, typer.Argument(help="Facebook post url")]
+) -> None:
+    """Scrape detail of specified post"""
+
+    rprint(f"Start scraping posts details")
+
+    time_start = time()
+
+    scraper_pipeline = pipeline(post_url=url)
+    print(scraper_pipeline)
+
+    time_end = time()
+
+    rprint(f"Scraping finished after {time_end - time_start} seconds")
 
 
 @app.command()
@@ -696,7 +713,7 @@ def prompt_options() -> List[str]:
                 ("Scrape user's videos urls", "f"),
                 ("Download videos based on scraped urls", "g"),
                 ("Scrape urls for user's posts", "h"),
-                ("Scrape post details based on scraped urls", "i"),
+                # ("Scrape post details based on scraped urls", "i"),
                 ("Scrape all user's likes", "j"),
                 ("Scrape all user's groups", "k"),
                 ("Scrape all user's events", "l"),
@@ -761,9 +778,9 @@ def full_scrape(
             posts_scraper = AccountPost(name)
             posts_scraper.pipeline()
 
-        if "i" in selected_options:
-            post_detail_scraper = PostDetail(name)
-            post_detail_scraper.pipeline()
+        # if "i" in selected_options:
+        #     post_detail_scraper = PostDetail(name)
+        #     post_detail_scraper.pipeline()
 
         if "j" in selected_options:
             likes_scraper = AccountLike(name)

@@ -1,5 +1,5 @@
 import pickle
-from typing import List, Dict, Tuple, Optional
+from typing import List, Dict, Optional, Any
 
 from rich import print as rprint
 from selenium import webdriver
@@ -10,7 +10,6 @@ from ..config import Config
 from ..logs import Logs
 from ..repository import person_repository, post_repository
 from ..cli import output
-from selenium.webdriver.support.ui import WebDriverWait
 
 
 logs = Logs()
@@ -21,10 +20,10 @@ class PostDetail(Scraper):
     Scrape detail of Post
     """
 
-    def __init__(self, user_id: str) -> None:
+    def __init__(self, url: str) -> None:
         super().__init__()
         self._driver = webdriver.Chrome(options=self._chrome_driver_configuration())
-        self._user_id = user_id
+        self._url = url
         self.success = False
 
     @property
@@ -90,7 +89,6 @@ class PostDetail(Scraper):
                     ).text
                 except Exception as e:
                     logs.log_error(f"Error occurred while getting number of likes {e}")
-                    rprint(f"Error occurred while getting number of likes {e}")
 
             elif number_of_likes is None:
                 try:
@@ -99,21 +97,21 @@ class PostDetail(Scraper):
                     ).text
                 except Exception as e:
                     logs.log_error(f"Error occurred while getting number of likes {e}")
-                    rprint(f"Error occurred while getting number of likes {e}")
 
         if post:
-            likes_container = self._driver.find_element(
-                By.CSS_SELECTOR, "span.xt0b8zv.x2bj2ny.xrbpyxo.xl423tq"
-            )
             try:
+                likes_container = self._driver.find_element(
+                    By.CSS_SELECTOR, "span.xt0b8zv.x2bj2ny.xrbpyxo.xl423tq"
+                )
                 result = likes_container.find_element(
                     By.CSS_SELECTOR, "span.x1e558r4"
                 ).text
             except Exception as e:
                 logs.log_error(f"Error occurred while getting number of likes {e}")
-                rprint(f"Error occurred while getting number of likes {e}")
 
-            return result
+        if not self._check_number_is_int(result):
+            return 0
+        return result
 
     def scrape_author(self, post, image) -> Optional[str]:
         result = None
@@ -127,7 +125,6 @@ class PostDetail(Scraper):
                 result = author_div.text
             except Exception as e:
                 logs.log_error(f"Error occurred while getting author {e}")
-                rprint(f"Error occurred while getting author {e}")
 
         if post:
             try:
@@ -138,7 +135,6 @@ class PostDetail(Scraper):
                 result = url_element.find_element(By.TAG_NAME, "span").text
             except Exception as e:
                 logs.log_error(f"Error occurred while getting author {e}")
-                rprint(f"Error occurred while getting author {e}")
 
         return result
 
@@ -154,7 +150,6 @@ class PostDetail(Scraper):
                 result.append(img_url)
             except Exception as e:
                 logs.log_error(f"Error occurred while getting image url {e}")
-                rprint(f"Error occurred while getting image url {e}")
 
         if post:
             try:
@@ -166,7 +161,6 @@ class PostDetail(Scraper):
                     result.append(image.get_attribute("src"))
             except Exception as e:
                 logs.log_error(f"Error occurred while getting image url {e}")
-                rprint(f"Error occurred while getting image url {e}")
 
         return result
 
@@ -182,7 +176,6 @@ class PostDetail(Scraper):
                 result = text_div[1].text
             except Exception as e:
                 logs.log_error(f"Error occurred while getting content {e}")
-                rprint(f"Error occurred while getting content {e}")
 
         if post:
             try:
@@ -193,44 +186,54 @@ class PostDetail(Scraper):
                 result = content_element.text
             except Exception as e:
                 logs.log_error(f"Error occurred while getting content {e}")
-                rprint(f"Error occurred while getting content {e}")
 
         return result
 
-    def scrape_post_data(self, url: str) -> List[Dict]:
+    @staticmethod
+    def image_url_list_to_dict(image_urls: List[str] = None) -> Dict[str, str]:
+        image_urls_dict = {}
+        for image_url in image_urls:
+            image_urls_dict[image_url] = image_url
+        return image_urls_dict
+
+    def scrape_post_data(self) -> List[Dict[str, Any]]:
         """Scrape data from post
         Content, url, number of likes, comments and shares
         """
         data = []
         number_of_likes = 0
-        image_url = ""
+        image_url = []
         content = ""
         author = ""
 
         post = False
-        image = False
+        photo = False
 
         try:
-            self._driver.get(url)
+            self._driver.get(self._url)
             self._load_cookies()
             self._driver.refresh()
 
-            if "post" in url:
+            if "post" in self._url:
                 post = True
-            if "image" in url:
-                image = True
+            if "photo" in self._url:
+                photo = True
 
-            number_of_likes = self.scrape_number_of_likes(post, image)
-            author = self.scrape_author(post, image)
-            image_url = self.scrape_image_url(post, image)
-            content = self.scrape_content(post, image)
-
+            number_of_likes = self.scrape_number_of_likes(post, photo)
+            author = self.scrape_author(post, photo)
+            image_url = self.scrape_image_url(post, photo)
+            content = self.scrape_content(post, photo)
+            # print(f"Number of likes: {number_of_likes}")
+            # print(f"Content: {content}")
+            # print(f"Image url: {image_url}")
+            # print(f"Author: {author}")
             data.append(
                 {
                     "number_of_likes": int(number_of_likes),
                     "content": content,
-                    "image_url": image_url,
+                    "image_url": self.image_url_list_to_dict(image_url),
                     "author": author,
+                    "url": self._url,
                 }
             )
 
@@ -239,40 +242,74 @@ class PostDetail(Scraper):
 
         return data
 
-    def pipeline(self) -> None:
-        """
-        Pipeline to run the scraper
-        """
-        try:
-            # person_object = person_repository.get_person(self._user_id)
-            # posts = post_repository.get_posts(person_object.id)
 
-            # for data in posts:
-            scraped_data = self.scrape_post_data("")
-            print(scraped_data)
-            # if not any(scraped_data):
-            #     output.print_no_data_info()
-            #     self._driver.quit()
-            #     self.success = True
-            # else:
-            #     output.print_data_from_list_of_dict(scraped_data)
-            # post_repository.mark_post_as_scraped(data.id)
+def pipeline(name: str = None, post_url: str = None):
+    if name:
+        if not person_repository.person_exists(name):
+            print(
+                "This person does not exist in database, at first you should scrape post urls"
+            )
+            return
 
-            # for scraped_item in scraped_data:
-            #     post_repository.create_post(
-            #         person_id=person_object.id,
-            #         url="", #data.url,
-            #         number_of_likes=scraped_item.get("number_of_likes", 0),
-            #         number_of_shares=scraped_item.get("number_of_shares", 0),
-            #         number_of_comments=scraped_item.get(
-            #             "number_of_comments", 0
-            #         ),
-            #         content=scraped_item.get("content", ""),
-            #     )
+        person_object = person_repository.get_person(name)
+        posts = post_repository.get_posts(person_object.id)
 
-            self._driver.quit()
-            self.success = True
+        if not posts:
+            rprint("This person does not have any posts!")
+            return
 
-        except Exception as e:
-            logs.log_error(f"An error occurred: {e}")
-            rprint(f"An error occurred {e}")
+        for post in posts:
+            if "pages" in post.url:
+                continue
+
+            scraper = PostDetail(post.url)
+            scraped_data = scraper.scrape_post_data()
+
+            if not any(scraped_data):
+                output.print_no_data_info()
+            else:
+                output.print_list(scraped_data)
+                post_repository.mark_post_as_scraped(post.id)
+
+                for data in scraped_data:
+                    post_repository.create_post(
+                        person_id=person_object.id,
+                        url=data["url"],
+                        number_of_likes=data["number_of_likes"],
+                        image_urls=data["image_url"],
+                        content=data["content"],
+                        author=data["author"],
+                    )
+
+    if post_url:
+        if "pages" in post_url:
+            rprint("Invalid post url")
+            return
+
+        scraper = PostDetail(post_url)
+        scraped_data = scraper.scrape_post_data()
+
+        if not any(scraped_data):
+            output.print_no_data_info()
+        else:
+            output.print_list(scraped_data)
+
+            if not person_repository.person_exists("Anonymous"):
+                person_repository.create_person(
+                    facebook_id="Anonymous",
+                )
+
+            person_object = person_repository.get_person("Anonymous")
+
+            for data in scraped_data:
+                post_repository.create_post(
+                    url=data["url"],
+                    number_of_likes=data["number_of_likes"],
+                    image_urls=data["image_url"],
+                    content=data["content"],
+                    author=data["author"],
+                    person_id=person_object.id,  # Anonymous user
+                )
+
+                created_post = post_repository.get_post_by_url(data["url"])
+                post_repository.mark_post_as_scraped(created_post.id)

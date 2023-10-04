@@ -183,6 +183,7 @@ class Posts(Base):
     source = Column(EnumColumn(PostSource), default=PostSource.ACCOUNT)
     classification = Column(Boolean, default=False)
     score = Column(Float, nullable=True)
+    author = Column(String, nullable=True)
 
     # Relationship
     person = relationship("Person", back_populates="posts")
