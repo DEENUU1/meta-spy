@@ -44,8 +44,12 @@ class AccountPost(BaseFacebookScraper):
         """
         Perform a hover action on the given element
         """
-        actions = ActionChains(self._driver)
-        actions.move_to_element(element).perform()
+        try:
+            actions = ActionChains(self._driver)
+            actions.move_to_element(element)
+            actions.perform()
+        except Exception as e:
+            logs.log_error(f"Error performing hover action: {e}")
 
     def _move_cursor_away(self) -> None:
         """
@@ -69,6 +73,8 @@ class AccountPost(BaseFacebookScraper):
 
                 actual_url = element.get_attribute("href")
                 parsed_url = self._extract_url_prefix(actual_url)
+                if parsed_url.endswith("#"):
+                    continue
                 extracted_urls.append(parsed_url)
 
                 self._move_cursor_away()
