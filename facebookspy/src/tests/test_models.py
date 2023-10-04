@@ -193,8 +193,6 @@ def test_post_model_successfully_create_object(session):
         content="Test post",
         person=person,
         number_of_likes=2,
-        number_of_shares=4,
-        number_of_comments=1,
     )
     session.add(post)
     session.commit()
