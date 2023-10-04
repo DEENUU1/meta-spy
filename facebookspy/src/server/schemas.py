@@ -1,5 +1,5 @@
-from typing import Optional, List
-from pydantic import BaseModel
+from typing import Optional, List, Dict
+from pydantic import BaseModel, validator
 from ..models import PostSource
 
 
@@ -78,12 +78,12 @@ class PostSchema(BaseModel):
     person_id: int
     content: Optional[str]
     number_of_likes: Optional[int]
-    number_of_shares: Optional[int]
-    number_of_comments: Optional[int]
+    image_urls: Optional[Dict[str, str]]
     scraped: bool
     source: PostSource
     classification: bool
     score: Optional[float]
+    author: Optional[str]
 
 
 class LikesSchema(BaseModel):
