@@ -18,6 +18,8 @@
   - Image urls
   - Author
   - Post url 
+- Improve typehints
+- Add new selector for scraping videos from user's profile
 
 #### New commands:
 ```bash

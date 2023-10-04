@@ -47,6 +47,9 @@ class AccountEvents(BaseFacebookScraper):
                 if name == "":
                     continue
 
+                if url is None:
+                    continue
+
                 extracted_data.append({"name": name, "url": url})
 
         except Exception as e:
