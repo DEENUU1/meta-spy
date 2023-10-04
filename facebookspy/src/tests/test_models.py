@@ -204,8 +204,6 @@ def test_post_model_successfully_create_object(session):
     assert post.content == "Test post"
     assert post.person == person
     assert post.number_of_likes == 2
-    assert post.number_of_shares == 4
-    assert post.number_of_comments == 1
     assert post.source == PostSource.ACCOUNT
 
 

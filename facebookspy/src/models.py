@@ -8,6 +8,7 @@ from sqlalchemy import (
     Boolean,
     Float,
     Enum as EnumColumn,
+    JSON,
 )
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
@@ -177,8 +178,7 @@ class Posts(Base):
     person_id = Column(Integer, ForeignKey("persons.id"))
     content = Column(String, nullable=True)
     number_of_likes = Column(Integer, nullable=True)
-    number_of_shares = Column(Integer, nullable=True)
-    number_of_comments = Column(Integer, nullable=True)
+    image_urls = Column(JSON, nullable=True)
     scraped = Column(Boolean, default=False)
     source = Column(EnumColumn(PostSource), default=PostSource.ACCOUNT)
     classification = Column(Boolean, default=False)
