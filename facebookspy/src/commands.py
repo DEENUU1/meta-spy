@@ -23,7 +23,7 @@ from .facebook.account.account_review import AccountReview
 from .facebook.account.account_videos import AccountVideo
 from .facebook.downloader import Downloader
 from .facebook.login import FacebookLogIn
-from .facebook.post_detail import PostDetail, pipeline
+from .facebook.post_detail import pipeline
 from .logs import Logs
 from .analytics.graph import create_relationship_graph
 from .analytics.ai import get_person_summary
@@ -641,7 +641,7 @@ def scrape_person_post_details(
     time_start = time()
 
     scraper_pipeline = pipeline(name=name)
-    print(scraper_pipeline)
+    rprint(scraper_pipeline)
 
     time_end = time()
 
@@ -740,7 +740,7 @@ def prompt_options() -> List[str]:
                 ("Scrape user's videos urls", "f"),
                 ("Download videos based on scraped urls", "g"),
                 ("Scrape urls for user's posts", "h"),
-                # ("Scrape post details based on scraped urls", "i"),
+                ("Scrape post details based on scraped urls", "i"),
                 ("Scrape all user's likes", "j"),
                 ("Scrape all user's groups", "k"),
                 ("Scrape all user's events", "l"),
@@ -805,9 +805,9 @@ def full_scrape(
             posts_scraper = AccountPost(name)
             posts_scraper.pipeline()
 
-        # if "i" in selected_options:
-        #     post_detail_scraper = PostDetail(name)
-        #     post_detail_scraper.pipeline()
+        if "i" in selected_options:
+            scraper_pipeline = pipeline(name=name)
+            rprint(scraper_pipeline)
 
         if "j" in selected_options:
             likes_scraper = AccountLike(name)
