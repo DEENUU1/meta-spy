@@ -1,5 +1,5 @@
 import re
-from typing import List, Dict
+from typing import List, Dict, Optional
 
 from rich import print as rprint
 from selenium.webdriver.common.by import By
@@ -38,7 +38,7 @@ class AccountBasic(BaseFacebookScraper):
         self._load_cookies()
         self._driver.refresh()
 
-    def extract_full_name(self) -> str | None:
+    def extract_full_name(self) -> Optional[str]:
         """Extract full name from homepage"""
         data = None
         try:

@@ -45,7 +45,7 @@ llm_chain = LLMChain(
 
 def format_person_data(person_id: str) -> Tuple[List]:
     """
-    Get data for specified Person from models and return formated data
+    Get data for specified Person from models and return formatted data
     """
     person = person_repository.get_person(person_id)
 
@@ -72,7 +72,7 @@ def format_person_data(person_id: str) -> Tuple[List]:
     posts = post_repository.get_posts_by_person(person.id)
     posts_data = "\n".join(
         [
-            f"- Content: {posts.content}, Number of likes: {posts.number_of_likes}, Number of comments: {posts.number_of_comments}, Number of shares: {posts.number_of_shares}  "
+            f"- Content: {posts.content}, Number of likes: {posts.number_of_likes}, Author {posts.author} "
             for posts in posts
         ]
     )

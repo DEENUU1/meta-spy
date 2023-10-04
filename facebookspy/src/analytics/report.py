@@ -18,7 +18,7 @@ def generate_pdf_report(person_id: str) -> None:
     )
     rprint("[bold]Step 1 of 3 - Extract data from models[/bold]")
 
-    # Get formatet data
+    # Get formatted data
     data = format_person_data(person_id)
 
     # Add custom font to the PDF file

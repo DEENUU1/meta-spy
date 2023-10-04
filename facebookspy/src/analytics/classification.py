@@ -3,13 +3,13 @@ from transformers import pipeline
 
 def text_classifier(text: str) -> bool:
     """
-    Check if text is possitive or not
+    Check if text is positive or not
 
     Args:
         text (str): text to check
 
     Returns:
-        bool: True if text is possitive, False otherwise
+        bool: True if text is positive, False otherwise
     """
 
     classifier = pipeline("sentiment-analysis")
