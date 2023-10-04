@@ -70,80 +70,103 @@ class PostDetail(Scraper):
         except ValueError:
             return False
 
-    def scrape_number_of_likes_from_image(self, selector) -> int | None:
-        stats_div = self._driver.find_element(By.CSS_SELECTOR, selector)
-        number_of_likes = stats_div.find_element(
-            By.CSS_SELECTOR, "span.xt0b8zv.x1e558r4"
-        ).text
-        if number_of_likes is None:
+    def scrape_number_of_likes(
+        self, post: bool = False, image: bool = False
+    ) -> int | None:
+        if image:
+            stats_div = self._driver.find_element(
+                By.CSS_SELECTOR,
+                "div.x6s0dn4.xi81zsa.x78zum5.x6prxxf.x13a6bvl.xvq8zen.xdj266r.xktsk01.xat24cr.x1d52u69.x889kno.x4uap5.x1a8lsjc.xkhd6sd.xdppsyt",
+            )
+            number_of_likes = stats_div.find_element(
+                By.CSS_SELECTOR, "span.xt0b8zv.x1e558r4"
+            ).text
+            if number_of_likes is None:
+                try:
+                    number_of_likes = stats_div.find_element(
+                        By.CSS_SELECTOR, "span.x1e558r4"
+                    ).text
+                    print(number_of_likes)
+                except Exception as e:
+                    logs.log_error(f"Error occurred while getting number of likes {e}")
+                    rprint(f"Error occurred while getting number of likes {e}")
+                    number_of_likes = 0
+
+            elif number_of_likes is None:
+                try:
+                    number_of_likes = stats_div.find_element(
+                        By.CSS_SELECTOR, "span.xt0b8zv.x1e558r4"
+                    ).text
+                    print(number_of_likes)
+                except Exception as e:
+                    logs.log_error(f"Error occurred while getting number of likes {e}")
+                    rprint(f"Error occurred while getting number of likes {e}")
+                    number_of_likes = 0
+
+            return number_of_likes
+
+        if post:
+            likes_container = self._driver.find_element(
+                By.CSS_SELECTOR, "span.xt0b8zv.x2bj2ny.xrbpyxo.xl423tq"
+            )
             try:
-                number_of_likes = stats_div.find_element(
+                number_of_likes = likes_container.find_element(
                     By.CSS_SELECTOR, "span.x1e558r4"
                 ).text
-                print(number_of_likes)
             except Exception as e:
                 logs.log_error(f"Error occurred while getting number of likes {e}")
                 rprint(f"Error occurred while getting number of likes {e}")
                 number_of_likes = 0
 
-        elif number_of_likes is None:
-            try:
-                number_of_likes = stats_div.find_element(
-                    By.CSS_SELECTOR, "span.xt0b8zv x1e558r4"
-                ).text
-                print(number_of_likes)
-            except Exception as e:
-                logs.log_error(f"Error occurred while getting number of likes {e}")
-                rprint(f"Error occurred while getting number of likes {e}")
-                number_of_likes = 0
+            return number_of_likes
 
-        return number_of_likes
+    def scrape_author(self, post, image) -> str:
+        if image:
+            author_div = self._driver.find_element(
+                By.CSS_SELECTOR,
+                "span.x193iq5w.xeuugli.x13faqbe.x1vvkbs.x1xmvt09.x1lliihq.x1s928wv.xhkezso.x1gmr53x.x1cpjm7i.x1fgarty.x1943h6x.xudqn12.x3x7a5m.x6prxxf.xvq8zen.xo1l8bm.xzsf02u",
+            )
+            author = author_div.text
+            return author
+        if post:
+            url_element = self._driver.find_element(
+                By.CSS_SELECTOR,
+                "a.x1i10hfl.xjbqb8w.x6umtig.x1b1mbwd.xaqea5y.xav7gou.x9f619.x1ypdohk.xt0psk2.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x16tdsg8.x1hl2dhg.xggy1nq.x1a2a7pz.xt0b8zv.xzsf02u.x1s688f",
+            )
+            author = url_element.find_element(By.TAG_NAME, "span")
+            return author.text
 
-    def scrape_author_from_image(self, selector) -> str:
-        author_div = self._driver.find_element(By.CSS_SELECTOR, selector)
-        author = author_div.text
-        return author
+    def scrape_image(self, post, image) -> str | List:
+        if image:
+            img_element = self._driver.find_element(
+                By.CSS_SELECTOR, "img.x85a59c.x193iq5w.x4fas0m.x19kjcj4"
+            )
+            img_url = img_element.get_attribute("src")
+            return img_url
+        if post:
+            images = self._driver.find_elements(
+                By.CSS_SELECTOR,
+                "img.x1ey2m1c.xds687c.x5yr21d.x10l6tqk.x17qophe.x13vifvy.xh8yej3",
+            )
+            images_urls = []
+            for image in images:
+                images_urls.append(image.get_attribute("src"))
 
-    def scrape_image_from_image(self, selector) -> str:
-        img_element = self._driver.find_element(By.CSS_SELECTOR, selector)
-        img_url = img_element.get_attribute("src")
-        return img_url
+            return images_urls
 
-    def scrape_content_from_image(self, selector) -> str:
-        text_div = self._driver.find_elements(By.CSS_SELECTOR, selector)
-        return text_div[1].text
-
-    def scrape_number_of_likes_from_post(self, selector) -> int | None:
-        likes_container = self._driver.find_element(
-            By.CSS_SELECTOR, "span.xt0b8zv.x2bj2ny.xrbpyxo.xl423tq"
-        )
-        try:
-            number_of_likes = likes_container.find_element(
-                By.CSS_SELECTOR, selector
+    def scrape_content_from_image(self, post, image) -> str:
+        if image:
+            text_div = self._driver.find_elements(
+                By.CSS_SELECTOR,
+                "span.x193iq5w.xeuugli.x13faqbe.x1vvkbs.x1xmvt09.x1lliihq.x1s928wv.xhkezso.x1gmr53x.x1cpjm7i.x1fgarty.x1943h6x.xudqn12.x3x7a5m.x6prxxf.xvq8zen.xo1l8bm.xzsf02u",
+            )
+            return text_div[1].text
+        if post:
+            content = self._driver.find_element(
+                By.CSS_SELECTOR,
+                "div.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.x1vvkbs.x126k92a",
             ).text
-        except Exception as e:
-            logs.log_error(f"Error occurred while getting number of likes {e}")
-            rprint(f"Error occurred while getting number of likes {e}")
-            number_of_likes = 0
-
-        return number_of_likes
-
-    def scrape_images_from_post(self, selector) -> List[str]:
-        images = self._driver.find_elements(By.CSS_SELECTOR, selector)
-        images_urls = []
-        for image in images:
-            images_urls.append(image.get_attribute("src"))
-
-        return images_urls
-
-    def scrape_content_from_post(self, selector) -> str:
-        content = self._driver.find_element(By.CSS_SELECTOR, selector).text
-        return content
-
-    def scrape_author_from_post(self, selector) -> str:
-        url_element = self._driver.find_element(By.CSS_SELECTOR, selector)
-        author = url_element.find_element(By.TAG_NAME, "span")
-        return author.text
+            return content
 
     def scrape_post_data(self, url: str) -> List[Dict]:
         """Scrape data from post
@@ -155,38 +178,23 @@ class PostDetail(Scraper):
         content = ""
         author = ""
 
+        post = False
+        image = False
+
         try:
             self._driver.get(url)
             self._load_cookies()
             self._driver.refresh()
 
-            if "photo" in url:
-                image_url = self.scrape_image_from_image(
-                    "img.x85a59c.x193iq5w.x4fas0m.x19kjcj4"
-                )
-                content = self.scrape_content_from_image(
-                    "span.x193iq5w.xeuugli.x13faqbe.x1vvkbs.x1xmvt09.x1lliihq.x1s928wv.xhkezso.x1gmr53x.x1cpjm7i.x1fgarty.x1943h6x.xudqn12.x3x7a5m.x6prxxf.xvq8zen.xo1l8bm.xzsf02u"
-                )
-                number_of_likes = self.scrape_number_of_likes_from_image(
-                    "div.x6s0dn4.xi81zsa.x78zum5.x6prxxf.x13a6bvl.xvq8zen.xdj266r.xktsk01.xat24cr.x1d52u69.x889kno.x4uap5.x1a8lsjc.xkhd6sd.xdppsyt"
-                )
-                author = self.scrape_author_from_image(
-                    "span.x193iq5w.xeuugli.x13faqbe.x1vvkbs.x1xmvt09.x1lliihq.x1s928wv.xhkezso.x1gmr53x.x1cpjm7i.x1fgarty.x1943h6x.xudqn12.x3x7a5m.x6prxxf.xvq8zen.xo1l8bm.xzsf02u"
-                )
-            elif "post" in url:
-                number_of_likes = self.scrape_number_of_likes_from_post("span.x1e558r4")
-                images = self.scrape_images_from_post(
-                    "img.x1ey2m1c.xds687c.x5yr21d.x10l6tqk.x17qophe.x13vifvy.xh8yej3"
-                )
-                print(images)
-                content = self.scrape_content_from_post(
-                    "div.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.x1vvkbs.x126k92a"
-                )
-                print(content)
-                author = self.scrape_author_from_post(
-                    "a.x1i10hfl.xjbqb8w.x6umtig.x1b1mbwd.xaqea5y.xav7gou.x9f619.x1ypdohk.xt0psk2.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x16tdsg8.x1hl2dhg.xggy1nq.x1a2a7pz.xt0b8zv.xzsf02u.x1s688f"
-                )
-                print(author)
+            if "post" in url:
+                post = True
+            if "image" in url:
+                image = True
+
+            number_of_likes = self.scrape_number_of_likes(post, image)
+            author = self.scrape_author(post, image)
+            image_url = self.scrape_image(post, image)
+            content = self.scrape_content_from_image(post, image)
 
             data.append(
                 {
