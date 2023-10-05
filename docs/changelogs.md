@@ -1,9 +1,17 @@
 # Change log
 
 
-## Current version: 1.1
+## Current version: 1.2
 
 ## Version history
+
+### 1.2 
+- Real time result while scrolling in scrapers:
+  - Post url
+  - Images 
+  - Friend list 
+
+
 
 ### 1.1
 - Improve local web application 
