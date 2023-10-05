@@ -5,7 +5,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 
 from ..facebook_base import BaseFacebookScraper
-from ..scroll import scroll_page
+from ..scroll import scroll_page_callback
 from ...logs import Logs
 from ...repository import person_repository, post_repository
 from ...cli import output
@@ -84,7 +84,7 @@ class AccountPost(BaseFacebookScraper):
 
                     self._move_cursor_away()
 
-            scroll_page(self._driver, extract_callback)
+            scroll_page_callback(self._driver, extract_callback)
 
         except Exception as e:
             logs.log_error(f"Error extracting post URLs: {e}")

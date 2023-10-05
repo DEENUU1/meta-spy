@@ -4,7 +4,7 @@ from rich import print as rprint
 from selenium.webdriver.common.by import By
 
 from ..facebook_base import BaseFacebookScraper
-from ..scroll import scroll_page
+from ..scroll import scroll_page_callback
 from ...logs import Logs
 from ...repository import person_repository, friend_repository, crawlerqueue_repository
 from ...cli import output
@@ -40,17 +40,23 @@ class AccountFriend(BaseFacebookScraper):
         """
         extracted_elements = []
         try:
-            main_div = self._driver.find_element(
-                By.CSS_SELECTOR, "div.xyamay9.x1pi30zi.x1l90r2v.x1swvt13"
-            )
-            elements = main_div.find_elements(By.CSS_SELECTOR, "a.x1i10hfl span")
-            for element in elements:
-                username = element.text.strip()
-                url = element.find_element(By.XPATH, "..").get_attribute("href")
-                if username == "" or url is None:
-                    continue
-                element_data = {"username": username, "url": url}
-                extracted_elements.append(element_data)
+
+            def extract_callback(driver):
+                main_div = self._driver.find_element(
+                    By.CSS_SELECTOR, "div.xyamay9.x1pi30zi.x1l90r2v.x1swvt13"
+                )
+                elements = main_div.find_elements(By.CSS_SELECTOR, "a.x1i10hfl span")
+                for element in elements:
+                    username = element.text.strip()
+                    url = element.find_element(By.XPATH, "..").get_attribute("href")
+                    if username == "" or url is None:
+                        continue
+                    element_data = {"username": username, "url": url}
+                    if element_data not in extracted_elements:
+                        rprint(f"Extracted friend: {username} - {url}")
+                        extracted_elements.append(element_data)
+
+            scroll_page_callback(self._driver, extract_callback)
 
         except Exception as e:
             logs.log_error(f"Error extracting friends data: {e}")
@@ -62,13 +68,10 @@ class AccountFriend(BaseFacebookScraper):
         Pipeline to run the scraper
         """
         try:
-            rprint("[bold]Step 1 of 3 - Load cookies[/bold]")
+            rprint("[bold]Step 1 of 2 - Load cookies[/bold]")
             self._load_cookies_and_refresh_driver()
 
-            rprint("[bold]Step 2 of 3 - Scrolling page[/bold]")
-            scroll_page(self._driver)
-
-            rprint("[bold]Step 3 of 3 - Extracting friends data[/bold]")
+            rprint("[bold]Step 2 of 2 - Extracting friends data[/bold]")
             extracted_data = self.extract_friends_data()
 
             if not any(extracted_data):
