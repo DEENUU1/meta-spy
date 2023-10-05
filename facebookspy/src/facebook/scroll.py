@@ -6,7 +6,7 @@ from ..logs import Logs
 logs = Logs()
 
 
-def scroll_page(driver) -> None:
+def scroll_page(driver, callback) -> None:
     """
     Scrolls the page to load more data from a website
     """
@@ -26,5 +26,8 @@ def scroll_page(driver) -> None:
                 consecutive_scrolls = 0
 
             last_height = new_height
+
+            callback(driver)
+
     except Exception as e:
         logs.log_error(f"Error occurred while scrolling: {e}")
