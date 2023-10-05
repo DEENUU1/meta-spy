@@ -11,7 +11,7 @@ from rich.progress import Progress
 from selenium.webdriver.common.by import By
 
 from ..facebook_base import BaseFacebookScraper
-from ..scroll import scroll_page
+from ..scroll import scroll_page_callback
 from ...config import Config
 from ...logs import Logs
 from ...repository import person_repository, image_repository
@@ -65,17 +65,22 @@ class AccountImage(BaseFacebookScraper):
         """
         extracted_image_urls = []
         try:
-            div_element = self._driver.find_element(
-                By.CLASS_NAME, "xyamay9.x1pi30zi.x1l90r2v.x1swvt13"
-            )
-            img_elements = div_element.find_elements(
-                By.CSS_SELECTOR,
-                "img.xzg4506.xycxndf.xua58t2.x4xrfw5.x1lq5wgf.xgqcy7u.x30kzoy.x9jhf4c.x9f619.x5yr21d.xl1xv1r.xh8yej3",
-            )
-            for img_element in img_elements:
-                src_attribute = img_element.get_attribute("src")
-                if src_attribute:
-                    extracted_image_urls.append(src_attribute)
+
+            def extract_callback(driver):
+                div_element = self._driver.find_element(
+                    By.CLASS_NAME, "xyamay9.x1pi30zi.x1l90r2v.x1swvt13"
+                )
+                img_elements = div_element.find_elements(
+                    By.CSS_SELECTOR,
+                    "img.xzg4506.xycxndf.xua58t2.x4xrfw5.x1lq5wgf.xgqcy7u.x30kzoy.x9jhf4c.x9f619.x5yr21d.xl1xv1r.xh8yej3",
+                )
+                for img_element in img_elements:
+                    src_attribute = img_element.get_attribute("src")
+                    if src_attribute and src_attribute not in extracted_image_urls:
+                        rprint(f"Extracted image URL: {src_attribute}")
+                        extracted_image_urls.append(src_attribute)
+
+            scroll_page_callback(self._driver, extract_callback)
 
         except Exception as e:
             logs.log_error(f"Error extracting image URLs: {e}")
@@ -139,11 +144,10 @@ class AccountImage(BaseFacebookScraper):
         Pipeline to run the scraper
         """
         try:
-            rprint("[bold]Step 1 of 4 - Load cookies[/bold]")
+            rprint("[bold]Step 1 of 3 - Load cookies[/bold]")
             self._load_cookies_and_refresh_driver()
-            rprint("[bold]Step 2 of 4 - Scrolling page[/bold]")
-            scroll_page(self._driver)
-            rprint("[bold]Step 3 of 4 - Extract image urls[/bold]")
+
+            rprint("[bold]Step 2 of 3 - Extract image urls[/bold]")
             image_urls = self.extract_image_urls()
 
             if not image_urls:
@@ -151,7 +155,7 @@ class AccountImage(BaseFacebookScraper):
                 self._driver.quit()
                 self.success = False
             else:
-                rprint("[bold]Step 4 of 4 - Downloading images[/bold]")
+                rprint("[bold]Step 3 of 3 - Downloading images[/bold]")
                 image_paths = self.save_images(image_urls)
 
                 output.print_list(image_paths)

@@ -5,7 +5,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 
 from ..facebook_base import BaseFacebookScraper
-from ..scroll import scroll_page
+from ..scroll import scroll_page_callback
 from ...logs import Logs
 from ...repository import person_repository, post_repository
 from ...cli import output
@@ -64,20 +64,27 @@ class AccountPost(BaseFacebookScraper):
         """
         extracted_urls = []
         try:
-            elements = self._driver.find_elements(
-                By.CSS_SELECTOR,
-                "a.x1i10hfl.xjbqb8w.x6umtig.x1b1mbwd.xaqea5y.xav7gou.x9f619.x1ypdohk.xt0psk2.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x16tdsg8.x1hl2dhg.xggy1nq.x1a2a7pz.x1heor9g.xt0b8zv.xo1l8bm",
-            )
-            for element in elements:
-                self._perform_hover_action(element)
 
-                actual_url = element.get_attribute("href")
-                parsed_url = self._extract_url_prefix(actual_url)
-                if parsed_url.endswith("#"):
-                    continue
-                extracted_urls.append(parsed_url)
+            def extract_callback(driver):
+                elements = driver.find_elements(
+                    By.CSS_SELECTOR,
+                    "a.x1i10hfl.xjbqb8w.x6umtig.x1b1mbwd.xaqea5y.xav7gou.x9f619.x1ypdohk.xt0psk2.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x16tdsg8.x1hl2dhg.xggy1nq.x1a2a7pz.x1heor9g.xt0b8zv.xo1l8bm",
+                )
+                for element in elements:
+                    self._perform_hover_action(element)
 
-                self._move_cursor_away()
+                    actual_url = element.get_attribute("href")
+                    parsed_url = self._extract_url_prefix(actual_url)
+                    if parsed_url.endswith("#"):
+                        continue
+                    if parsed_url not in extracted_urls:
+                        rprint(f"Extracted URL: {parsed_url}")
+
+                        extracted_urls.append(parsed_url)
+
+                    self._move_cursor_away()
+
+            scroll_page_callback(self._driver, extract_callback)
 
         except Exception as e:
             logs.log_error(f"Error extracting post URLs: {e}")
@@ -89,13 +96,10 @@ class AccountPost(BaseFacebookScraper):
         Pipeline to run the scraper
         """
         try:
-            rprint("[bold]Step 1 of 3 - Load cookies[/bold]")
+            rprint("[bold]Step 1 of 2 - Load cookies[/bold]")
             self._load_cookies_and_refresh_driver()
 
-            rprint("[bold]Step 2 of 3 - Scrolling page[/bold]")
-            scroll_page(self._driver)
-
-            rprint("[bold]Step 3 of 3 - Extracting post urls[/bold]")
+            rprint("[bold]Step 2 of 2 - Extracting post urls[/bold]")
             extracted_data = self.extract_post_urls()
 
             if not extracted_data:
