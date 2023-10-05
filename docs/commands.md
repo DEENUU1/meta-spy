@@ -33,7 +33,9 @@ python main.py login-2-step
 python main.py login
 ```
 
-## Account scrapers
+## Account & Page scrapers
+- By default this commands were created to scrape accounts but many of them also works for pages 
+- If some option doesn't work for a PAGE there is a note like this "🛑 Page not support"
 
 #### Basic scraping 
 This command allows to scrape history of employment and education, full name, family members, contact data and visited places
@@ -70,7 +72,7 @@ After running this command use arrows keys to navigate through the list of possi
 ![Basic Scraper Console](https://github.com/DEENUU1/facebook-spy/blob/main/assets/fullscrapeconsole.png?raw=true)
 
 
-#### Friend list
+#### Friend list 🛑 Page not support
 ```bash
 python main.py scrape-friend-list <facebook_id>
 ```
@@ -79,7 +81,7 @@ Scrape and download images from user's facebook profile
 ```bash
 python main.py scrape-images <facebook_id>
 ```
-#### Recent places
+#### Recent places 🛑 Page not support
 ```bash
 python main.py scrape-recent-places <facebook_id>
 ```
