@@ -186,6 +186,27 @@ Use free open source LLM model to create a short summary for specified Person ob
 python main.py summary <facebook_id>
 ```
 
+#### Post classification using transformer 
+
+```bash
+python main.py posts <option>
+
+Options:
+--display-all  // Display all posts from the database
+--id // Display a specified post from the database
+--person-id //  Display posts for a specified person from the database
+
+```
+
+```bash
+python post-classifier <option>
+
+Options:
+--all-posts // Run post classification for all posts from the database
+--id // Run post classification for specified post from the database
+--person-id // Run post classification for a specified person from the database
+```
+
 
 ## Friend Crawler 
 This command works similarly to the command that scrapes data about a given user's friends list. The difference, however, is that after scraping and creating Friend objects, it also creates objects for the CrawlerQueue model and after successfully scraping friends for one user, it proceeds to scraping the list of friends for the next user in the queue.
@@ -218,25 +239,3 @@ python main.py clear-queue
 ```
 
 
-## Post classification using transformer 
-
-### Display Posts in CLI application
-```bash
-python main.py posts <option>
-
-Options:
---display-all  // Display all posts from the database
---id // Display a specified post from the database
---person-id //  Display posts for a specified person from the database
-
-```
-
-### Run posts classfication 
-```bash
-python post-classifier <option>
-
-Options:
---all-posts // Run post classification for all posts from the database
---id // Run post classification for specified post from the database
---person-id // Run post classification for a specified person from the database
-```

@@ -44,6 +44,15 @@ app = typer.Typer(
 
 
 @app.command()
+def version() -> None:
+    """Display data about the project version"""
+    return_version_info()
+
+
+""" Server """
+
+
+@app.command()
 def server() -> None:
     import uvicorn
     from .server.app import app
@@ -55,6 +64,9 @@ def server() -> None:
     except subprocess.CalledProcessError as e:
         logs.log_error(f"An error occurred while starting local server {e}")
         rprint(f"An error occurred {e}")
+
+
+""" Crawler """
 
 
 @app.command()
@@ -130,6 +142,9 @@ def clear_queue() -> None:
         rprint("❌Queue not cleared, please try again❌")
 
 
+""" Analitics """
+
+
 @app.command()
 def graph() -> None:
     """Create a graph of connections between Person objects based on their Friends"""
@@ -148,12 +163,6 @@ def report(name: Annotated[str, typer.Argument(help="Facebook user id")]) -> Non
     Generate and save PDF file with scraped data for specified person.
     """
     generate_pdf_report(name)
-
-
-@app.command()
-def version() -> None:
-    """Display data about the project version"""
-    return_version_info()
 
 
 @app.command()
@@ -276,6 +285,9 @@ def post_classifier(
                     rprint(f"[bold]Post {post.id} has no content[/bold]")
 
 
+""" Login """
+
+
 @app.command()
 def login_2_step() -> None:
     """Log in to facebook account with 2-step authentication"""
@@ -306,6 +318,9 @@ def login() -> None:
         rprint(f"✅Logging successful after {time_end - time_start} seconds ✅")
     else:
         rprint(f"❌Logging failed after {time_end - time_start} seconds ❌")
+
+
+""" Facebook Accounts & Pages """
 
 
 def prompt_account_options() -> List[str]:
