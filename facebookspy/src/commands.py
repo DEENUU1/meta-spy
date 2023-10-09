@@ -1,7 +1,7 @@
 import subprocess
 from time import time
 from typing import Annotated
-
+import concurrent
 import inquirer
 import typer
 from dotenv import load_dotenv
@@ -341,6 +341,29 @@ def prompt_account_options() -> List[str]:
     return answers["options"]
 
 
+def run_scraper(scraper_name, name):
+    rprint(f"Start scraping {scraper_name} data from {name} account")
+    scraper = AccountBasic(name)
+
+    time_start = time()
+    if scraper_name == "work_and_education":
+        scraper.work_and_education_pipeline()
+    elif scraper_name == "contact":
+        scraper.contact_pipeline()
+    elif scraper_name == "localization":
+        scraper.localization_pipeline()
+    elif scraper_name == "family_member":
+        scraper.family_member_pipeline()
+    elif scraper_name == "full_name":
+        scraper.full_name_pipeline()
+    time_end = time()
+
+    if scraper.is_pipeline_successful:
+        rprint(f"✅Scraping successful after {time_end - time_start} seconds ✅")
+    else:
+        rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
+
+
 @app.command()
 def scrape_basic_data(
     name: Annotated[str, typer.Argument(help="Facebook user id")]
@@ -348,70 +371,29 @@ def scrape_basic_data(
     """Command to scrape work and education history, contact data, visited places, family member and full name"""
     selected_options = prompt_account_options()
 
-    if "a" in selected_options:
-        rprint(f"Start scraping work and education data from {name} account")
-        scraper = AccountBasic(name)
+    scraper_names_mapping = {
+        "a": "work_and_education",
+        "b": "contact",
+        "c": "localization",
+        "d": "family_member",
+        "e": "full_name",
+    }
 
-        time_start = time()
-        scraper.work_and_education_pipeline()
-        time_end = time()
+    selected_scrapers = [scraper_names_mapping[option] for option in selected_options]
 
-        if scraper.is_pipeline_successful:
-            rprint(f"✅Scraping successful after {time_end - time_start} seconds ✅")
-        else:
-            rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
+    if not selected_scrapers:
+        rprint("No scrapers selected. Exiting.")
+        return
 
-    if "b" in selected_options:
-        rprint(f"Start scraping personal data from {name} account")
-        scraper = AccountBasic(name)
+    # Create a thread pool to run the selected scrapers concurrently
+    with concurrent.futures.ThreadPoolExecutor(max_workers=len(selected_scrapers)) as executor:
+        futures = []
 
-        time_start = time()
-        scraper.contact_pipeline()
-        time_end = time()
+        for scraper_name in selected_scrapers:
+            futures.append(executor.submit(run_scraper, scraper_name, name))
 
-        if scraper.is_pipeline_successful:
-            rprint(f"✅Scraping successful after {time_end - time_start} seconds ✅")
-        else:
-            rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
-
-    if "c" in selected_options:
-        rprint(f"Start scraping localization data from {name} account")
-        scraper = AccountBasic(name)
-
-        time_start = time()
-        scraper.localization_pipeline()
-        time_end = time()
-
-        if scraper.is_pipeline_successful:
-            rprint(f"✅Scraping successful after {time_end - time_start} seconds ✅")
-        else:
-            rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
-
-    if "d" in selected_options:
-        rprint(f"Start scraping family member data from {name} account")
-        scraper = AccountBasic(name)
-
-        time_start = time()
-        scraper.family_member_pipeline()
-        time_end = time()
-
-        if scraper.is_pipeline_successful:
-            rprint(f"✅Scraping successful after {time_end - time_start} seconds ✅")
-        else:
-            rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
-
-    if "e" in selected_options:
-        rprint(f"Start scraping full name data from {name} account")
-        scraper = AccountBasic(name)
-
-        time_start = time()
-        scraper.full_name_pipeline()
-        time_end = time()
-
-        if scraper.is_pipeline_successful:
-            rprint(f"✅Scraping successful after {time_end - time_start} seconds ✅")
-        else:
-            rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
+        # Wait for all futures to complete
+        concurrent.futures.wait(futures)
 
 
 @app.command()
