@@ -33,7 +33,6 @@ from .scripts.urlid import get_account_id
 from .analytics import classification
 from typing import List
 
-
 load_dotenv()
 
 logs = Logs()
@@ -386,7 +385,9 @@ def scrape_basic_data(
         return
 
     # Create a thread pool to run the selected scrapers concurrently
-    with concurrent.futures.ThreadPoolExecutor(max_workers=len(selected_scrapers)) as executor:
+    with concurrent.futures.ThreadPoolExecutor(
+        max_workers=len(selected_scrapers)
+    ) as executor:
         futures = []
 
         for scraper_name in selected_scrapers:
@@ -767,56 +768,58 @@ def full_scrape(
     """
     rprint(f"Run scraper for {len(names)} users: {names}")
 
-    for name in names:
-        rprint(f"Scraping data for user: {name}")
-        selected_options = prompt_options()
-        if "a" in selected_options:
+    selected_options = prompt_options()
+
+    def run_scraper(name, option):
+        if option == "a":
             basic_scraper = AccountBasic(name)
             basic_scraper.pipeline()
-
-        if "b" in selected_options:
+        elif option == "b":
             friends_scraper = AccountFriend(name)
             friends_scraper.pipeline()
-
-        if "c" in selected_options:
+        elif option == "c":
             images_scraper = AccountImage(name)
             images_scraper.pipeline()
-
-        if "d" in selected_options:
+        elif option == "d":
             reels_scraper = AccountReel(name)
             reels_scraper.pipeline()
-
-        if "e" in selected_options:
+        elif option == "e":
             reviews_scraper = AccountReel(name)
             reviews_scraper.pipeline()
-
-        if "f" in selected_options:
+        elif option == "f":
             videos_scraper = AccountVideo(name)
             videos_scraper.save_video_urls_to_database_pipeline()
-
-        if "g" in selected_options:
+        elif option == "g":
             video_downloader = Downloader(name)
             video_downloader.download_all_person_videos_pipeline()
-
-        if "h" in selected_options:
+        elif option == "h":
             posts_scraper = AccountPost(name)
             posts_scraper.pipeline()
-
-        if "i" in selected_options:
+        elif option == "i":
             scraper_pipeline = pipeline(name=name)
             rprint(scraper_pipeline)
-
-        if "j" in selected_options:
+        elif option == "j":
             likes_scraper = AccountLike(name)
             likes_scraper.pipeline()
-
-        if "k" in selected_options:
+        elif option == "k":
             groups_scraper = AccountGroup(name)
             groups_scraper.pipeline()
-
-        if "l" in selected_options:
+        elif option == "l":
             events_scraper = AccountEvents(name)
             events_scraper.pipeline()
+
+    if len(names) == 1:
+        with concurrent.futures.ThreadPoolExecutor(
+            max_workers=len(selected_options)
+        ) as executor:
+            for option in selected_options:
+                executor.submit(run_scraper, names[0], option)
+    else:
+        # If multiple users are specified, run their scrapers concurrently
+        with concurrent.futures.ThreadPoolExecutor(max_workers=len(names)) as executor:
+            for name in names:
+                for option in selected_options:
+                    executor.submit(run_scraper, name, option)
 
 
 if __name__ == "__main__":
