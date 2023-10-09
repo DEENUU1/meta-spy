@@ -13,8 +13,7 @@ from ...repository import (
     family_member_repository,
     place_repository,
 )
-from ...cli import output
-
+from ...utils import output, save_to_json
 
 logs = Logs()
 
@@ -201,6 +200,10 @@ class AccountBasic(BaseFacebookScraper):
                     "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
                 )
 
+                save_to_json.SaveJSON(
+                    self._user_id, scraped_data,
+                ).save()
+
                 for data in scraped_data:
                     if not work_education_repository.work_and_education_exists(
                         data["name"], person_id
@@ -245,6 +248,10 @@ class AccountBasic(BaseFacebookScraper):
                     "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
                 )
 
+                save_to_json.SaveJSON(
+                    self._user_id, places,
+                ).save()
+
                 for data in places:
                     if not place_repository.places_exists(
                         data["name"], data["date"], person_id
@@ -288,6 +295,10 @@ class AccountBasic(BaseFacebookScraper):
                     "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
                 )
 
+                save_to_json.SaveJSON(
+                    self._user_id, family_members,
+                ).save()
+
                 for member in family_members:
                     if not family_member_repository.family_member_exists(
                         person_id, member["name"]
@@ -327,6 +338,10 @@ class AccountBasic(BaseFacebookScraper):
                 rprint(
                     "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
                 )
+
+                save_to_json.SaveJSON(
+                    self._user_id, scraped_data,
+                ).save()
 
                 if not person_repository.person_exists(self._user_id):
                     person_repository.create_person(
@@ -380,6 +395,10 @@ class AccountBasic(BaseFacebookScraper):
                     "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
                 )
 
+                save_to_json.SaveJSON(
+                    self._user_id, full_name,
+                ).save()
+
                 if not person_repository.person_exists(self._user_id):
                     person_repository.create_person(self._user_id)
 
@@ -420,6 +439,10 @@ class AccountBasic(BaseFacebookScraper):
                     "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
                 )
 
+                save_to_json.SaveJSON(
+                    self._user_id, full_name,
+                ).save()
+
                 if not person_repository.person_exists(self._user_id):
                     person_repository.create_person(self._user_id)
 
@@ -445,6 +468,10 @@ class AccountBasic(BaseFacebookScraper):
                     "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
                 )
 
+                save_to_json.SaveJSON(
+                    self._user_id, family_members,
+                ).save()
+
                 for member in family_members:
                     if not family_member_repository.family_member_exists(
                         person_id, member["name"]
@@ -468,6 +495,10 @@ class AccountBasic(BaseFacebookScraper):
                     "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
                 )
 
+                save_to_json.SaveJSON(
+                    self._user_id, places,
+                ).save()
+
                 for data in places:
                     if not place_repository.places_exists(
                         data["name"], data["date"], person_id
@@ -488,6 +519,14 @@ class AccountBasic(BaseFacebookScraper):
                     "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
                 )
 
+                save_to_json.SaveJSON(
+                    self._user_id, scraped_data,
+                ).save()
+
+                save_to_json.SaveJSON(
+                    self._user_id, scraped_data,
+                ).save()
+
                 for data in scraped_data:
                     if not work_education_repository.work_and_education_exists(
                         data["name"], person_id
@@ -507,6 +546,10 @@ class AccountBasic(BaseFacebookScraper):
                 rprint(
                     "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
                 )
+
+                save_to_json.SaveJSON(
+                    self._user_id, scraped_contact_data,
+                ).save()
 
                 for data in scraped_contact_data:
                     if data["phone_number"]:

@@ -7,7 +7,7 @@ from ..facebook_base import BaseFacebookScraper
 from ..scroll import scroll_page
 from ...logs import Logs
 from ...repository import person_repository, like_repository
-from ...cli import output
+from ...utils import output, save_to_json
 
 logs = Logs()
 
@@ -72,6 +72,10 @@ class AccountLike(BaseFacebookScraper):
                 rprint(
                     "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
                 )
+
+                save_to_json.SaveJSON(
+                    self._user_id, extracted_data,
+                ).save()
 
                 if not person_repository.person_exists(self._user_id):
                     person_repository.create_person(self._user_id)

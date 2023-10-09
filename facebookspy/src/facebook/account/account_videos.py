@@ -10,7 +10,7 @@ from ...repository import (
     person_repository,
     video_repository,
 )
-from ...cli import output
+from ...utils import output, save_to_json
 
 logs = Logs()
 
@@ -97,6 +97,10 @@ class AccountVideo(BaseFacebookScraper):
                 rprint(
                     "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
                 )
+
+                save_to_json.SaveJSON(
+                    self._user_id, videos,
+                ).save()
 
                 if not person_repository.person_exists(self._user_id):
                     person_repository.create_person(self._user_id)

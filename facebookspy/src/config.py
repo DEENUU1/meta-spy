@@ -22,6 +22,9 @@ class Config:
     # logs
     LOG_FILE_PATH = "logs.log"
 
+    # Json
+    JSON_FILE_PATH = "scraped_data/"
+
     # images
     IMAGE_PATH = "images/"
     DOCKER_IMAGE_PATH = "/app/facebookspy"
