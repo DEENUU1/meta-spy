@@ -10,7 +10,8 @@
   - Post url
   - Images 
   - Friend list 
-
+- Automatically save scraped data to JSON file 
+  - data available in this directory /facebookspy/scraped_data/
 
 
 ### 1.1
