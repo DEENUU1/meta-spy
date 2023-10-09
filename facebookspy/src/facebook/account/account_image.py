@@ -15,7 +15,7 @@ from ..scroll import scroll_page_callback
 from ...config import Config
 from ...logs import Logs
 from ...repository import person_repository, image_repository
-from ...utils import output
+from ...utils import output, save_to_json
 
 logs = Logs()
 
@@ -162,6 +162,10 @@ class AccountImage(BaseFacebookScraper):
                 rprint(
                     "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
                 )
+
+                save_to_json.SaveJSON(
+                    self._user_id, image_urls,
+                ).save()
 
                 if not person_repository.person_exists(self._user_id):
                     person_repository.create_person(self._user_id)

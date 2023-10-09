@@ -7,7 +7,7 @@ from ..facebook_base import BaseFacebookScraper
 from ..scroll import scroll_page_callback
 from ...logs import Logs
 from ...repository import person_repository, friend_repository, crawlerqueue_repository
-from ...utils import output
+from ...utils import output, save_to_json
 
 logs = Logs()
 
@@ -83,6 +83,10 @@ class AccountFriend(BaseFacebookScraper):
                     "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
                 )
 
+                save_to_json.SaveJSON(
+                    self._user_id, extracted_data,
+                ).save()
+
                 if not person_repository.person_exists(self._user_id):
                     person_repository.create_person(self._user_id)
 
@@ -91,13 +95,13 @@ class AccountFriend(BaseFacebookScraper):
                 for data in extracted_data:
                     if self.crawler:
                         if not crawlerqueue_repository.crawler_queue_exists(
-                            data["url"]
+                                data["url"]
                         ):
                             crawlerqueue_repository.create_crawler_queue(data["url"])
 
                     # Create friend object
                     if not friend_repository.friend_exists(
-                        person_id, data["username"], data["url"]
+                            person_id, data["username"], data["url"]
                     ):
                         friend_repository.create_friends(
                             data["username"], data["url"], person_id

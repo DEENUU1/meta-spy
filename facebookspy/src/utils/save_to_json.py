@@ -7,10 +7,9 @@ ENSURE_ASCII = False
 
 
 class SaveJSON:
-    def __init__(self, facebook_id: str, data: Dict[str, Any], module_name: str):
+    def __init__(self, facebook_id: str, data: List[Dict[str, Any]] | List[str], ):
         self.facebook_id = facebook_id
         self.data = data
-        self.module_name = module_name
 
     @staticmethod
     def get_timestamp() -> str:
@@ -21,8 +20,7 @@ class SaveJSON:
 
     def generate_file_name(self) -> str:
         """ Generate filename including module name, facebook id and timestamp """
-
-        filename = f"{self.module_name}_{self.facebook_id}_{self.get_timestamp()}.json"
+        filename = f"{self.facebook_id}_{self.get_timestamp()}.json"
         return filename
 
     def save(self) -> None:

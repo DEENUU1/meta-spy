@@ -9,7 +9,7 @@ from .scraper import Scraper
 from ..config import Config
 from ..logs import Logs
 from ..repository import person_repository, post_repository
-from ..utils import output
+from ..utils import output, save_to_json
 
 logs = Logs()
 
@@ -270,6 +270,10 @@ def pipeline(name: str = None, post_url: str = None):
                 output.print_list(scraped_data)
                 post_repository.mark_post_as_scraped(post.id)
 
+                save_to_json.SaveJSON(
+                    name, scraped_data,
+                ).save()
+
                 for data in scraped_data:
                     post_repository.create_post(
                         person_id=person_object.id,
@@ -292,6 +296,10 @@ def pipeline(name: str = None, post_url: str = None):
             output.print_no_data_info()
         else:
             output.print_list(scraped_data)
+
+            save_to_json.SaveJSON(
+                post_url, scraped_data,
+            ).save()
 
             if not person_repository.person_exists("Anonymous"):
                 person_repository.create_person(
