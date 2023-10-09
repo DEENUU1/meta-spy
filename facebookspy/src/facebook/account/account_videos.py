@@ -10,7 +10,7 @@ from ...repository import (
     person_repository,
     video_repository,
 )
-from ...cli import output
+from ...utils import output
 
 logs = Logs()
 

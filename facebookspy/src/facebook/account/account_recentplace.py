@@ -7,7 +7,7 @@ from ..facebook_base import BaseFacebookScraper
 from ..scroll import scroll_page
 from ...logs import Logs
 from ...repository import person_repository, recent_place_repository
-from ...cli import output
+from ...utils import output
 
 logs = Logs()
 

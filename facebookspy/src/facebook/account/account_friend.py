@@ -7,8 +7,7 @@ from ..facebook_base import BaseFacebookScraper
 from ..scroll import scroll_page_callback
 from ...logs import Logs
 from ...repository import person_repository, friend_repository, crawlerqueue_repository
-from ...cli import output
-
+from ...utils import output
 
 logs = Logs()
 
@@ -73,7 +72,6 @@ class AccountFriend(BaseFacebookScraper):
 
             rprint("[bold]Step 2 of 2 - Extracting friends data[/bold]")
             extracted_data = self.extract_friends_data()
-
             if not any(extracted_data):
                 output.print_no_data_info()
                 self._driver.quit()

@@ -9,8 +9,7 @@ from .scraper import Scraper
 from ..config import Config
 from ..logs import Logs
 from ..repository import person_repository, post_repository
-from ..cli import output
-
+from ..utils import output
 
 logs = Logs()
 

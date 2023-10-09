@@ -13,8 +13,7 @@ from ...repository import (
     family_member_repository,
     place_repository,
 )
-from ...cli import output
-
+from ...utils import output
 
 logs = Logs()
 

@@ -15,8 +15,7 @@ from ..scroll import scroll_page_callback
 from ...config import Config
 from ...logs import Logs
 from ...repository import person_repository, image_repository
-from ...cli import output
-
+from ...utils import output
 
 logs = Logs()
 
