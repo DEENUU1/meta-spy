@@ -1,6 +1,8 @@
 import json
 from typing import List, Dict, Any
 from datetime import datetime
+from ..config import Config
+import os
 
 INDENT = 4
 ENSURE_ASCII = False
@@ -25,6 +27,9 @@ class SaveJSON:
 
     def save(self) -> None:
         """ Save scraped data to JSON file """
-        with open(self.generate_file_name(), "w", encoding="utf-8") as f:
+        dir = Config.JSON_FILE_PATH
+        if not os.path.exists(dir):
+            os.makedirs(dir)
+        with open(f"{dir}/{self.generate_file_name()}", "w", encoding="utf-8") as f:
             json.dump(self.data, f, indent=INDENT, ensure_ascii=ENSURE_ASCII)
 
