@@ -10,6 +10,7 @@ images/
 facebookspy/database.db
 facebookspy/database_test.db
 facebookspy/videos/
+facebookspy/scraped_data/
 # project - frontend
 
 facebookspy/src/server/frontend/logs
