@@ -32,6 +32,8 @@ from .repository import crawlerqueue_repository, post_repository, person_reposit
 from .scripts.urlid import get_account_id
 from .analytics import classification
 from typing import List
+from .facebook.search import search_post, search as search_scraper
+
 
 load_dotenv()
 
@@ -820,6 +822,51 @@ def full_scrape(
             for name in names:
                 for option in selected_options:
                     executor.submit(run_scraper, name, option)
+
+
+def prompt_search_options() -> List[str]:
+    questions = [
+        inquirer.Checkbox(
+            "options",
+            message="Select search options",
+            choices=[
+                ("Search for posts", "a"),
+                ("Search for people", "b"),
+                ("Search for groups", "c"),
+                ("Search for places", "d"),
+                ("Search for events", "e"),
+            ],
+        )
+    ]
+    answers = inquirer.prompt(questions)
+    return answers["options"]
+
+
+@app.command()
+def search(
+    query: Annotated[str, typer.Argument(help="Query search")],
+    max_result: Annotated[int, typer.Argument(help="The number of results")],
+) -> None:
+    """Command to search and scraper for posts, person, pages, events, groups and places"""
+    selected_options = prompt_search_options()
+
+    rprint(f"Start searching for query {query}")
+    # post_scraper = search_post.SearchPost(query, 5)
+    person_scraper = search_scraper.SearchPerson(query, max_result)
+    # page_scraper = search_scraper.SearchPage(query, 5)
+    # group_scraper = search_scraper.SearchGroup(query, 5)
+    # places_scraper = search_scraper.SearchPlaces(query, 5)
+    # event_scraper = search_scraper.SearchEvents(query, 5)
+
+    # time_start = time()
+    # post_scraper.scrape_data()
+    person_scraper.scrape_data()
+    # time_end = time()
+
+    # if scraper.is_pipeline_successful:
+    #     rprint(f"✅Scraping successful after {time_end - time_start} seconds ✅")
+    # else:
+    #     rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
 
 
 if __name__ == "__main__":
