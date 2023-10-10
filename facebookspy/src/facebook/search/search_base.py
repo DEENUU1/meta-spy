@@ -6,7 +6,7 @@ from ...logs import Logs
 from selenium import webdriver
 from typing import List
 from abc import abstractmethod, ABC
-
+from ...utils.save_to_json import SaveJSON
 
 logs = Logs()
 
@@ -55,3 +55,18 @@ class SearchBase(Scraper, ABC):
         Return a list of urls
         """
         pass
+
+    def pipeline(self) -> None:
+        rprint(f"[bold]Start searching for query: {self.query}[/bold]")
+
+        scraped_data = self.scrape_data()
+        if scraped_data:
+            rprint(
+                "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
+            )
+
+            SaveJSON(facebook_id=self.query, data=scraped_data).save()
+            self.success = True
+
+        else:
+            self.success = False

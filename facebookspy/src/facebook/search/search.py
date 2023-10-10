@@ -6,6 +6,7 @@ from ..scroll import scroll_page_callback
 from .search_post import SearchBase
 from enum import Enum
 
+
 logs = Logs()
 
 

@@ -854,22 +854,22 @@ def search(
     def run_scraper(name, query: str, max_result: int):
         if name == "a":
             post_scraper = search_post.SearchPost(query, max_result)
-            post_scraper.scrape_data()
+            post_scraper.pipeline()
         elif name == "b":
             person_scraper = search_scraper.SearchPerson(query, max_result)
-            person_scraper.scrape_data()
+            person_scraper.pipeline()
         elif name == "c":
             group_scraper = search_scraper.SearchGroup(query, max_result)
-            group_scraper.scrape_data()
+            group_scraper.pipeline()
         elif name == "d":
             places_scraper = search_scraper.SearchPlaces(query, max_result)
-            places_scraper.scrape_data()
+            places_scraper.pipeline()
         elif name == "e":
             event_scraper = search_scraper.SearchEvents(query, max_result)
-            event_scraper.scrape_data()
+            event_scraper.pipeline()
         elif name == "f":
             page_scraper = search_scraper.SearchPage(query, max_result)
-            page_scraper.scrape_data()
+            page_scraper.pipeline()
 
     with concurrent.futures.ThreadPoolExecutor(
         max_workers=len(selected_options)
