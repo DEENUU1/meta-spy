@@ -24,15 +24,11 @@
     ·
     <a href="https://github.com/DEENUU1/facebook-spy/issues">Request Feature</a>
   </p>
-
-  <a href="https://github.com/DEENUU1/">
-    <img src="assets/new/version.png" alt="Logo" >
-    <img src="https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/basic.gif?raw=true" alt="Logo" >
-    <img src="https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/search.gif?raw=true" alt="Logo" >
-    <img src="https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/full.gif?raw=true" alt="Logo" >
-    <img src="assets/homepage.png" alt="Logo" >
-    <img src="assets/detailpage.png" alt="Logo" >
-  </a>
+  <img src="https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/basic.gif?raw=true" alt="Logo" >
+  <img src="https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/search.gif?raw=true" alt="Logo" >
+  <img src="https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/full.gif?raw=true" alt="Logo" >
+  <img src="assets/homepage.png" alt="Logo" >
+  <img src="assets/detailpage.png" alt="Logo" >
 </div>
 
 
@@ -140,7 +136,7 @@ python main.py login
 python main.py search < "Search query" > < number_of_results> 
 ```
 
-    <img src="https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/search.gif?raw=true" alt="Logo" >
+<img src="https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/search.gif?raw=true" alt="Logo" >
 
 
 #### Scrape basic data
@@ -217,3 +213,6 @@ See `LICENSE.txt` for more information.
 [license-url]: https://github.com/DEENUU1/facebook-spy/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/kacper-wlodarczyk
+[basic]: https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/basic.gif?raw=true
+[full]: https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/full.gif?raw=true
+[search]: https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/search.gif?raw=true
