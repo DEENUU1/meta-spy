@@ -39,6 +39,8 @@ python main.py login
 
 #### Basic scraping 
 This command allows to scrape history of employment and education, full name, family members, contact data and visited places
+
+From version v1.2 this command can run all selected scrapers in parallel
 ```bash
 python main.py scrape-basic-data <facebook_id>
 ```
@@ -50,6 +52,10 @@ After running this command use arrows keys to navigate through the list of possi
 ![Basic Scraper Console](https://github.com/DEENUU1/facebook-spy/blob/main/assets/scrapebasicdataconsole.png?raw=true)
 
 #### Full scraping
+From version v1.2 this command can run all selected scrapers in parallel
+- If you provide only 1 username all selected scrapers will be launched in parallel
+- By providing more than 1 username it's gonna scrape them in parallel
+
 This command allows to choose all available commands to scrape facebook profiles
 
 Also you are able to add multiply facebook profile ids as a single argument 
@@ -238,4 +244,16 @@ Delete all objects from the queue
 python main.py clear-queue
 ```
 
+## Search
+This command allows to search for: places, pages, person, groups, events, posts 
 
+
+```bash
+python main.py search < "Search Query" > < number_of_results > 
+```
+
+- Search query should be in double " "
+- Number of results MUST be an integer 
+
+After running this command you can select which data you would like to scrape 
+Result's will be saved in this directory /facebookspy/scraped_data/

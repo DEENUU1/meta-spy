@@ -17,7 +17,7 @@
   <h3 align="center">Facebook Spy</h3>
 
   <p align="center">
-    Facebook Spy is a versatile Python-based tool designed to scrape various data from Facebook profiles. Whether you need basic information or want to delve deep into a user's activity, Facebook Spy has you covered. 
+    Facebook Spy is a versatile Python-based tool designed to scrape various data from Facebook profiles, pages and search results. Whether you need basic information or want to delve deep into a user's activity, Facebook Spy has you covered. 
     <br />
     <br />
     <a href="https://github.com/DEENUU1/facebook-spy/issues">Report Bug</a>
@@ -26,7 +26,10 @@
   </p>
 
   <a href="https://github.com/DEENUU1/">
-    <img src="assets/home.png" alt="Logo" >
+    <img src="assets/new/version.png" alt="Logo" >
+    <img src="assets/v1_2/basic.gif" alt="logo" >
+    <img src="assets/v1_2/full.gif" alt="logo" >
+    <img src="assets/v1_2/search.gif" alt="logo" >
     <img src="assets/homepage.png" alt="Logo" >
     <img src="assets/detailpage.png" alt="Logo" >
   </a>
@@ -43,9 +46,9 @@ If you're using a Facebook account with a custom ID in the URL (e.g., https://ww
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-The project, known as "Facebook Spy," is a powerful and versatile tool designed to gather information from Facebook profiles. 
+The project, known as "Facebook Spy," is a powerful and versatile tool designed to gather information from Facebook profiles, pages and search results. 
 
-Facebook Spy was created to provide users with the ability to access information from Facebook profiles. The project is under constant development to improve its functionality and address any issues that may arise.
+The project is under constant development to improve its functionality and address any issues that may arise.
 
 One notable limitation of the tool is that some scrapers may not work correctly for profiles with default account IDs in the URL, such as "https://www.facebook.com/profile.php?id=100063142210972." These scrapers include work and education history, contact data, visited places, family members, recent places, reviews, and likes. However, this issue does not occur for profiles with custom IDs in the URL, like "https://www.facebook.com/zuck.".
 
@@ -59,6 +62,8 @@ One notable limitation of the tool is that some scrapers may not work correctly 
 - Utilize a free open-source language model to generate a concise summary of a Facebook user's infromation based on the scraped data.
 - Initiate a friend crawler for a specified Facebook account. Gether data about friends and contunue the process for subsequent users in the queue.
 - Save scraped data for a specified Facebook user to PDF file for documentation and anylysis.
+- Running scrapers in parallel to speed up the data collection process
+- Save all scraped data to JSON files and database 
 
 ### Built With
 
@@ -130,13 +135,20 @@ python main.py login
   <img src="assets/new/login.png" alt="Logo" >
 
 
+#### Search
+```bash
+python main.py search < "Search query" > < number_of_results> 
+```
+
+<img src="assets/v1_2/search.gif" alt="Logo" >
+
 
 #### Scrape basic data
 
 ```bash
 python main.py scrape-basic-data <facebook_id>
 ```
-
+<img src="assets/v1_2/basic.gif" alt="Logo" >
 <img src="assets/new/scrapebasicdata.png" alt="Logo" >
 
 
@@ -145,7 +157,7 @@ This one works for multiply users
 ```bash
 python main.py full-scrape <facebook_id> <facebook_id> ... <facebook_id>
 ```
-
+<img src="assets/v1_2/full.gif" alt="full">
 <img src="assets/new/fullscrape1.png" alt="Logo" >
 
 

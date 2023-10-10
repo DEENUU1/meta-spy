@@ -7,26 +7,38 @@
 
 ### 1.2 
 - Real time result while scrolling in scrapers:
-  - Post url
-  - Images 
-  - Friend list 
+    - Post url
+    - Images 
+    - Friend list 
 - Automatically save scraped data to JSON file 
-  - data available in this directory /facebookspy/scraped_data/
-
+    - data available in this directory /facebookspy/scraped_data/
+- Running scrapers parallely while using commands:
+    - python main.py python main.py scrape-basic-data <facebook_id>
+        - Automatically run all selected scrapers at the same time 
+    - python main.py full-scrape <facebook_id> <facebook_id>
+        - If 2 or more usernames are provided it's gonna scrape all users at the same time 
+        - But if only 1 username is provided it's gonna run all selected scrapers at the same time 
+- NEW command - SEARCH
+    - This command allows to search for: places, pages, groups, person, events and posts
+    - This command also has a parallel feature
+```bash
+python main.py search < " Search Query Here " > < number_of_results >
+```
+ 
 
 ### 1.1
 - Improve local web application 
-  - Delete React application
-  - Add templates for fastAPI 
-  - Display all information about specified Person on a single page
-  - Delete docker and docker-compose files 
+    - Delete React application
+    - Add templates for fastAPI 
+    - Display all information about specified Person on a single page
+    - Delete docker and docker-compose files 
 - Fix scraping URLS of a posts from user's profile 
 - Improve scraping details of a post 
-  - Number of likes
-  - Content (text)
-  - Image urls
-  - Author
-  - Post url 
+    - Number of likes
+    - Content (text)
+    - Image urls
+    - Author
+    - Post url 
 - Improve typehints
 - Add new selector for scraping videos from user's profile
 
