@@ -32,6 +32,8 @@ from .repository import crawlerqueue_repository, post_repository, person_reposit
 from .scripts.urlid import get_account_id
 from .analytics import classification
 from typing import List
+from .facebook.search import search_post, search as search_scraper
+
 
 load_dotenv()
 
@@ -820,6 +822,60 @@ def full_scrape(
             for name in names:
                 for option in selected_options:
                     executor.submit(run_scraper, name, option)
+
+
+def prompt_search_options() -> List[str]:
+    questions = [
+        inquirer.Checkbox(
+            "options",
+            message="Select search options",
+            choices=[
+                ("Search for posts", "a"),
+                ("Search for people", "b"),
+                ("Search for groups", "c"),
+                ("Search for places", "d"),
+                ("Search for events", "e"),
+                ("Search for pages", "f"),
+            ],
+        )
+    ]
+    answers = inquirer.prompt(questions)
+    return answers["options"]
+
+
+@app.command()
+def search(
+    query: Annotated[str, typer.Argument(help="Query search")],
+    max_result: Annotated[int, typer.Argument(help="The number of results")],
+) -> None:
+    """Command to search and scraper for posts, person, pages, events, groups and places"""
+    selected_options = prompt_search_options()
+
+    def run_scraper(name, query: str, max_result: int):
+        if name == "a":
+            post_scraper = search_post.SearchPost(query, max_result)
+            post_scraper.pipeline()
+        elif name == "b":
+            person_scraper = search_scraper.SearchPerson(query, max_result)
+            person_scraper.pipeline()
+        elif name == "c":
+            group_scraper = search_scraper.SearchGroup(query, max_result)
+            group_scraper.pipeline()
+        elif name == "d":
+            places_scraper = search_scraper.SearchPlaces(query, max_result)
+            places_scraper.pipeline()
+        elif name == "e":
+            event_scraper = search_scraper.SearchEvents(query, max_result)
+            event_scraper.pipeline()
+        elif name == "f":
+            page_scraper = search_scraper.SearchPage(query, max_result)
+            page_scraper.pipeline()
+
+    with concurrent.futures.ThreadPoolExecutor(
+        max_workers=len(selected_options)
+    ) as executor:
+        for option in selected_options:
+            executor.submit(run_scraper, option, query, max_result)
 
 
 if __name__ == "__main__":
