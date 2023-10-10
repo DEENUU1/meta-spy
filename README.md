@@ -27,9 +27,9 @@
 
   <a href="https://github.com/DEENUU1/">
     <img src="assets/new/version.png" alt="Logo" >
-    <img src="assets/v1_2/basic.gif" alt="Logo" >
-    <img src="assets/v1_2/full.gif" alt="Logo" >
-    <img src="assets/v1_2/search.gif" alt="Logo" >
+    <img src="assets/v1_22/basic.gif" alt="Logo" >
+    <img src="assets/v1_22/full.gif" alt="Logo" >
+    <img src="assets/v1_22/search.gif" alt="Logo" >
     <img src="assets/homepage.png" alt="Logo" >
     <img src="assets/detailpage.png" alt="Logo" >
   </a>
