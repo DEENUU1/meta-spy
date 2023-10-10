@@ -24,7 +24,10 @@
 ```bash
 python main.py search < " Search Query Here " > < number_of_results >
 ```
- 
+![Basic Scraper Console](https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/basic.gif?raw=true)
+![Search  Scraper Console](https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/search.gif?raw=true)
+![Full Scraper Console](https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/full.gif?raw=true)
+
 
 ### 1.1
 - Improve local web application 

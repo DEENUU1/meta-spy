@@ -49,6 +49,7 @@ After running this command use arrows keys to navigate through the list of possi
 - Use Arrow Right to select scraper 
 - User Arrow Left to delete selected scraper
 
+![Basic Scraper Console](https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/basic.gif?raw=true)
 ![Basic Scraper Console](https://github.com/DEENUU1/facebook-spy/blob/main/assets/scrapebasicdataconsole.png?raw=true)
 
 #### Full scraping
@@ -64,6 +65,8 @@ To scrape one account your command should looks likes this
 ```bash
 python main.py full-scrape <facebook_id>
 ```
+
+![Full Scraper Console](https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/full.gif?raw=true)
 
 TO scrape multiply accounts user command should looks like this
 ```bash
@@ -257,3 +260,5 @@ python main.py search < "Search Query" > < number_of_results >
 
 After running this command you can select which data you would like to scrape 
 Result's will be saved in this directory /facebookspy/scraped_data/
+
+![Search  Scraper Console](https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/search.gif?raw=true)
