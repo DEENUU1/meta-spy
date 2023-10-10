@@ -27,9 +27,9 @@
 
   <a href="https://github.com/DEENUU1/">
     <img src="assets/new/version.png" alt="Logo" >
-    <img src="assets/v1_22/basic.gif" alt="Logo" >
-    <img src="assets/v1_22/full.gif" alt="Logo" >
-    <img src="assets/v1_22/search.gif" alt="Logo" >
+    <img src="https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/basic.gif?raw=true" alt="Logo" >
+    <img src="https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/search.gif?raw=true" alt="Logo" >
+    <img src="https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/full.gif?raw=true" alt="Logo" >
     <img src="assets/homepage.png" alt="Logo" >
     <img src="assets/detailpage.png" alt="Logo" >
   </a>
@@ -140,7 +140,7 @@ python main.py login
 python main.py search < "Search query" > < number_of_results> 
 ```
 
-<img src="assets/v1_2/search.gif" alt="Logo" >
+    <img src="https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/search.gif?raw=true" alt="Logo" >
 
 
 #### Scrape basic data
@@ -157,8 +157,7 @@ This one works for multiply users
 ```bash
 python main.py full-scrape <facebook_id> <facebook_id> ... <facebook_id>
 ```
-<img src="assets/v1_2/full.gif" alt="full">
-<img src="assets/new/fullscrape1.png" alt="Logo" >
+<img src="https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/full.gif?raw=true" alt="Logo" ><img src="assets/new/fullscrape1.png" alt="Logo" >
 
 
 #### Scrape images
