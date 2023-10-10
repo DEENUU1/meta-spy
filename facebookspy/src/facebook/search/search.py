@@ -11,8 +11,8 @@ logs = Logs()
 
 class SOURCE(Enum):
     PERSON = "people"
-    PAGE = "page"
-    GROUP = "group"
+    PAGE = "pages"
+    GROUP = "groups"
     PLACES = "places"
     EVENTS = "events"
 

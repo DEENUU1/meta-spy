@@ -835,6 +835,7 @@ def prompt_search_options() -> List[str]:
                 ("Search for groups", "c"),
                 ("Search for places", "d"),
                 ("Search for events", "e"),
+                ("Search for pages", "f"),
             ],
         )
     ]
@@ -850,23 +851,31 @@ def search(
     """Command to search and scraper for posts, person, pages, events, groups and places"""
     selected_options = prompt_search_options()
 
-    rprint(f"Start searching for query {query}")
-    # post_scraper = search_post.SearchPost(query, 5)
-    person_scraper = search_scraper.SearchPerson(query, max_result)
-    # page_scraper = search_scraper.SearchPage(query, 5)
-    # group_scraper = search_scraper.SearchGroup(query, 5)
-    # places_scraper = search_scraper.SearchPlaces(query, 5)
-    # event_scraper = search_scraper.SearchEvents(query, 5)
+    def run_scraper(name, query: str, max_result: int):
+        if name == "a":
+            post_scraper = search_post.SearchPost(query, max_result)
+            post_scraper.scrape_data()
+        elif name == "b":
+            person_scraper = search_scraper.SearchPerson(query, max_result)
+            person_scraper.scrape_data()
+        elif name == "c":
+            group_scraper = search_scraper.SearchGroup(query, max_result)
+            group_scraper.scrape_data()
+        elif name == "d":
+            places_scraper = search_scraper.SearchPlaces(query, max_result)
+            places_scraper.scrape_data()
+        elif name == "e":
+            event_scraper = search_scraper.SearchEvents(query, max_result)
+            event_scraper.scrape_data()
+        elif name == "f":
+            page_scraper = search_scraper.SearchPage(query, max_result)
+            page_scraper.scrape_data()
 
-    # time_start = time()
-    # post_scraper.scrape_data()
-    person_scraper.scrape_data()
-    # time_end = time()
-
-    # if scraper.is_pipeline_successful:
-    #     rprint(f"✅Scraping successful after {time_end - time_start} seconds ✅")
-    # else:
-    #     rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
+    with concurrent.futures.ThreadPoolExecutor(
+        max_workers=len(selected_options)
+    ) as executor:
+        for option in selected_options:
+            executor.submit(run_scraper, option, query, max_result)
 
 
 if __name__ == "__main__":
