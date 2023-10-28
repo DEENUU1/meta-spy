@@ -5,6 +5,7 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from ..config import Config
 from ..logs import Logs
+import json
 
 logs = Logs()
 
@@ -22,8 +23,8 @@ class BaseInstagramScraper(Scraper):
     def _load_cookies(self) -> None:
         try:
             self._driver.delete_all_cookies()
-            with open(Config.COOKIES_FILE_PATH, "rb") as file:
-                cookies = pickle.load(file)
+            with open(Config.INSTAGRAM_FILE_PATH, "r") as file:
+                cookies = json.load(file)
                 for cookie in cookies:
                     try:
                         self._driver.add_cookie(cookie)
