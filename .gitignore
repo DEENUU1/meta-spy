@@ -3,25 +3,26 @@
 # project
 logs.json
 data.json
-facebookspy/cookies.json
+metaspy/cookies.json
 .idea/
 ~/
 images/
-facebookspy/database.db
-facebookspy/database_test.db
-facebookspy/videos/
-facebookspy/scraped_data/
+metaspy/database.db
+metaspy/database_test.db
+metaspy/videos/
+metaspy/scraped_data/
+metaspy/instagram_cookies.json
 # project - frontend
 
-facebookspy/src/server/frontend/logs
-facebookspy/src/server/frontend/npm-debug.log*
-facebookspy/src/server/frontend/yarn-debug.log*
-facebookspy/src/server/frontend/yarn-error.log*
-facebookspy/src/server/frontend/pnpm-debug.log*
-facebookspy/src/server/frontend/lerna-debug.log*
-facebookspy/src/server/frontend/node_modules
-facebookspy/src/server/frontend/dist
-facebookspy/src/server/frontend/dist-ssr
+metaspy/src/server/frontend/logs
+metaspy/src/server/frontend/npm-debug.log*
+metaspy/src/server/frontend/yarn-debug.log*
+metaspy/src/server/frontend/yarn-error.log*
+metaspy/src/server/frontend/pnpm-debug.log*
+metaspy/src/server/frontend/lerna-debug.log*
+metaspy/src/server/frontend/node_modules
+metaspy/src/server/frontend/dist
+metaspy/src/server/frontend/dist-ssr
 
 
 __pycache__/

@@ -1,4 +1,4 @@
-# Commands
+# Facebook commands
 
 ## Info!
 For user's with default account id in url (https://www.facebook.com/profile.php?id=100063142210972)

@@ -1,5 +1,6 @@
 # Home
 
+![Instagram](https://github.com/DEENUU1/facebook-spy/blob/main/assets/instagram/imagescraper.gif?raw=true)
 ![CLI1](https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/basic.gif?raw=true)
 ![CLI2](https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/search.gif?raw=true)
 ![CLI3](https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/full.gif?raw=true)
@@ -7,7 +8,7 @@
 
 ## About project
 
-The project, known as "Facebook Spy," is a powerful and versatile tool designed to gather information from Facebook profiles, pages and search results. 
+The project, known as "Meta Spy," is a powerful and versatile tool designed to gather information from Facebook profiles, pages and search results. 
 
 The project is under constant development to improve its functionality and address any issues that may arise.
 

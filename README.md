@@ -14,21 +14,22 @@
 <br />
 <div align="center">
 
-  <h3 align="center">Facebook Spy</h3>
+  <h3 align="center">Meta Spy</h3>
 
   <p align="center">
-    Facebook Spy is a versatile Python-based tool designed to scrape various data from Facebook profiles, pages and search results. Whether you need basic information or want to delve deep into a user's activity, Facebook Spy has you covered. 
+    Meta Spy is a versatile Python-based tool designed to scrape various data from Instagram profiles and Facebook  profiles, pages and search results. Whether you need basic information or want to delve deep into a user's activity, Facebook Spy has you covered. 
     <br />
     <br />
     <a href="https://github.com/DEENUU1/facebook-spy/issues">Report Bug</a>
     ·
     <a href="https://github.com/DEENUU1/facebook-spy/issues">Request Feature</a>
   </p>
-  <img src="https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/basic.gif?raw=true" alt="Logo" >
-  <img src="https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/search.gif?raw=true" alt="Logo" >
-  <img src="https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/full.gif?raw=true" alt="Logo" >
-  <img src="assets/homepage.png" alt="Logo" >
-  <img src="assets/detailpage.png" alt="Logo" >
+  <img src="https://github.com/DEENUU1/facebook-spy/blob/main/assets/instagram/imagescraper.gif?raw=true" alt="instagram" >
+  <img src="https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/basic.gif?raw=true" alt="basic" >
+  <img src="https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/search.gif?raw=true" alt="search" >
+  <img src="https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/full.gif?raw=true" alt="full" >
+  <img src="assets/homepage.png" alt="homepage" >
+  <img src="assets/detailpage.png" alt="details" >
 </div>
 
 
@@ -42,7 +43,7 @@ If you're using a Facebook account with a custom ID in the URL (e.g., https://ww
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-The project, known as "Facebook Spy," is a powerful and versatile tool designed to gather information from Facebook profiles, pages and search results. 
+The project, known as "Meta Spy," is a powerful and versatile tool designed to gather information from Instagram profiles, Facebook profiles, pages and search results. 
 
 The project is under constant development to improve its functionality and address any issues that may arise.
 
@@ -60,6 +61,7 @@ One notable limitation of the tool is that some scrapers may not work correctly 
 - Save scraped data for a specified Facebook user to PDF file for documentation and anylysis.
 - Running scrapers in parallel to speed up the data collection process
 - Save all scraped data to JSON files and database 
+- Scrape image urls from Instagram profile and save data to JSON file 
 
 ### Built With
 
@@ -78,7 +80,7 @@ One notable limitation of the tool is that some scrapers may not work correctly 
 
 1. Clone git repository
 ```bash
-git clone https://github.com/DEENUU1/facebook-spy.git
+git clone https://github.com/DEENUU1/meta-spy.git
 ```
 
 2. Create dotenv file and add required data
@@ -91,9 +93,9 @@ cp .env_example .env
 pip install -r requirements.txt
 ```
 
-4. Change directory to facebookspy to run commands
+4. Change directory to metaspy to run commands
 ```bash
-cd facebookspy
+cd metaspy
 ```
 
 ### Tests
@@ -113,7 +115,7 @@ This is just a few examples of how you can use this tool. For more comments chec
 python main.py version
 ```
 
-<img src="assets/new/version.png" alt="Logo" >
+<img src="assets/newversion.png" alt="Logo" >
 
 
 #### Login

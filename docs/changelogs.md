@@ -1,9 +1,18 @@
 # Change log
 
 
-## Current version: 1.2
+## Current version: 1.3
 
 ## Version history
+
+### 1.3 
+- Change the name of a project to "Meta Spy"
+- Scraping images from instagram profiles
+
+```bash
+python  main.py instagram-profile-images <instagram_id>
+``` 
+
 
 ### 1.2 
 - Real time result while scrolling in scrapers:
