@@ -34,7 +34,8 @@ from .analytics import classification
 from typing import List
 from .facebook.search import search_post, search as search_scraper
 from .instagram.instagram_profile import ProfileScraper
-from .instagram.instagram_login import InstagramLogIn
+from .utils.check_instagram_sessionid import check_instagram_sessionid
+
 
 load_dotenv()
 logs = Logs()
@@ -883,34 +884,21 @@ def instagram_profile_images(
 ) -> None:
     """Scrape images from instagram profile"""
 
-    rprint(f"Start scraping images for {name}")
-    scraper = ProfileScraper(name)
-
-    time_start = time()
-    scraper.pipeline_images()
-    time_end = time()
-
-    if scraper.is_pipeline_successful:
-        rprint(f"✅Scraping successful after {time_end - time_start} seconds ✅")
+    session = check_instagram_sessionid()
+    if session == False:
+        return
     else:
-        rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
+        rprint(f"Start scraping images for {name}")
+        scraper = ProfileScraper(name)
 
+        time_start = time()
+        scraper.pipeline_images()
+        time_end = time()
 
-@app.command()
-def instagram_login_fb() -> None:
-    """Log in to instagram account using facebook auth"""
-
-    rprint(f"Start logging in to instagram account")
-    scraper = InstagramLogIn()
-
-    time_start = time()
-    scraper.login_with_facebook()
-    time_end = time()
-
-    if scraper.is_pipeline_successful:
-        rprint(f"✅Login successful after {time_end - time_start} seconds ✅")
-    else:
-        rprint(f"❌Login failed after {time_end - time_start} seconds ❌")
+        if scraper.is_pipeline_successful:
+            rprint(f"✅Scraping successful after {time_end - time_start} seconds ✅")
+        else:
+            rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
 
 
 if __name__ == "__main__":

@@ -5,9 +5,9 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from ..config import Config
 from ..logs import Logs
-import json
 
 logs = Logs()
+config = Config()
 
 
 class BaseInstagramScraper(Scraper):
@@ -20,17 +20,11 @@ class BaseInstagramScraper(Scraper):
         self._wait = WebDriverWait(self._driver, 10)
         self.success = False
 
-    # def _load_cookies(self) -> None:
-    #     try:
-    #         self._driver.delete_all_cookies()
-    #         with open(Config.INSTAGRAM_FILE_PATH, "r") as file:
-    #             cookies = json.load(file)
-    #             for cookie in cookies:
-    #                 try:
-    #                     self._driver.add_cookie(cookie)
-    #                 except Exception as e:
-    #                     logs.log_error(f"An Error occurred adding cookies {e}")
-    #                     rprint(f"An Error occurred while adding cookies {e}")
-    #     except Exception as e:
-    #         logs.log_error(f"An Error occurred while loading cookies: {e}")
-    #         rprint(f"An Error occurred while loading cookies {e}")
+    @staticmethod
+    def _check_session_id() -> bool:
+        check = config.INSTAGRAM_SESSIONID_VALUE == True
+        if not check:
+            rprint(f"[bold red] Add you sessionid key to .env fil e[/bold red]")
+            return False
+        else:
+            return True

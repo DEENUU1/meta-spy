@@ -1,3 +1,5 @@
+import time
+
 from .instagram_base import BaseInstagramScraper
 from ..config import Config
 from ..logs import Logs
@@ -6,7 +8,7 @@ from selenium.webdriver.common.by import By
 from rich import print as rprint
 
 logs = Logs()
-confg = Config()
+config = Config()
 
 
 class ProfileScraper(BaseInstagramScraper):
@@ -16,14 +18,13 @@ class ProfileScraper(BaseInstagramScraper):
         self._driver.add_cookie(
             {
                 "name": "sessionid",
-                "value": confg.INSTAGRAM_SESSIONID_VALUE,
+                "value": config.INSTAGRAM_SESSIONID_VALUE,
                 "domain": ".instagram.com",
             }
         )
 
     def _refresh_driver(self) -> None:
         """Load cookies and refresh driver"""
-        # self._load_cookies()
         self._driver.refresh()
 
     @property
@@ -35,11 +36,11 @@ class ProfileScraper(BaseInstagramScraper):
         try:
 
             def extract_callback(driver):
-                div_element = self._driver.find_element(By.CLASS_NAME, "x1iyjqo2")
-                img_elements = div_element.find_elements(
+                img_elements = self._driver.find_elements(
                     By.CLASS_NAME,
                     "x5yr21d.xu96u03.x10l6tqk.x13vifvy.x87ps6o.xh8yej3",
                 )
+                print(img_elements)
                 for img_element in img_elements:
                     src_attribute = img_element.get_attribute("src")
                     if src_attribute and src_attribute not in extracted_image_urls:
