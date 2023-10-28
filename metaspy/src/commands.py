@@ -33,12 +33,12 @@ from .scripts.urlid import get_account_id
 from .analytics import classification
 from typing import List
 from .facebook.search import search_post, search as search_scraper
-
+from .instagram.instagram_profile import ProfileScraper
+from .utils.check_instagram_sessionid import check_instagram_sessionid
+from .utils.save_to_json import SaveJSON
 
 load_dotenv()
-
 logs = Logs()
-
 app = typer.Typer(
     pretty_exceptions_enable=False,  # Default Error message without Rich effect
 )
@@ -876,6 +876,33 @@ def search(
     ) as executor:
         for option in selected_options:
             executor.submit(run_scraper, option, query, max_result)
+
+
+@app.command()
+def instagram_profile_images(
+    name: Annotated[str, typer.Argument(help="Instagram user id")]
+) -> None:
+    """Scrape images from instagram profile"""
+
+    session = check_instagram_sessionid()
+    if not session:
+        return
+    else:
+        rprint(f"Start scraping images for {name}")
+        scraper = ProfileScraper(name)
+
+        time_start = time()
+        data = scraper.pipeline_images()
+        time_end = time()
+
+        rprint(f"Saving scraped data to json file")
+        stj = SaveJSON(facebook_id=name, data=data)
+        stj.save()
+
+        if scraper.is_pipeline_successful:
+            rprint(f"✅Scraping successful after {time_end - time_start} seconds ✅")
+        else:
+            rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
 
 
 if __name__ == "__main__":

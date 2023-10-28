@@ -1,5 +1,6 @@
 # Home
 
+![Instagram](https://github.com/DEENUU1/facebook-spy/blob/main/assets/instagram/imagescraper.gif?raw=true)
 ![CLI1](https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/basic.gif?raw=true)
 ![CLI2](https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/search.gif?raw=true)
 ![CLI3](https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/full.gif?raw=true)

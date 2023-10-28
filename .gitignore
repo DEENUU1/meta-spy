@@ -11,6 +11,7 @@ metaspy/database.db
 metaspy/database_test.db
 metaspy/videos/
 metaspy/scraped_data/
+metaspy/instagram_cookies.json
 # project - frontend
 
 metaspy/src/server/frontend/logs

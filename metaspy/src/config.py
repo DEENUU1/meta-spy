@@ -11,13 +11,17 @@ class Config:
     """
 
     # Scrolling
-    SCROLL_PAUSE_TIME = 1
+    SCROLL_PAUSE_TIME = 3
     MAX_CONSECUTIVE_SCROLLS = 1
 
     # Facebook login
     FACEBOOK_EMAIL = os.getenv("FACEBOOK_EMAIL")
     FACEBOOK_PASSWORD = os.getenv("FACEBOOK_PASSWORD")
     COOKIES_FILE_PATH = "cookies.json"
+
+    # Instagram login
+    INSTAGRAM_FILE_PATH = "instagram_cookies.json"
+    INSTAGRAM_SESSIONID_VALUE = os.getenv("INSTAGRAM_SESSIONID_VALUE")
 
     # logs
     LOG_FILE_PATH = "logs.log"
@@ -39,3 +43,7 @@ class Config:
     PLACES_URL = "about_places"
     FAMILY_URL = "about_family_and_relationships"
     CONTACT_URL = "about_contact_and_basic_info"
+
+    # Save to json
+    INDENT = 4
+    ENSURE_ASCII = False
