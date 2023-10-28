@@ -1,4 +1,4 @@
-from facebookspy.src.models import (
+from metaspy.src.models import (
     Person,
     FamilyMember,
     Friends,

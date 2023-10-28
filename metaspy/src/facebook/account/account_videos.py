@@ -99,7 +99,8 @@ class AccountVideo(BaseFacebookScraper):
                 )
 
                 save_to_json.SaveJSON(
-                    self._user_id, videos,
+                    self._user_id,
+                    videos,
                 ).save()
 
                 if not person_repository.person_exists(self._user_id):

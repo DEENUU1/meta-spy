@@ -113,7 +113,8 @@ class AccountPost(BaseFacebookScraper):
                 )
 
                 save_to_json.SaveJSON(
-                    self._user_id, extracted_data,
+                    self._user_id,
+                    extracted_data,
                 ).save()
 
                 if not person_repository.person_exists(self._user_id):

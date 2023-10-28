@@ -92,7 +92,8 @@ class AccountReview(BaseFacebookScraper):
                 )
 
                 save_to_json.SaveJSON(
-                    self._user_id, reviews,
+                    self._user_id,
+                    reviews,
                 ).save()
 
                 if not person_repository.person_exists(self._user_id):

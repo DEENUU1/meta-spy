@@ -201,7 +201,8 @@ class AccountBasic(BaseFacebookScraper):
                 )
 
                 save_to_json.SaveJSON(
-                    self._user_id, scraped_data,
+                    self._user_id,
+                    scraped_data,
                 ).save()
 
                 for data in scraped_data:
@@ -249,7 +250,8 @@ class AccountBasic(BaseFacebookScraper):
                 )
 
                 save_to_json.SaveJSON(
-                    self._user_id, places,
+                    self._user_id,
+                    places,
                 ).save()
 
                 for data in places:
@@ -296,7 +298,8 @@ class AccountBasic(BaseFacebookScraper):
                 )
 
                 save_to_json.SaveJSON(
-                    self._user_id, family_members,
+                    self._user_id,
+                    family_members,
                 ).save()
 
                 for member in family_members:
@@ -340,7 +343,8 @@ class AccountBasic(BaseFacebookScraper):
                 )
 
                 save_to_json.SaveJSON(
-                    self._user_id, scraped_data,
+                    self._user_id,
+                    scraped_data,
                 ).save()
 
                 if not person_repository.person_exists(self._user_id):
@@ -396,7 +400,8 @@ class AccountBasic(BaseFacebookScraper):
                 )
 
                 save_to_json.SaveJSON(
-                    self._user_id, full_name,
+                    self._user_id,
+                    full_name,
                 ).save()
 
                 if not person_repository.person_exists(self._user_id):
@@ -440,7 +445,8 @@ class AccountBasic(BaseFacebookScraper):
                 )
 
                 save_to_json.SaveJSON(
-                    self._user_id, full_name,
+                    self._user_id,
+                    full_name,
                 ).save()
 
                 if not person_repository.person_exists(self._user_id):
@@ -469,7 +475,8 @@ class AccountBasic(BaseFacebookScraper):
                 )
 
                 save_to_json.SaveJSON(
-                    self._user_id, family_members,
+                    self._user_id,
+                    family_members,
                 ).save()
 
                 for member in family_members:
@@ -496,7 +503,8 @@ class AccountBasic(BaseFacebookScraper):
                 )
 
                 save_to_json.SaveJSON(
-                    self._user_id, places,
+                    self._user_id,
+                    places,
                 ).save()
 
                 for data in places:
@@ -520,11 +528,13 @@ class AccountBasic(BaseFacebookScraper):
                 )
 
                 save_to_json.SaveJSON(
-                    self._user_id, scraped_data,
+                    self._user_id,
+                    scraped_data,
                 ).save()
 
                 save_to_json.SaveJSON(
-                    self._user_id, scraped_data,
+                    self._user_id,
+                    scraped_data,
                 ).save()
 
                 for data in scraped_data:
@@ -548,7 +558,8 @@ class AccountBasic(BaseFacebookScraper):
                 )
 
                 save_to_json.SaveJSON(
-                    self._user_id, scraped_contact_data,
+                    self._user_id,
+                    scraped_contact_data,
                 ).save()
 
                 for data in scraped_contact_data:

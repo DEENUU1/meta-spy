@@ -91,7 +91,8 @@ class AccountRecentPlaces(BaseFacebookScraper):
                 )
 
                 save_to_json.SaveJSON(
-                    self._user_id, recent_places,
+                    self._user_id,
+                    recent_places,
                 ).save()
 
                 if not person_repository.person_exists(self._user_id):

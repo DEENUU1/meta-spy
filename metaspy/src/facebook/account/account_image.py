@@ -164,7 +164,8 @@ class AccountImage(BaseFacebookScraper):
                 )
 
                 save_to_json.SaveJSON(
-                    self._user_id, image_urls,
+                    self._user_id,
+                    image_urls,
                 ).save()
 
                 if not person_repository.person_exists(self._user_id):

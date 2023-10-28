@@ -84,7 +84,8 @@ class AccountFriend(BaseFacebookScraper):
                 )
 
                 save_to_json.SaveJSON(
-                    self._user_id, extracted_data,
+                    self._user_id,
+                    extracted_data,
                 ).save()
 
                 if not person_repository.person_exists(self._user_id):
@@ -95,13 +96,13 @@ class AccountFriend(BaseFacebookScraper):
                 for data in extracted_data:
                     if self.crawler:
                         if not crawlerqueue_repository.crawler_queue_exists(
-                                data["url"]
+                            data["url"]
                         ):
                             crawlerqueue_repository.create_crawler_queue(data["url"])
 
                     # Create friend object
                     if not friend_repository.friend_exists(
-                            person_id, data["username"], data["url"]
+                        person_id, data["username"], data["url"]
                     ):
                         friend_repository.create_friends(
                             data["username"], data["url"], person_id

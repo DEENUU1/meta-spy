@@ -27,11 +27,11 @@ class Config:
 
     # images
     IMAGE_PATH = "images/"
-    DOCKER_IMAGE_PATH = "/app/facebookspy"
+    DOCKER_IMAGE_PATH = "/app/metaspy"
 
     # videos
     VIDEO_PATH = "videos/"
-    DOCKER_VIDEO_PATH = "/app/facebookspy"
+    DOCKER_VIDEO_PATH = "/app/metaspy"
 
     # Facebook paths
     FRIEND_LIST_URL = "friends"
