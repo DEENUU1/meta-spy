@@ -19,12 +19,3 @@ class BaseInstagramScraper(Scraper):
         self._driver.get(self._base_url)
         self._wait = WebDriverWait(self._driver, 10)
         self.success = False
-
-    @staticmethod
-    def _check_session_id() -> bool:
-        check = config.INSTAGRAM_SESSIONID_VALUE == True
-        if not check:
-            rprint(f"[bold red] Add you sessionid key to .env fil e[/bold red]")
-            return False
-        else:
-            return True

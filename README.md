@@ -24,11 +24,12 @@
     ·
     <a href="https://github.com/DEENUU1/facebook-spy/issues">Request Feature</a>
   </p>
-  <img src="https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/basic.gif?raw=true" alt="Logo" >
-  <img src="https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/search.gif?raw=true" alt="Logo" >
-  <img src="https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/full.gif?raw=true" alt="Logo" >
-  <img src="assets/homepage.png" alt="Logo" >
-  <img src="assets/detailpage.png" alt="Logo" >
+  <img src="https://github.com/DEENUU1/facebook-spy/blob/main/assets/instagram/imagescraper.gif?raw=true" alt="instagram" >
+  <img src="https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/basic.gif?raw=true" alt="basic" >
+  <img src="https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/search.gif?raw=true" alt="search" >
+  <img src="https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/full.gif?raw=true" alt="full" >
+  <img src="assets/homepage.png" alt="homepage" >
+  <img src="assets/detailpage.png" alt="details" >
 </div>
 
 
@@ -42,7 +43,7 @@ If you're using a Facebook account with a custom ID in the URL (e.g., https://ww
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-The project, known as "Meta Spy," is a powerful and versatile tool designed to gather information from Facebook profiles, pages and search results. 
+The project, known as "Meta Spy," is a powerful and versatile tool designed to gather information from Instagram profiles, Facebook profiles, pages and search results. 
 
 The project is under constant development to improve its functionality and address any issues that may arise.
 
@@ -60,6 +61,7 @@ One notable limitation of the tool is that some scrapers may not work correctly 
 - Save scraped data for a specified Facebook user to PDF file for documentation and anylysis.
 - Running scrapers in parallel to speed up the data collection process
 - Save all scraped data to JSON files and database 
+- Scrape image urls from Instagram profile and save data to JSON file 
 
 ### Built With
 

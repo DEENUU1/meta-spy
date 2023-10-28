@@ -12,7 +12,7 @@ class Config:
 
     # Scrolling
     SCROLL_PAUSE_TIME = 3
-    MAX_CONSECUTIVE_SCROLLS = 3
+    MAX_CONSECUTIVE_SCROLLS = 1
 
     # Facebook login
     FACEBOOK_EMAIL = os.getenv("FACEBOOK_EMAIL")

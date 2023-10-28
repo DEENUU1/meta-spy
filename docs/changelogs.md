@@ -7,6 +7,12 @@
 
 ### 1.3 
 - Change the name of a project to "Meta Spy"
+- Scraping images from instagram profiles
+
+```bash
+python  main.py instagram-profile-images <instagram_id>
+``` 
+
 
 ### 1.2 
 - Real time result while scrolling in scrapers:
