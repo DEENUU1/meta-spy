@@ -43,3 +43,7 @@ class Config:
     PLACES_URL = "about_places"
     FAMILY_URL = "about_family_and_relationships"
     CONTACT_URL = "about_contact_and_basic_info"
+
+    # Save to json
+    INDENT = 4
+    ENSURE_ASCII = False

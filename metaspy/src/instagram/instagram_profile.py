@@ -1,11 +1,11 @@
-import time
-
 from .instagram_base import BaseInstagramScraper
 from ..config import Config
 from ..logs import Logs
 from ..facebook.scroll import scroll_page_callback
 from selenium.webdriver.common.by import By
 from rich import print as rprint
+from typing import List
+
 
 logs = Logs()
 config = Config()
@@ -22,6 +22,7 @@ class ProfileScraper(BaseInstagramScraper):
                 "domain": ".instagram.com",
             }
         )
+        self._refresh_driver()
 
     def _refresh_driver(self) -> None:
         """Load cookies and refresh driver"""
@@ -40,7 +41,6 @@ class ProfileScraper(BaseInstagramScraper):
                     By.CLASS_NAME,
                     "x5yr21d.xu96u03.x10l6tqk.x13vifvy.x87ps6o.xh8yej3",
                 )
-                print(img_elements)
                 for img_element in img_elements:
                     src_attribute = img_element.get_attribute("src")
                     if src_attribute and src_attribute not in extracted_image_urls:
@@ -54,14 +54,13 @@ class ProfileScraper(BaseInstagramScraper):
 
         return extracted_image_urls
 
-    def pipeline_images(self) -> None:
+    def pipeline_images(self) -> List[str]:
         try:
-            rprint(f"[bold]Step 1 of 2 - Load cookies")
-            self._refresh_driver()
-            rprint(f"[bold]Step 2 of 2 - Extract images")
             image_urls = self.extract_images()
-
             self.success = True
+
+            return image_urls
+
         except Exception as e:
             logs.log_error(f"An error occurred: {e}")
             rprint(f"An error occurred {e}")

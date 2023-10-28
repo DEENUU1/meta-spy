@@ -4,8 +4,7 @@ from datetime import datetime
 from ..config import Config
 import os
 
-INDENT = 4
-ENSURE_ASCII = False
+config = Config()
 
 
 class SaveJSON:
@@ -35,4 +34,6 @@ class SaveJSON:
         if not os.path.exists(dir):
             os.makedirs(dir)
         with open(f"{dir}/{self.generate_file_name()}", "w", encoding="utf-8") as f:
-            json.dump(self.data, f, indent=INDENT, ensure_ascii=ENSURE_ASCII)
+            json.dump(
+                self.data, f, indent=config.INDENT, ensure_ascii=config.ENSURE_ASCII
+            )
