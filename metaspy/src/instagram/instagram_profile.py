@@ -38,6 +38,8 @@ class ProfileScraper(BaseInstagramScraper):
                         rprint(f"Extracted image URL: {src_attribute}")
                         extracted_image_urls.append(src_attribute)
 
+            scroll_page_callback(self._driver, extract_callback)
+
         except Exception as e:
             logs.log_error(f"An  error occurred while extracting images: {e}")
 

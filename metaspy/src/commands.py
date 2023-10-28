@@ -33,7 +33,7 @@ from .scripts.urlid import get_account_id
 from .analytics import classification
 from typing import List
 from .facebook.search import search_post, search as search_scraper
-
+from .instagram.instagram_profile import ProfileScraper
 
 load_dotenv()
 
@@ -876,6 +876,25 @@ def search(
     ) as executor:
         for option in selected_options:
             executor.submit(run_scraper, option, query, max_result)
+
+
+@app.command()
+def instagram_profile_images(
+    name: Annotated[str, typer.Argument(help="Instagram user id")]
+) -> None:
+    """Scrape images from instagram profile"""
+
+    rprint(f"Start scraping images for {name}")
+    scraper = ProfileScraper(name)
+
+    time_start = time()
+    scraper.pipeline_images()
+    time_end = time()
+
+    if scraper.is_pipeline_successful:
+        rprint(f"✅Scraping successful after {time_end - time_start} seconds ✅")
+    else:
+        rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
 
 
 if __name__ == "__main__":
