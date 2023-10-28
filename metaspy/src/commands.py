@@ -34,11 +34,10 @@ from .analytics import classification
 from typing import List
 from .facebook.search import search_post, search as search_scraper
 from .instagram.instagram_profile import ProfileScraper
+from .instagram.instagram_login import InstagramLogIn
 
 load_dotenv()
-
 logs = Logs()
-
 app = typer.Typer(
     pretty_exceptions_enable=False,  # Default Error message without Rich effect
 )
@@ -895,6 +894,23 @@ def instagram_profile_images(
         rprint(f"✅Scraping successful after {time_end - time_start} seconds ✅")
     else:
         rprint(f"❌Scraping failed after {time_end - time_start} seconds ❌")
+
+
+@app.command()
+def instagram_login_fb() -> None:
+    """Log in to instagram account using facebook auth"""
+
+    rprint(f"Start logging in to instagram account")
+    scraper = InstagramLogIn()
+
+    time_start = time()
+    scraper.login_with_facebook()
+    time_end = time()
+
+    if scraper.is_pipeline_successful:
+        rprint(f"✅Login successful after {time_end - time_start} seconds ✅")
+    else:
+        rprint(f"❌Login failed after {time_end - time_start} seconds ❌")
 
 
 if __name__ == "__main__":
