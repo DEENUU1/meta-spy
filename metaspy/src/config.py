@@ -19,6 +19,9 @@ class Config:
     FACEBOOK_PASSWORD = os.getenv("FACEBOOK_PASSWORD")
     COOKIES_FILE_PATH = "cookies.json"
 
+    # Instagram login
+    INSTAGRAM_FILE_PATH = "instagram_cookies.json"
+
     # logs
     LOG_FILE_PATH = "logs.log"
 
