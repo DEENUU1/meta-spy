@@ -11,8 +11,8 @@ class Config:
     """
 
     # Scrolling
-    SCROLL_PAUSE_TIME = 1
-    MAX_CONSECUTIVE_SCROLLS = 1
+    SCROLL_PAUSE_TIME = 3
+    MAX_CONSECUTIVE_SCROLLS = 3
 
     # Facebook login
     FACEBOOK_EMAIL = os.getenv("FACEBOOK_EMAIL")
@@ -21,6 +21,7 @@ class Config:
 
     # Instagram login
     INSTAGRAM_FILE_PATH = "instagram_cookies.json"
+    INSTAGRAM_SESSIONID_VALUE = os.getenv("INSTAGRAM_SESSIONID_VALUE")
 
     # logs
     LOG_FILE_PATH = "logs.log"

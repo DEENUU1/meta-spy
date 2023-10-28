@@ -1,22 +1,25 @@
-import time
-
-from selenium.webdriver.support.wait import WebDriverWait
-
 from .instagram_base import BaseInstagramScraper
 from ..config import Config
 from ..logs import Logs
 from ..facebook.scroll import scroll_page_callback
 from selenium.webdriver.common.by import By
 from rich import print as rprint
-from selenium.webdriver.support import expected_conditions as EC
 
 logs = Logs()
+confg = Config()
 
 
 class ProfileScraper(BaseInstagramScraper):
     def __init__(self, user_id: str) -> None:
         super().__init__(user_id, base_url=f"https://www.instagram.com/{user_id}/")
         self.success = False
+        self._driver.add_cookie(
+            {
+                "name": "sessionid",
+                "value": confg.INSTAGRAM_SESSIONID_VALUE,
+                "domain": ".instagram.com",
+            }
+        )
 
     def _refresh_driver(self) -> None:
         """Load cookies and refresh driver"""
@@ -26,17 +29,6 @@ class ProfileScraper(BaseInstagramScraper):
     @property
     def is_pipeline_successful(self) -> bool:
         return self.success
-
-    def _accept_cookies(self):
-        try:
-            element = WebDriverWait(self._driver, 10).until(
-                EC.element_to_be_clickable((By.CLASS_NAME, "_a9--._a9_0"))
-            )
-            element.click()
-        except Exception as e:
-            logs.log_error(f"An Error occurred while accepting cookies: {e}")
-            rprint(f"An Error occurred while accepting cookies: {e}")
-            return False
 
     def extract_images(self):
         extracted_image_urls = []
@@ -63,11 +55,9 @@ class ProfileScraper(BaseInstagramScraper):
 
     def pipeline_images(self) -> None:
         try:
-            rprint(f"[bold]Step 1 of 3 - Load cookies")
+            rprint(f"[bold]Step 1 of 2 - Load cookies")
             self._refresh_driver()
-            rprint(f"[bold]Step 2 of 3 - Accept cookies term")
-            self._accept_cookies()
-            rprint(f"[bold]Step 3 of 3 - Extract images")
+            rprint(f"[bold]Step 2 of 2 - Extract images")
             image_urls = self.extract_images()
 
             self.success = True
