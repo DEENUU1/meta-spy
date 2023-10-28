@@ -3,7 +3,7 @@ from rich.console import Console
 
 from .baner import print_banner
 
-VERSION = "1.1"
+VERSION = "1.3"
 
 
 def return_version_info() -> None:
@@ -14,5 +14,5 @@ def return_version_info() -> None:
     console = Console()
     print_banner(console)
 
-    text = f"You are using {VERSION} version of the facebook spy. For more info visit https://github.com/DEENUU1/facebook-spy"
+    text = f"You are using {VERSION} version of the Meta Spy. For more info visit https://github.com/DEENUU1/facebook-spy"
     rprint(text)

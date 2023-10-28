@@ -3,11 +3,11 @@ from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from facebookspy.src.models import (
+from metaspy.src.models import (
     Base,
 )
 from ..database import get_session
-from facebookspy.src.server.app import app
+from metaspy.src.server.app import app
 
 engine = create_engine("sqlite:///database_test.db")
 Session = sessionmaker(bind=engine)

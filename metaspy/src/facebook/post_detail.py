@@ -271,7 +271,8 @@ def pipeline(name: str = None, post_url: str = None):
                 post_repository.mark_post_as_scraped(post.id)
 
                 save_to_json.SaveJSON(
-                    name, scraped_data,
+                    name,
+                    scraped_data,
                 ).save()
 
                 for data in scraped_data:
@@ -298,7 +299,8 @@ def pipeline(name: str = None, post_url: str = None):
             output.print_list(scraped_data)
 
             save_to_json.SaveJSON(
-                post_url, scraped_data,
+                post_url,
+                scraped_data,
             ).save()
 
             if not person_repository.person_exists("Anonymous"):

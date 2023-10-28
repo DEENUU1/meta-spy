@@ -93,7 +93,7 @@ pip install -r requirements.txt
 
 4. Change directory to facebookspy to run commands
 ```bash
-cd facebookspy
+cd metaspy
 ```
 
 ### Tests

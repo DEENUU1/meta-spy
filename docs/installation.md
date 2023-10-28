@@ -4,7 +4,7 @@
 ### Download repository using git
 
 ```bash
-git clone https://github.com/DEENUU1/facebook-link-tree.git
+git clone https://github.com/DEENUU1/metaspy.git
 ```
 
 ### Configuration
@@ -16,9 +16,9 @@ Install all requirements
 ```bash
 pip install -r requirements.txt
 ```
-Change directory to facebookspy to run commands
+Change directory to metaspy to run commands
 ```bash
-cd facebookspy
+cd metaspy
 ```
 
 [Check available commands](commands.md){ .md-button }

@@ -7,7 +7,7 @@
 
 ## About project
 
-The project, known as "Facebook Spy," is a powerful and versatile tool designed to gather information from Facebook profiles, pages and search results. 
+The project, known as "Meta Spy," is a powerful and versatile tool designed to gather information from Facebook profiles, pages and search results. 
 
 The project is under constant development to improve its functionality and address any issues that may arise.
 
