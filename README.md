@@ -25,8 +25,6 @@
     <a href="https://github.com/DEENUU1/facebook-spy/issues">Request Feature</a>
   </p>
   <img src="https://github.com/DEENUU1/facebook-spy/blob/main/assets/instagram/imagescraper.gif?raw=true" alt="instagram" >
-  <img src="https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/basic.gif?raw=true" alt="basic" >
-  <img src="https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/search.gif?raw=true" alt="search" >
   <img src="https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/full.gif?raw=true" alt="full" >
   <img src="assets/homepage.png" alt="homepage" >
   <img src="assets/detailpage.png" alt="details" >
