@@ -81,8 +81,6 @@ class PostSchema(BaseModel):
     image_urls: Optional[Dict[str, str]]
     scraped: bool
     source: PostSource
-    classification: bool
-    score: Optional[float]
     author: Optional[str]
 
 
@@ -120,7 +118,6 @@ class PersonDetailSchema(BaseModel):
     phone_number: Optional[str] = None
     email: Optional[str] = None
     number_of_friends: Optional[int] = None
-    ai_summary: Optional[str] = None
     family_member: Optional[List[FamilyMemberSchema]] = None
     friends: Optional[List[FriendsSchema]] = None
     images: Optional[List[ImageSchema]] = None

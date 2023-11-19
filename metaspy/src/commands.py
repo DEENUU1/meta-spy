@@ -26,11 +26,8 @@ from .facebook.login import FacebookLogIn
 from .facebook.post_detail import pipeline
 from .logs import Logs
 from .analytics.graph import create_relationship_graph
-from .analytics.ai import get_person_summary
-from .analytics.report import generate_pdf_report
 from .repository import crawlerqueue_repository, post_repository, person_repository
 from .scripts.urlid import get_account_id
-from .analytics import classification
 from typing import List
 from .facebook.search import search_post, search as search_scraper
 from .instagram.instagram_profile import ProfileScraper
@@ -150,140 +147,6 @@ def clear_queue() -> None:
 def graph() -> None:
     """Create a graph of connections between Person objects based on their Friends"""
     create_relationship_graph()
-
-
-@app.command()
-def summary(name: Annotated[str, typer.Argument(help="Facebook user id")]) -> None:
-    """Create a summary of a specified person by using AI and scraped data"""
-    get_person_summary(name)
-
-
-@app.command()
-def report(name: Annotated[str, typer.Argument(help="Facebook user id")]) -> None:
-    """
-    Generate and save PDF file with scraped data for specified person.
-    """
-    generate_pdf_report(name)
-
-
-@app.command()
-def posts(
-    display_all: Annotated[
-        bool, typer.Option(help="Display all posts from the database")
-    ] = False,
-    id: Annotated[
-        int, typer.Option(help="Display a specified post from the database")
-    ] = None,
-    person_id: Annotated[
-        str, typer.Option(help="Display posts for a specified person from the database")
-    ] = None,
-) -> None:
-    """Print a list of all posts in database, all post for specified user or specified post"""
-
-    if display_all:
-        posts = post_repository.get_all_posts()
-        if len(posts) == 0:
-            rprint("[bold]No posts found[/bold]")
-        else:
-            rprint(f"[bold]Found {len(posts)} posts[/bold]")
-
-            for post in posts:
-                rprint(
-                    f"""ID: {post.id} Person ID: {post.person_id} Content: {post.content} Source: {post.source} 
-                    Classification: {post.classification} Score: {post.score} Is scraped: {post.scraped} 
-                    Number of likes/shares/comments: {post.number_of_likes} {post.number_of_shares} 
-                    {post.number_of_comments}
-                    """
-                )
-
-    if id:
-        post = post_repository.get_post(id)
-        if post is None:
-            rprint("[bold]Post not found[/bold]")
-        else:
-            rprint(
-                f"""ID: {post.id} Person ID: {post.person_id} Content: {post.content} Source: {post.source} 
-                Classification: {post.classification} Score: {post.score} Is scraped: {post.scraped} 
-                Number of likes/shares/comments: {post.number_of_likes} {post.number_of_shares} 
-                {post.number_of_comments}"""
-            )
-
-    if person_id:
-        person_object = person_repository.get_person(person_id)
-        posts = post_repository.get_posts(person_object.id)
-        if len(posts) == 0:
-            rprint("[bold]No posts found[/bold]")
-        else:
-            rprint(f"[bold]Found {len(posts)} posts[/bold]")
-
-            for post in posts:
-                rprint(
-                    f"""ID: {post.id} Person ID: {post.person_id} Content: {post.content} 
-                    Source: {post.source} Classification: {post.classification} Score: {post.score} 
-                    Is scraped: {post.scraped} Number of likes/shares/comments: {post.number_of_likes} 
-                    {post.number_of_shares} {post.number_of_comments}"""
-                )
-
-
-@app.command()
-def post_classifier(
-    all_posts: Annotated[
-        bool,
-        typer.Option(help="Run post classification for all posts from the database"),
-    ] = False,
-    id: Annotated[
-        int,
-        typer.Option(
-            help="Run post classification for specified post from the database"
-        ),
-    ] = None,
-    person_id: Annotated[
-        str,
-        typer.Option(
-            help="Run post classification for a specified person from the database"
-        ),
-    ] = None,
-) -> None:
-    """Run post classification for all posts from the database, all posts for specified user or specified post"""
-
-    if all_posts:
-        posts = post_repository.get_all_posts()
-        if len(posts) == 0:
-            rprint("[bold]No posts found[/bold]")
-        else:
-            rprint(f"[bold]Found {len(posts)} posts[/bold]")
-
-            for post in posts:
-                if post.content != "":
-                    status, score = classification.text_classifier(post.content)
-                    post_repository.update_classification(post.id, status, score)
-                else:
-                    rprint(f"[bold]Post {post.id} has no content[/bold]")
-    if id:
-        post = post_repository.get_post(id)
-        if post is None:
-            rprint("[bold]Post not found[/bold]")
-        else:
-            if post.content != "":
-                status, score = classification.text_classifier(post.content)
-                post_repository.update_classification(post.id, status, score)
-            else:
-                rprint(f"[bold]Post {post.id} has no content[/bold]")
-
-    if person_id:
-        person_object = person_repository.get_person(person_id)
-        posts = post_repository.get_posts(person_object.id)
-        if len(posts) == 0:
-            rprint("[bold]No posts found[/bold]")
-        else:
-            rprint(f"[bold]Found {len(posts)} posts[/bold]")
-
-            for post in posts:
-                if post.content != "":
-                    status, score = classification.text_classifier(post.content)
-                    post_repository.update_classification(post.id, status, score)
-                else:
-                    rprint(f"[bold]Post {post.id} has no content[/bold]")
 
 
 """ Login """

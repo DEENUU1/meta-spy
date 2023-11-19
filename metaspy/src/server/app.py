@@ -164,8 +164,6 @@ async def person_detail(
                 "author": post.author,
                 "image_urls": post.image_urls,
                 "scraped": post.scraped,
-                "source": post.source,
-                "classification": post.classification,
                 "score": post.score,
             }
             for post in person.posts
@@ -210,7 +208,6 @@ async def person_detail(
         phone_number=person.phone_number,
         email=person.email,
         number_of_friends=person.number_of_friends,
-        ai_summary=person.ai_summary,
         family_member=family_members,
         friends=friends,
         images=images,

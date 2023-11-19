@@ -16,9 +16,6 @@
       <p><strong>Email:</strong> {{ person.email }}</p>
       {% endif %}
       <p><strong>Facebook ID:</strong> {{ person.facebook_id }}</p>
-      {% if person.ai_summary %}
-      <p><strong>AI Summary:</strong> {{ person.ai_summary }}</p>
-      {% endif %}
     </div>
   </div>
 
@@ -215,12 +212,6 @@
               {% endif %}
               {% if post.image_url %}
               <li>Images: {{ post.image_url }}</li>
-              {% endif %}
-              {% if post.classification %}
-              <li>AI classification: {{ post.classification }}</li>
-              {% endif %}
-              {% if post.score %}
-              <li>AI classification score: {{ post.score }}</li>
               {% endif %}
             {% endfor %}
           </ul>
