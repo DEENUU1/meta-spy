@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block meta_title %} MetaSpy | Person list {% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="text-center mb-5 mt-5">Instagram images</h1>
+    <div class="row">
+        {% for image in images %}
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <a class="btn btn-primary" href="{{image.url}}">
+                        <img src="{{ image.url }} alt={{ image.url }}"/>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

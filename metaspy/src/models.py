@@ -62,7 +62,6 @@ class Person(Base):
     phone_number = Column(String, nullable=True)
     email = Column(String, nullable=True)
     number_of_friends = Column(Integer, default=0)
-    ai_summary = Column(String, nullable=True)
 
     # Relationships (using backref for bidirectional relationship)
     friends = relationship("Friends", back_populates="person")
@@ -181,8 +180,6 @@ class Posts(Base):
     image_urls = Column(JSON, nullable=True)
     scraped = Column(Boolean, default=False)
     source = Column(EnumColumn(PostSource), default=PostSource.ACCOUNT)
-    classification = Column(Boolean, default=False)
-    score = Column(Float, nullable=True)
     author = Column(String, nullable=True)
 
     # Relationship
@@ -230,3 +227,11 @@ class CrawlerQueue(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     url = Column(String, nullable=False)
     status = Column(Boolean, default=False)
+
+
+class InstagramImages(Base):
+    __tablename__ = "instagram_posts"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    url = Column(String, nullable=False)
+    downloaded = Column(Boolean, default=False)

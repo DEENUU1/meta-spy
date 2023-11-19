@@ -8,6 +8,8 @@
 ### 1.3 
 - Change the name of a project to "Meta Spy"
 - Scraping images from instagram profiles
+- Save scraped images to the database and display on local server 
+- Delete AI features 
 
 ```bash
 python  main.py instagram-profile-images <instagram_id>

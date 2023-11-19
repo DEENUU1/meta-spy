@@ -118,21 +118,6 @@ def update_email(person_id: int, email: str) -> bool:
     return True
 
 
-def update_ai_summary(person_id: int, summary: str) -> bool:
-    """
-    Update ai_summary field in Person object
-    """
-    session = get_session()
-    person = session.query(Person).filter_by(id=person_id).first()
-
-    if person is None:
-        return False
-
-    person.ai_summary = summary
-    session.commit()
-    return True
-
-
 def get_persons() -> List[Person]:
     """
     Return a list of Person objects
