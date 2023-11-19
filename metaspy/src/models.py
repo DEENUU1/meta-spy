@@ -227,3 +227,11 @@ class CrawlerQueue(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     url = Column(String, nullable=False)
     status = Column(Boolean, default=False)
+
+
+class InstagramImages(Base):
+    __tablename__ = "instagram_posts"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    url = Column(String, nullable=False)
+    downloaded = Column(Boolean, default=False)

@@ -5,6 +5,7 @@ from ..facebook.scroll import scroll_page_callback
 from selenium.webdriver.common.by import By
 from rich import print as rprint
 from typing import List
+from ..repository.instagram_image_repository import create_image, image_exists
 
 
 logs = Logs()
@@ -56,8 +57,14 @@ class ProfileScraper(BaseInstagramScraper):
 
     def pipeline_images(self) -> List[str]:
         try:
+            rprint(f"[bold]Step 1 of 2 - Loading profile page[/bold]")
             image_urls = self.extract_images()
             self.success = True
+
+            rprint(f"[bold]Step 2 of 2 - Saving images to the database [/bold]")
+            for image_url in image_urls:
+                if not image_exists(image_url):
+                    create_image(image_url)
 
             return image_urls
 

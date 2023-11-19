@@ -131,3 +131,9 @@ class PersonDetailSchema(BaseModel):
     likes: Optional[List[LikesSchema]] = None
     groups: Optional[List[GroupsSchema]] = None
     events: Optional[List[EventsSchema]] = None
+
+
+class InstagramImageSchema(BaseModel):
+    id: int
+    url: str
+    downloaded: bool = False
