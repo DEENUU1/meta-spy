@@ -230,28 +230,20 @@ class CrawlerQueue(Base):
 
 
 class InstagramAccount(Base):
-    __tablename__ = "instagram_accounts"
+    __tablename__ = "iaccounts"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     username = Column(String, nullable=False)
     number_of_posts = Column(Integer, nullable=True)
     number_of_followers = Column(Integer, nullable=True)
     number_of_following = Column(Integer, nullable=True)
-
-    # Relationship
-    instagram_images = relationship(
-        "InstagramImages", back_populates="instagram_account"
-    )
+    images = relationship("InstagramImages", backref="account")
 
 
 class InstagramImages(Base):
-    __tablename__ = "instagram_images"
+    __tablename__ = "iimages"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     url = Column(String, nullable=False)
     downloaded = Column(Boolean, default=False)
-
-    # Relationship
-    instagram_account = relationship(
-        "InstagramAccount", back_populates="instagram_images"
-    )
+    account_id = Column(Integer, ForeignKey("iaccounts.id"), nullable=False)

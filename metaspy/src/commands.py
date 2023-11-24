@@ -288,28 +288,28 @@ def fb_account(
         bool, typer.Option(help="Scrape events from the given facebook account")
     ] = False,
 ) -> None:
-    if (
-        not work
-        or not contact
-        or not location
-        or not family
-        or not name
-        or not friends
-        or not images
-        or not recent
-        or not reels
-        or not reviews
-        or not videos
-        or not da
-        or not dn
-        or not posts
-        or not details
-        or not likes
-        or not groups
-        or not events
-    ):
-        rprint("Please specify at least one option to scrape")
-        return
+    # if (
+    #     not work
+    #     or not contact
+    #     or not location
+    #     or not family
+    #     or not name
+    #     or not friends
+    #     or not images
+    #     or not recent
+    #     or not reels
+    #     or not reviews
+    #     or not videos
+    #     or not da
+    #     or not dn
+    #     or not posts
+    #     or not details
+    #     or not likes
+    #     or not groups
+    #     or not events
+    # ):
+    #     rprint("Please specify at least one option to scrape")
+    #     return
 
     if work:
         wae = AccountBasic(id)

@@ -14,3 +14,19 @@ def create_image(url: str) -> InstagramImages:
     session.add(image)
     session.commit()
     return image
+
+
+def set_as_downloaded(image: InstagramImages) -> None:
+    image.downloaded = True
+    get_session().commit()
+    return
+
+
+def get_all():
+    session = get_session()
+    return session.query(InstagramImages).all()
+
+
+def get_not_downloaded():
+    session = get_session()
+    return session.query(InstagramImages).filter_by(downloaded=False).all()
