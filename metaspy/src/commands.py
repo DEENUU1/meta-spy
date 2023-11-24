@@ -22,13 +22,11 @@ from .facebook.login import FacebookLogIn
 from .facebook.post_detail import pipeline
 from .logs import Logs
 from .analytics.graph import create_relationship_graph
-from .repository import crawlerqueue_repository, post_repository, person_repository
+from .repository import crawlerqueue_repository
 from .scripts.urlid import get_account_id
-from typing import List
 from .facebook.search import search_post, search as search_scraper
 from .instagram.instagram_profile import ProfileScraper
 from .utils.check_instagram_sessionid import check_instagram_sessionid
-from .utils.save_to_json import SaveJSON
 from typing_extensions import Annotated
 
 load_dotenv()
