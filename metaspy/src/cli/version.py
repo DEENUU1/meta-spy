@@ -3,7 +3,7 @@ from rich.console import Console
 
 from .baner import print_banner
 
-VERSION = "1.3"
+VERSION = "1.4"
 
 
 def return_version_info() -> None:
