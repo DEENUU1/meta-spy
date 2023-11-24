@@ -1,5 +1,6 @@
 from ..database import get_session
 from ..models import InstagramImages
+from typing import List, Optional
 
 
 def image_exists(url: str) -> bool:
@@ -22,11 +23,11 @@ def set_as_downloaded(image: InstagramImages) -> None:
     return
 
 
-def get_all():
+def get_all() -> Optional[List[InstagramImages]]:
     session = get_session()
     return session.query(InstagramImages).all()
 
 
-def get_not_downloaded():
+def get_not_downloaded() -> Optional[List[InstagramImages]]:
     session = get_session()
     return session.query(InstagramImages).filter_by(downloaded=False).all()
