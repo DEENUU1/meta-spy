@@ -1,11 +1,11 @@
-from typing import List, Optional
+from typing import Optional
 from ..database import get_session
 from ..models import InstagramAccount
 
 
 def account_exists(username: str) -> bool:
     session = get_session()
-    account = session.query(InstagramAccount).filter_by(username=instagram_id).first()
+    account = session.query(InstagramAccount).filter_by(username=username).first()
     return account is not None
 
 

@@ -46,18 +46,6 @@ class AccountImage(BaseFacebookScraper):
         random_name = "".join(random.choice(string.ascii_letters) for _ in range(10))
         return f"{random_name}.jpg"
 
-    @staticmethod
-    def check_image_type(image_content) -> bool:
-        """
-        Check if file is an image
-        """
-        try:
-            _ = Image.open(BytesIO(image_content))
-            return True
-        except Exception as e:
-            logs.log_error(f"Skipping image, Exception: {e}")
-            return False
-
     def extract_image_urls(self) -> List[str]:
         """
         Return a list of all the image urls
@@ -85,6 +73,18 @@ class AccountImage(BaseFacebookScraper):
             logs.log_error(f"Error extracting image URLs: {e}")
 
         return extracted_image_urls
+
+    @staticmethod
+    def check_image_type(image_content) -> bool:
+        """
+        Check if file is an image
+        """
+        try:
+            _ = Image.open(BytesIO(image_content))
+            return True
+        except Exception as e:
+            logs.log_error(f"Skipping image, Exception: {e}")
+            return False
 
     def save_images(self, image_urls: List[str]) -> List[str]:
         """

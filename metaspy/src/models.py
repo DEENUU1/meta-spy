@@ -237,13 +237,18 @@ class InstagramAccount(Base):
     number_of_posts = Column(Integer, nullable=True)
     number_of_followers = Column(Integer, nullable=True)
     number_of_following = Column(Integer, nullable=True)
-    images = relationship("InstagramImages", backref="account")
+
+    # Relationship
+    images = relationship("InstagramImages", back_populates="account")
 
 
 class InstagramImages(Base):
     __tablename__ = "iimages"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    url = Column(String, nullable=False)
+    path = Column(String, nullable=False)
     downloaded = Column(Boolean, default=False)
-    account_id = Column(Integer, ForeignKey("iaccounts.id"), nullable=False)
+    account_id = Column(Integer, ForeignKey("iaccounts.id"))
+
+    # Relationship
+    account = relationship("InstagramAccount", back_populates="images")
