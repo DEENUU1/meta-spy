@@ -432,8 +432,11 @@ def fb_search(
 @app.command()
 def insta_account(
     id: Annotated[str, typer.Argument(help="Facebook account id")],
-    il: Annotated[
-        bool, typer.Option(help="Scrape image urls from the given facebook account")
+    images: Annotated[
+        bool, typer.Option(help="Scrape image urls from the given instagram account")
+    ] = False,
+    stats: Annotated[
+        bool, typer.Option(help="Scrape stats from the given instagram account")
     ] = False,
 ) -> None:
     """Scrape instagram account"""
@@ -448,13 +451,17 @@ def insta_account(
         )
         return
     else:
-        if not il:
-            rprint("Please specify at least one option to scrape")
-            return
+        # if not images or not stats:
+        #     rprint("Please specify at least one option to scrape")
+        #     return
 
-        if il:
+        if images:
             scraper = ProfileScraper(id)
             scraper.pipeline_images()
+
+        if stats:
+            scraper = ProfileScraper(id)
+            scraper.pipeline_stats()
 
     time_end = time()
     rprint(f"Scraping finished after {time_end - time_start} seconds")

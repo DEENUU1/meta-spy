@@ -4,8 +4,7 @@ from ..logs import Logs
 from ..facebook.scroll import scroll_page_callback
 from selenium.webdriver.common.by import By
 from rich import print as rprint
-from typing import List
-from ..repository.instagram_image_repository import create_image, image_exists
+from typing import List, Dict, Any, Optional
 import os
 import random
 import string
@@ -15,7 +14,8 @@ from ..utils import output, save_to_json
 from ..repository import instagram_image_repository, instagram_account_repository
 from io import BytesIO
 from PIL import Image
-
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 
 logs = Logs()
 config = Config()
@@ -114,6 +114,31 @@ class ProfileScraper(BaseInstagramScraper):
 
         return downloaded_image_paths
 
+    def extract_profile_stats(self) -> Dict[str, Any]:
+        data = {}
+        try:
+            stats_elements = WebDriverWait(self._driver, 10).until(
+                EC.presence_of_all_elements_located(
+                    (
+                        By.CLASS_NAME,
+                        "html-span.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x1hl2dhg.x16tdsg8.x1vvkbs",
+                    )
+                )
+            )
+
+            stats = [stat.text for stat in stats_elements]
+            print(stats)
+            if len(stats) == 3:
+                data["number_of_posts"] = int(stats[0])
+                data["number_of_followers"] = stats[1]
+                data["number_of_following"] = stats[2]
+
+        except Exception as e:
+            logs.log_error(f"An error occurred: {e}")
+
+        print(data)
+        return data
+
     def extract_images(self):
         extracted_image_urls = []
         try:
@@ -135,6 +160,47 @@ class ProfileScraper(BaseInstagramScraper):
             logs.log_error(f"An  error occurred while extracting images: {e}")
 
         return extracted_image_urls
+
+    def pipeline_stats(self) -> None:
+        try:
+            rprint(f"[bold]Step 1 of 2 - Loading profile page[/bold]")
+            data = self.extract_profile_stats()
+
+            if not data:
+                output.print_no_data_info()
+                self._driver.quit()
+                self.success = False
+
+            else:
+                rprint(f"[bold]Step 2 of 2 - Saving profile stats[/bold]")
+                output.print_data_from_dict(data)
+
+                rprint(
+                    "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
+                )
+
+                if not instagram_account_repository.account_exists(self._user_id):
+                    instagram_account_repository.create_account(self._user_id)
+                    instagram_account_repository.update_account(
+                        self._user_id,
+                        number_of_posts=data["number_of_posts"],
+                        number_of_followers=data["number_of_followers"],
+                        number_of_following=data["number_of_following"],
+                    )
+                else:
+                    instagram_account_repository.update_account(
+                        self._user_id,
+                        number_of_posts=data["number_of_posts"],
+                        number_of_followers=data["number_of_followers"],
+                        number_of_following=data["number_of_following"],
+                    )
+
+                self._driver.quit()
+                self.success = True
+
+        except Exception as e:
+            logs.log_error(f"An error occurred: {e}")
+            rprint(f"An error occurred {e}")
 
     def pipeline_images(self) -> None:
         try:

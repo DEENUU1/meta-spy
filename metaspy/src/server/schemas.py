@@ -148,6 +148,6 @@ class InstagramAccountDetailsSchema(BaseModel):
     id: int
     username: str
     number_of_posts: Optional[int] = None
-    number_of_followers: Optional[int] = None
-    number_of_following: Optional[int] = None
+    number_of_followers: Optional[str] = None
+    number_of_following: Optional[str] = None
     images: Optional[List[InstagramImageSchema]] = None

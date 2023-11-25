@@ -235,8 +235,8 @@ class InstagramAccount(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     username = Column(String, nullable=False)
     number_of_posts = Column(Integer, nullable=True)
-    number_of_followers = Column(Integer, nullable=True)
-    number_of_following = Column(Integer, nullable=True)
+    number_of_followers = Column(String, nullable=True)
+    number_of_following = Column(String, nullable=True)
 
     # Relationship
     images = relationship("InstagramImages", back_populates="account")

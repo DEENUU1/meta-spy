@@ -27,11 +27,11 @@ def create_account(username: str) -> Optional[InstagramAccount]:
 def update_account(
     username: str,
     number_of_posts: int = None,
-    number_of_followers: int = None,
-    number_of_following: int = None,
+    number_of_followers: str = None,
+    number_of_following: str = None,
 ) -> bool:
     session = get_session()
-    account = get_account(username)
+    account = session.query(InstagramAccount).filter_by(username=username).first()
     if account is None:
         return False
 
@@ -43,4 +43,5 @@ def update_account(
         account.number_of_following = number_of_following
 
     session.commit()
+    session.close()
     return True
