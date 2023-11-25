@@ -5,8 +5,10 @@ from fastapi import FastAPI, Request, Depends
 from .schemas import (
     PersonListSchema,
     PersonDetailSchema,
+    InstagramProfileListSchema,
+    InstagramAccountDetailsSchema,
 )
-from ..models import Person, InstagramImages, InstagramAccount
+from ..models import Person, InstagramAccount
 from ..database import get_session, Session
 
 app = FastAPI()
@@ -38,18 +40,51 @@ async def instagram_profiles(requests: Request, db: Session = Depends(get_sessio
     accounts = db.query(InstagramAccount).all()
 
     account_schemas = [
-        PersonListSchema(
+        InstagramProfileListSchema(
             id=account.id,
             username=account.username,
-            number_of_posts=account.number_of_posts,
-            number_of_followers=account.number_of_followers,
-            number_of_following=account.number_of_following,
         )
         for account in accounts
     ]
 
     return templates.TemplateResponse(
         "instagram.html", {"request": requests, "accounts": account_schemas}
+    )
+
+
+@app.get("/instagram/{account_id}", response_class=HTMLResponse)
+async def instagram_profile(
+    account_id: int, requests: Request, db: Session = Depends(get_session)
+):
+    account = (
+        db.query(InstagramAccount).filter(InstagramAccount.id == account_id).first()
+    )
+
+    if account is None:
+        return {"message": "Account not found"}
+
+    images = []
+    if account.images is not None and isinstance(account.images, list):
+        images = [
+            {
+                "id": image.id,
+                "url": image.url,
+                "account_id": image.account_id,
+            }
+            for image in account.images
+        ]
+
+    person_data = InstagramAccountDetailsSchema(
+        id=account.id,
+        username=account.username,
+        number_of_followers=account.number_of_followers,
+        number_of_following=account.number_of_following,
+        number_of_posts=account.number_of_posts,
+        images=images,
+    )
+
+    return templates.TemplateResponse(
+        "instagram_profile.html", {"request": requests, "account": person_data}
     )
 
 

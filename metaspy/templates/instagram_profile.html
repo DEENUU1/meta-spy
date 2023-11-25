@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block meta_title %} MetaSpy | {{ account.id }} {% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="card text-center">
+    <div class="card-header">
+      <h3>{{ account.username }}</h3>
+      <a href="https://instagram.com/{{account.username}}" class="btn btn-primary">Instagram account</a>
+    </div>
+    <div class="card-body">
+      {% if account.number_of_followers %}
+      <p><strong>Number of followers: </strong> {{ account.number_of_followers }}</p>
+      {% endif %}
+      {% if account.number_of_following %}
+      <p><strong>Number of following: </strong> {{ account.number_of_following }}</p>
+      {% endif %}
+      {% if account.number_of_posts %}
+      <p> <strong>Number of posts: </strong>{{ account.number_of_posts }}</p>
+      {% endif  %}
+    </div>
+  </div>
+
+<div class="row mt-4" >
+
+  {% if account.images %}
+    <div class="col-md-6 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Images</h5>
+          <ul>
+            {% for image in account.images %}
+               <a href="{{ image.url }}">{{ image.id }}</a> <br>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+
+
+
+</div>
+
+
+{% endblock %}

@@ -139,9 +139,15 @@ class InstagramImageSchema(BaseModel):
     account_id: int
 
 
-class InstagramAccountSchema(BaseModel):
+class InstagramProfileListSchema(BaseModel):
+    id: int
+    username: str
+
+
+class InstagramAccountDetailsSchema(BaseModel):
     id: int
     username: str
     number_of_posts: Optional[int] = None
     number_of_followers: Optional[int] = None
     number_of_following: Optional[int] = None
+    images: Optional[List[InstagramImageSchema]] = None
