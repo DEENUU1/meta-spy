@@ -129,7 +129,7 @@ This command allows to search for: places, pages, person, groups, events, posts
 
 
 ```bash
-python main.py search <"Search Query"> <results> <option_1> <option_2> ... 
+python main.py fb-search <"Search Query"> <results> <option_1> <option_2> ... 
 
 Options:
 --post # Search for posts based on given query
@@ -149,7 +149,7 @@ Result's will be saved in this directory /facebookspy/scraped_data/
 
 #### Example
 ```bash
-python main.py search "Poland" 20 --post --place --event
+python main.py fb-search "Poland" 20 --post --place --event
 ```
 
 ![Search  Scraper Console](https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/search.gif?raw=true)

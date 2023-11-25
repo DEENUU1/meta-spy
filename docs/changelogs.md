@@ -6,8 +6,57 @@
 ## Version history
 
 ### 1.4 
-- Change commands format 
-- Improve instagram scrapers 
+- Download scraped images from instagram profile
+- Save url of an image to database instead of path of downloaded file
+- Display Instagram account and scraped data in web application
+- Improve commands to make them easier
+
+```bash
+python main.py fb-search <"Search Query"> <results> <option_1> <option_2> ... 
+
+Options:
+--post # Search for posts based on given query
+--results # Number of results 
+--people # Search for people based on given query
+--group # Search for group based on given query
+--place # Search for place based on given query
+--event # Search for event based on given query
+--page # Search for page based on given query
+```
+```bash
+python main.py fb-account <facebook_id> <option_1> <option_2> ...
+
+Options:
+--work # Scrape work and education information from the given facebook account
+--contact # Scrape contact data from the given facebook account
+--location # Scrape location data from the given facebook account
+--family # Scrape family members data from the given facebook account
+--name # Scrape full name from the given facebook account
+--friends # Scrape friends list from the given facebook account 🛑 Page not support
+--images # Scrape images from the given facebook account 
+--recent # Scrape recent places from the given facebook account 🛑 Page not support
+--reels # Scrape urls for reels from the given facebook account
+--reviews # Scrape reviews from the given facebook account
+--videos # Scrape urls for videos from the given facebook account
+--da # Download all videos from the given facebook account
+--dn # Download only new videos from the given facebook account
+--posts # Scrape all posts from the given facebook account
+--details # Scrape details of posts from the given facebook account
+--likes # Scrape likes from the given facebook account
+--groups # Scrape groups from the given facebook account
+--events # Scrape events from the given facebook account
+```
+
+```bash
+python  main.py insta-account <id> <option_1> <option_2> ...
+
+Options:
+--images
+--stats
+
+```
+
+
 
 ### 1.3 
 - Change the name of a project to "Meta Spy"
