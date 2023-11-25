@@ -136,3 +136,12 @@ class PersonDetailSchema(BaseModel):
 class InstagramImageSchema(BaseModel):
     id: int
     url: str
+    account_id: int
+
+
+class InstagramAccountSchema(BaseModel):
+    id: int
+    username: str
+    number_of_posts: Optional[int] = None
+    number_of_followers: Optional[int] = None
+    number_of_following: Optional[int] = None

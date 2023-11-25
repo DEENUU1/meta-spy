@@ -6,9 +6,8 @@ from .schemas import (
     PersonListSchema,
     PersonDetailSchema,
 )
-from ..models import Person, InstagramImages
+from ..models import Person, InstagramImages, InstagramAccount
 from ..database import get_session, Session
-import os
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -35,10 +34,22 @@ async def person(request: Request, db: Session = Depends(get_session)):
 
 
 @app.get("/instagram", response_class=HTMLResponse)
-async def instagram_images(requests: Request, db: Session = Depends(get_session)):
-    images = db.query(InstagramImages).all()
+async def instagram_profiles(requests: Request, db: Session = Depends(get_session)):
+    accounts = db.query(InstagramAccount).all()
+
+    account_schemas = [
+        PersonListSchema(
+            id=account.id,
+            username=account.username,
+            number_of_posts=account.number_of_posts,
+            number_of_followers=account.number_of_followers,
+            number_of_following=account.number_of_following,
+        )
+        for account in accounts
+    ]
+
     return templates.TemplateResponse(
-        "instagram.html", {"request": requests, "images": images}
+        "instagram.html", {"request": requests, "accounts": account_schemas}
     )
 
 
