@@ -95,7 +95,7 @@ def test_person_relationships_model_successfully_create_object(session):
 
     family_member = FamilyMember(full_name="Mother", person=person)
     friend = Friends(full_name="Friend 1", person=person)
-    image = Image(path="/path/to/image.jpg", person=person)
+    image = Image(url="https://example.com", person=person)
     place = Places(name="Workplace", date="2023-07-27", person=person)
     work_education = WorkAndEducation(name="Teacher", person=person)
 

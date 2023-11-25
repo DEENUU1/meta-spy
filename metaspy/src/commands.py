@@ -206,9 +206,7 @@ def download_video(
 
 
 @app.command()
-def scrape_post_details(
-    url: Annotated[str, typer.Argument(help="Facebook post url")]
-) -> None:
+def post_details(url: Annotated[str, typer.Argument(help="Facebook post url")]) -> None:
     """Scrape detail of specified post"""
 
     rprint(f"Start scraping posts details")
@@ -289,29 +287,6 @@ def fb_account(
     ] = False,
 ) -> None:
     time_start = time()
-
-    # if (
-    #     not work
-    #     or not contact
-    #     or not location
-    #     or not family
-    #     or not name
-    #     or not friends
-    #     or not images
-    #     or not recent
-    #     or not reels
-    #     or not reviews
-    #     or not videos
-    #     or not da
-    #     or not dn
-    #     or not posts
-    #     or not details
-    #     or not likes
-    #     or not groups
-    #     or not events
-    # ):
-    #     rprint("Please specify at least one option to scrape")
-    #     return
 
     if work:
         wae = AccountBasic(id)
@@ -451,10 +426,6 @@ def insta_account(
         )
         return
     else:
-        # if not images or not stats:
-        #     rprint("Please specify at least one option to scrape")
-        #     return
-
         if images:
             scraper = ProfileScraper(id)
             scraper.pipeline_images()
