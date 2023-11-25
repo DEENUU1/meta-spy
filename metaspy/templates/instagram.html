@@ -1,17 +1,17 @@
 {% extends 'base.html' %}
-{% block meta_title %} MetaSpy | Person list {% endblock %}
+{% block meta_title %} MetaSpy | Instagram profiles {% endblock %}
 
 {% block content %}
 <div class="container">
-    <h1 class="text-center mb-5 mt-5">Instagram images</h1>
+    <h1 class="text-center mb-5 mt-5">Instagram profiles</h1>
     <div class="row">
-        {% for image in images %}
+        {% for account in accounts %}
         <div class="col-md-6">
             <div class="card mb-3">
                 <div class="card-body">
-                    <a class="btn btn-primary" href="{{image.url}}">
-                        <img src="{{ image.url }} alt={{ image.url }}"/>
-                    </a>
+                    <h5 class="card-title"><a href="{{ url_for('instagram_profile', account_id=account.id) }}">{{ account.username }}</a></h5>
+                    <p class="card-text"><strong>Instagram ID:</strong> {{ account.username }}</p>
+                    <a class="btn btn-primary" href="https://www.instagram.com/{{account.username}}">Instagram account</a>
                 </div>
             </div>
         </div>

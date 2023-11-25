@@ -223,7 +223,7 @@
     <ul class="list-unstyled text-center">
       {% for image in person.images %}
         <li>
-          <img src="{{ url_for('images', path=image.path) }}" alt="{{ image.path }}" class="img-fluid">
+          <a href="{{ image.url }}">{{ image.id  }}</a>
         </li>
       {% endfor %}
     </ul>

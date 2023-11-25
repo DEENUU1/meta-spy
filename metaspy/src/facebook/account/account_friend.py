@@ -23,6 +23,7 @@ class AccountFriend(BaseFacebookScraper):
         )
         self.success = False
         self.crawler = crawler
+        self.number_of_friends = number_of_friends
 
     def _load_cookies_and_refresh_driver(self) -> None:
         """Load cookies and refresh driver"""

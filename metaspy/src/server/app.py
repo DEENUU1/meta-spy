@@ -5,17 +5,14 @@ from fastapi import FastAPI, Request, Depends
 from .schemas import (
     PersonListSchema,
     PersonDetailSchema,
+    InstagramProfileListSchema,
+    InstagramAccountDetailsSchema,
 )
-from ..models import Person, InstagramImages
+from ..models import Person, InstagramAccount
 from ..database import get_session, Session
-import os
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
-if "create_image" in os.environ:
-    if not os.path.exists("images"):
-        os.makedirs("images")
-app.mount("/images", StaticFiles(directory="images"), name="images")
 templates = Jinja2Templates(directory="templates")
 
 
@@ -39,10 +36,55 @@ async def person(request: Request, db: Session = Depends(get_session)):
 
 
 @app.get("/instagram", response_class=HTMLResponse)
-async def instagram_images(requests: Request, db: Session = Depends(get_session)):
-    images = db.query(InstagramImages).all()
+async def instagram_profiles(requests: Request, db: Session = Depends(get_session)):
+    accounts = db.query(InstagramAccount).all()
+
+    account_schemas = [
+        InstagramProfileListSchema(
+            id=account.id,
+            username=account.username,
+        )
+        for account in accounts
+    ]
+
     return templates.TemplateResponse(
-        "instagram.html", {"request": requests, "images": images}
+        "instagram.html", {"request": requests, "accounts": account_schemas}
+    )
+
+
+@app.get("/instagram/{account_id}", response_class=HTMLResponse)
+async def instagram_profile(
+    account_id: int, requests: Request, db: Session = Depends(get_session)
+):
+    account = (
+        db.query(InstagramAccount).filter(InstagramAccount.id == account_id).first()
+    )
+
+    if account is None:
+        return {"message": "Account not found"}
+
+    images = []
+    if account.images is not None and isinstance(account.images, list):
+        images = [
+            {
+                "id": image.id,
+                "url": image.url,
+                "account_id": image.account_id,
+            }
+            for image in account.images
+        ]
+
+    person_data = InstagramAccountDetailsSchema(
+        id=account.id,
+        username=account.username,
+        number_of_followers=account.number_of_followers,
+        number_of_following=account.number_of_following,
+        number_of_posts=account.number_of_posts,
+        images=images,
+    )
+
+    return templates.TemplateResponse(
+        "instagram_profile.html", {"request": requests, "account": person_data}
     )
 
 
@@ -85,7 +127,7 @@ async def person_detail(
         images = [
             {
                 "id": image.id,
-                "path": image.path.replace("\\", "/").replace("images/", ""),
+                "url": image.url,
                 "person_id": image.person_id,
             }
             for image in person.images
@@ -172,11 +214,9 @@ async def person_detail(
                 "author": post.author,
                 "image_urls": post.image_urls,
                 "scraped": post.scraped,
-                "score": post.score,
             }
             for post in person.posts
         ]
-
     likes = []
     if person.likes is not None and isinstance(person.likes, list):
         likes = [

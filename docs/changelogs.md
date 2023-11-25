@@ -1,9 +1,13 @@
 # Change log
 
 
-## Current version: 1.3
+## Current version: 1.4
 
 ## Version history
+
+### 1.4 
+- Change commands format 
+- Improve instagram scrapers 
 
 ### 1.3 
 - Change the name of a project to "Meta Spy"

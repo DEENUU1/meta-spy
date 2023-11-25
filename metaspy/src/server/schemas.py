@@ -27,7 +27,7 @@ class FriendsSchema(BaseModel):
 
 class ImageSchema(BaseModel):
     id: int
-    path: str
+    url: str
     person_id: int
 
 
@@ -76,12 +76,12 @@ class PostSchema(BaseModel):
     id: int
     url: str
     person_id: int
-    content: Optional[str]
-    number_of_likes: Optional[int]
-    image_urls: Optional[Dict[str, str]]
+    content: Optional[str] = None
+    number_of_likes: Optional[int] = None
+    image_urls: Optional[Dict[str, str]] = None
     scraped: bool
-    source: PostSource
-    author: Optional[str]
+    source: Optional[PostSource] = PostSource.ACCOUNT
+    author: Optional[str] = None
 
 
 class LikesSchema(BaseModel):
@@ -136,4 +136,18 @@ class PersonDetailSchema(BaseModel):
 class InstagramImageSchema(BaseModel):
     id: int
     url: str
-    downloaded: bool = False
+    account_id: int
+
+
+class InstagramProfileListSchema(BaseModel):
+    id: int
+    username: str
+
+
+class InstagramAccountDetailsSchema(BaseModel):
+    id: int
+    username: str
+    number_of_posts: Optional[int] = None
+    number_of_followers: Optional[str] = None
+    number_of_following: Optional[str] = None
+    images: Optional[List[InstagramImageSchema]] = None

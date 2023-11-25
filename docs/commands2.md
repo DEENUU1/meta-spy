@@ -3,10 +3,19 @@
 ## Info!
 Before you will continue check the installation guide.
 
-#### Scrape all image urls from user's profile 
+## Account scraper
+
+#### insta-account
 ```bash
-python  main.py instagram-profile-images <instagram_id>
+python  main.py insta-account <id> <option_1> <option_2> ...
+
+Options:
+--images
+--stats
+
 ```
 
-This command allows you to scrape all images from instagram account and save urls to the JSON file.
-
+##### Example
+```bash
+python main.py insta-account zuck --images --stats 
+```

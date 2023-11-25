@@ -1,6 +1,4 @@
 from ..facebook.scraper import Scraper
-import pickle
-from rich import print as rprint
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from ..config import Config

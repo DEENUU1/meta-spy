@@ -45,7 +45,7 @@ class Image(Base):
     __tablename__ = "images"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    path = Column(String, nullable=False)
+    url = Column(String, nullable=False)
     person_id = Column(Integer, ForeignKey("persons.id"))
 
     # Relationship
@@ -229,9 +229,25 @@ class CrawlerQueue(Base):
     status = Column(Boolean, default=False)
 
 
+class InstagramAccount(Base):
+    __tablename__ = "iaccounts"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    username = Column(String, nullable=False)
+    number_of_posts = Column(Integer, nullable=True)
+    number_of_followers = Column(String, nullable=True)
+    number_of_following = Column(String, nullable=True)
+
+    # Relationship
+    images = relationship("InstagramImages", back_populates="account")
+
+
 class InstagramImages(Base):
-    __tablename__ = "instagram_posts"
+    __tablename__ = "iimages"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     url = Column(String, nullable=False)
-    downloaded = Column(Boolean, default=False)
+    account_id = Column(Integer, ForeignKey("iaccounts.id"))
+
+    # Relationship
+    account = relationship("InstagramAccount", back_populates="images")

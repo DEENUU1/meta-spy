@@ -15,14 +15,6 @@ This issue doesn't occur while facebook account has a custom id in url (https://
 
 I am working on to fix this issue. 
 
-## Basic commands
-
-#### Version
-Display current version of the project
-```bash
-python main.py version
-```
-
 ## Log in
 #### 2-step verification
 ```bash
@@ -37,114 +29,45 @@ python main.py login
 - By default this commands were created to scrape accounts but many of them also works for pages 
 - If some option doesn't work for a PAGE there is a note like this "🛑 Page not support"
 
-#### Basic scraping 
-This command allows to scrape history of employment and education, full name, family members, contact data and visited places
+#### fb-account
 
-From version v1.2 this command can run all selected scrapers in parallel
 ```bash
-python main.py scrape-basic-data <facebook_id>
+python main.py fb-account <facebook_id> <option_1> <option_2> ...
+
+Options:
+--work # Scrape work and education information from the given facebook account
+--contact # Scrape contact data from the given facebook account
+--location # Scrape location data from the given facebook account
+--family # Scrape family members data from the given facebook account
+--name # Scrape full name from the given facebook account
+--friends # Scrape friends list from the given facebook account 🛑 Page not support
+--images # Scrape images from the given facebook account 
+--recent # Scrape recent places from the given facebook account 🛑 Page not support
+--reels # Scrape urls for reels from the given facebook account
+--reviews # Scrape reviews from the given facebook account
+--videos # Scrape urls for videos from the given facebook account
+--da # Download all videos from the given facebook account
+--dn # Download only new videos from the given facebook account
+--posts # Scrape all posts from the given facebook account
+--details # Scrape details of posts from the given facebook account
+--likes # Scrape likes from the given facebook account
+--groups # Scrape groups from the given facebook account
+--events # Scrape events from the given facebook account
+
 ```
-After running this command use arrows keys to navigate through the list of possible scrapers <br>
-- Use Arrow Up/Arrow Down to go Up and Down 
-- Use Arrow Right to select scraper 
-- User Arrow Left to delete selected scraper
-
-![Basic Scraper Console](https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/basic.gif?raw=true)
-![Basic Scraper Console](https://github.com/DEENUU1/facebook-spy/blob/main/assets/scrapebasicdataconsole.png?raw=true)
-
-#### Full scraping
-From version v1.2 this command can run all selected scrapers in parallel
-- If you provide only 1 username all selected scrapers will be launched in parallel
-- By providing more than 1 username it's gonna scrape them in parallel
-
-This command allows to choose all available commands to scrape facebook profiles
-
-Also you are able to add multiply facebook profile ids as a single argument 
-
-To scrape one account your command should looks likes this
+##### For example 
 ```bash
-python main.py full-scrape <facebook_id>
+python main.py zuck --work --contact --family --friends
 ```
+## Posts
 
-![Full Scraper Console](https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/full.gif?raw=true)
-
-TO scrape multiply accounts user command should looks like this
-```bash
-python main.py full-scrape <facebook_id> <facebook_id> <facebook_id> ... 
-```
-
-After running this command use arrows keys to navigate through the list of possible scrapers <br>
-- Use Arrow Up/Arrow Down to go Up and Down 
-- Use Arrow Right to select scraper 
-- User Arrow Left to delete selected scraper
-
-![Basic Scraper Console](https://github.com/DEENUU1/facebook-spy/blob/main/assets/fullscrapeconsole.png?raw=true)
-
-
-#### Friend list 🛑 Page not support
-```bash
-python main.py scrape-friend-list <facebook_id>
-```
-#### Image
-Scrape and download images from user's facebook profile
-```bash
-python main.py scrape-images <facebook_id>
-```
-#### Recent places 🛑 Page not support
-```bash
-python main.py scrape-recent-places <facebook_id>
-```
-#### Videos
-Scrape only urls of videos from user's facebook profile
-```bash
-python main.py scrape-video-urls <facebook_id>
-```
-#### Reels
-Scrape only urls of reels from user's facebook profile
-```bash
-python main.py scrape-reels <facebook_id>
-```
-#### Reviews
-```bash
-python main.py scrape-reviews <facebook_id>
-```
-
-#### Posts
-Scrape post urls from user's facebook profile
-```bash
-python main.py scrape-person-posts <facebook_id>
-```
-
-Scrape post details (content, number of likes;comments;shares etc) based on previously scraped post urls for specified facebook profile
-```bash
-python main.py scrape-person-post-details <facebook_id>
-```
-
+#### post-details
 Scrape post details based on post URL 
 - In database Posts scraped based on a given URL are in relation with object Person with ID - "Anonymous"
 ```bash
-python main.py scrape-post-details "<post_url>"
+python main.py post-details "<post_url>"
 ```
 I recommend to paste post url inside " " to avoid errors 
-
-#### Likes
-Scrape likes from facebook account 
-```bash
-python main.py scrape-person-likes <facebook_id> 
-```
-
-#### Groups
-Scrape groups from facebook account
-```bash
-python main.py scrape-person-groups <facebook_id>
-```
-
-#### Events
-Scrape events from facebook account
-```bash
-python main.py scrape-person-events <facebook_id>
-```
-
 
 
 ## Local Web Application
@@ -157,22 +80,10 @@ python main.py server
 
 
 ## Video downloader
-Download Videos based on previously scraped urls from facebook profile 
-```bash
-python main.py download-person-videos <facebook_id>
-```
-After running this command use arrows keys to navigate through the list of possible scrapers <br>
-- Use Arrow Up/Arrow Down to go Up and Down 
-- Use Arrow Right to select scraper 
-- User Arrow Left to delete selected scraper
-
-![Basic Scraper Console](https://github.com/DEENUU1/facebook-spy/blob/main/assets/downloadvideosconsole.png?raw=true)
-
 Download single video from facebook 
 ```bash
 python main.py download-video <facebook_video_url>
 ```
-
 
 ## Analitics 
 #### Graph
@@ -218,7 +129,16 @@ This command allows to search for: places, pages, person, groups, events, posts
 
 
 ```bash
-python main.py search < "Search Query" > < number_of_results > 
+python main.py search <"Search Query"> <results> <option_1> <option_2> ... 
+
+Options:
+--post # Search for posts based on given query
+--results # Number of results 
+--people # Search for people based on given query
+--group # Search for group based on given query
+--place # Search for place based on given query
+--event # Search for event based on given query
+--page # Search for page based on given query
 ```
 
 - Search query should be in double " "
@@ -226,5 +146,10 @@ python main.py search < "Search Query" > < number_of_results >
 
 After running this command you can select which data you would like to scrape 
 Result's will be saved in this directory /facebookspy/scraped_data/
+
+#### Example
+```bash
+python main.py search "Poland" 20 --post --place --event
+```
 
 ![Search  Scraper Console](https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/search.gif?raw=true)
