@@ -6,33 +6,33 @@ from ..models import (
 )
 
 
-def image_exists(path: str, person_id: int) -> bool:
+def image_exists(url: str, person_id: int) -> bool:
     """Check if Image object exists
 
     Args:
-        path (str): Path
+        url (str): Url
         person_id (int): Person ID
 
     Returns:
         bool: True if exists, False otherwise.
     """
     session = get_session()
-    image = session.query(Image).filter_by(path=path, person_id=person_id).first()
+    image = session.query(Image).filter_by(url=url, person_id=person_id).first()
     return image is not None
 
 
-def create_image(path: str, person_id: int) -> Image:
+def create_image(url: str, person_id: int) -> Image:
     """Create Image object
 
     Args:
         person_id (int): Person ID
-        path (str): Path
+        url (str): Url
 
     Returns:
         Image: Image object
     """
     session = get_session()
-    image = Image(path=path, person_id=person_id)
+    image = Image(url=url, person_id=person_id)
     session.add(image)
     session.commit()
     return image

@@ -45,7 +45,7 @@ class Image(Base):
     __tablename__ = "images"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    path = Column(String, nullable=False)
+    url = Column(String, nullable=False)
     person_id = Column(Integer, ForeignKey("persons.id"))
 
     # Relationship
@@ -246,8 +246,7 @@ class InstagramImages(Base):
     __tablename__ = "iimages"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    path = Column(String, nullable=False)
-    downloaded = Column(Boolean, default=False)
+    url = Column(String, nullable=False)
     account_id = Column(Integer, ForeignKey("iaccounts.id"))
 
     # Relationship

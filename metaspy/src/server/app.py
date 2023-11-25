@@ -12,10 +12,6 @@ import os
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
-if "create_image" in os.environ:
-    if not os.path.exists("images"):
-        os.makedirs("images")
-app.mount("/images", StaticFiles(directory="images"), name="images")
 templates = Jinja2Templates(directory="templates")
 
 
@@ -85,7 +81,7 @@ async def person_detail(
         images = [
             {
                 "id": image.id,
-                "path": image.path.replace("\\", "/").replace("images/", ""),
+                "url": image.url,
                 "person_id": image.person_id,
             }
             for image in person.images
@@ -172,11 +168,9 @@ async def person_detail(
                 "author": post.author,
                 "image_urls": post.image_urls,
                 "scraped": post.scraped,
-                "score": post.score,
             }
             for post in person.posts
         ]
-
     likes = []
     if person.likes is not None and isinstance(person.likes, list):
         likes = [

@@ -58,12 +58,12 @@ def test_create_friend_model_successfully_create_object(session):
 
 def test_create_image_model_successfully_create_object(session):
     person = Person(full_name="John Smith", url="https://example.com/john_smith")
-    image = Image(path="/path/to/image.jpg", person=person)
+    image = Image(url="https://example.com", person=person)
     session.add(image)
     session.commit()
 
     assert image.id is not None
-    assert image.path == "/path/to/image.jpg"
+    assert image.url == "https://example.com"
     assert image.person == person
 
 

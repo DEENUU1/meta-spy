@@ -161,8 +161,8 @@ class ProfileScraper(BaseInstagramScraper):
                     instagram_account_repository.create_account(self._user_id)
 
                 account_id = instagram_account_repository.get_account(self._user_id).id
-                for image_path in image_paths:
-                    instagram_image_repository.create_image(image_path, account_id)
+                for url in image_urls:
+                    instagram_image_repository.create_image(url, account_id)
 
                 self._driver.quit()
                 self.success = True

@@ -9,9 +9,9 @@ def image_exists(url: str) -> bool:
     return image is not None
 
 
-def create_image(path: str, account_id: int) -> InstagramImages:
+def create_image(url: str, account_id: int) -> InstagramImages:
     session = get_session()
-    image = InstagramImages(path=path, account_id=account_id)
+    image = InstagramImages(url=url, account_id=account_id)
     session.add(image)
     session.commit()
     return image
