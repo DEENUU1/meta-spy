@@ -20,7 +20,7 @@ def event_exists(name: str, person_id: int) -> bool:
     return person is not None
 
 
-def create_event(person_id: int, name: str, url: str = None) -> Events:
+def create_event(person_id: int, name: str, url: str = None) -> bool | Events:
     """
     Create or update a Events object.
 

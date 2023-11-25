@@ -21,9 +21,13 @@ Change directory to metaspy to run commands
 cd metaspy
 ```
 
+[Check general commands](generalcommands.md){ .md-button}
+
 [Check available commands for Facebook](commands.md){ .md-button } <br>
 
 [Check available commands for Instagram](commands2.md){ .md-button}
+
+
 
 ### Instagram configuration 
 To use Instagram scraper go to the .env file and add your sessionid 

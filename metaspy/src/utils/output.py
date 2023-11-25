@@ -9,6 +9,12 @@ def print_data_from_list_of_dict(data: List[Dict]) -> None:
         rprint(f" - {entry}")
 
 
+def print_data_from_dict(data: Dict) -> None:
+    rprint(f"[bold green] Scraped data: [/bold green]")
+
+    rprint(f" - {data}")
+
+
 def print_string(data: str) -> None:
     rprint("[bold green] Scraped data: [/bold green]")
     rprint(f" - {data}")
