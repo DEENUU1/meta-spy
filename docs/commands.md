@@ -53,8 +53,8 @@ Options:
 --likes # Scrape likes from the given facebook account
 --groups # Scrape groups from the given facebook account
 --events # Scrape events from the given facebook account
-
 ```
+
 ##### For example 
 ```bash
 python main.py zuck --work --contact --family --friends

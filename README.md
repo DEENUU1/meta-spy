@@ -59,7 +59,8 @@ One notable limitation of the tool is that some scrapers may not work correctly 
 - Save scraped data for a specified Facebook user to PDF file for documentation and anylysis.
 - Running scrapers in parallel to speed up the data collection process
 - Save all scraped data to JSON files and database 
-- Scrape image urls from Instagram profile and save data to JSON file 
+- Scrape image urls and download them from Instagram profile and save data to JSON file 
+- Scrape Instagram profile stats (number of posts, number of followers, number of following)
 
 ### Built With
 
@@ -133,46 +134,54 @@ python main.py login
 
 #### Search
 ```bash
-python main.py search < "Search query" > < number_of_results> 
+python main.py fb-search <"Search Query"> <results> <option_1> <option_2> ... 
+
+Options:
+--post # Search for posts based on given query
+--results # Number of results 
+--people # Search for people based on given query
+--group # Search for group based on given query
+--place # Search for place based on given query
+--event # Search for event based on given query
+--page # Search for page based on given query
 ```
 
 <img src="https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/search.gif?raw=true" alt="Logo" >
 
 
-#### Scrape basic data
-
+#### Scrape Facebook account/page
 ```bash
-python main.py scrape-basic-data <facebook_id>
-```
-<img src="assets/v1_2/basic.gif" alt="Logo" >
-<img src="assets/new/scrapebasicdata.png" alt="Logo" >
+python main.py fb-account <facebook_id> <option_1> <option_2> ...
 
-
-#### Full scraping
-This one works for multiply users
-```bash
-python main.py full-scrape <facebook_id> <facebook_id> ... <facebook_id>
-```
-<img src="https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/full.gif?raw=true" alt="Logo" ><img src="assets/new/fullscrape1.png" alt="Logo" >
-
-
-#### Scrape images
-
-```bash
-python main.py scrape-images <facebook_id>
-```
-
-<img src="assets/new/scrapeimages.png" alt="Logo" >
-
-
-#### Scrape videos
-After successfull scrape you are able to download this videos
-```bash
-python main.py scrape-video-urls <facebook_id>
+Options:
+--work # Scrape work and education information from the given facebook account
+--contact # Scrape contact data from the given facebook account
+--location # Scrape location data from the given facebook account
+--family # Scrape family members data from the given facebook account
+--name # Scrape full name from the given facebook account
+--friends # Scrape friends list from the given facebook account 🛑 Page not support
+--images # Scrape images from the given facebook account 
+--recent # Scrape recent places from the given facebook account 🛑 Page not support
+--reels # Scrape urls for reels from the given facebook account
+--reviews # Scrape reviews from the given facebook account
+--videos # Scrape urls for videos from the given facebook account
+--da # Download all videos from the given facebook account
+--dn # Download only new videos from the given facebook account
+--posts # Scrape all posts from the given facebook account
+--details # Scrape details of posts from the given facebook account
+--likes # Scrape likes from the given facebook account
+--groups # Scrape groups from the given facebook account
+--events # Scrape events from the given facebook account
 ```
 
-<img src="assets/new/scrapevideos1.png" alt="Logo" >
+#### Scrape Instagram account
+```bash
+python  main.py insta-account <id> <option_1> <option_2> ...
 
+Options:
+--images
+--stats
+```
 
 #### Friend crawler
 This command works similarly to the command that scrapes data about a given user's friends list. The difference, however, is that after scraping and creating Friend objects, it also creates objects for the CrawlerQueue model and after successfully scraping friends for one user, it proceeds to scraping the list of friends for the next user in the queue.
