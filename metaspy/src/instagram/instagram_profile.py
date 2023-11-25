@@ -161,6 +161,13 @@ class ProfileScraper(BaseInstagramScraper):
 
         return extracted_image_urls
 
+    def get_number_of_likes(self) -> None:
+        try:
+            result = None
+
+        except Exception as e:
+            logs.log_error(f"An error occurred: {e}")
+
     def pipeline_stats(self) -> None:
         try:
             rprint(f"[bold]Step 1 of 2 - Loading profile page[/bold]")

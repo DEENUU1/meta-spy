@@ -248,7 +248,7 @@ class InstagramImages(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     url = Column(String, nullable=False)
     account_id = Column(Integer, ForeignKey("iaccounts.id"))
-    number_of_likes = Column(Integer, nullable=True)
+    number_of_likes = Column(String, nullable=True)
 
     # Relationship
     account = relationship("InstagramAccount", back_populates="images")
