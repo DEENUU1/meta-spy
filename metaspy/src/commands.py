@@ -457,7 +457,7 @@ def insta_account(
             scraper.pipeline_images()
 
     time_end = time()
-    rprint(f"Scraping finished after {time_start - time_end} seconds")
+    rprint(f"Scraping finished after {time_end - time_start} seconds")
 
 
 if __name__ == "__main__":
