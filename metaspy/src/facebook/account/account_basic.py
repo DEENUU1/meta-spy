@@ -82,6 +82,8 @@ class AccountBasic(BaseFacebookScraper):
     def extract_places(self) -> List[Dict[str, str]]:
         """Return history of places"""
         places = []
+        unique_names = set()
+
         try:
             self._driver.get(f"{self._base_url}/{Config.PLACES_URL}")
 
@@ -100,7 +102,9 @@ class AccountBasic(BaseFacebookScraper):
                 )
                 date = date_element.text.strip()
 
-                places.append({"name": name, "date": date})
+                if name not in unique_names:
+                    unique_names.add(name)
+                    places.append({"name": name, "date": date})
 
         except Exception as e:
             logs.log_error(f"Error extracting localization data: {e}")
