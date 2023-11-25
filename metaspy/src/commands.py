@@ -374,10 +374,6 @@ def fb_search(
 ) -> None:
     time_start = time()
 
-    if not post or not people or not group or not place or not event or not page:
-        rprint("Please select at least one option")
-        return
-
     if post:
         post_scraper = search_post.SearchPost(query, results)
         post_scraper.pipeline()
