@@ -248,6 +248,19 @@ class InstagramImages(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     url = Column(String, nullable=False)
     account_id = Column(Integer, ForeignKey("iaccounts.id"))
+    number_of_likes = Column(Integer, nullable=True)
 
     # Relationship
     account = relationship("InstagramAccount", back_populates="images")
+    comments = relationship("Comments", back_populates="iimage")
+
+
+class Comments(Base):
+    __tablename__ = "comments"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    content = Column(String, nullable=False)
+    iimage_id = Column(Integer, ForeignKey("iimages.id"))
+
+    # Relationship
+    iimage = relationship("InstagramImages", back_populates="comments")
