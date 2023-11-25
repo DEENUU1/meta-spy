@@ -288,6 +288,8 @@ def fb_account(
         bool, typer.Option(help="Scrape events from the given facebook account")
     ] = False,
 ) -> None:
+    time_start = time()
+
     # if (
     #     not work
     #     or not contact
@@ -365,6 +367,9 @@ def fb_account(
         events_scraper = AccountEvents(id)
         events_scraper.pipeline()
 
+    time_end = time()
+    print(f"Scraping finished after {time_end - time_start} seconds")
+
 
 """ Facebook search """
 
@@ -392,6 +397,8 @@ def fb_search(
         bool, typer.Option(help="Search for pages based on given query")
     ] = False,
 ) -> None:
+    time_start = time()
+
     if not post or not people or not group or not place or not event or not page:
         rprint("Please select at least one option")
         return
@@ -415,6 +422,9 @@ def fb_search(
         page_scraper = search_scraper.SearchPage(query, results)
         page_scraper.pipeline()
 
+    time_end = time()
+    print(f"Scraping finished after {time_end - time_start} seconds")
+
 
 """ Instagram """
 
@@ -427,6 +437,8 @@ def insta_account(
     ] = False,
 ) -> None:
     """Scrape instagram account"""
+
+    time_start = time()
 
     session = check_instagram_sessionid()
     if not session:
@@ -443,6 +455,9 @@ def insta_account(
         if il:
             scraper = ProfileScraper(id)
             scraper.pipeline_images()
+
+    time_end = time()
+    rprint(f"Scraping finished after {time_start - time_end} seconds")
 
 
 if __name__ == "__main__":
