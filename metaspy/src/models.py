@@ -252,15 +252,15 @@ class InstagramImages(Base):
 
     # Relationship
     account = relationship("InstagramAccount", back_populates="images")
-    comments = relationship("Comments", back_populates="iimage")
+    comments = relationship("InstagramComments", back_populates="iimage")
 
 
-class Comments(Base):
+class InstagramComments(Base):
     __tablename__ = "comments"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     content = Column(String, nullable=False)
-    iimage_id = Column(Integer, ForeignKey("iimages.id"))
+    image_id = Column(Integer, ForeignKey("iimages.id"))
 
     # Relationship
     iimage = relationship("InstagramImages", back_populates="comments")
