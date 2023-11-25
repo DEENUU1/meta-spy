@@ -136,7 +136,6 @@ class ProfileScraper(BaseInstagramScraper):
         except Exception as e:
             logs.log_error(f"An error occurred: {e}")
 
-        print(data)
         return data
 
     def extract_images(self):
@@ -160,13 +159,6 @@ class ProfileScraper(BaseInstagramScraper):
             logs.log_error(f"An  error occurred while extracting images: {e}")
 
         return extracted_image_urls
-
-    def get_number_of_likes(self) -> None:
-        try:
-            result = None
-
-        except Exception as e:
-            logs.log_error(f"An error occurred: {e}")
 
     def pipeline_stats(self) -> None:
         try:
