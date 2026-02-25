@@ -27,6 +27,7 @@ class AccountBasic(BaseFacebookScraper):
         super().__init__(user_id, base_url=f"https://www.facebook.com/{user_id}")
         self.success = False
 
+
     @property
     def is_pipeline_successful(self) -> bool:
         """Check if pipeline is successful"""
@@ -35,7 +36,6 @@ class AccountBasic(BaseFacebookScraper):
     def _load_cookies_and_refresh_driver(self) -> None:
         """Load cookies and refresh driver"""
         self._load_cookies()
-        self._driver.refresh()
 
     def extract_full_name(self) -> Optional[str]:
         """Extract full name from homepage"""
@@ -182,8 +182,6 @@ class AccountBasic(BaseFacebookScraper):
         Pipeline to run extract work and education data
         """
         try:
-            rprint("[bold]Step 1 of 2 - Load cookies[/bold]")
-            self._load_cookies_and_refresh_driver()
 
             if not person_repository.person_exists(self._user_id):
                 person_repository.create_person(self._user_id)

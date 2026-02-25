@@ -63,34 +63,47 @@ def server() -> None:
 """ Crawler """
 
 
+
 @app.command()
 def friend_crawler(
     name: Annotated[str, typer.Argument(help="Facebook user id")]
 ) -> None:
-    # At first the function is scraping a list of friends for specified user
-    # Create Person and Friend objects just like in a standard friend scraper
-    # But also it create CrawlerQueue objects with url to friend facebook accounts
-
+    # --- FIX: Force name to be a string and preserve dots ---
+    name = str(name).strip()
     rprint(f"Start crawler from {name}")
 
     scraper = AccountFriend(name, crawler=True)
     scraper.pipeline()
 
     if scraper.is_pipeline_successful:
-        # Return a list of users from queue with status False
-        # Which means this user wasn't scraped yet
         users = crawlerqueue_repository.get_crawler_queues_status_false()
         while len(users) > 0:
             for user in users:
-                user_id = get_account_id(user.url)
+                # --- THE BIG FIX ---
+                # Instead of using the 'broken' get_account_id which strips dots,
+                # we will pull the username directly from the URL ourselves.
+                raw_url = str(user.url)
+                if "facebook.com/" in raw_url:
+                    # This slices the URL to get everything after the last '/' 
+                    # while keeping the dots intact.
+                    user_id = raw_url.split('/')[-1].split('?')[0]
+                else:
+                    user_id = get_account_id(raw_url)
+                
+                rprint(f"Next in queue: {user_id}")
                 scraper = AccountFriend(user_id, crawler=True)
                 scraper.pipeline()
 
                 if scraper.is_pipeline_successful:
                     crawlerqueue_repository.delete_crawler_queue(user.id)
+            
+            # Refresh user list for the loop
+            users = crawlerqueue_repository.get_crawler_queues_status_false()
 
     else:
         rprint(f"❌Failed to scrape friends from the main user❌")
+        
+        
 
 
 @app.command()

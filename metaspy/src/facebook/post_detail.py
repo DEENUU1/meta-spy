@@ -30,22 +30,6 @@ class PostDetail(Scraper):
         """Check if pipeline is success"""
         return self.success
 
-    def _load_cookies(self) -> None:
-        """Load cookies with log in session"""
-        try:
-            self._driver.delete_all_cookies()
-            with open(Config.COOKIES_FILE_PATH, "rb") as file:
-                cookies = pickle.load(file)
-                for cookie in cookies:
-                    try:
-                        self._driver.add_cookie(cookie)
-                    except Exception as e:
-                        logs.log_error(f"An Error occurred adding cookies {e}")
-                        rprint(f"An Error occurred while adding cookies {e}")
-
-        except Exception as e:
-            logs.log_error(f"An Error occurred while loading cookies: {e}")
-            rprint(f"An Error occurred while loading cookies {e}")
 
     @staticmethod
     def _extract_number(text: str) -> Optional[int]:
