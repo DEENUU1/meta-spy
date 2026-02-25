@@ -1,34 +1,18 @@
+import pickle
+import os
 from selenium.webdriver.chrome.options import Options
-
+from rich import print as rprint
+from ..config import Config
 
 class Scraper:
     """
     Base class for web scrapers.
-
-    This class provides common methods and configurations for web scraping tasks using Selenium.
-
-    Attributes:
-        None
-
-    Methods:
-        _chrome_driver_configuration() -> Options:
-            Configures Chrome WebDriver options for Selenium.
-
-            Returns:
-                Options: A configured ChromeOptions instance to be used with Chrome WebDriver.
     """
 
     @staticmethod
     def _chrome_driver_configuration() -> Options:
         """
         Configures Chrome WebDriver options for Selenium.
-
-        This static method creates a set of options that can be passed to the Chrome WebDriver
-        when creating an instance of it. These options modify the behavior of the Chrome browser
-        during automated testing or scraping.
-
-        Returns:
-            Options: A configured ChromeOptions instance to be used with Chrome WebDriver.
         """
         chrome_options = Options()
         chrome_options.add_argument("--disable-notifications")
@@ -46,3 +30,46 @@ class Scraper:
         chrome_options.add_argument("--profile-directory=Default")
         chrome_options.add_experimental_option("excludeSwitches", ["enable-logging"])
         return chrome_options
+
+    def _load_cookies(self):
+        """
+        Pulls active Facebook session directly from Firefox with fixed expiry handling.
+        """
+        import browser_cookie3
+        rprint("[bold yellow]🦊 Pulling session from Firefox...[/bold yellow]")
+        
+        self._driver.get("https://www.facebook.com/")
+        
+        try:
+            cj = browser_cookie3.firefox(domain_name='facebook.com')
+            
+            for cookie in cj:
+                # Prepare a clean cookie dictionary
+                new_cookie = {
+                    'name': cookie.name,
+                    'value': cookie.value,
+                    'path': cookie.path,
+                    'domain': '.facebook.com' # Force the domain to ensure matching
+                }
+                
+                # Fix for the 'expiry' error: 
+                # Ensure it's an integer or omit it if it's missing/invalid
+                if cookie.expires:
+                    try:
+                        new_cookie['expiry'] = int(cookie.expires)
+                    except (ValueError, TypeError):
+                        pass # If it's weird, just let Chrome handle it as a session cookie
+                
+                try:
+                    self._driver.add_cookie(new_cookie)
+                except Exception as e:
+                    # Log specific failures but keep going for others
+                    logs.log_error(f"Failed to add individual cookie {cookie.name}: {e}")
+            
+            rprint("[bold green]✅ Firefox session injected! Refreshing...[/bold green]")
+            self._driver.refresh()
+            
+        except Exception as e:
+            rprint(f"[bold red]❌ Failed to pull Firefox cookies: {e}[/bold red]")
+            
+            

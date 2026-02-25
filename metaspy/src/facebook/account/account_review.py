@@ -23,11 +23,6 @@ class AccountReview(BaseFacebookScraper):
         )
         self.success = False
 
-    def _load_cookies_and_refresh_driver(self) -> None:
-        """Load cookies and refresh driver"""
-        self._load_cookies()
-        self._driver.refresh()
-
     @property
     def is_pipeline_successful(self) -> bool:
         return self.success
@@ -71,9 +66,7 @@ class AccountReview(BaseFacebookScraper):
         Pipeline to run the scraper
         """
         try:
-            rprint("[bold]Step 1 of 3 - Load cookies[/bold]")
-            self._load_cookies_and_refresh_driver()
-
+       
             rprint("[bold]Step 2 of 3 - Scrolling page[/bold]")
             scroll_page(self._driver)
 

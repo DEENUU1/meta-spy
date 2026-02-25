@@ -29,11 +29,7 @@ class AccountImage(BaseFacebookScraper):
         super().__init__(user_id, base_url=f"https://www.facebook.com/{user_id}/photos")
         self.success = False
 
-    def _load_cookies_and_refresh_driver(self) -> None:
-        """Load cookies and refresh driver"""
-        self._load_cookies()
-        self._driver.refresh()
-
+  
     @property
     def is_pipeline_successful(self) -> bool:
         return self.success
@@ -143,9 +139,7 @@ class AccountImage(BaseFacebookScraper):
         Pipeline to run the scraper
         """
         try:
-            rprint("[bold]Step 1 of 3 - Load cookies[/bold]")
-            self._load_cookies_and_refresh_driver()
-
+         
             rprint("[bold]Step 2 of 3 - Extract image urls[/bold]")
             image_urls = self.extract_image_urls()
 

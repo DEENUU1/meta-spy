@@ -1,5 +1,5 @@
+import time
 from typing import List
-
 from rich import print as rprint
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
@@ -12,20 +12,10 @@ from ...utils import output, save_to_json
 
 logs = Logs()
 
-
 class AccountPost(BaseFacebookScraper):
-    """
-    Scrape user's friends list
-    """
-
     def __init__(self, user_id: str) -> None:
         super().__init__(user_id, base_url=f"https://www.facebook.com/{user_id}/")
         self.success = False
-
-    def _load_cookies_and_refresh_driver(self) -> None:
-        """Load cookies and refresh driver"""
-        self._load_cookies()
-        self._driver.refresh()
 
     @property
     def is_pipeline_successful(self) -> bool:
@@ -33,71 +23,56 @@ class AccountPost(BaseFacebookScraper):
 
     @staticmethod
     def _extract_url_prefix(url: str) -> str:
-        """Return only the first part of url to avoid creating duplicates"""
         index = url.find("[0]")
-        if index != -1:
-            return url[:index]
-        return url
+        return url[:index] if index != -1 else url
 
     def _perform_hover_action(self, element) -> None:
-        """
-        Perform a hover action on the given element
-        """
         try:
             actions = ActionChains(self._driver)
             actions.move_to_element(element)
             actions.perform()
-        except Exception as e:
-            logs.log_error(f"Error performing hover action: {e}")
+        except: pass
 
     def _move_cursor_away(self) -> None:
-        """
-        Move the cursor away from any element
-        """
-        actions = ActionChains(self._driver)
-        actions.move_by_offset(0, 0).perform()
+        try:
+            actions = ActionChains(self._driver)
+            actions.move_by_offset(0, 0).perform()
+        except: pass
 
     def extract_post_urls(self) -> List[str]:
-        """
-        Return a list urls for posts from facebook account
-        """
         extracted_urls = []
         try:
-
             def extract_callback(driver):
-                elements = driver.find_elements(
-                    By.CSS_SELECTOR,
+                # BROAD SELECTOR: Catches native posts and shared external links (TikTok)
+                # It looks for standard Facebook link patterns in timeline articles
+                selectors = [
                     "a.x1i10hfl.xjbqb8w.x6umtig.x1b1mbwd.xaqea5y.xav7gou.x9f619.x1ypdohk.xt0psk2.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x16tdsg8.x1hl2dhg.xggy1nq.x1a2a7pz.x1heor9g.xt0b8zv.xo1l8bm",
-                )
-                for element in elements:
-                    self._perform_hover_action(element)
-
-                    actual_url = element.get_attribute("href")
-                    parsed_url = self._extract_url_prefix(actual_url)
-                    if parsed_url.endswith("#"):
-                        continue
-                    if parsed_url not in extracted_urls:
-                        rprint(f"Extracted URL: {parsed_url}")
-
-                        extracted_urls.append(parsed_url)
-
-                    self._move_cursor_away()
+                    "div[role='article'] a[href*='/posts/']",
+                    "div[role='article'] a[href*='facebook.com/photo']"
+                ]
+                
+                for selector in selectors:
+                    elements = driver.find_elements(By.CSS_SELECTOR, selector)
+                    for element in elements:
+                        actual_url = element.get_attribute("href")
+                        if not actual_url: continue
+                        
+                        parsed_url = self._extract_url_prefix(actual_url)
+                        if parsed_url.endswith("#") or "facebook.com/l.php" in parsed_url:
+                            continue
+                            
+                        if parsed_url not in extracted_urls:
+                            rprint(f"🔗 Found: {parsed_url}")
+                            extracted_urls.append(parsed_url)
 
             scroll_page_callback(self._driver, extract_callback)
-
         except Exception as e:
             logs.log_error(f"Error extracting post URLs: {e}")
-
         return extracted_urls
 
     def pipeline(self) -> None:
-        """
-        Pipeline to run the scraper
-        """
         try:
-            rprint("[bold]Step 1 of 2 - Load cookies[/bold]")
-            self._load_cookies_and_refresh_driver()
-
+            # Step 1: Extract data (cookies handled by Base class __init__)
             rprint("[bold]Step 2 of 2 - Extracting post urls[/bold]")
             extracted_data = self.extract_post_urls()
 
@@ -106,29 +81,26 @@ class AccountPost(BaseFacebookScraper):
                 self._driver.quit()
                 self.success = False
             else:
-                output.print_list(extracted_data)
-
-                rprint(
-                    "[bold red]Don't close the app![/bold red] Saving scraped data to database, it can take a while!"
-                )
-
-                save_to_json.SaveJSON(
-                    self._user_id,
-                    extracted_data,
-                ).save()
+                rprint(f"[bold red]Saving {len(extracted_data)} posts to database...[/bold red]")
+                
+                save_to_json.SaveJSON(self._user_id, extracted_data).save()
 
                 if not person_repository.person_exists(self._user_id):
                     person_repository.create_person(self._user_id)
-
                 person_id = person_repository.get_person(self._user_id).id
 
+                added_count = 0
                 for data in extracted_data:
                     if not post_repository.post_exists(data):
                         post_repository.create_post(data, person_id)
+                        added_count += 1
 
+                rprint(f"[bold green]✅ Success: Found {len(extracted_data)} total posts. Added {added_count} new records.[/bold green]")
                 self._driver.quit()
                 self.success = True
 
         except Exception as e:
             logs.log_error(f"An error occurred: {e}")
             rprint(f"An error occurred {e}")
+            
+            

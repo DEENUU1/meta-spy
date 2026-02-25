@@ -1,4 +1,5 @@
 import pickle
+import time
 
 from rich import print as rprint
 from rich.prompt import Prompt
@@ -64,11 +65,21 @@ class FacebookLogIn(Scraper):
             )
             log_in_button.click()
 
-            self._wait.until(
-                EC.presence_of_element_located(
-                    (By.XPATH, "//div[@aria-label='Facebook']")
-                )
-            )
+            # --- THE NEW FIX: Infinite Wait Loop ---
+            rprint("[bold yellow]⚠️ Check the browser window for human verification![/bold yellow]")
+            rprint("[bold cyan]Take your time solving it. The script will automatically resume once it detects the Facebook home page...[/bold cyan]")
+
+            logged_in = False
+            while not logged_in:
+                try:
+                    # Check if the main Facebook element has loaded yet
+                    self._driver.find_element(By.XPATH, "//div[@aria-label='Facebook']")
+                    logged_in = True # If it finds it, we are in!
+                except:
+                    # If not found, pause for 3 seconds and check again
+                    time.sleep(3)
+            # ---------------------------------------------
+
         except Exception as e:
             logs.log_error(f"An Error occurred while logging in: {e}")
 
