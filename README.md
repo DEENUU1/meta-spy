@@ -1,7 +1,5 @@
 <a name="readme-top"></a>
 
-
-
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
@@ -9,14 +7,12 @@
 [![MIT License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
-
-
 <br />
 <div align="center">
 
-  <h3 align="center">Meta Spy</h3>
+<h3 align="center">Meta Spy</h3>
 
-  <p align="center">
+<p align="center">
     Meta Spy is a versatile Python-based tool designed to scrape various data from Instagram profiles and Facebook  profiles, pages and search results. Whether you need basic information or want to delve deep into a user's activity, Facebook Spy has you covered. 
     <br />
     <br />
@@ -30,15 +26,14 @@
   <img src="assets/detailpage.png" alt="details" >
 </div>
 
-
 <h2><a href="https://deenuu1.github.io/facebook-spy/">Documentation is available here</a></h2>
-
 
 ## Info
 
 If you're using a Facebook account with a custom ID in the URL (e.g., https://www.facebook.com/zuck), Facebook Spy will work smoothly. However, for accounts with default IDs in the URL, certain scrapers may not function as expected. These include scrapers for work and education, contact data, visited places, family members, recent places, reviews, and likes. Rest assured, we're actively working to resolve this issue
 
 <!-- ABOUT THE PROJECT -->
+
 ## About The Project
 
 The project, known as "Meta Spy," is a powerful and versatile tool designed to gather information from Instagram profiles, Facebook profiles, pages and search results. 
@@ -47,8 +42,8 @@ The project is under constant development to improve its functionality and addre
 
 One notable limitation of the tool is that some scrapers may not work correctly for profiles with default account IDs in the URL, such as "https://www.facebook.com/profile.php?id=100063142210972." These scrapers include work and education history, contact data, visited places, family members, recent places, reviews, and likes. However, this issue does not occur for profiles with custom IDs in the URL, like "https://www.facebook.com/zuck.".
 
-
 ## Key Features
+
 - Login - Perform a secure two-step verification process to log in to Facebook account with enhanced security settings or log in to Facebook account using the default login method.
 - Scrape details like: friend list, images, recent places, videos, reels, reviews, posts, likes, groups, events etc.
 - Local web application - User is able to run a loval web application to browse scraped data, create notes for specified Person object and easly search details in web.
@@ -72,40 +67,45 @@ One notable limitation of the tool is that some scrapers may not work correctly 
 - HTML / CSS / Bootstrap5
 
 <!-- GETTING STARTED -->
-## Getting Started
 
+## Getting Started
 
 ### Installation
 
 1. Clone git repository
-```bash
-git clone https://github.com/DEENUU1/meta-spy.git
-```
+   
+   ```bash
+   git clone https://github.com/DEENUU1/meta-spy.git
+   ```
 
 2. Create dotenv file and add required data
-```bash
-cp .env_example .env
-```
+   
+   ```bash
+   cp .env_example .env
+   ```
 
 3. Install all requirements
-```bash
-pip install -r requirements.txt
-```
+   
+   ```bash
+   pip install -r requirements.txt
+   ```
 
 4. Change directory to metaspy to run commands
-```bash
-cd metaspy
-```
+   
+   ```bash
+   cd metaspy
+   ```
 
 ### Tests
 
 To run pytests use this command
+
 ```bash
 pytest
 ```
 
-
 ## Examples
+
 This is just a few examples of how you can use this tool. For more comments check <a href="https://deenuu1.github.io/facebook-spy/commands/>">Documentation</a>
 
 #### Version
@@ -117,7 +117,35 @@ python main.py version
 <img src="assets/newversion.png" alt="Logo" >
 
 
+
+
+
 #### Login
+
+## 🦊 Modern Session Handling (Recommended)
+
+This fork has been refactored to bypass Facebook's automated login blocks by utilizing your existing browser session. Instead of standard automated logins, it pulls your active identity directly from Firefox.
+
+### How to use Firefox for Session Data:
+
+1. **Log in to Facebook** in your standard Firefox browser.
+2. Ensure you stay logged in (check "Remember Me").
+3. The script will automatically pull your `cookies` and `sessionID` directly from your local Firefox profile using the `browser-cookie3` library.
+4. This method bypasses most 2-Step Verification issues and "Bot Detection" redirects.
+
+> **Note:** Ensure Firefox is closed or the profile is not "locked" by another process when running the scraper for the best results.
+> 
+> 
+
+## 
+
+## The (Broken) Chrome login route
+
+
+
+Use this command
+
+
 
 ```bash
 python main.py login-2-step
@@ -129,10 +157,10 @@ OR
 python main.py login
 ```
 
-  <img src="assets/new/login.png" alt="Logo" >
-
+<img src="assets/new/login.png" alt="Logo" >
 
 #### Search
+
 ```bash
 python main.py fb-search <"Search Query"> <results> <option_1> <option_2> ... 
 
@@ -148,8 +176,8 @@ Options:
 
 <img src="https://github.com/DEENUU1/facebook-spy/blob/main/assets/v1_2/search.gif?raw=true" alt="Logo" >
 
-
 #### Scrape Facebook account/page
+
 ```bash
 python main.py fb-account <facebook_id> <option_1> <option_2> ...
 
@@ -175,6 +203,7 @@ Options:
 ```
 
 #### Scrape Instagram account
+
 ```bash
 python  main.py insta-account <id> <option_1> <option_2> ...
 
@@ -184,7 +213,9 @@ Options:
 ```
 
 #### Friend crawler
+
 This command works similarly to the command that scrapes data about a given user's friends list. The difference, however, is that after scraping and creating Friend objects, it also creates objects for the CrawlerQueue model and after successfully scraping friends for one user, it proceeds to scraping the list of friends for the next user in the queue.
+
 ```bash
 python main.py friend-crawler <facebook_id>
 ```
@@ -192,8 +223,8 @@ python main.py friend-crawler <facebook_id>
 <img src="assets/new/crawler1.png" alt="Logo" >
 <img src="assets/crawlerfriendscheama.png.png" alt="Logo" >
 
-
 #### Graph
+
 Graph of connections between Person objects based on ther friends.
 
 ```bash
@@ -203,13 +234,15 @@ python main.py graph
 <img src="assets/graph.png" alt="Logo" >
 
 <!-- LICENSE -->
+
 ## License
 
 See `LICENSE.txt` for more information.
 
-
 <!-- MARKDOWN LINKS & IMAGES -->
+
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+
 [contributors-shield]: https://img.shields.io/github/contributors/DEENUU1/facebook-spy.svg?style=for-the-badge
 [contributors-url]: https://github.com/DEENUU1/facebook-spy/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/DEENUU1/facebook-spy.svg?style=for-the-badge
